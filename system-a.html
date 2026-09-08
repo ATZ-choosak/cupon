@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>จำลองส่วนลดต่อบิล — ระบบ A</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Taviraj:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="site-nav">
+    <a href="explain.html">คำอธิบาย/กระบวนการ</a>
+    <a href="system-a.html" class="active">ระบบ A — จำลอง</a>
+    <a href="index.html">ระบบ B — จำลอง</a>
+  </nav>
+
+  <header class="top">
+    <span class="eyebrow">PHARMAPLEX · ระบบ A — ส่วนลดต่อบิล</span>
+    <h1>จำลองตะกร้าสินค้า + ส่วนลดอัตโนมัติ + คูปอง</h1>
+    <p>หยิบสินค้าใส่ตะกร้าทางซ้าย ดูยอดคำนวณจริงทางขวา — ส่วนลดอัตโนมัติตัดก่อนเสมอ แล้วค่อยใช้คูปอง (กรอกโค้ด หรือเลือกจากกระเป๋าที่เก็บไว้) แก้กติกาฝั่งแอดมินด้านล่างแล้วดูผลเปลี่ยนทันที</p>
+    <button class="reset-btn" id="resetBtn" type="button">↺ รีเซ็ตค่าเริ่มต้น</button>
+  </header>
+
+  <div class="two-col" style="grid-template-columns:1fr 1fr">
+    <!-- LEFT: catalog + cart -->
+    <div class="panel">
+      <h2>สินค้า</h2>
+      <div class="sub">🟢 = เข้าเงื่อนไขฟรีค่าส่ง &nbsp; 🔴 = ยกเว้น คิดค่าส่งตามปกติเสมอ</div>
+      <div class="catalog-grid" id="catalogGrid"></div>
+    </div>
+
+    <div class="panel">
+      <h2>ตะกร้าของลูกค้า</h2>
+      <div class="sub" id="cartSub">ยังไม่มีสินค้าในตะกร้า</div>
+      <div id="cartLines"></div>
+    </div>
+  </div>
+
+  <!-- coupon zone -->
+  <div class="section-title"><span class="tag">ลูกค้า</span><h2>ใช้คูปอง</h2></div>
+  <div class="two-col">
+    <div class="panel">
+      <h3 style="font-size:14px;margin-bottom:8px">กรอกโค้ด</h3>
+      <div class="code-row">
+        <input type="text" id="codeInput" placeholder="เช่น WELCOME300">
+        <button type="button" id="codeApplyBtn">ใช้โค้ด</button>
+      </div>
+      <div class="code-msg" id="codeMsg"></div>
+      <div id="appliedBanner"></div>
+    </div>
+    <div class="panel">
+      <h3 style="font-size:14px;margin-bottom:2px">กระเป๋าคูปองของฉัน</h3>
+      <div class="sub">คูปองที่กดเก็บไว้ล่วงหน้า — กดใช้ได้จากตรงนี้เลย</div>
+      <div class="ticket-row" id="walletHeld" style="margin-top:0"></div>
+      <h3 style="font-size:14px;margin:16px 0 2px">คูปองที่เก็บได้ (สิทธิ์จำกัด)</h3>
+      <div class="ticket-row" id="walletAvailable" style="margin-top:0"></div>
+    </div>
+  </div>
+
+  <!-- breakdown -->
+  <div class="section-title"><span class="tag">คำนวณสด</span><h2>ยอดที่ลูกค้าต้องจ่าย</h2></div>
+  <div class="panel" style="max-width:520px">
+    <div class="breakdown" id="breakdown"></div>
+  </div>
+
+  <!-- admin config -->
+  <div class="section-title" style="margin-top:44px"><span class="tag">แอดมิน</span><h2>ตั้งค่ากติกา</h2></div>
+
+  <div class="panel">
+    <h2>จัดการสินค้า</h2>
+    <div class="sub">กำหนดชื่อ ราคา แบรนด์ และกลุ่มค่าส่งของสินค้าแต่ละชิ้น — ผลกระทบทั้งเงื่อนไขส่วนลดอัตโนมัติและคูปองส่งฟรีด้านบนทันที</div>
+    <div id="catalogEditor"></div>
+    <button class="add-btn" id="addProductBtn" type="button">+ เพิ่มสินค้าใหม่</button>
+  </div>
+
+  <div class="two-col" style="margin-top:16px">
+    <div class="panel">
+      <h2>ส่วนลดอัตโนมัติ (ตัดก่อนเสมอ)</h2>
+      <div class="sub">อิงจากยอดซื้อของแบรนด์ที่กำหนด ไม่ต้องกรอกโค้ด</div>
+      <div id="autoRuleEditor"></div>
+    </div>
+    <div class="panel">
+      <h2>คูปอง</h2>
+      <div class="sub">แก้ไข/เพิ่มคูปองได้ — สลับ "ให้เก็บล่วงหน้า" เพื่อเปิดโหมดกระเป๋าคูปองแบบ Shopee</div>
+      <div id="couponEditor"></div>
+      <button class="add-btn" id="addCouponBtn" type="button">+ เพิ่มคูปองใหม่</button>
+    </div>
+  </div>
+
+  <footer class="foot">Prototype สำหรับหารือแนวคิด — ค่าส่งเป็นสูตรจำลองอย่างง่าย (รายชิ้นในกลุ่มยกเว้น) ไม่ใช่สูตรค่าส่งจริงของระบบขนส่ง</footer>
+
+</div>
+<script src="app-a.js"></script>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คำอธิบายกระบวนการ — ระบบ A/B</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Taviraj:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap doc">
+
+  <nav class="site-nav">
+    <a href="explain.html" class="active">คำอธิบาย/กระบวนการ</a>
+    <a href="system-a.html">ระบบ A — จำลอง</a>
+    <a href="index.html">ระบบ B — จำลอง</a>
+  </nav>
+
+  <header class="top">
+    <span class="eyebrow">PHARMAPLEX · PROMOTION &amp; CAMPAIGN ENGINE</span>
+    <h1>กระบวนการทำงานของระบบ A และ B</h1>
+    <p>หน้านี้อธิบายกลไก ไม่มีอะไรให้กดเล่น — ถ้าอยากลองปรับตัวเลขจริงดูผลลัพธ์ ไปที่หน้าจำลองของแต่ละระบบได้จากเมนูด้านบน</p>
+  </header>
+
+  <hr class="rule">
+
+  <section>
+    <div class="s-head"><span class="s-tag">01</span><h2>ทำไมแบ่งเป็น 2 ระบบ ไม่ใช่ 1</h2></div>
+    <div class="doc-prose">
+      <p>โจทย์ที่ลูกค้าให้มาดูเหมือนหลายฟีเจอร์ แต่เมื่อแยกตาม "จังหวะที่ระบบต้องตัดสินใจ" จะเหลือแค่สองกลไกที่ทำงานคนละเวลากันโดยสิ้นเชิง</p>
+      <p>ระบบแรกตัดสินใจ <strong>ทันทีตอนลูกค้ากดสั่งซื้อ</strong> โดยดูแค่บิลตรงหน้า ส่วนระบบที่สองไม่สนใจบิลใดบิลหนึ่งเลย แต่มองย้อนไปที่ <strong>ประวัติการซื้อสะสม</strong> ของลูกค้าคนนั้นเพื่อปลดล็อกสิทธิ์พิเศษ</p>
+    </div>
+    <div class="contrast">
+      <div>
+        <div class="c-head"><span class="dot" style="background:var(--a)"></span>ระบบ A — ต่อบิล</div>
+        <div class="c-row"><b>ขอบเขต</b><span>ตัดสินจบภายในบิลเดียว ไม่ข้ามเวลา</span></div>
+        <div class="c-row"><b>ทำงานเมื่อ</b><span>ลูกค้าอยู่ในตะกร้า / กำลังเช็คเอาท์</span></div>
+        <div class="c-row"><b>ตอบคำถาม</b><span>"บิลนี้ควรลดเท่าไหร่"</span></div>
+        <div class="c-row"><b>ต้นแบบ</b><span>ต่อยอดจากระบบ Bundle ที่มีอยู่แล้ว</span></div>
+      </div>
+      <div>
+        <div class="c-head"><span class="dot" style="background:var(--b)"></span>ระบบ B — ข้ามบิล</div>
+        <div class="c-row"><b>ขอบเขต</b><span>สะสมยอดข้ามหลายบิล เป็นเดือน–ปี</span></div>
+        <div class="c-row"><b>ทำงานเมื่อ</b><span>หลังบิลจ่ายสำเร็จ แยกจากหน้าตะกร้า</span></div>
+        <div class="c-row"><b>ตอบคำถาม</b><span>"ลูกค้าคนนี้สมควรได้อะไรพิเศษ"</span></div>
+        <div class="c-row"><b>ต้นแบบ</b><span>ไม่มีของเดิมอ้างอิง — เป็นโดเมนใหม่</span></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <div class="s-head"><span class="s-tag">02</span><h2>ระบบ A — ส่วนลดต่อบิล</h2></div>
+    <div class="doc-prose">
+      <p>เมื่อลูกค้ากดสั่งซื้อ ระบบไล่ตรวจสิทธิ์ตามลำดับเดียวกันเสมอ เพื่อให้ยอดเงินที่ลูกค้าเห็นนิ่ง ไม่เปลี่ยนกลับไปกลับมา — <strong>ส่วนลดอัตโนมัติต้องตัดก่อนคูปองเสมอ</strong> แบบเดียวกับ Shopee เพราะถ้าให้คูปองตัดก่อน ยอดขั้นต่ำของส่วนลดอัตโนมัติจะขยับหนีไปมา ทำให้ลูกค้าสับสน</p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step a"><div class="k">STEP 1</div><div class="t">ตะกร้าสินค้า</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step a"><div class="k">STEP 2</div><div class="t">ส่วนลดอัตโนมัติตัดก่อนเสมอ</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step a"><div class="k">STEP 3</div><div class="t">คูปองมาทับ (โค้ด / เก็บไว้)</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step a"><div class="k">STEP 4</div><div class="t">ยอดสุทธิ + ค่าส่ง</div></div>
+    </div>
+
+    <div class="mech-grid">
+      <div class="mech">
+        <span class="no">MECHANISM 1</span>
+        <h3>ส่วนลดท้ายบิลอัตโนมัติ</h3>
+        <p>ไม่ต้องกรอกอะไร ระบบเช็คเองว่ายอดซื้อแบรนด์/หมวดที่กำหนดถึงเกณฑ์หรือยัง แล้วหักให้ทันทีในตะกร้า</p>
+      </div>
+      <div class="mech">
+        <span class="no">MECHANISM 2</span>
+        <h3>คูปองส่งฟรี (มีข้อยกเว้น)</h3>
+        <p>กรอกรหัสรับสิทธิ์ ใช้ได้เฉพาะบิลนั้น ฟรีเฉพาะกลุ่มสินค้าที่เข้าเงื่อนไข ถ้ามีสินค้ายกเว้นปนมา คิดค่าส่งของกลุ่มนั้นตามปกติ</p>
+      </div>
+      <div class="mech">
+        <span class="no">MECHANISM 3</span>
+        <h3>เก็บคูปองไว้ล่วงหน้า</h3>
+        <p>แบบ Shopee — ลูกค้ากด "เก็บ" คูปองจำนวนจำกัดไว้ในกระเป๋าตัวเอง ก่อนค่อยใช้ตอนเช็คเอาท์</p>
+      </div>
+    </div>
+
+    <div class="s-head" style="margin:30px 0 4px"><h3 style="font-size:16.5px;font-family:'Taviraj',serif;font-weight:600">ตัวอย่าง — คูปองส่งฟรี คิดค่าส่งยังไงเมื่อตะกร้าปนกัน</h3></div>
+    <p class="doc-prose" style="max-width:640px">สมมติลูกค้าใช้คูปอง "ส่งฟรีทั้งบิล" แล้วหยิบสินค้าทั้งกลุ่มที่เข้าเงื่อนไขและกลุ่มที่ยกเว้นมาด้วยกัน ระบบแยกคิดค่าส่งเป็นสองกลุ่มอิสระจากกัน ไม่ใช่ปัดตกทั้งบิลหรือฟรีทั้งบิล</p>
+
+    <div class="cart-sim">
+      <div class="cart-col free">
+        <div class="col-head"><span class="dot" style="background:var(--a)"></span>กลุ่มเข้าเงื่อนไข → ฟรีค่าส่ง</div>
+        <div class="item"><span>พาราเซตามอล 500mg × 2</span><span class="num">฿120</span></div>
+        <div class="item"><span>วิตามินซี 1000mg × 1</span><span class="num">฿250</span></div>
+        <div class="col-sum"><span>ค่าส่งกลุ่มนี้</span><span class="num strike">฿0</span></div>
+      </div>
+      <div class="cart-col">
+        <div class="col-head"><span class="dot" style="background:var(--ink-faint)"></span>กลุ่มยกเว้น → คิดค่าส่งปกติ</div>
+        <div class="item"><span>ยาน้ำแก้ไอ × 1</span><span class="num">฿180</span></div>
+        <div class="item"><span>เข็มฉีดยา (กล่อง) × 1</span><span class="num">฿90</span></div>
+        <div class="col-sum"><span>ค่าส่งกลุ่มนี้</span><span class="num">฿45</span></div>
+      </div>
+    </div>
+    <div class="result-strip">ค่าส่งที่ลูกค้าจ่ายจริงทั้งบิล = <span class="num">฿45</span> — คิดเฉพาะน้ำหนัก/ขนาดของกลุ่มที่ถูกยกเว้นเท่านั้น</div>
+    <div class="scenario-note">ถ้าตะกร้ามีแต่สินค้ากลุ่มเข้าเงื่อนไขล้วน → ค่าส่งทั้งบิล = ฿0 ทันที</div>
+
+    <div class="s-head" style="margin:30px 0 4px"><h3 style="font-size:16.5px;font-family:'Taviraj',serif;font-weight:600">ตัวอย่าง — กระเป๋าคูปองแบบ Shopee</h3></div>
+    <p class="doc-prose" style="max-width:640px">ลูกค้าเห็นคูปองบนหน้าโปรโมชั่น กดเก็บไว้ก่อนล่วงหน้า (สิทธิ์มีจำกัด ใครกดก่อนได้ก่อน) แล้วค่อยกลับมาใช้ตอนไหนก็ได้ก่อนหมดอายุ ไม่ต้องจำโค้ด</p>
+
+    <div class="ticket-row">
+      <div class="ticket">
+        <span class="notch top"></span><span class="notch bottom"></span>
+        <div class="main">
+          <div class="t-title">ส่งฟรีทั้งบิล ไม่มีขั้นต่ำ</div>
+          <div class="t-desc">ใช้ได้กับสินค้ากลุ่มฟรีค่าส่งเท่านั้น (มีข้อยกเว้น) · จำกัดคนละ 1 สิทธิ์</div>
+          <div class="t-progress"><i style="width:64%"></i></div>
+          <div class="t-qty">เก็บไปแล้ว 320 / 500 สิทธิ์</div>
+        </div>
+        <div class="stub">
+          <span class="t-code">FREESHIP</span>
+          <button class="t-btn" type="button">เก็บคูปอง</button>
+          <span class="t-exp">หมดสิทธิ์เก็บ 15 ก.ย.</span>
+        </div>
+      </div>
+      <div class="ticket collected">
+        <span class="notch top"></span><span class="notch bottom"></span>
+        <div class="main">
+          <div class="t-title">ส่งฟรีทั้งบิล ไม่มีขั้นต่ำ</div>
+          <div class="t-desc">อยู่ในกระเป๋าของลูกค้าแล้ว ระบบเสนอให้ใช้เองตอนเช็คเอาท์ถ้าเข้าเงื่อนไข</div>
+          <div class="t-progress"><i style="width:64%"></i></div>
+          <div class="t-qty">ใช้ได้ถึง 30 ก.ย. 69</div>
+        </div>
+        <div class="stub">
+          <span class="t-got">✓ เก็บแล้ว</span>
+          <span class="t-exp">อยู่ในกระเป๋าของฉัน</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="lbl">จุดที่ต้องรู้</span>
+      ระบบตะกร้าเดิมไม่มีที่เก็บ "ส่วนลดที่ใช้กับบิลนี้" หรือ "กระเป๋าคูปองของลูกค้า" อยู่เลยแม้แต่ช่องเดียว — เป็นจุดที่ต้องสร้างใหม่ทั้งหมด ไม่ใช่แค่เพิ่มสูตรคำนวณ
+    </div>
+
+    <a class="try-link" href="system-a.html">↝ ลองเล่นระบบ A ด้วยตัวเลขของตัวเอง</a>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <div class="s-head"><span class="s-tag">03</span><h2>ระบบ B — แคมเปญสะสมข้ามบิล</h2></div>
+    <div class="doc-prose">
+      <p>ระบบนับยอดซื้อสำเร็จของลูกค้าสะสมไปเรื่อยๆ ข้ามหลายบิล เพื่อปลดล็อกรางวัลเป็นขั้นบันได เปิดให้เฉพาะกลุ่มลูกค้าที่กำหนด และเข้าร่วมได้เอง (self-service) ไม่ต้องมีพนักงานขายไปสร้างสิทธิ์ให้ทีละคน</p>
+    </div>
+
+    <div class="mini-ladder">
+      <span class="pill">ขั้น 1 · ฿100,000 → ของรางวัลชิ้นเล็ก</span>
+      <span class="pill">ขั้น 2 · ฿500,000 → ของรางวัลระดับกลาง</span>
+      <span class="pill">ขั้น 3 · ฿1,000,000 → ของรางวัลใหญ่ที่สุด</span>
+    </div>
+
+    <div class="s-head" style="margin:30px 0 4px"><h3 style="font-size:16.5px;font-family:'Taviraj',serif;font-weight:600">ตัวอย่าง — สมุดบัญชีสะสมของลูกค้า 1 ราย ตลอดปี 2569</h3></div>
+    <p class="doc-prose" style="max-width:640px">จำลองลูกค้าสมาชิกพิเศษ 1 รายที่เข้าร่วมแคมเปญ เห็นทุกกติกาที่เกิดขึ้นจริงในบัญชีเดียว ตั้งแต่การนับยอดบางส่วน การยกเลิกออเดอร์ การปลดล็อกรางวัล ไปจนถึงใกล้หมดสัญญา</p>
+
+    <div class="ledger-wrap">
+      <table class="ledger">
+        <thead><tr><th>วันที่</th><th>รายการ</th><th class="num">ยอดบิล</th><th class="num">ยอดสะสมสุทธิ</th><th>เหตุการณ์</th></tr></thead>
+        <tbody>
+          <tr><td>15 ม.ค. 69</td><td>สั่งซื้อ #A1042</td><td class="num">฿18,500</td><td class="num">฿18,500</td><td>—</td></tr>
+          <tr><td>3 ก.พ. 69</td><td>สั่งซื้อ #A1077</td><td class="num">฿26,500</td><td class="num">฿41,000<small>+22,500 (ไม่นับของจ่ายเงินสด ฿4,000)</small></td><td>นับบางส่วน</td></tr>
+          <tr class="milestone"><td>22 ก.พ. 69</td><td>สั่งซื้อ #A1090</td><td class="num">฿64,200</td><td class="num">฿105,200</td><td>🏅 ปลดล็อก milestone 1 (100,000)</td></tr>
+          <tr class="action"><td>22 ก.พ. 69</td><td>ลูกค้ากดขอรับของรางวัล</td><td class="num">—</td><td class="num">฿105,200</td><td>📦 ส่งคำขอให้ฝ่ายจัดส่ง</td></tr>
+          <tr><td>10 มี.ค. 69</td><td>สั่งซื้อ #A1140</td><td class="num">฿20,000</td><td class="num">฿125,200</td><td>—</td></tr>
+          <tr class="cancel"><td>12 มี.ค. 69</td><td>ยกเลิกออเดอร์ #A1140</td><td class="num neg">−฿20,000</td><td class="num">฿105,200</td><td>↩ หักยอดคืน (ยังไม่ปลดล็อกรอบถัดไป จึงหักได้)</td></tr>
+          <tr><td>2 พ.ค. 69</td><td>สั่งซื้อ #A1250</td><td class="num">฿95,000</td><td class="num">฿200,200</td><td>—</td></tr>
+          <tr><td>14 มิ.ย. 69</td><td>สั่งซื้อ #A1320</td><td class="num">฿120,000</td><td class="num">฿320,200</td><td>—</td></tr>
+          <tr class="alert"><td>20 ก.ค. 69</td><td>สั่งซื้อ #A1410</td><td class="num">฿110,000</td><td class="num">฿430,200</td><td>🔔 เข้าเกณฑ์แจ้งเตือน (86% ของ 500,000)</td></tr>
+          <tr class="milestone"><td>5 ก.ย. 69</td><td>สั่งซื้อ #A1502</td><td class="num">฿75,000</td><td class="num">฿505,200</td><td>🏅 ปลดล็อก milestone 2 (500,000)</td></tr>
+          <tr class="action"><td>5 ก.ย. 69</td><td>ลูกค้ากดขอรับของรางวัล</td><td class="num">—</td><td class="num">฿505,200</td><td>📦 ส่งคำขอให้ฝ่ายจัดส่ง</td></tr>
+          <tr class="expiry"><td>20 พ.ย. 69</td><td>— ไม่มีคำสั่งซื้อ —</td><td class="num">—</td><td class="num">฿505,200</td><td>⏳ เหลือ 30 วันก่อนสัญญาสิ้นสุด ยังไม่ถึง milestone 3</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="v num">฿505,200</div><div class="l">ยอดสะสมสุทธิ ณ สิ้นปี</div></div>
+      <div class="stat"><div class="v num">2 / 3</div><div class="l">milestone ที่ปลดล็อกแล้ว</div></div>
+      <div class="stat"><div class="v num">30 วัน</div><div class="l">เหลือก่อนสัญญาสิ้นสุด</div></div>
+    </div>
+
+    <div class="mech-grid" style="margin-top:26px">
+      <div class="mech">
+        <span class="no">RULE 1</span>
+        <h3>นับเฉพาะยอดที่ "จ่ายสำเร็จ"</h3>
+        <p>สินค้าบางประเภท (เช่น จ่ายเงินสดเฉพาะ) ไม่นับรวมยอดสะสม ตัดยอดคืนอัตโนมัติถ้าออเดอร์ถูกยกเลิก — เว้นแต่ก้อนนั้นทำให้ปลดล็อก milestone ไปแล้ว จะไม่ย้อนหักคืน</p>
+      </div>
+      <div class="mech">
+        <span class="no">RULE 2</span>
+        <h3>ใครเข้าเกณฑ์เป็น "บางคน"</h3>
+        <p>เสนอผูกกับกลุ่มลูกค้าที่ระบบมีอยู่แล้ว (สมาชิกพิเศษ) แทนการสร้างระบบแบ่งกลุ่มลูกค้าใหม่ ลดงานซ้ำซ้อน</p>
+      </div>
+      <div class="mech">
+        <span class="no">RULE 3</span>
+        <h3>รางวัลนอกระบบ (Non‑POS)</h3>
+        <p>ของรางวัลไม่ผูกกับสต๊อกสินค้าปกติ ต้องมีขั้นตอนให้ลูกค้า "กดขอรับสิทธิ์" เอง เพราะไม่มีพนักงานคอยส่งมอบแทน — เลือกได้ว่าเป็นสินค้าจากเว็บ (auto-fulfill) หรือของนอกระบบเช่นตั๋วเครื่องบิน (ต้องมีคนติดต่อกลับ)</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <span class="lbl">ขอบเขตเฟสนี้</span>
+      ตัดสินใจแล้วว่า<strong>ยังไม่ทำแจ้งเตือนผ่าน LINE ในตอนนี้</strong> — ลูกค้าจะเห็นความคืบหน้า/สิทธิ์ที่ปลดล็อกได้จาก<strong>หน้าเว็บโดยตรง</strong>เมื่อเข้ามาดูเอง ไม่มี push อัตโนมัติหาลูกค้าในเฟสนี้
+    </div>
+
+    <a class="try-link" href="index.html">↝ ลองเล่นระบบ B ปรับยอดสะสม/ตั้งค่ารางวัลเอง</a>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <div class="s-head"><span class="s-tag">04</span><h2>ลำดับการเดินหน้าที่แนะนำ</h2></div>
+    <div class="roadmap">
+      <div class="rm-item">
+        <div class="n num">1</div>
+        <div>
+          <h3>ทำระบบ A ทั้งชุดให้นิ่งก่อน (รวมกระเป๋าคูปอง)</h3>
+          <p>ความเสี่ยงต่ำกว่า มีระบบ Bundle เป็นต้นแบบอยู่แล้ว จบผลภายในบิลเดียว แก้ไขง่ายกว่าหากพลาด</p>
+        </div>
+      </div>
+      <div class="rm-item">
+        <div class="n num">2</div>
+        <div>
+          <h3>ค่อยเริ่มระบบ B</h3>
+          <p>เป็นโดเมนใหม่ทั้งหมด ผลกระทบยาวข้ามเวลา ควรรอบทเรียนจากระบบ A ก่อน เพื่อไม่ให้ขอบเขตทับซ้อนกันระหว่างทาง</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="rule">
+
+  <section>
+    <div class="s-head"><span class="s-tag">05</span><h2>สถานะการตัดสินใจ</h2></div>
+    <div class="status-strip">
+      <span class="chip yes"><span class="ic">✓</span>ลำดับตัด: อัตโนมัติก่อนคูปองเสมอ</span>
+      <span class="chip yes"><span class="ic">✓</span>เก็บคูปองล่วงหน้าแบบ Shopee: ทำ</span>
+      <span class="chip no"><span class="ic">✕</span>แจ้งเตือนลูกค้าผ่าน LINE: ยังไม่ทำเฟสนี้</span>
+      <span class="chip open"><span class="ic">?</span>นับยอดสะสมย้อนหลัง: รอตัดสินใจ</span>
+      <span class="chip open"><span class="ic">?</span>หักยอดคืนตอนยกเลิก: รอตัดสินใจ (ข้อเสนอ: ไม่หักถ้าปลดล็อกแล้ว)</span>
+    </div>
+  </section>
+
+  <footer class="foot" style="margin-top:44px">อ้างอิงจากการตรวจโค้ดจริงของระบบ Pharmaplex (Bundle engine, ตะกร้าสินค้า, กลุ่มสมาชิกพิเศษ) — ฉบับหารือ ยังไม่ใช่ข้อสรุปสุดท้าย</footer>
+
+</div>
+</body>
+</html>
