@@ -1,0 +1,232 @@
+/* showcase.css — mockup gallery, sits on top of style.css tokens */
+
+.wrap.showcase{ max-width:1040px; }
+
+.showcase-intro{ margin-bottom:8px; }
+.showcase-note{
+  font-size:12.5px; color:var(--ink-faint); background:var(--surface-2); border:1px solid var(--line);
+  border-radius:8px; padding:10px 14px; margin-top:16px; max-width:640px;
+}
+
+.cat{ margin-top:52px; }
+.cat-head{ display:flex; align-items:baseline; gap:12px; margin-bottom:6px; }
+.cat-head .cn{ font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--ink-faint); }
+.cat-head h2{ font-size:23px; }
+.cat-sub{ color:var(--ink-faint); font-size:13.5px; margin:0 0 22px; }
+
+.block{ margin-top:34px; }
+.block-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:14px; flex-wrap:wrap; }
+.block-head h3{ font-size:16px; font-weight:600; }
+.ref-tag{
+  font-family:"IBM Plex Mono",monospace; font-size:10.5px; padding:4px 10px; border-radius:20px;
+  border:1px solid var(--line); color:var(--ink-faint);
+}
+
+.mock{
+  border:1px solid var(--line); border-radius:14px; background:var(--surface-2);
+  padding:26px; box-shadow:var(--shadow); overflow-x:auto;
+}
+.mock-row{ display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start; justify-content:center; }
+
+/* ---- phone device frame (fixed dark bezel, not theme-dependent) ---- */
+.phone{ width:264px; flex:none; background:#0b0b0c; border-radius:30px; padding:9px; box-shadow:0 18px 36px rgba(0,0,0,.28); }
+.phone .screen{ background:#fff; border-radius:21px; overflow:hidden; position:relative; min-height:420px; font-size:12px; }
+.phone .notch{ position:absolute; top:0; left:50%; transform:translateX(-50%); width:84px; height:16px; background:#0b0b0c; border-radius:0 0 10px 10px; z-index:3; }
+
+/* ===================== 1. tiered quantity pricing ===================== */
+.tier-card{ background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.08); width:320px; }
+.tier-card .th{ background:#EE4D2D; color:#fff; padding:12px 16px; font-weight:600; font-size:13.5px; }
+.tier-card .tp{ padding:14px 16px 6px; display:flex; gap:12px; }
+.tier-card .tp img.ph{ width:56px; height:56px; border-radius:8px; background:#F3F3F3; flex:none; }
+.tier-card .tp .pname{ font-size:12.5px; color:#222; line-height:1.4; }
+.tier-rows{ padding:6px 16px 16px; display:flex; flex-direction:column; gap:8px; }
+.tier-row{ display:flex; align-items:center; justify-content:space-between; border:1px solid #eee; border-radius:8px; padding:9px 12px; font-size:12px; color:#333; }
+.tier-row.best{ border-color:#EE4D2D; background:#FFF3F0; }
+.tier-row .tl{ display:flex; align-items:center; gap:8px; }
+.tier-row .radio{ width:15px; height:15px; border-radius:50%; border:2px solid #ccc; flex:none; }
+.tier-row.best .radio{ border-color:#EE4D2D; background:#EE4D2D; box-shadow:inset 0 0 0 3px #fff; }
+.tier-row .tprice{ font-weight:600; color:#EE4D2D; }
+.tier-row .tprice small{ display:block; font-weight:400; color:#999; text-decoration:line-through; font-size:10px; }
+
+/* ===================== 1b. cross-sell combo suggestion ===================== */
+.combo-widget{ width:360px; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,.08); }
+.combo-widget .cw-head{ background:#FFF3F0; color:#EE4D2D; padding:11px 16px; font-weight:600; font-size:13px; }
+.combo-widget .cw-body{ padding:16px; display:flex; align-items:center; gap:10px; }
+.combo-widget .cw-item{ text-align:center; flex:none; }
+.combo-widget .cw-item .ci-img{ width:56px; height:56px; border-radius:8px; background:#F3F3F3; margin:0 auto; position:relative; }
+.combo-widget .cw-item .ci-chk{ position:absolute; top:-6px; right:-6px; width:18px; height:18px; border-radius:50%; background:#EE4D2D; color:#fff; font-size:11px; display:flex; align-items:center; justify-content:center; }
+.combo-widget .cw-item .ci-name{ font-size:10px; color:#444; margin-top:6px; width:64px; line-height:1.3; }
+.combo-widget .cw-plus{ font-size:16px; color:#ccc; flex:none; }
+.combo-widget .cw-eq{ font-size:16px; color:#ccc; flex:none; }
+.combo-widget .cw-price{ flex:1; text-align:right; }
+.combo-widget .cw-price .cw-old{ font-size:11px; color:#999; text-decoration:line-through; }
+.combo-widget .cw-price .cw-new{ font-size:17px; font-weight:700; color:#EE4D2D; }
+.combo-widget .cw-foot{ padding:0 16px 16px; }
+.combo-widget .cw-btn{ width:100%; border:none; background:#EE4D2D; color:#fff; padding:9px; border-radius:8px; font-size:12.5px; font-weight:600; }
+
+/* reusable mini process flow (used under most blocks) */
+.mini-flow{ display:flex; align-items:center; gap:0; margin-top:16px; flex-wrap:wrap; }
+.mini-flow .mf-n{ background:var(--surface); border:1px solid var(--line); border-radius:8px; padding:9px 13px; font-size:12px; color:var(--ink-soft); }
+.mini-flow .mf-a{ color:var(--ink-faint); padding:0 8px; font-size:14px; }
+
+/* ===================== 2. campaign-day flash sale ===================== */
+.flash-hero{
+  width:100%; max-width:520px; border-radius:14px; overflow:hidden; color:#fff;
+  background:linear-gradient(135deg,#F53D2D,#FF8A3D);
+}
+.flash-hero .fh-top{ padding:22px 22px 14px; text-align:center; }
+.flash-hero .fh-top .ft{ font-family:"Taviraj",serif; font-weight:700; font-size:34px; letter-spacing:.02em; }
+.flash-hero .fh-top .fs{ font-size:12.5px; opacity:.9; margin-top:2px; }
+.flash-timer{ display:flex; gap:6px; justify-content:center; margin-top:12px; }
+.flash-timer span{ background:rgba(0,0,0,.25); border-radius:6px; padding:5px 8px; font-family:"IBM Plex Mono",monospace; font-size:13px; font-weight:600; }
+.flash-cats{ background:#fff; padding:16px; display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+.flash-cats .fc{ background:#FFF3F0; border-radius:10px; padding:12px 8px; text-align:center; }
+.flash-cats .fc .fc-icon{ font-size:22px; }
+.flash-cats .fc .fc-name{ font-size:11px; color:#333; margin-top:5px; }
+.flash-cats .fc .fc-off{ font-size:11px; color:#F53D2D; font-weight:700; margin-top:2px; }
+
+/* ===================== 4. free-ship badge reuse (simple) ===================== */
+.badge-row{ display:flex; gap:10px; flex-wrap:wrap; }
+.freeship-badge{
+  display:inline-flex; align-items:center; gap:6px; background:var(--a-soft); color:var(--a-ink);
+  padding:7px 14px; border-radius:20px; font-size:13px; font-weight:600;
+}
+
+/* ===================== physical coupon ===================== */
+.pcoupon{
+  width:380px; background:#fff; border-radius:12px; position:relative; display:flex;
+  box-shadow:0 4px 14px rgba(0,0,0,.12); color:#222; font-size:12.5px;
+}
+.pcoupon .pc-main{ flex:1; padding:18px 16px; background:linear-gradient(135deg,#1E3A8A,#2563EB); color:#fff; border-radius:12px 0 0 12px; }
+.pcoupon .pc-main .pc-brand{ font-size:10.5px; opacity:.8; letter-spacing:.06em; }
+.pcoupon .pc-main .pc-val{ font-family:"Taviraj",serif; font-weight:700; font-size:26px; margin-top:4px; }
+.pcoupon .pc-main .pc-desc{ font-size:11px; opacity:.9; margin-top:6px; line-height:1.5; }
+.pcoupon .pc-stub{
+  width:120px; flex:none; border-left:2px dashed #cbd5e1; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:6px; padding:14px 10px; text-align:center; position:relative;
+}
+.pcoupon .pc-stub .pc-code{ font-family:"IBM Plex Mono",monospace; font-weight:700; font-size:13px; }
+.pcoupon .pc-stub .pc-qr{ width:46px; height:46px; background:repeating-conic-gradient(#222 0% 25%, #fff 0% 50%) 0 0/8px 8px; border:3px solid #fff; box-shadow:0 0 0 1px #222; }
+.pcoupon .pc-stub .pc-tear{ font-size:9px; color:#94a3b8; }
+.pcoupon .notch2{ position:absolute; width:14px; height:14px; border-radius:50%; background:var(--surface-2); left:calc(100% - 120px); }
+.pcoupon .notch2.top{ top:0; transform:translate(-50%,-50%); }
+.pcoupon .notch2.bottom{ bottom:0; transform:translate(-50%,50%); }
+
+.gen-form{ background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:16px 18px; width:280px; flex:none; }
+.gen-form .gf-row{ margin-bottom:10px; }
+.gen-form label{ font-size:11px; color:var(--ink-faint); font-family:"IBM Plex Mono",monospace; display:block; margin-bottom:3px; }
+.gen-form .gf-hint{ font-size:10px; color:var(--ink-faint); margin-top:3px; line-height:1.4; }
+.gen-form input{ width:100%; border:1px solid var(--line); background:var(--surface-2); border-radius:6px; padding:7px 9px; font-size:13px; }
+.gen-form .gf-btn{ width:100%; border:none; background:var(--a); color:#fff; padding:9px; border-radius:8px; font-size:13px; font-weight:600; margin-top:4px; }
+.gen-form .gf-out{ margin-top:10px; font-size:11.5px; color:var(--ink-faint); background:var(--surface-2); border-radius:6px; padding:8px 10px; font-family:"IBM Plex Mono",monospace; }
+
+/* stack of identical physical coupons */
+.pcoupon-stack{ position:relative; width:380px; }
+.pcoupon-stack::before, .pcoupon-stack::after{
+  content:""; position:absolute; inset:0; background:#fff; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,.08);
+}
+.pcoupon-stack::before{ transform:translate(7px,7px); z-index:0; }
+.pcoupon-stack::after{ transform:translate(14px,14px); z-index:-1; opacity:.75; }
+.pcoupon-stack .pcoupon{ position:relative; z-index:1; }
+.stack-cap{ text-align:center; font-size:11px; color:var(--ink-faint); margin-top:20px; font-family:"IBM Plex Mono",monospace; }
+
+.claim-queue.wide .cq-head, .claim-queue.wide .cq-row{ grid-template-columns:1.3fr 1fr .9fr .9fr 90px; }
+
+.redeem-flow{ display:flex; gap:0; flex-wrap:wrap; }
+.rf-step{ flex:1; min-width:130px; text-align:center; padding:12px 10px; }
+.rf-step .rf-icon{ font-size:22px; }
+.rf-step .rf-text{ font-size:12px; color:var(--ink-soft); margin-top:6px; line-height:1.4; }
+.rf-arrow{ align-self:center; color:var(--ink-faint); font-size:16px; padding:0 4px; }
+
+.claim-queue{ width:100%; max-width:420px; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface); }
+.claim-queue .cq-head{ background:var(--surface-2); padding:9px 14px; font-size:11px; color:var(--ink-faint); display:grid; grid-template-columns:1fr 1fr 90px; font-family:"IBM Plex Mono",monospace; }
+.claim-queue .cq-row{ padding:10px 14px; display:grid; grid-template-columns:1fr 1fr 90px; font-size:12.5px; border-top:1px solid var(--line); align-items:center; }
+.cq-status{ font-size:10.5px; padding:5px 9px; border-radius:20px; text-align:center; font-family:"IBM Plex Mono",monospace; border:none; }
+.cq-status.pending{ background:var(--b-soft); color:var(--b-ink); cursor:pointer; }
+.cq-status.pending:hover{ filter:brightness(1.05); }
+.cq-status.paid{ background:var(--a-soft); color:var(--a-ink); }
+
+.redeem-btn{
+  margin-top:8px; border:none; background:var(--a); color:#fff; padding:6px 14px; border-radius:20px;
+  font-size:11.5px; font-weight:500;
+}
+.redeem-btn:hover{ filter:brightness(1.06); }
+
+.collect-btn{ border:none; }
+.fb-add:disabled{ opacity:.55; cursor:default; }
+
+.brand-ticket{ width:230px; border-radius:10px; overflow:hidden; display:flex; box-shadow:0 3px 10px rgba(0,0,0,.1); font-size:12px; }
+.brand-ticket .bt-main{ flex:1; padding:13px 12px; color:#fff; }
+.brand-ticket .bt-title{ font-weight:700; font-size:14px; }
+.brand-ticket .bt-desc{ font-size:10.5px; opacity:.9; margin-top:4px; line-height:1.4; }
+.brand-ticket .bt-stub{ width:64px; flex:none; background:#fff; display:flex; align-items:center; justify-content:center; }
+.brand-ticket .bt-stub button{ border:none; background:transparent; font-size:10.5px; font-weight:700; padding:6px 4px; }
+.brand-ticket.shopee .bt-main{ background:#EE4D2D; }
+.brand-ticket.shopee .bt-stub button{ color:#EE4D2D; }
+.brand-ticket.lazada .bt-main{ background:linear-gradient(135deg,#0F146D,#F57224); }
+.brand-ticket.lazada .bt-stub button{ color:#0F146D; }
+
+/* ===================== monthly recurring coupon ===================== */
+.month-strip{ display:flex; gap:8px; flex-wrap:wrap; }
+.month-cell{
+  width:84px; border:1px solid var(--line); border-radius:10px; padding:12px 8px; text-align:center; background:var(--surface);
+}
+.month-cell .mc-m{ font-size:11.5px; color:var(--ink-faint); font-family:"IBM Plex Mono",monospace; }
+.month-cell .mc-icon{ font-size:18px; margin:6px 0; }
+.month-cell.got{ border-color:var(--a); background:var(--a-soft); }
+.month-cell.got .mc-m{ color:var(--a-ink); }
+.month-cell.now{ border-color:var(--b); box-shadow:0 0 0 2px var(--b-soft); }
+.month-cell .mc-s{ font-size:9.5px; color:var(--ink-faint); }
+
+/* ===================== point system (MyAIS-style) ===================== */
+.point-card{
+  width:320px; border-radius:16px; padding:20px 22px; color:#fff;
+  background:linear-gradient(135deg,#00A950,#00C97A); position:relative; overflow:hidden;
+}
+.point-card::after{ content:""; position:absolute; right:-30px; top:-30px; width:140px; height:140px; border-radius:50%; background:rgba(255,255,255,.12); }
+.point-card .pk-label{ font-size:11px; opacity:.85; letter-spacing:.05em; }
+.point-card .pk-val{ font-family:"Taviraj",serif; font-weight:700; font-size:36px; margin-top:6px; }
+.point-card .pk-val span{ font-size:15px; font-weight:400; margin-left:4px; opacity:.85; }
+.point-card .pk-rate{ margin-top:12px; font-size:11.5px; background:rgba(255,255,255,.15); display:inline-block; padding:5px 11px; border-radius:20px; }
+
+.point-sim{ width:100%; max-width:320px; }
+.point-sim input[type="range"]{ width:100%; margin-top:10px; accent-color:#00A950; }
+.point-sim .ps-out{ font-size:13px; color:var(--ink-soft); margin-top:8px; text-align:center; }
+.point-sim .ps-out b{ color:var(--ink); font-family:"IBM Plex Mono",monospace; }
+
+.redeem-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:12px; margin-top:4px; }
+.redeem-item{ border:1px solid var(--line); border-radius:10px; padding:13px 14px; background:var(--surface); text-align:center; }
+.redeem-item .ri-icon{ font-size:24px; }
+.redeem-item .ri-name{ font-size:12px; margin-top:6px; color:var(--ink-soft); }
+.redeem-item .ri-cost{ font-family:"IBM Plex Mono",monospace; font-size:12.5px; font-weight:600; color:#00A950; margin-top:5px; }
+
+.point-hist{ width:100%; max-width:340px; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+.ph-row{ display:flex; justify-content:space-between; padding:9px 14px; font-size:12px; border-top:1px solid var(--line); color:var(--ink-soft); }
+.ph-row:first-child{ border-top:none; }
+.ph-row .ph-plus{ color:#00A950; font-family:"IBM Plex Mono",monospace; font-weight:600; }
+
+/* ===================== campaign field builder ===================== */
+.fb-wrap{ display:grid; grid-template-columns:1fr 1fr; gap:18px; width:100%; }
+@media (max-width:700px){ .fb-wrap{ grid-template-columns:1fr; } }
+.fb-panel{ background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:14px 16px; }
+.fb-panel h4{ font-size:12px; color:var(--ink-faint); font-family:"IBM Plex Mono",monospace; margin-bottom:10px; font-weight:500; }
+.fb-field{ display:flex; align-items:center; gap:8px; border:1px solid var(--line); border-radius:8px; padding:8px 10px; margin-bottom:8px; font-size:12.5px; background:var(--surface-2); }
+.fb-field .fb-type{ font-family:"IBM Plex Mono",monospace; font-size:10px; color:var(--ink-faint); background:var(--surface); border:1px solid var(--line); border-radius:5px; padding:2px 6px; }
+.fb-add{ width:100%; border:1px dashed var(--line); background:transparent; color:var(--ink-faint); padding:8px; border-radius:8px; font-size:12px; }
+.fb-preview label{ display:block; font-size:11px; color:var(--ink-faint); margin:10px 0 4px; }
+.fb-preview label:first-child{ margin-top:0; }
+.fb-preview input,.fb-preview select{ width:100%; border:1px solid var(--line); background:var(--surface-2); border-radius:6px; padding:7px 9px; font-size:13px; }
+
+.no-deadline{ display:flex; align-items:center; gap:10px; background:var(--a-soft); color:var(--a-ink); padding:12px 16px; border-radius:10px; font-size:13.5px; width:fit-content; }
+
+/* ===================== first-N race campaign ===================== */
+.race-wrap{ width:100%; max-width:460px; }
+.race-goal{ display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px; }
+.race-goal b{ font-family:"IBM Plex Mono",monospace; }
+.race-track{ height:10px; background:var(--line); border-radius:6px; overflow:hidden; }
+.race-fill{ height:100%; background:linear-gradient(90deg,var(--b),var(--a)); }
+.race-you{ margin-top:10px; font-size:13px; color:var(--ink-soft); }
+.race-you b{ color:var(--ink); font-family:"IBM Plex Mono",monospace; }
+.race-slots{ display:flex; gap:3px; margin-top:10px; flex-wrap:wrap; }
+.race-slot{ width:14px; height:14px; border-radius:3px; background:var(--lock-soft); }
+.race-slot.filled{ background:var(--a); }

@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ระบบโปรโมชั่นและคูปอง Pharmaplex</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Taviraj:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="showcase.css">
+</head>
+<body>
+<div class="wrap showcase">
+
+  <nav class="site-nav">
+    <a href="showcase.html" class="active">ภาพรวมระบบ</a>
+    <a href="system-a.html">ระบบ A — จำลอง</a>
+    <a href="index.html">ระบบ B — จำลอง</a>
+  </nav>
+
+  <header class="top showcase-intro">
+    <span class="eyebrow">PHARMAPLEX · โปรโมชั่น คูปอง พอยท์ แคมเปญ</span>
+    <h1>ภาพรวมระบบโปรโมชั่น คูปอง พอยท์ และแคมเปญ</h1>
+    <p>เน้นให้เห็นภาพหน้าตาและวิธีทำงาน — ลองกดเล่นแต่ละส่วนได้เลย</p>
+    <div class="showcase-note">หมายเหตุ: หน้านี้เป็นภาพจำลองเพื่อสื่อสารแนวทางการทำงาน กดโต้ตอบได้บางส่วน ไม่ใช่ระบบจริงทั้งหมด</div>
+  </header>
+
+  <!-- ============ โปรโมชั่น ============ -->
+  <div class="cat">
+    <div class="cat-head"><span class="cn">01</span><h2>โปรโมชั่น</h2></div>
+    <p class="cat-sub">ส่วนลดที่เกิดตอนลูกค้าเลือกซื้อ ไม่ต้องมีโค้ด</p>
+
+    <div class="block">
+      <div class="block-head"><h3>ซื้อคู่สินค้าที่เข้ากัน ถูกกว่า (แนะนำอัตโนมัติ)</h3></div>
+      <div class="mock"><div class="mock-row">
+        <div class="combo-widget">
+          <div class="cw-head">🔗 ซื้อคู่กัน คุ้มกว่า</div>
+          <div class="cw-body">
+            <div class="cw-item">
+              <div class="ci-img"></div>
+              <div class="ci-name">นมผงสูตร 3 ตรา A</div>
+            </div>
+            <span class="cw-plus">+</span>
+            <div class="cw-item" id="comboItem2" style="cursor:pointer">
+              <div class="ci-img"><span class="ci-chk" id="comboChk">✓</span></div>
+              <div class="ci-name">ขวดนม PP 240ml</div>
+            </div>
+            <span class="cw-eq">=</span>
+            <div class="cw-price">
+              <div class="cw-old" id="comboOld">฿890</div>
+              <div class="cw-new" id="comboNew">฿790</div>
+            </div>
+          </div>
+          <div class="cw-foot"><button class="cw-btn" type="button" id="comboBtn">เพิ่มทั้งคู่ลงตะกร้า ประหยัด ฿100</button></div>
+        </div>
+      </div></div>
+      <div class="mini-flow">
+        <span class="mf-n">ลูกค้าเปิดหน้าสินค้า A</span><span class="mf-a">→</span>
+        <span class="mf-n">ระบบเช็คว่าตั้งคู่กับสินค้า B ไว้ไหม</span><span class="mf-a">→</span>
+        <span class="mf-n">ถ้ามี ขึ้นการ์ดแนะนำราคาคู่ทันที ไม่ต้องค้นหาเอง</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>ลดกลุ่มสินค้าตามวัน (แคมเปญวันพิเศษ)</h3></div>
+      <div class="mock"><div class="mock-row">
+        <div class="flash-hero">
+          <div class="fh-top">
+            <div class="ft">9.9 MEGA SALE</div>
+            <div class="fs">ลดกลุ่มยาสามัญประจำบ้าน สูงสุด 70%</div>
+            <div class="flash-timer"><span>08</span><span>:</span><span>42</span><span>:</span><span>17</span></div>
+          </div>
+          <div class="flash-cats">
+            <div class="fc"><div class="fc-icon">💊</div><div class="fc-name">ยาสามัญ</div><div class="fc-off">-50%</div></div>
+            <div class="fc"><div class="fc-icon">🧴</div><div class="fc-name">วิตามิน</div><div class="fc-off">-30%</div></div>
+            <div class="fc"><div class="fc-icon">🩹</div><div class="fc-name">เวชภัณฑ์</div><div class="fc-off">-70%</div></div>
+          </div>
+        </div>
+      </div></div>
+      <div class="mini-flow">
+        <span class="mf-n">แอดมินตั้งวันเวลา + หมวด/% ล่วงหน้า</span><span class="mf-a">→</span>
+        <span class="mf-n">ถึงเวลาที่ตั้ง ราคาทั้งหมวดเปลี่ยนอัตโนมัติ</span><span class="mf-a">→</span>
+        <span class="mf-n">หมดเวลา ราคากลับปกติเอง ไม่ต้องมีคนกดปิด</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>ส่วนลดท้ายบิล / ซื้อกลุ่มนี้ส่งฟรี</h3></div>
+      <div class="mock"><div class="mock-row">
+        <div class="badge-row">
+          <span class="freeship-badge">🏷️ ซื้อ Blackmores ครบ ฿1,000 ลดทันที ฿100</span>
+          <span class="freeship-badge">🚚 ซื้อสินค้ากลุ่มนี้ ฟรีค่าส่งทันที ไม่มีขั้นต่ำ</span>
+        </div>
+      </div></div>
+      <a class="try-link" href="system-a.html">↝ ลองคำนวณเอง</a>
+    </div>
+  </div>
+
+  <!-- ============ คูปอง ============ -->
+  <div class="cat">
+    <div class="cat-head"><span class="cn">02</span><h2>คูปอง</h2></div>
+    <p class="cat-sub">สิทธิ์ส่วนลดที่ต้องมีการ "รับ" มาก่อนถึงใช้ได้</p>
+
+    <div class="block">
+      <div class="block-head"><h3>คูปองกระดาษ — พิมพ์แจกหน้างาน/บูท</h3></div>
+
+      <div class="contrast" style="margin-bottom:20px">
+        <div>
+          <div class="c-head"><span class="dot" style="background:var(--ink-faint)"></span>คูปองกระดาษ</div>
+          <div class="c-row"><b>รหัส</b><span>เลขเดียวกันทั้งชุด เช่น ABC100 ×1,000 ใบ</span></div>
+          <div class="c-row"><b>กันใช้ซ้ำด้วย</b><span>ตัวกระดาษที่ถูกฉีก ไม่ใช่ระบบเช็คเลข</span></div>
+          <div class="c-row"><b>เหมาะกับ</b><span>แจกหน้างาน/บูท พิมพ์เป็นเล่มเดียวได้ ต้นทุนต่ำ</span></div>
+        </div>
+        <div>
+          <div class="c-head"><span class="dot" style="background:var(--a)"></span>คูปองออนไลน์ / เก็บล่วงหน้า</div>
+          <div class="c-row"><b>รหัส</b><span>unique เฉพาะสิทธิ์ 1 คน 1 โค้ด</span></div>
+          <div class="c-row"><b>กันใช้ซ้ำด้วย</b><span>ระบบเช็ค/ตัดโควตาอัตโนมัติ</span></div>
+          <div class="c-row"><b>เหมาะกับ</b><span>แจก/เก็บผ่านเว็บหรือแอป ใช้ซ้ำไม่ได้เอง</span></div>
+        </div>
+      </div>
+
+      <div class="mock">
+        <div class="mock-row">
+          <div class="gen-form">
+            <div class="gf-row"><label>รหัสคูปอง (ใช้ร่วมกันทั้งชุด)</label><input id="genCode" value="ABC100">
+              <div class="gf-hint">*ใบเดียวกันหมดทั้งชุด — พิมพ์ครั้งเดียวได้ทั้งหมด ไม่ต้องรันเลข ต้นทุนพิมพ์ต่ำ</div>
+            </div>
+            <div class="gf-row"><label>จำนวนที่พิมพ์</label><input id="genQty" value="1,000 ใบ"></div>
+            <div class="gf-row"><label>มูลค่าส่วนลด</label><input value="฿50 / ใบ" readonly></div>
+            <div class="gf-row"><label>ใช้ได้ถึง</label><input value="31 ธ.ค. 2569" readonly></div>
+            <button class="gf-btn" type="button" id="genBtn">🖨️ สร้างชุดคูปอง + สั่งพิมพ์</button>
+            <div class="gf-out" id="genOut">สร้างแล้ว: โค้ด ABC100 × 1,000 ใบ<br>สถานะ: พร้อมส่งไฟล์พิมพ์</div>
+          </div>
+
+          <div>
+            <div class="pcoupon-stack">
+              <div class="pcoupon">
+                <span class="notch2 top"></span><span class="notch2 bottom"></span>
+                <div class="pc-main">
+                  <div class="pc-brand">PHARMAPLEX COUPON</div>
+                  <div class="pc-val">ลด ฿50</div>
+                  <div class="pc-desc">เมื่อซื้อสินค้าครบ ฿300 ที่ร้าน/ตัวแทนจำหน่ายที่ร่วมรายการ<br>ใช้ได้ถึง 31 ธ.ค. 2569</div>
+                </div>
+                <div class="pc-stub">
+                  <div class="pc-qr"></div>
+                  <div class="pc-code" id="pcCode">ABC100</div>
+                  <div class="pc-tear">✂ ตัดตามรอยประ<br>ร้านฉีกเก็บไว้เบิกเงิน</div>
+                </div>
+              </div>
+            </div>
+            <div class="stack-cap">ทั้งชุดหน้าตา/รหัสเหมือนกันทุกใบ</div>
+          </div>
+        </div>
+
+        <div class="redeem-flow" style="margin-top:26px">
+          <div class="rf-step"><div class="rf-icon">🖨️</div><div class="rf-text">แอดมินสร้างโค้ดชุดเดียว<br>สั่งพิมพ์ตามจำนวน</div></div>
+          <div class="rf-arrow">→</div>
+          <div class="rf-step"><div class="rf-icon">🎪</div><div class="rf-text">แจกลูกค้าหน้าบูท<br>/ ตัวแทนจำหน่าย</div></div>
+          <div class="rf-arrow">→</div>
+          <div class="rf-step"><div class="rf-icon">🛍️</div><div class="rf-text">ลูกค้านำไปซื้อที่ร้าน<br>ร้าน<b>ฉีกก้นคูปองเก็บไว้</b></div></div>
+          <div class="rf-arrow">→</div>
+          <div class="rf-step"><div class="rf-icon">📮</div><div class="rf-text">ร้านรวบรวมก้นคูปอง<br>ส่งกลับมาที่บริษัท</div></div>
+          <div class="rf-arrow">→</div>
+          <div class="rf-step"><div class="rf-icon">💰</div><div class="rf-text"><b>นับจำนวนก้นจริง</b><br>เบิกเงิน = จำนวน × ฿50</div></div>
+        </div>
+
+        <div style="margin-top:24px">
+          <div class="claim-queue wide">
+            <div class="cq-head"><span>ร้าน/ตัวแทน</span><span>ชุดโค้ดที่แจกไป</span><span>ก้นที่ส่งคืนมา</span><span>มูลค่าที่ต้องจ่าย</span><span>สถานะ</span></div>
+            <div class="cq-row" data-amount="2350">
+              <span>ร้านยาสุขภาพดี สาขา 2</span><span class="mono">ABC100</span><span class="num">47 ใบ</span><span class="num">฿2,350</span>
+              <button class="cq-status pending" type="button">รอตรวจนับ</button>
+            </div>
+            <div class="cq-row"><span>ตัวแทนจำหน่าย เชียงใหม่</span><span class="mono">ABC100</span><span class="num">112 ใบ</span><span class="num">฿5,600</span><span class="cq-status paid">จ่ายเงินแล้ว</span></div>
+            <div class="cq-row"><span>ร้านยาสุขภาพดี สาขา 5</span><span class="mono">ABC100</span><span class="num">30 ใบ</span><span class="num">฿1,500</span><span class="cq-status paid">จ่ายเงินแล้ว</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>คูปองเก็บล่วงหน้า</h3></div>
+      <div class="mock"><div class="mock-row">
+        <div class="brand-ticket shopee">
+          <div class="bt-main"><div class="bt-title">ส่งฟรี ไม่มีขั้นต่ำ</div><div class="bt-desc" id="bt1desc">เก็บไปแล้ว 320/500 สิทธิ์<br>ใช้ได้ถึง 30 ก.ย.</div></div>
+          <div class="bt-stub"><button type="button" class="collect-btn">เก็บ</button></div>
+        </div>
+        <div class="brand-ticket lazada">
+          <div class="bt-main"><div class="bt-title">ลด 15%</div><div class="bt-desc" id="bt2desc">สูงสุด ฿100 · ซื้อครบ ฿500<br>ใช้ได้ถึง 30 ก.ย.</div></div>
+          <div class="bt-stub"><button type="button" class="collect-btn">เก็บ</button></div>
+        </div>
+      </div></div>
+      <div class="mini-flow">
+        <span class="mf-n">ลูกค้ากดเก็บ (ตัดโควตารวมทันที)</span><span class="mf-a">→</span>
+        <span class="mf-n">ระบบออกรหัส unique ผูกกับบัญชีนั้นคนเดียว</span><span class="mf-a">→</span>
+        <span class="mf-n">ใช้ครั้งเดียว ระบบตัดสิทธิ์อัตโนมัติหลังใช้</span>
+      </div>
+      <a class="try-link" href="system-a.html">↝ ลองใช้งานกระเป๋าคูปองจริง</a>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>คูปองส่งฟรี/ส่วนลดให้ทุกเดือน</h3></div>
+      <div class="mock"><div class="mock-row">
+        <div class="month-strip" id="monthStrip">
+          <div class="month-cell got"><div class="mc-m">ก.ค.</div><div class="mc-icon">✅</div><div class="mc-s">ใช้แล้ว</div></div>
+          <div class="month-cell got"><div class="mc-m">ส.ค.</div><div class="mc-icon">✅</div><div class="mc-s">ใช้แล้ว</div></div>
+          <div class="month-cell now" id="monthNow" style="cursor:pointer"><div class="mc-m">ก.ย.</div><div class="mc-icon">🎁</div><div class="mc-s">พร้อมใช้ (กดลอง)</div></div>
+          <div class="month-cell"><div class="mc-m">ต.ค.</div><div class="mc-icon">🔒</div><div class="mc-s">รอวันที่ 1</div></div>
+          <div class="month-cell"><div class="mc-m">พ.ย.</div><div class="mc-icon">🔒</div><div class="mc-s">รอวันที่ 1</div></div>
+        </div>
+      </div></div>
+      <div class="mini-flow">
+        <span class="mf-n">ระบบออกสิทธิ์ให้อัตโนมัติทุกวันที่ 1</span><span class="mf-a">→</span>
+        <span class="mf-n">ใช้ได้ถึงสิ้นเดือนนั้นเท่านั้น</span><span class="mf-a">→</span>
+        <span class="mf-n">ไม่ใช้ = หมดสิทธิ์ ไม่ทบไปเดือนถัดไป</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ สะสมพอยท์ ============ -->
+  <div class="cat">
+    <div class="cat-head"><span class="cn">03</span><h2>ระบบสะสมพอยท์</h2></div>
+    <p class="cat-sub">แปลงยอดสั่งซื้อเป็นพอยท์ ใช้แลกส่วนลด/ของรางวัลในเว็บ</p>
+
+    <div class="block">
+      <div class="block-head"><h3>ยอดซื้อ → พอยท์ → แลกของ</h3></div>
+      <div class="mock"><div class="mock-row">
+        <div class="point-card">
+          <div class="pk-label">พอยท์ของฉัน</div>
+          <div class="pk-val"><span id="pointBalance">2,480</span><span>พอยท์</span></div>
+          <div class="pk-rate">ทุกยอดซื้อ ฿100 ได้ 10 พอยท์</div>
+        </div>
+
+        <div class="point-sim">
+          <label style="font-size:11.5px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace">จำลอง: ยอดสั่งซื้อ</label>
+          <input type="range" id="pointSlider" min="0" max="10000" step="100" value="1000">
+          <div class="ps-out">ยอด <b id="pointBaht">฿1,000</b> → ได้ <b id="pointOut">100</b> พอยท์</div>
+        </div>
+
+        <div class="point-hist" id="pointHist">
+          <div class="ph-row"><span>คำสั่งซื้อ #A1502 · 5 ก.ย.</span><span class="ph-plus">+750</span></div>
+          <div class="ph-row"><span>คำสั่งซื้อ #A1410 · 20 ก.ค.</span><span class="ph-plus">+1,100</span></div>
+          <div class="ph-row"><span>แลกส่วนลด ฿50</span><span>−500</span></div>
+        </div>
+      </div></div>
+      <div class="mini-flow">
+        <span class="mf-n">ออเดอร์จ่ายสำเร็จ</span><span class="mf-a">→</span>
+        <span class="mf-n">ระบบคำนวณพอยท์ (ยอด ÷ 10) เข้าบัญชีทันที</span><span class="mf-a">→</span>
+        <span class="mf-n">ใช้แลกของ/ส่วนลดได้เลยไม่ต้องรอ</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>แลกของรางวัลด้วยพอยท์ (กดแลกดูได้)</h3></div>
+      <div class="mock">
+        <div class="redeem-grid" id="redeemGrid">
+          <div class="redeem-item" data-cost="500" data-name="คูปองลด ฿50"><div class="ri-icon">🎟️</div><div class="ri-name">คูปองลด ฿50</div><div class="ri-cost">500 พอยท์</div><button class="redeem-btn" type="button">แลกเลย</button></div>
+          <div class="redeem-item" data-cost="300" data-name="คูปองส่งฟรี"><div class="ri-icon">🚚</div><div class="ri-name">คูปองส่งฟรี</div><div class="ri-cost">300 พอยท์</div><button class="redeem-btn" type="button">แลกเลย</button></div>
+          <div class="redeem-item" data-cost="1200" data-name="ของแถมพรีเมียม"><div class="ri-icon">🧴</div><div class="ri-name">ของแถมพรีเมียม</div><div class="ri-cost">1,200 พอยท์</div><button class="redeem-btn" type="button">แลกเลย</button></div>
+          <div class="redeem-item" data-cost="1000" data-name="เครดิตเงินคืน ฿100"><div class="ri-icon">💳</div><div class="ri-name">เครดิตเงินคืน ฿100</div><div class="ri-cost">1,000 พอยท์</div><button class="redeem-btn" type="button">แลกเลย</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ แคมเปญ ============ -->
+  <div class="cat">
+    <div class="cat-head"><span class="cn">04</span><h2>แคมเปญ</h2></div>
+    <p class="cat-sub">รางวัลปลดล็อกตามยอดสะสม เก็บข้อมูลลูกค้าได้ตามที่กำหนด ไม่มีกำหนดวันหมดสิทธิ์การรับจนกว่าแคมเปญจะจบ</p>
+
+    <div class="block">
+      <div class="block-head"><h3>แบบฟอร์มขอข้อมูลตอนรับสิทธิ์ — แอดมินกำหนดฟิลด์เอง (กดเพิ่มฟิลด์ดูได้)</h3></div>
+      <div class="mock">
+        <div class="fb-wrap">
+          <div class="fb-panel">
+            <h4>ฝั่งแอดมิน — สร้างฟิลด์</h4>
+            <div id="fbFieldList">
+              <div class="fb-field"><span class="fb-type">TEXT</span> ชื่อผู้เดินทางตามพาสปอร์ต</div>
+              <div class="fb-field"><span class="fb-type">TEL</span> เบอร์ติดต่อ</div>
+            </div>
+            <button class="fb-add" type="button" id="fbAddBtn">+ เพิ่มฟิลด์ (ข้อความ / ตัวเลข / เบอร์โทร / วันที่ / ตัวเลือก)</button>
+          </div>
+          <div class="fb-panel fb-preview">
+            <h4>ลูกค้าเห็นตอนกดรับสิทธิ์</h4>
+            <div id="fbPreviewList">
+              <label>ชื่อผู้เดินทางตามพาสปอร์ต</label><input placeholder="กรอกชื่อ-นามสกุล">
+              <label>เบอร์ติดต่อ</label><input placeholder="0812345678">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mini-flow">
+        <span class="mf-n">แอดมินออกแบบฟอร์มครั้งเดียวต่อ milestone</span><span class="mf-a">→</span>
+        <span class="mf-n">ลูกค้าทุกคนที่ปลดล็อกเห็นฟอร์มเดียวกัน</span><span class="mf-a">→</span>
+        <span class="mf-n">คำตอบเก็บเป็น JSON ผูกกับคำขอนั้นให้ทีมดูภายหลัง</span>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>ไม่มีกำหนดวันหมดสิทธิ์การรับรางวัล</h3></div>
+      <div class="mock"><div class="mock-row">
+        <div class="no-deadline">✓ ใช้สิทธิ์ได้ตลอด จนกว่าแคมเปญจะสิ้นสุด</div>
+      </div></div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>แคมเปญแบบ "คนแรกที่ถึงเกณฑ์" (กดจำลองคนซื้อเพิ่มได้)</h3></div>
+      <div class="mock"><div class="mock-row">
+        <div class="race-wrap">
+          <div class="race-goal"><span>ซื้อครบ ฿50,000 แรก รับของรางวัลทันที</span><b id="raceCount">43/100 คน</b></div>
+          <div class="race-track"><div class="race-fill" id="raceFill" style="width:43%"></div></div>
+          <div class="race-you">คุณอยู่อันดับ <b id="raceRank">#44</b> — เหลืออีก <b id="raceLeft">57</b> สิทธิ์</div>
+          <div class="race-slots" id="raceSlots"></div>
+          <button class="fb-add" type="button" id="raceBtn" style="margin-top:12px">+ จำลองมีคนซื้อครบเพิ่ม 1 คน</button>
+        </div>
+      </div></div>
+      <div class="mini-flow">
+        <span class="mf-n">ทุกคนสะสมยอดพร้อมกันแบบเรียลไทม์</span><span class="mf-a">→</span>
+        <span class="mf-n">เต็มโควตาปุ๊บปิดรับทันที</span><span class="mf-a">→</span>
+        <span class="mf-n">คนถัดไปเข้าคิวสำรอง เลื่อนขึ้นถ้ามีคนสละสิทธิ์</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="foot" style="margin-top:52px">ภาพประกอบเพื่อสื่อสารแนวทาง — ส่วนที่ลิงก์ไปหน้าจำลองด้านล่างสามารถกดทดลองใช้งานได้จริง</footer>
+
+</div>
+<script>
+  /* ---- point slider ---- */
+  const slider = document.getElementById("pointSlider");
+  const bahtEl = document.getElementById("pointBaht");
+  const outEl = document.getElementById("pointOut");
+  function updatePoint(){
+    const v = Number(slider.value);
+    bahtEl.textContent = "฿" + v.toLocaleString("th-TH");
+    outEl.textContent = Math.floor(v / 10).toLocaleString("th-TH");
+  }
+  slider.addEventListener("input", updatePoint);
+  updatePoint();
+
+  /* ---- race slots + simulate button ---- */
+  const raceSlots = document.getElementById("raceSlots");
+  let raceFilled = 43;
+  const RACE_TOTAL = 100;
+  function renderRaceSlots(){
+    raceSlots.innerHTML = "";
+    for (let i = 0; i < RACE_TOTAL; i++) {
+      const s = document.createElement("div");
+      s.className = "race-slot" + (i < raceFilled ? " filled" : "");
+      raceSlots.appendChild(s);
+    }
+  }
+  function updateRace(){
+    document.getElementById("raceCount").textContent = raceFilled + "/" + RACE_TOTAL + " คน";
+    document.getElementById("raceFill").style.width = raceFilled + "%";
+    document.getElementById("raceRank").textContent = "#" + (raceFilled + 1);
+    document.getElementById("raceLeft").textContent = Math.max(0, RACE_TOTAL - raceFilled);
+    renderRaceSlots();
+  }
+  document.getElementById("raceBtn").addEventListener("click", () => {
+    if (raceFilled >= RACE_TOTAL) return;
+    raceFilled++;
+    updateRace();
+    if (raceFilled >= RACE_TOTAL) document.getElementById("raceBtn").textContent = "เต็มโควตาแล้ว — ปิดรับ";
+  });
+  updateRace();
+
+  /* ---- combo widget toggle ---- */
+  let comboIncluded = true;
+  document.getElementById("comboItem2").addEventListener("click", () => {
+    comboIncluded = !comboIncluded;
+    document.getElementById("comboChk").style.opacity = comboIncluded ? "1" : "0";
+    document.getElementById("comboItem2").style.opacity = comboIncluded ? "1" : ".4";
+    document.getElementById("comboOld").style.display = comboIncluded ? "block" : "none";
+    document.getElementById("comboNew").textContent = comboIncluded ? "฿790" : "฿690";
+    document.getElementById("comboBtn").textContent = comboIncluded ? "เพิ่มทั้งคู่ลงตะกร้า ประหยัด ฿100" : "เพิ่มเฉพาะนมผงลงตะกร้า";
+  });
+
+  /* ---- physical coupon generator ---- */
+  document.getElementById("genBtn").addEventListener("click", () => {
+    const code = document.getElementById("genCode").value.trim().toUpperCase() || "ABC100";
+    const qty = document.getElementById("genQty").value.trim() || "1,000 ใบ";
+    document.getElementById("genOut").innerHTML = `สร้างแล้ว: โค้ด ${code} × ${qty}<br>สถานะ: พร้อมส่งไฟล์พิมพ์`;
+    document.getElementById("pcCode").textContent = code;
+  });
+
+  /* ---- claim queue approve ---- */
+  document.querySelectorAll(".cq-status.pending").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      btn.textContent = "จ่ายเงินแล้ว";
+      btn.classList.remove("pending");
+      btn.classList.add("paid");
+    });
+  });
+
+  /* ---- collectible coupon buttons ---- */
+  document.querySelectorAll(".collect-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      btn.textContent = "✓ เก็บแล้ว";
+      btn.disabled = true;
+      btn.style.opacity = ".6";
+    });
+  });
+
+  /* ---- monthly coupon: click to mark used ---- */
+  const monthNow = document.getElementById("monthNow");
+  monthNow.addEventListener("click", () => {
+    if (monthNow.classList.contains("got")) return;
+    monthNow.classList.remove("now");
+    monthNow.classList.add("got");
+    monthNow.innerHTML = '<div class="mc-m">ก.ย.</div><div class="mc-icon">✅</div><div class="mc-s">ใช้แล้ว</div>';
+  });
+
+  /* ---- point redeem ---- */
+  const pointBalanceEl = document.getElementById("pointBalance");
+  const pointHist = document.getElementById("pointHist");
+  function currentPoints(){ return Number(pointBalanceEl.textContent.replace(/,/g, "")); }
+  document.querySelectorAll(".redeem-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const item = btn.closest(".redeem-item");
+      const cost = Number(item.dataset.cost);
+      const bal = currentPoints();
+      if (bal < cost) { btn.textContent = "พอยท์ไม่พอ"; setTimeout(() => (btn.textContent = "แลกเลย"), 1200); return; }
+      pointBalanceEl.textContent = (bal - cost).toLocaleString("th-TH");
+      const row = document.createElement("div");
+      row.className = "ph-row";
+      row.innerHTML = `<span>แลก${item.dataset.name}</span><span>−${cost.toLocaleString("th-TH")}</span>`;
+      pointHist.prepend(row);
+      btn.textContent = "แลกแล้ว ✓";
+      setTimeout(() => (btn.textContent = "แลกเลย"), 1200);
+    });
+  });
+
+  /* ---- field builder: add field ---- */
+  const extraFields = [
+    { type: "NUMBER", label: "เลขที่หนังสือเดินทาง", placeholder: "เลข 8-9 หลัก" },
+    { type: "SELECT", label: "ปลายทางที่ต้องการ", options: ["ญี่ปุ่น", "เกาหลีใต้"] },
+    { type: "DATE", label: "วันที่สะดวกเดินทาง", placeholder: "เลือกวันที่" },
+  ];
+  let extraIdx = 0;
+  const fbAddBtn = document.getElementById("fbAddBtn");
+  fbAddBtn.addEventListener("click", () => {
+    if (extraIdx >= extraFields.length) return;
+    const f = extraFields[extraIdx++];
+    const fieldRow = document.createElement("div");
+    fieldRow.className = "fb-field";
+    fieldRow.innerHTML = `<span class="fb-type">${f.type}</span> ${f.label}`;
+    document.getElementById("fbFieldList").appendChild(fieldRow);
+
+    const label = document.createElement("label");
+    label.textContent = f.label;
+    document.getElementById("fbPreviewList").appendChild(label);
+    if (f.type === "SELECT") {
+      const sel = document.createElement("select");
+      f.options.forEach((o) => { const opt = document.createElement("option"); opt.textContent = o; sel.appendChild(opt); });
+      document.getElementById("fbPreviewList").appendChild(sel);
+    } else {
+      const inp = document.createElement("input");
+      inp.placeholder = f.placeholder || "";
+      if (f.type === "DATE") inp.type = "date";
+      document.getElementById("fbPreviewList").appendChild(inp);
+    }
+    if (extraIdx >= extraFields.length) { fbAddBtn.textContent = "เพิ่มครบทุกฟิลด์ตัวอย่างแล้ว"; fbAddBtn.disabled = true; }
+  });
+</script>
+</body>
+</html>

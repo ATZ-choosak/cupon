@@ -104,6 +104,7 @@ input[type="range"]{
   display:flex; align-items:center; justify-content:center; font-size:10px; transition:background .2s; z-index:2;
 }
 .mark.unlocked{ background:var(--b); }
+.mark.full{ background:var(--risk); }
 .mark.claimed{ background:var(--a); }
 .mark-label{
   position:absolute; top:16px; transform:translateX(-50%); text-align:center; width:120px;
@@ -133,11 +134,14 @@ input[type="range"]{
 }
 .status-badge.locked{ background:var(--lock-soft); color:var(--ink-faint); }
 .status-badge.unlocked{ background:var(--b-soft); color:var(--b-ink); }
+.status-badge.full{ background:var(--risk-soft); color:var(--risk-ink); }
 .status-badge.claimed{ background:var(--a-soft); color:var(--a-ink); }
 .claim-btn{
   margin-top:6px; border:none; background:var(--b); color:#fff; padding:8px 12px; border-radius:8px; font-size:13px; font-weight:500;
 }
 .claim-btn:hover{ filter:brightness(1.06); }
+.claim-btn.ghost{ background:transparent; border:1px solid var(--line); color:var(--ink-soft); font-weight:400; font-size:12px; }
+.claim-btn.ghost:hover{ border-color:var(--ink-faint); filter:none; }
 
 .claim-form{
   margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); display:flex; flex-direction:column; gap:8px;

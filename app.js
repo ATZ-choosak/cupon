@@ -9,14 +9,7 @@ const CATALOG_ITEMS = [
   "เครื่องวัดออกซิเจนปลายนิ้ว",
 ];
 
-const FIELD_OPTIONS = [
-  "ที่อยู่จัดส่ง",
-  "เบอร์ติดต่อ",
-  "ชื่อผู้เดินทางตามพาสปอร์ต",
-  "เลขหนังสือเดินทาง",
-  "วันที่สะดวกเดินทาง",
-  "ปลายทางที่ต้องการ",
-];
+const FIELD_TYPES = ["TEXT", "TEL", "NUMBER", "DATE", "SELECT"];
 
 const PRESETS = [
   { label: "0", value: 0 },
@@ -37,7 +30,11 @@ function seedMilestones() {
       catalogItem: "เครื่องวัดความดันโลหิตดิจิทัล",
       detail: "",
       quotaTotal: 50,
-      requiredFields: ["ที่อยู่จัดส่ง", "เบอร์ติดต่อ"],
+      conditionType: "amount",
+      requiredFields: [
+        { label: "ที่อยู่จัดส่ง", type: "TEXT" },
+        { label: "เบอร์ติดต่อ", type: "TEL" },
+      ],
     },
     {
       id: "m2",
@@ -47,7 +44,12 @@ function seedMilestones() {
       catalogItem: "",
       detail: "รวมตั๋วเครื่องบิน ที่พัก และค่าลงทะเบียนสัมมนา",
       quotaTotal: 5,
-      requiredFields: ["ชื่อผู้เดินทางตามพาสปอร์ต", "เบอร์ติดต่อ", "วันที่สะดวกเดินทาง"],
+      conditionType: "amount",
+      requiredFields: [
+        { label: "ชื่อผู้เดินทางตามพาสปอร์ต", type: "TEXT" },
+        { label: "เบอร์ติดต่อ", type: "TEL" },
+        { label: "วันที่สะดวกเดินทาง", type: "DATE" },
+      ],
     },
     {
       id: "m3",
@@ -57,7 +59,24 @@ function seedMilestones() {
       catalogItem: "",
       detail: "เลือกปลายทางได้ตามเงื่อนไขสายการบินคู่สัญญา",
       quotaTotal: 3,
-      requiredFields: ["ชื่อผู้เดินทางตามพาสปอร์ต", "เลขหนังสือเดินทาง", "ปลายทางที่ต้องการ", "เบอร์ติดต่อ"],
+      conditionType: "amount",
+      requiredFields: [
+        { label: "ชื่อผู้เดินทางตามพาสปอร์ต", type: "TEXT" },
+        { label: "เลขหนังสือเดินทาง", type: "NUMBER" },
+        { label: "ปลายทางที่ต้องการ", type: "SELECT", options: ["ญี่ปุ่น", "เกาหลีใต้", "ไต้หวัน"] },
+        { label: "เบอร์ติดต่อ", type: "TEL" },
+      ],
+    },
+    {
+      id: "m4",
+      requiredAmount: 50000,
+      name: "ของรางวัลพิเศษรุ่นลิมิเต็ด",
+      type: "catalog",
+      catalogItem: CATALOG_ITEMS[1],
+      detail: "",
+      quotaTotal: 100,
+      conditionType: "first_n",
+      requiredFields: [{ label: "ที่อยู่จัดส่ง", type: "TEXT" }],
     },
   ];
 }
@@ -65,7 +84,8 @@ function seedMilestones() {
 let milestones = seedMilestones();
 let currentAmount = 0;
 let claimedIds = new Set();      // milestone id -> ปลดล็อกและกดขอรับแล้ว (ของลูกค้าจำลองรายนี้)
-let quotaClaimed = {};           // milestone id -> จำนวนสิทธิ์ที่ถูกใช้ไปแล้ว (รวมทุกคน, จำลอง)
+function seedQuotaClaimed() { return { m4: 43 }; } // m4 = "คนแรกที่ถึงเกณฑ์" ตัวอย่าง เริ่มมีคนอื่นถึงแล้ว 43 คน
+let quotaClaimed = seedQuotaClaimed();  // milestone id -> จำนวนสิทธิ์ที่ถูกใช้ไปแล้ว (รวมทุกคน, จำลอง)
 let openClaimFormId = null;      // milestone id ที่กำลังกางฟอร์มขอรับอยู่
 let queue = [];                  // รายการคำขอ {id, seq, milestoneName, type, fields, time}
 let seq = 0;
@@ -103,10 +123,12 @@ function renderPresets() {
 /* ---------------- ladder ---------------- */
 
 function status(m) {
-  const unlocked = currentAmount >= m.requiredAmount;
-  if (unlocked && claimedIds.has(m.id)) return "claimed";
-  if (unlocked) return "unlocked";
-  return "locked";
+  const reached = currentAmount >= m.requiredAmount;
+  if (claimedIds.has(m.id)) return "claimed";
+  if (!reached) return "locked";
+  const remaining = m.quotaTotal - (quotaClaimed[m.id] || 0);
+  if (remaining <= 0) return "full";
+  return "unlocked";
 }
 
 function renderLadder() {
@@ -119,17 +141,18 @@ function renderLadder() {
   const sorted = [...milestones].sort((a, b) => a.requiredAmount - b.requiredAmount);
   sorted.forEach((m) => {
     const left = Math.min(100, (m.requiredAmount / SLIDER_MAX) * 100);
+    const st = status(m);
     const mark = document.createElement("div");
-    mark.className = "mark " + status(m);
+    mark.className = "mark " + st;
     mark.style.left = left + "%";
-    mark.title = m.name;
-    mark.textContent = status(m) === "claimed" ? "✓" : status(m) === "unlocked" ? "!" : "";
+    mark.title = m.name + (m.conditionType === "first_n" ? " (คนแรกที่ถึงเกณฑ์)" : "");
+    mark.textContent = st === "claimed" ? "✓" : st === "full" ? "✕" : st === "unlocked" ? (m.conditionType === "first_n" ? "🏁" : "!") : "";
     marksEl.appendChild(mark);
 
     const lbl = document.createElement("div");
     lbl.className = "mark-label";
     lbl.style.left = left + "%";
-    lbl.innerHTML = "฿" + fmt(m.requiredAmount) + "<b>" + escapeHtml(m.name) + "</b>";
+    lbl.innerHTML = "฿" + fmt(m.requiredAmount) + "<b>" + escapeHtml(m.name) + (m.conditionType === "first_n" ? " 🏁" : "") + "</b>";
     marksEl.appendChild(lbl);
   });
 }
@@ -150,21 +173,23 @@ function renderRewardCards() {
     const claimedCount = quotaClaimed[m.id] || 0;
     const remaining = Math.max(0, m.quotaTotal - claimedCount);
 
+    const isRace = m.conditionType === "first_n";
     const card = document.createElement("div");
     card.className = "reward-card" + (st === "locked" ? " locked" : "");
 
     const icon = m.type === "catalog" ? "🎁" : "🎫";
-    const badgeText = st === "locked" ? "ล็อกอยู่" : st === "unlocked" ? "ปลดล็อกแล้ว" : "ขอรับสิทธิ์แล้ว";
+    const badgeText = { locked: "ล็อกอยู่", unlocked: "ปลดล็อกแล้ว", full: "หมดสิทธิ์แล้ว", claimed: "ขอรับสิทธิ์แล้ว" }[st];
+    const condLabel = isRace ? `🏁 คนแรก ${m.quotaTotal} คนที่ถึง ฿${fmt(m.requiredAmount)}` : `เกณฑ์ ฿${fmt(m.requiredAmount)}`;
 
     card.innerHTML = `
       <div class="icon">${icon}</div>
       <div class="r-name">${escapeHtml(m.name)}</div>
       <div class="r-detail">${escapeHtml(m.type === "catalog" ? "สินค้าจากเว็บ" : (m.detail || "ของพิเศษนอกระบบ"))}</div>
-      <div class="r-meta"><span>เกณฑ์ ฿${fmt(m.requiredAmount)}</span><span>เหลือ ${remaining}/${m.quotaTotal} สิทธิ์</span></div>
+      <div class="r-meta"><span>${condLabel}</span><span>เหลือ ${remaining}/${m.quotaTotal} สิทธิ์</span></div>
       <span class="status-badge ${st}">${badgeText}</span>
     `;
 
-    if (st === "unlocked" && remaining > 0) {
+    if (st === "unlocked") {
       const btn = document.createElement("button");
       btn.className = "claim-btn";
       btn.type = "button";
@@ -178,12 +203,21 @@ function renderRewardCards() {
       if (openClaimFormId === m.id) {
         card.appendChild(buildClaimForm(m));
       }
-    } else if (st === "unlocked" && remaining <= 0) {
+    } else if (st === "full") {
       const p = document.createElement("div");
       p.className = "r-detail";
       p.style.color = "var(--risk-ink)";
-      p.textContent = "สิทธิ์เต็มแล้ว — ต้องกำหนดของรางวัลรองรับเพิ่ม";
+      p.textContent = isRace ? "คนอื่นถึงเกณฑ์ครบโควตาไปก่อนแล้ว" : "สิทธิ์เต็มแล้ว — ต้องกำหนดของรางวัลรองรับเพิ่ม";
       card.appendChild(p);
+    }
+
+    if (isRace && remaining > 0 && st !== "claimed") {
+      const raceBtn = document.createElement("button");
+      raceBtn.className = "claim-btn ghost";
+      raceBtn.type = "button";
+      raceBtn.textContent = "+ จำลองคนอื่นถึงเกณฑ์ก่อน 1 คน";
+      raceBtn.onclick = () => simulateOtherClaim(m.id);
+      card.appendChild(raceBtn);
     }
 
     row.appendChild(card);
@@ -194,16 +228,30 @@ function buildClaimForm(m) {
   const wrap = document.createElement("div");
   wrap.className = "claim-form";
 
-  const fieldsToAsk = m.type === "catalog" ? (m.requiredFields.length ? m.requiredFields : ["ที่อยู่จัดส่ง"]) : m.requiredFields;
+  const fieldsToAsk = m.type === "catalog"
+    ? (m.requiredFields.length ? m.requiredFields : [{ label: "ที่อยู่จัดส่ง", type: "TEXT" }])
+    : m.requiredFields;
   const inputs = {};
+
+  const HTML_TYPE = { TEXT: "text", TEL: "tel", NUMBER: "number", DATE: "date" };
 
   fieldsToAsk.forEach((f) => {
     const label = document.createElement("label");
-    label.textContent = f;
-    const input = document.createElement("input");
-    input.type = "text";
-    input.placeholder = "กรอก" + f;
-    inputs[f] = input;
+    label.textContent = f.label;
+    let input;
+    if (f.type === "SELECT") {
+      input = document.createElement("select");
+      (f.options || []).forEach((o) => {
+        const opt = document.createElement("option");
+        opt.value = o; opt.textContent = o;
+        input.appendChild(opt);
+      });
+    } else {
+      input = document.createElement("input");
+      input.type = HTML_TYPE[f.type] || "text";
+      input.placeholder = "กรอก" + f.label;
+    }
+    inputs[f.label] = input;
     wrap.appendChild(label);
     wrap.appendChild(input);
   });
@@ -214,7 +262,7 @@ function buildClaimForm(m) {
   submit.textContent = "ส่งคำขอรับสิทธิ์";
   submit.onclick = () => {
     const values = {};
-    fieldsToAsk.forEach((f) => (values[f] = inputs[f].value.trim() || "(ไม่กรอก)"));
+    fieldsToAsk.forEach((f) => (values[f.label] = inputs[f.label].value.trim() || "(ไม่กรอก)"));
     claimedIds.add(m.id);
     quotaClaimed[m.id] = (quotaClaimed[m.id] || 0) + 1;
     seq += 1;
@@ -223,6 +271,7 @@ function buildClaimForm(m) {
       milestoneName: m.name,
       type: m.type,
       fields: values,
+      conditionType: m.conditionType,
     });
     openClaimFormId = null;
     renderRewardCards();
@@ -259,11 +308,39 @@ function renderMilestoneEditor() {
     head.appendChild(del);
     card.appendChild(head);
 
+    // condition type: per-customer ladder vs first-N-to-reach race
+    const condField = document.createElement("div");
+    condField.className = "field";
+    condField.style.marginBottom = "8px";
+    condField.innerHTML = `<label>เงื่อนไขปลดล็อก</label>`;
+    const condToggle = document.createElement("div");
+    condToggle.className = "type-toggle";
+    const amountBtn = document.createElement("button");
+    amountBtn.type = "button";
+    amountBtn.className = "type-btn" + (m.conditionType !== "first_n" ? " active" : "");
+    amountBtn.textContent = "🪜 ขั้นบันได (ต่อคน)";
+    amountBtn.onclick = () => { m.conditionType = "amount"; renderAll(); };
+    const raceCondBtn = document.createElement("button");
+    raceCondBtn.type = "button";
+    raceCondBtn.className = "type-btn" + (m.conditionType === "first_n" ? " active" : "");
+    raceCondBtn.textContent = "🏁 คนแรกที่ถึงเกณฑ์";
+    raceCondBtn.onclick = () => { m.conditionType = "first_n"; renderAll(); };
+    condToggle.appendChild(amountBtn);
+    condToggle.appendChild(raceCondBtn);
+    condField.appendChild(condToggle);
+    if (m.conditionType === "first_n") {
+      const hint = document.createElement("div");
+      hint.style.cssText = "font-size:11px;color:var(--ink-faint);margin-top:5px;";
+      hint.textContent = "ลูกค้าต้องถึงยอดเกณฑ์นี้ และยังต้องเหลือโควตา (ด้านล่าง) ถึงจะได้สิทธิ์ — คนอื่นแย่งโควตาไปก่อนได้";
+      condField.appendChild(hint);
+    }
+    card.appendChild(condField);
+
     // row: amount + name
     const row1 = document.createElement("div");
     row1.className = "field-row";
     row1.innerHTML = `
-      <div class="field"><label>ยอดเกณฑ์ (บาท)</label></div>
+      <div class="field"><label>${m.conditionType === "first_n" ? "ยอดเกณฑ์ต่อคน (บาท)" : "ยอดเกณฑ์สะสม (บาท)"}</label></div>
       <div class="field"><label>ชื่อรางวัล</label></div>
     `;
     const amountInput = document.createElement("input");
@@ -336,7 +413,7 @@ function renderMilestoneEditor() {
     qField.className = "field";
     qField.style.marginBottom = "8px";
     qField.style.maxWidth = "160px";
-    qField.innerHTML = `<label>จำนวนสิทธิ์ทั้งหมด</label>`;
+    qField.innerHTML = `<label>${m.conditionType === "first_n" ? "จำนวนคนแรกที่รับสิทธิ์ได้ (โควตาแข่งขัน)" : "จำนวนสิทธิ์ทั้งหมด"}</label>`;
     const qInput = document.createElement("input");
     qInput.type = "number";
     qInput.min = 1;
@@ -345,31 +422,77 @@ function renderMilestoneEditor() {
     qField.appendChild(qInput);
     card.appendChild(qField);
 
-    // required fields checklist
-    const cf = document.createElement("div");
-    cf.className = "field";
-    cf.innerHTML = `<label>ข้อมูลที่ต้องขอเพิ่มตอนลูกค้าขอรับสิทธิ์</label>`;
-    const grp = document.createElement("div");
-    grp.className = "chk-group";
-    FIELD_OPTIONS.forEach((opt) => {
-      const pill = document.createElement("label");
-      pill.className = "chk-pill";
-      const chk = document.createElement("input");
-      chk.type = "checkbox";
-      chk.checked = m.requiredFields.includes(opt);
-      chk.onchange = () => {
-        if (chk.checked) { if (!m.requiredFields.includes(opt)) m.requiredFields.push(opt); }
-        else { m.requiredFields = m.requiredFields.filter((x) => x !== opt); }
-      };
-      pill.appendChild(chk);
-      pill.appendChild(document.createTextNode(opt));
-      grp.appendChild(pill);
-    });
-    cf.appendChild(grp);
-    card.appendChild(cf);
+    card.appendChild(buildFieldEditor(m.requiredFields, renderAll));
 
     el.appendChild(card);
   });
+}
+
+/* reusable: builds the "ข้อมูลที่ต้องขอเพิ่ม" editor (chip list + add row)
+   used by both the ladder milestone editor and the race campaign editor */
+function buildFieldEditor(fields, onChange) {
+  const cf = document.createElement("div");
+  cf.className = "field";
+  cf.innerHTML = `<label>ข้อมูลที่ต้องขอเพิ่มตอนลูกค้าขอรับสิทธิ์</label>`;
+
+  const grp = document.createElement("div");
+  grp.className = "chk-group";
+  fields.forEach((f, idx) => {
+    const pill = document.createElement("span");
+    pill.className = "chk-pill";
+    pill.innerHTML = `<b style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--ink-faint)">${f.type}</b> ${escapeHtml(f.label)}`;
+    const rm = document.createElement("button");
+    rm.type = "button";
+    rm.textContent = "×";
+    rm.style.cssText = "border:none;background:transparent;color:var(--risk-ink);font-size:13px;line-height:1;padding:0;margin-left:2px;cursor:pointer;";
+    rm.onclick = () => { fields.splice(idx, 1); onChange(); };
+    pill.appendChild(rm);
+    grp.appendChild(pill);
+  });
+  cf.appendChild(grp);
+
+  const addRow = document.createElement("div");
+  addRow.style.cssText = "display:flex;gap:6px;margin-top:8px;";
+  const typeSel = document.createElement("select");
+  typeSel.style.cssText = "border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:6px 7px;font-size:11.5px;font-family:'IBM Plex Mono',monospace;flex:none;";
+  FIELD_TYPES.forEach((t) => {
+    const o = document.createElement("option");
+    o.value = t; o.textContent = t;
+    typeSel.appendChild(o);
+  });
+  const labelInput = document.createElement("input");
+  labelInput.type = "text";
+  labelInput.placeholder = "ชื่อฟิลด์ เช่น เบอร์ติดต่อ";
+  labelInput.style.cssText = "flex:1;min-width:0;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:6px 8px;font-size:12px;";
+  const addBtn = document.createElement("button");
+  addBtn.type = "button";
+  addBtn.textContent = "+ เพิ่ม";
+  addBtn.style.cssText = "border:none;background:var(--a);color:#fff;border-radius:6px;padding:6px 12px;font-size:12px;flex:none;";
+  addBtn.onclick = () => {
+    const label = labelInput.value.trim();
+    if (!label) return;
+    const field = { label, type: typeSel.value };
+    if (typeSel.value === "SELECT") field.options = ["ตัวเลือก 1", "ตัวเลือก 2"];
+    fields.push(field);
+    onChange();
+  };
+  addRow.appendChild(typeSel);
+  addRow.appendChild(labelInput);
+  addRow.appendChild(addBtn);
+  cf.appendChild(addRow);
+
+  return cf;
+}
+
+/* ---------------- "first N to reach" quota consumed by other customers ---------------- */
+
+function simulateOtherClaim(id) {
+  const m = milestones.find((x) => x.id === id);
+  if (!m) return;
+  const claimed = quotaClaimed[id] || 0;
+  if (claimed >= m.quotaTotal) return;
+  quotaClaimed[id] = claimed + 1;
+  renderAll();
 }
 
 /* ---------------- fulfillment queue (admin/ops view) ---------------- */
@@ -389,6 +512,7 @@ function renderQueue() {
       .join(" · ");
     item.innerHTML = `
       <div class="q-top"><span>${escapeHtml(q.milestoneName)}</span><span class="q-time">คำขอที่ ${q.seq}</span></div>
+      ${q.conditionType === "first_n" ? `<div class="q-detail" style="color:var(--ink-faint)">🏁 คนแรกที่ถึงเกณฑ์</div>` : ""}
       <div class="q-detail">${q.type === "catalog" ? "🎁 สินค้าเว็บ — เข้าคิวแพ็ก/จัดส่งได้ทันที" : "🎫 ของนอกระบบ — ต้องมีคนติดต่อกลับดำเนินการ"}</div>
       <div class="q-detail" style="margin-top:4px">${fieldsHtml}</div>
     `;
@@ -414,7 +538,8 @@ function addMilestone() {
     catalogItem: CATALOG_ITEMS[0],
     detail: "",
     quotaTotal: 10,
-    requiredFields: ["ที่อยู่จัดส่ง"],
+    requiredFields: [{ label: "ที่อยู่จัดส่ง", type: "TEXT" }],
+    conditionType: "amount",
   });
   renderAll();
 }
@@ -430,7 +555,7 @@ function boot() {
   document.getElementById("resetBtn").onclick = () => {
     milestones = seedMilestones();
     claimedIds = new Set();
-    quotaClaimed = {};
+    quotaClaimed = seedQuotaClaimed();
     queue = [];
     seq = 0;
     openClaimFormId = null;

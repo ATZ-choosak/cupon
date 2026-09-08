@@ -3,24 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>จำลองรางวัลขั้นบันได — ระบบ B</title>
+<title>จำลองแคมเปญสะสม — ระบบ B</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Taviraj:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="showcase.css">
 </head>
 <body>
-<div class="wrap">
+<div class="wrap showcase">
 
   <nav class="site-nav">
-    <a href="explain.html">คำอธิบาย/กระบวนการ</a>
+    <a href="showcase.html">ภาพรวมระบบ</a>
     <a href="system-a.html">ระบบ A — จำลอง</a>
     <a href="index.html" class="active">ระบบ B — จำลอง</a>
   </nav>
 
-  <header class="top">
-    <span class="eyebrow">PHARMAPLEX · ระบบ B — แคมเปญสะสมข้ามบิล</span>
+  <header class="top showcase-intro">
+    <span class="eyebrow">PHARMAPLEX · แคมเปญสะสมข้ามบิล</span>
     <h1>จำลองการตั้งค่ารางวัลขั้นบันได</h1>
-    <p>ลากแถบเลื่อนเพื่อจำลองยอดสะสมของลูกค้า 1 ราย แก้ไขรางวัลแต่ละขั้นฝั่งแอดมินด้านล่าง แล้วดูผลที่ฝั่งลูกค้าเห็นเปลี่ยนตามทันที รางวัลมีได้ 2 แบบ: หยิบจากสินค้าในเว็บ หรือของพิเศษนอกระบบ (เช่น ตั๋วเครื่องบิน ทริปต่างประเทศ) แล้วแต่แอดมินตั้งค่า</p>
+    <p>ต่อขั้นเลือกเงื่อนไขปลดล็อกได้อิสระ — "ขั้นบันได" ปลดล็อกตามยอดสะสมของลูกค้ารายนั้นเอง หรือ "คนแรกที่ถึงเกณฑ์" แข่งโควตากับลูกค้าคนอื่นในระบบ ผสมกันในแคมเปญเดียวได้เลย แก้ค่าฝั่งแอดมินด้านล่างแล้วดูผลด้านบนเปลี่ยนทันที</p>
     <button class="reset-btn" id="resetBtn" type="button">↺ รีเซ็ตค่าเริ่มต้น</button>
   </header>
 
@@ -44,14 +45,20 @@
 
   <!-- CUSTOMER FACING REWARD CARDS -->
   <div class="section-title"><span class="tag">มุมมองลูกค้า</span><h2>รางวัลที่ลูกค้าเห็นตามยอดสะสม</h2></div>
-  <p class="section-note">ปลดล็อกแล้วกดขอรับสิทธิ์ได้เลย — ถ้าเป็นของนอกระบบ (เช่น ตั๋วเครื่องบิน) ระบบจะขอข้อมูลเพิ่มตามที่แอดมินกำหนดไว้ต่อรางวัลนั้น</p>
+  <p class="section-note">🪜 ขั้นบันได ปลดล็อกจากยอดสะสมของลูกค้ารายนี้เท่านั้น &nbsp;·&nbsp; 🏁 คนแรกที่ถึงเกณฑ์ ต้องถึงยอดและยังเหลือโควตา — กด "จำลองคนอื่นถึงเกณฑ์ก่อน" เพื่อดูโควตาถูกแย่งได้</p>
   <div class="reward-row" id="rewardRow"></div>
 
+  <div class="mini-flow">
+    <span class="mf-n">ทุกบิลที่จ่ายสำเร็จบวกเข้ายอดสะสม</span><span class="mf-a">→</span>
+    <span class="mf-n">🪜 ถึงเกณฑ์ = ปลดล็อกทันที &nbsp; 🏁 ถึงเกณฑ์ + ยังมีโควตา = ปลดล็อก</span><span class="mf-a">→</span>
+    <span class="mf-n">ลูกค้ากดขอรับสิทธิ์เองได้ตลอด ไม่มีกำหนดวันหมดสิทธิ์</span>
+  </div>
+
   <!-- ADMIN CONFIG + FULFILLMENT QUEUE -->
-  <div class="two-col" style="margin-top:40px">
+  <div class="two-col" style="margin-top:32px">
     <div class="panel">
       <h2>ตั้งค่าฝั่งแอดมิน</h2>
-      <div class="sub">แก้ยอดเกณฑ์ ชื่อ ประเภท และจำนวนสิทธิ์ของแต่ละขั้นได้โดยตรง เปลี่ยนแล้วมีผลทันทีที่มุมมองลูกค้าด้านบน</div>
+      <div class="sub">แก้เงื่อนไขปลดล็อก ยอดเกณฑ์ ชื่อ ประเภท และจำนวนสิทธิ์ของแต่ละขั้นได้โดยตรง เปลี่ยนแล้วมีผลทันทีที่มุมมองลูกค้าด้านบน</div>
       <div id="milestoneEditor"></div>
       <button class="add-btn" id="addMilestoneBtn" type="button">+ เพิ่มขั้นรางวัลใหม่</button>
     </div>
