@@ -31,6 +31,7 @@ function seedMilestones() {
       detail: "",
       quotaTotal: 50,
       conditionType: "amount",
+      combinable: true,
       requiredFields: [
         { label: "ที่อยู่จัดส่ง", type: "TEXT" },
         { label: "เบอร์ติดต่อ", type: "TEL" },
@@ -45,6 +46,7 @@ function seedMilestones() {
       detail: "รวมตั๋วเครื่องบิน ที่พัก และค่าลงทะเบียนสัมมนา",
       quotaTotal: 5,
       conditionType: "amount",
+      combinable: true,
       requiredFields: [
         { label: "ชื่อผู้เดินทางตามพาสปอร์ต", type: "TEXT" },
         { label: "เบอร์ติดต่อ", type: "TEL" },
@@ -59,7 +61,10 @@ function seedMilestones() {
       catalogItem: "",
       detail: "เลือกปลายทางได้ตามเงื่อนไขสายการบินคู่สัญญา",
       quotaTotal: 3,
-      conditionType: "amount",
+      conditionType: "raffle",
+      winnersCount: 3,
+      drawDate: "2026-12-31",
+      combinable: true,
       requiredFields: [
         { label: "ชื่อผู้เดินทางตามพาสปอร์ต", type: "TEXT" },
         { label: "เลขหนังสือเดินทาง", type: "NUMBER" },
@@ -76,6 +81,7 @@ function seedMilestones() {
       detail: "",
       quotaTotal: 100,
       conditionType: "first_n",
+      combinable: true,
       requiredFields: [{ label: "ที่อยู่จัดส่ง", type: "TEXT" }],
     },
   ];
@@ -84,8 +90,11 @@ function seedMilestones() {
 let milestones = seedMilestones();
 let currentAmount = 0;
 let claimedIds = new Set();      // milestone id -> ปลดล็อกและกดขอรับแล้ว (ของลูกค้าจำลองรายนี้)
+let wonIds = new Set();          // milestone id (raffle) -> ลูกค้าจำลองถูกจับรางวัลแล้ว รอกรอกฟอร์มรับสิทธิ์
 function seedQuotaClaimed() { return { m4: 43 }; } // m4 = "คนแรกที่ถึงเกณฑ์" ตัวอย่าง เริ่มมีคนอื่นถึงแล้ว 43 คน
 let quotaClaimed = seedQuotaClaimed();  // milestone id -> จำนวนสิทธิ์ที่ถูกใช้ไปแล้ว (รวมทุกคน, จำลอง)
+function seedRaffleEntrants() { return { m3: 7 }; } // m3 = "สุ่มจับรางวัล" ตัวอย่าง เริ่มมีคนอื่นเข้าร่วมแล้ว 7 คน
+let raffleEntrants = seedRaffleEntrants(); // milestone id -> จำนวนคนอื่นที่เข้าร่วมลุ้น (ไม่รวมลูกค้าจำลองนี้)
 let openClaimFormId = null;      // milestone id ที่กำลังกางฟอร์มขอรับอยู่
 let queue = [];                  // รายการคำขอ {id, seq, milestoneName, type, fields, time}
 let seq = 0;
@@ -126,6 +135,7 @@ function status(m) {
   const reached = currentAmount >= m.requiredAmount;
   if (claimedIds.has(m.id)) return "claimed";
   if (!reached) return "locked";
+  if (m.conditionType === "raffle") return wonIds.has(m.id) ? "won" : "entered";
   const remaining = m.quotaTotal - (quotaClaimed[m.id] || 0);
   if (remaining <= 0) return "full";
   return "unlocked";
@@ -145,14 +155,15 @@ function renderLadder() {
     const mark = document.createElement("div");
     mark.className = "mark " + st;
     mark.style.left = left + "%";
-    mark.title = m.name + (m.conditionType === "first_n" ? " (คนแรกที่ถึงเกณฑ์)" : "");
-    mark.textContent = st === "claimed" ? "✓" : st === "full" ? "✕" : st === "unlocked" ? (m.conditionType === "first_n" ? "🏁" : "!") : "";
+    const condIcon = m.conditionType === "first_n" ? "🏁" : m.conditionType === "raffle" ? "🎰" : "";
+    mark.title = m.name + (condIcon ? " (" + (m.conditionType === "first_n" ? "คนแรกที่ถึงเกณฑ์" : "สุ่มจับรางวัล") + ")" : "");
+    mark.textContent = st === "claimed" ? "✓" : st === "won" ? "🎉" : st === "full" ? "✕" : (st === "unlocked" || st === "entered") ? (condIcon || "!") : "";
     marksEl.appendChild(mark);
 
     const lbl = document.createElement("div");
     lbl.className = "mark-label";
     lbl.style.left = left + "%";
-    lbl.innerHTML = "฿" + fmt(m.requiredAmount) + "<b>" + escapeHtml(m.name) + (m.conditionType === "first_n" ? " 🏁" : "") + "</b>";
+    lbl.innerHTML = "฿" + fmt(m.requiredAmount) + "<b>" + escapeHtml(m.name) + (condIcon ? " " + condIcon : "") + "</b>";
     marksEl.appendChild(lbl);
   });
 }
@@ -174,22 +185,28 @@ function renderRewardCards() {
     const remaining = Math.max(0, m.quotaTotal - claimedCount);
 
     const isRace = m.conditionType === "first_n";
+    const isRaffle = m.conditionType === "raffle";
     const card = document.createElement("div");
     card.className = "reward-card" + (st === "locked" ? " locked" : "");
 
     const icon = m.type === "catalog" ? "🎁" : "🎫";
-    const badgeText = { locked: "ล็อกอยู่", unlocked: "ปลดล็อกแล้ว", full: "หมดสิทธิ์แล้ว", claimed: "ขอรับสิทธิ์แล้ว" }[st];
-    const condLabel = isRace ? `🏁 คนแรก ${m.quotaTotal} คนที่ถึง ฿${fmt(m.requiredAmount)}` : `เกณฑ์ ฿${fmt(m.requiredAmount)}`;
+    const badgeText = { locked: "ล็อกอยู่", unlocked: "ปลดล็อกแล้ว", entered: "เข้าร่วมลุ้นรางวัลแล้ว", won: "🎉 คุณคือผู้โชคดี!", full: "หมดสิทธิ์แล้ว", claimed: "ขอรับสิทธิ์แล้ว" }[st];
+    const condLabel = isRace ? `🏁 คนแรก ${m.quotaTotal} คนที่ถึง ฿${fmt(m.requiredAmount)}`
+      : isRaffle ? `🎰 สุ่ม ${m.winnersCount || 1} รางวัล จากผู้ถึง ฿${fmt(m.requiredAmount)}`
+      : `เกณฑ์ ฿${fmt(m.requiredAmount)}`;
+    const metaRight = isRaffle
+      ? `เข้าร่วมลุ้นแล้ว ${(raffleEntrants[m.id] || 0) + (st === "locked" ? 0 : 1)} คน`
+      : `เหลือ ${remaining}/${m.quotaTotal} สิทธิ์`;
 
     card.innerHTML = `
       <div class="icon">${icon}</div>
       <div class="r-name">${escapeHtml(m.name)}</div>
       <div class="r-detail">${escapeHtml(m.type === "catalog" ? "สินค้าจากเว็บ" : (m.detail || "ของพิเศษนอกระบบ"))}</div>
-      <div class="r-meta"><span>${condLabel}</span><span>เหลือ ${remaining}/${m.quotaTotal} สิทธิ์</span></div>
+      <div class="r-meta"><span>${condLabel}</span><span>${metaRight}</span></div>
       <span class="status-badge ${st}">${badgeText}</span>
     `;
 
-    if (st === "unlocked") {
+    if (st === "unlocked" || st === "won") {
       const btn = document.createElement("button");
       btn.className = "claim-btn";
       btn.type = "button";
@@ -203,6 +220,11 @@ function renderRewardCards() {
       if (openClaimFormId === m.id) {
         card.appendChild(buildClaimForm(m));
       }
+    } else if (st === "entered") {
+      const p = document.createElement("div");
+      p.className = "r-detail";
+      p.textContent = "รอถึงวันประกาศผล " + (m.drawDate || "") + " — แอดมินจับรางวัลผ่านวงล้อด้านล่างของหน้า";
+      card.appendChild(p);
     } else if (st === "full") {
       const p = document.createElement("div");
       p.className = "r-detail";
@@ -218,6 +240,14 @@ function renderRewardCards() {
       raceBtn.textContent = "+ จำลองคนอื่นถึงเกณฑ์ก่อน 1 คน";
       raceBtn.onclick = () => simulateOtherClaim(m.id);
       card.appendChild(raceBtn);
+    }
+    if (isRaffle && (st === "entered" || st === "locked")) {
+      const entrantBtn = document.createElement("button");
+      entrantBtn.className = "claim-btn ghost";
+      entrantBtn.type = "button";
+      entrantBtn.textContent = "+ จำลองคนอื่นเข้าร่วมลุ้นเพิ่ม 1 คน";
+      entrantBtn.onclick = () => { raffleEntrants[m.id] = (raffleEntrants[m.id] || 0) + 1; renderRewardCards(); renderWheelMilestoneSelect(); };
+      card.appendChild(entrantBtn);
     }
 
     row.appendChild(card);
@@ -308,30 +338,35 @@ function renderMilestoneEditor() {
     head.appendChild(del);
     card.appendChild(head);
 
-    // condition type: per-customer ladder vs first-N-to-reach race
+    // condition type: per-customer ladder vs first-N-to-reach race vs raffle
     const condField = document.createElement("div");
     condField.className = "field";
     condField.style.marginBottom = "8px";
     condField.innerHTML = `<label>เงื่อนไขปลดล็อก</label>`;
     const condToggle = document.createElement("div");
     condToggle.className = "type-toggle";
-    const amountBtn = document.createElement("button");
-    amountBtn.type = "button";
-    amountBtn.className = "type-btn" + (m.conditionType !== "first_n" ? " active" : "");
-    amountBtn.textContent = "🪜 ขั้นบันได (ต่อคน)";
-    amountBtn.onclick = () => { m.conditionType = "amount"; renderAll(); };
-    const raceCondBtn = document.createElement("button");
-    raceCondBtn.type = "button";
-    raceCondBtn.className = "type-btn" + (m.conditionType === "first_n" ? " active" : "");
-    raceCondBtn.textContent = "🏁 คนแรกที่ถึงเกณฑ์";
-    raceCondBtn.onclick = () => { m.conditionType = "first_n"; renderAll(); };
-    condToggle.appendChild(amountBtn);
-    condToggle.appendChild(raceCondBtn);
+    [["amount", "🪜 ขั้นบันได (การันตี)"], ["first_n", "🏁 คนแรกที่ถึงเกณฑ์"], ["raffle", "🎰 สุ่มจับรางวัล"]].forEach(([val, label]) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "type-btn" + (m.conditionType === val ? " active" : "");
+      b.textContent = label;
+      b.onclick = () => {
+        m.conditionType = val;
+        if (val === "raffle" && !m.winnersCount) { m.winnersCount = 3; m.drawDate = m.drawDate || "2026-12-31"; }
+        renderAll(); renderWheelMilestoneSelect();
+      };
+      condToggle.appendChild(b);
+    });
     condField.appendChild(condToggle);
     if (m.conditionType === "first_n") {
       const hint = document.createElement("div");
       hint.style.cssText = "font-size:11px;color:var(--ink-faint);margin-top:5px;";
-      hint.textContent = "ลูกค้าต้องถึงยอดเกณฑ์นี้ และยังต้องเหลือโควตา (ด้านล่าง) ถึงจะได้สิทธิ์ — คนอื่นแย่งโควตาไปก่อนได้";
+      hint.textContent = "ลูกค้าต้องถึงยอดเกณฑ์นี้ และยังต้องเหลือโควตา (ด้านล่าง) ถึงจะได้สิทธิ์ — คนอื่นแย่งโควตาไปก่อนได้ — แสดง \"เหลือ X/Y สิทธิ์\" กับลูกค้าตรงๆ ได้เพราะโปร่งใสอยู่แล้ว";
+      condField.appendChild(hint);
+    } else if (m.conditionType === "raffle") {
+      const hint = document.createElement("div");
+      hint.style.cssText = "font-size:11px;color:var(--ink-faint);margin-top:5px;";
+      hint.innerHTML = `<b>ไม่แสดง</b> "เหลือกี่สิทธิ์" กับลูกค้า — ถึงยอดแค่ได้สิทธิ์ "เข้าร่วมลุ้น" ไม่การันตี ผู้โชคดีตัดสินด้วยวงล้อสุ่มท้ายหน้าวันประกาศผลเท่านั้น`;
       condField.appendChild(hint);
     }
     card.appendChild(condField);
@@ -340,7 +375,7 @@ function renderMilestoneEditor() {
     const row1 = document.createElement("div");
     row1.className = "field-row";
     row1.innerHTML = `
-      <div class="field"><label>${m.conditionType === "first_n" ? "ยอดเกณฑ์ต่อคน (บาท)" : "ยอดเกณฑ์สะสม (บาท)"}</label></div>
+      <div class="field"><label>${m.conditionType === "first_n" ? "ยอดเกณฑ์ต่อคน (บาท)" : m.conditionType === "raffle" ? "ยอดเกณฑ์เพื่อรับสิทธิ์ลุ้น (บาท)" : "ยอดเกณฑ์สะสม (บาท)"}</label></div>
       <div class="field"><label>ชื่อรางวัล</label></div>
     `;
     const amountInput = document.createElement("input");
@@ -408,21 +443,51 @@ function renderMilestoneEditor() {
       card.appendChild(f);
     }
 
-    // quota
-    const qField = document.createElement("div");
-    qField.className = "field";
-    qField.style.marginBottom = "8px";
-    qField.style.maxWidth = "160px";
-    qField.innerHTML = `<label>${m.conditionType === "first_n" ? "จำนวนคนแรกที่รับสิทธิ์ได้ (โควตาแข่งขัน)" : "จำนวนสิทธิ์ทั้งหมด"}</label>`;
-    const qInput = document.createElement("input");
-    qInput.type = "number";
-    qInput.min = 1;
-    qInput.value = m.quotaTotal;
-    qInput.onchange = () => { m.quotaTotal = Math.max(1, Number(qInput.value) || 1); renderRewardCards(); };
-    qField.appendChild(qInput);
-    card.appendChild(qField);
+    // quota / raffle-specific
+    if (m.conditionType === "raffle") {
+      const rRow = document.createElement("div");
+      rRow.className = "field-row";
+      rRow.innerHTML = `<div class="field"><label>จำนวนผู้โชคดีที่จะสุ่ม</label></div><div class="field"><label>วันที่ประกาศผล</label></div>`;
+      const winInput = document.createElement("input");
+      winInput.type = "number"; winInput.min = 1; winInput.value = m.winnersCount || 1;
+      winInput.onchange = () => { m.winnersCount = Math.max(1, Number(winInput.value) || 1); renderRewardCards(); };
+      rRow.children[0].appendChild(winInput);
+      const dateInput = document.createElement("input");
+      dateInput.type = "date"; dateInput.value = m.drawDate || "";
+      dateInput.onchange = () => { m.drawDate = dateInput.value; renderRewardCards(); };
+      rRow.children[1].appendChild(dateInput);
+      card.appendChild(rRow);
+    } else {
+      const qField = document.createElement("div");
+      qField.className = "field";
+      qField.style.marginBottom = "8px";
+      qField.style.maxWidth = "160px";
+      qField.innerHTML = `<label>${m.conditionType === "first_n" ? "จำนวนคนแรกที่รับสิทธิ์ได้ (โควตาแข่งขัน)" : "จำนวนสิทธิ์ทั้งหมด"}</label>`;
+      const qInput = document.createElement("input");
+      qInput.type = "number";
+      qInput.min = 1;
+      qInput.value = m.quotaTotal;
+      qInput.onchange = () => { m.quotaTotal = Math.max(1, Number(qInput.value) || 1); renderRewardCards(); };
+      qField.appendChild(qInput);
+      card.appendChild(qField);
+    }
 
     card.appendChild(buildFieldEditor(m.requiredFields, renderAll));
+
+    const combField = document.createElement("div");
+    combField.className = "field";
+    combField.innerHTML = `<label>ใช้ร่วมกับโปรโมชั่น/คูปองอื่นพร้อมกันได้ไหม</label>`;
+    const combToggle = document.createElement("div");
+    combToggle.className = "type-toggle";
+    const yesBtn = document.createElement("button");
+    yesBtn.type = "button"; yesBtn.className = "type-btn" + (m.combinable !== false ? " active" : ""); yesBtn.textContent = "ใช้ร่วมกันได้";
+    yesBtn.onclick = () => { m.combinable = true; renderMilestoneEditor(); };
+    const noBtn = document.createElement("button");
+    noBtn.type = "button"; noBtn.className = "type-btn" + (m.combinable === false ? " active" : ""); noBtn.textContent = "นับเฉพาะยอดซื้อเดี่ยวๆ";
+    noBtn.onclick = () => { m.combinable = false; renderMilestoneEditor(); };
+    combToggle.appendChild(yesBtn); combToggle.appendChild(noBtn);
+    combField.appendChild(combToggle);
+    card.appendChild(combField);
 
     el.appendChild(card);
   });
@@ -495,6 +560,98 @@ function simulateOtherClaim(id) {
   renderAll();
 }
 
+/* ---------------- raffle spin wheel ---------------- */
+
+const RAFFLE_ENTRANT_POOL = [
+  "ร้านยาสุขภาพดี สาขา 2", "ร้านยา รุ่งเรืองเภสัช", "คลินิกหมอสมชาย", "ร้านยาดีดี ฟาร์มาซี",
+  "ร้านยา บ้านหมอ", "ตัวแทนจำหน่าย เชียงใหม่", "ร้านยาชุมชนพลัส", "เภสัชกรออนไลน์ 24",
+];
+const WHEEL_COLORS = ["#0E5C52", "#4FC2AC", "#A8722C", "#E2AC5C", "#154B3F", "#B8894A", "#0A4038", "#D9A25C", "#6E8F86"];
+let wheelRotation = 0;
+let wheelSpinning = false;
+
+function raffleMilestones() { return milestones.filter((m) => m.conditionType === "raffle"); }
+
+function currentWheelEntrants() {
+  const sel = document.getElementById("wheelMilestoneSelect");
+  const m = raffleMilestones().find((x) => x.name === (sel && sel.value));
+  if (!m) return { milestone: null, names: [] };
+  const others = raffleEntrants[m.id] || 0;
+  const names = RAFFLE_ENTRANT_POOL.slice(0, Math.max(1, Math.min(others, RAFFLE_ENTRANT_POOL.length)));
+  const youEntered = status(m) === "entered" || status(m) === "won";
+  if (youEntered) names.push("คุณ (ลูกค้าจำลอง)");
+  return { milestone: m, names: names.length ? names : ["(ยังไม่มีผู้เข้าร่วม)"] };
+}
+
+function renderWheelMilestoneSelect() {
+  const sel = document.getElementById("wheelMilestoneSelect");
+  if (!sel) return;
+  const raffles = raffleMilestones();
+  const wrap = document.getElementById("wheelSection");
+  if (raffles.length === 0) {
+    if (wrap) wrap.hidden = true;
+    return;
+  }
+  if (wrap) wrap.hidden = false;
+  const prev = sel.value;
+  sel.innerHTML = raffles.map((m) => `<option value="${escapeHtml(m.name)}">${escapeHtml(m.name)}</option>`).join("");
+  if (raffles.some((m) => m.name === prev)) sel.value = prev;
+  renderWheelDisc();
+}
+
+function renderWheelDisc() {
+  const disc = document.getElementById("wheelDisc");
+  if (!disc) return;
+  const { names } = currentWheelEntrants();
+  const n = names.length;
+  const seg = 360 / n;
+  disc.style.background = "conic-gradient(" + names.map((_, i) => `${WHEEL_COLORS[i % WHEEL_COLORS.length]} ${i * seg}deg ${(i + 1) * seg}deg`).join(",") + ")";
+  const legend = document.getElementById("wheelLegend");
+  legend.innerHTML = "";
+  names.forEach((name, i) => {
+    const row = document.createElement("div");
+    row.className = "wl-item";
+    row.innerHTML = `<span class="wl-dot" style="background:${WHEEL_COLORS[i % WHEEL_COLORS.length]}"></span>${escapeHtml(name)}`;
+    legend.appendChild(row);
+  });
+  document.getElementById("wheelResult").className = "wheel-result empty";
+  document.getElementById("wheelResult").textContent = "ยังไม่ได้จับรางวัล";
+}
+
+function spinWheel() {
+  if (wheelSpinning) return;
+  const { milestone, names } = currentWheelEntrants();
+  if (!milestone || names[0] === "(ยังไม่มีผู้เข้าร่วม)") return;
+  wheelSpinning = true;
+  const btn = document.getElementById("wheelSpinBtn");
+  const result = document.getElementById("wheelResult");
+  btn.disabled = true;
+  result.className = "wheel-result empty";
+  result.textContent = "กำลังหมุน...";
+
+  const n = names.length;
+  const seg = 360 / n;
+  const winnerIdx = Math.floor(Math.random() * n);
+  const segCenter = winnerIdx * seg + seg / 2;
+  const delta = 6 * 360 + (360 - segCenter) - (wheelRotation % 360);
+  wheelRotation += delta;
+  const disc = document.getElementById("wheelDisc");
+  disc.style.transform = `rotate(${wheelRotation}deg)`;
+
+  setTimeout(() => {
+    wheelSpinning = false;
+    btn.disabled = false;
+    const winnerName = names[winnerIdx];
+    result.className = "wheel-result";
+    result.textContent = "🎉 ผู้โชคดีคือ " + winnerName;
+    if (winnerName === "คุณ (ลูกค้าจำลอง)") {
+      wonIds.add(milestone.id);
+      renderRewardCards();
+      renderLadder();
+    }
+  }, 4300);
+}
+
 /* ---------------- fulfillment queue (admin/ops view) ---------------- */
 
 function renderQueue() {
@@ -513,6 +670,7 @@ function renderQueue() {
     item.innerHTML = `
       <div class="q-top"><span>${escapeHtml(q.milestoneName)}</span><span class="q-time">คำขอที่ ${q.seq}</span></div>
       ${q.conditionType === "first_n" ? `<div class="q-detail" style="color:var(--ink-faint)">🏁 คนแรกที่ถึงเกณฑ์</div>` : ""}
+      ${q.conditionType === "raffle" ? `<div class="q-detail" style="color:var(--ink-faint)">🎰 ผู้โชคดีจากการจับรางวัล</div>` : ""}
       <div class="q-detail">${q.type === "catalog" ? "🎁 สินค้าเว็บ — เข้าคิวแพ็ก/จัดส่งได้ทันที" : "🎫 ของนอกระบบ — ต้องมีคนติดต่อกลับดำเนินการ"}</div>
       <div class="q-detail" style="margin-top:4px">${fieldsHtml}</div>
     `;
@@ -526,6 +684,7 @@ function renderAll() {
   renderLadder();
   renderRewardCards();
   renderMilestoneEditor();
+  renderWheelMilestoneSelect();
   renderQueue();
 }
 
@@ -540,6 +699,7 @@ function addMilestone() {
     quotaTotal: 10,
     requiredFields: [{ label: "ที่อยู่จัดส่ง", type: "TEXT" }],
     conditionType: "amount",
+    combinable: true,
   });
   renderAll();
 }
@@ -552,10 +712,15 @@ function boot() {
   document.getElementById("amountSlider").oninput = (e) => setAmount(Number(e.target.value));
   document.getElementById("amountNumber").onchange = (e) => setAmount(Number(e.target.value));
   document.getElementById("addMilestoneBtn").onclick = addMilestone;
+  document.getElementById("wheelMilestoneSelect").onchange = renderWheelDisc;
+  document.getElementById("wheelSpinBtn").onclick = spinWheel;
   document.getElementById("resetBtn").onclick = () => {
     milestones = seedMilestones();
     claimedIds = new Set();
+    wonIds = new Set();
     quotaClaimed = seedQuotaClaimed();
+    raffleEntrants = seedRaffleEntrants();
+    wheelRotation = 0;
     queue = [];
     seq = 0;
     openClaimFormId = null;

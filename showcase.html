@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Taviraj:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="showcase.css">
+<link rel="stylesheet" href="admin.css">
 </head>
 <body>
 <div class="wrap showcase">
@@ -93,6 +94,11 @@
           <span class="freeship-badge">🚚 ซื้อสินค้ากลุ่มนี้ ฟรีค่าส่งทันที ไม่มีขั้นต่ำ</span>
         </div>
       </div></div>
+      <div class="mini-flow">
+        <span class="mf-n">ตั้งได้หลายกติกาพร้อมกัน (คนละแบรนด์/หมวด)</span><span class="mf-a">→</span>
+        <span class="mf-n">ตะกร้าเข้าเงื่อนไขหลายอัน กติกาที่ตั้ง priority สูงกว่าชนะ</span><span class="mf-a">→</span>
+        <span class="mf-n">ส่งฟรีเลือกได้ว่า "ยกเว้นรายการนี้" หรือ "ฟรีเฉพาะรายการนี้"</span>
+      </div>
       <a class="try-link" href="system-a.html">↝ ลองคำนวณเอง</a>
     </div>
   </div>
@@ -113,7 +119,7 @@
           <div class="c-row"><b>เหมาะกับ</b><span>แจกหน้างาน/บูท พิมพ์เป็นเล่มเดียวได้ ต้นทุนต่ำ</span></div>
         </div>
         <div>
-          <div class="c-head"><span class="dot" style="background:var(--a)"></span>คูปองออนไลน์ / เก็บล่วงหน้า</div>
+          <div class="c-head"><span class="dot" style="background:var(--a)"></span>คูปองเก็บล่วงหน้า</div>
           <div class="c-row"><b>รหัส</b><span>unique เฉพาะสิทธิ์ 1 คน 1 โค้ด</span></div>
           <div class="c-row"><b>กันใช้ซ้ำด้วย</b><span>ระบบเช็ค/ตัดโควตาอัตโนมัติ</span></div>
           <div class="c-row"><b>เหมาะกับ</b><span>แจก/เก็บผ่านเว็บหรือแอป ใช้ซ้ำไม่ได้เอง</span></div>
@@ -177,6 +183,32 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>คูปองออนไลน์ — โค้ดแชร์ได้ ไม่ต้อง unique</h3></div>
+      <div class="callout">
+        <span class="lbl">แนวคิด</span>
+        โค้ดเดียวแจกได้ทุกคน เหมือนโพสต์ทาง Facebook/Influencer เช่น <b>SAVE100</b> — กันใช้ซ้ำด้วยการบันทึก "ประวัติการใช้" ทุกครั้งก่อนอนุมัติ แทนที่จะพึ่งความ unique ของตัวโค้ดเอง
+      </div>
+      <div class="mock">
+        <div class="log-wrap">
+          <table class="log">
+            <thead><tr><th>เวลา</th><th>ลูกค้า</th><th>ออเดอร์</th><th>ผล</th></tr></thead>
+            <tbody>
+              <tr><td>09:14</td><td>ร้านยา A</td><td class="mono">#A1502</td><td><span class="log-verdict ok">ผ่าน — ใช้ครั้งที่ 1</span></td></tr>
+              <tr><td>09:20</td><td>ร้านยา B</td><td class="mono">#A1503</td><td><span class="log-verdict ok">ผ่าน — ใช้ครั้งที่ 1</span></td></tr>
+              <tr class="blocked"><td>10:02</td><td>ร้านยา A</td><td class="mono">#A1510</td><td><span class="log-verdict blocked">บล็อก — เกินโควตาต่อคน (1)</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="mini-flow">
+        <span class="mf-n">ลูกค้าพิมพ์โค้ดตอนเช็คเอาท์</span><span class="mf-a">→</span>
+        <span class="mf-n">ระบบเช็คประวัติการใช้ของบัญชีนั้นก่อนอนุมัติ</span><span class="mf-a">→</span>
+        <span class="mf-n">เกินโควตาต่อคน/รวมที่ตั้งไว้ = บล็อกอัตโนมัติ</span>
+      </div>
+      <a class="try-link" href="admin.html">↝ ลองพิมพ์ชื่อลูกค้าซ้ำดู ระบบบล็อกจริง</a>
     </div>
 
     <div class="block">
@@ -270,6 +302,28 @@
     <p class="cat-sub">รางวัลปลดล็อกตามยอดสะสม เก็บข้อมูลลูกค้าได้ตามที่กำหนด ไม่มีกำหนดวันหมดสิทธิ์การรับจนกว่าแคมเปญจะจบ</p>
 
     <div class="block">
+      <div class="block-head"><h3>เลือกวิธีปลดล็อกได้ 3 แบบต่อขั้นรางวัล</h3></div>
+      <p class="cat-sub" style="margin:0 0 4px">ของราคาสูง/จำนวนจำกัดมาก ไม่ควรสัญญาว่า "ถึงยอด = ได้แน่" — เลือกวิธีที่เหมาะกับความหายากของรางวัลแต่ละขั้น</p>
+      <div class="mech-grid">
+        <div class="mech">
+          <span class="no">🪜 การันตี</span>
+          <h3>ขั้นบันได</h3>
+          <p>ถึงยอด = ได้แน่ทุกคน เหมาะของที่มีเยอะ ต้นทุนต่ำ</p>
+        </div>
+        <div class="mech">
+          <span class="no">🏁 ความเร็ว</span>
+          <h3>คนแรกที่ถึงเกณฑ์</h3>
+          <p>ถึงยอด + ยังมีคิว = ได้ สร้างความเร่งด่วน โปร่งใสเห็นคิวได้</p>
+        </div>
+        <div class="mech">
+          <span class="no">🎰 จับรางวัล</span>
+          <h3>สุ่มจับรางวัล</h3>
+          <p>ถึงยอด = ได้แค่สิทธิ์ลุ้น ไม่การันตี เหมาะของหายาก/แพงสุด</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
       <div class="block-head"><h3>แบบฟอร์มขอข้อมูลตอนรับสิทธิ์ — แอดมินกำหนดฟิลด์เอง (กดเพิ่มฟิลด์ดูได้)</h3></div>
       <div class="mock">
         <div class="fb-wrap">
@@ -320,6 +374,30 @@
         <span class="mf-n">เต็มโควตาปุ๊บปิดรับทันที</span><span class="mf-a">→</span>
         <span class="mf-n">คนถัดไปเข้าคิวสำรอง เลื่อนขึ้นถ้ามีคนสละสิทธิ์</span>
       </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><h3>แคมเปญแบบ "สุ่มจับรางวัล" — เหมาะของหายากสุด (กดหมุนวงล้อได้จริง)</h3></div>
+      <div class="mock">
+        <div class="race-goal" style="margin-bottom:16px"><span>ตั๋วเครื่องบินไป-กลับต่างประเทศ · ถึงยอด ฿1,000,000 = ได้สิทธิ์ลุ้น</span><b>เข้าร่วมแล้ว 8 คน</b></div>
+        <div class="wheel-block">
+          <div class="wheel-stage">
+            <div class="wheel-pointer"></div>
+            <div class="wheel-disc" id="scWheelDisc"><div class="wheel-hub">✈️</div></div>
+          </div>
+          <div class="wheel-side">
+            <div class="wheel-legend" id="scWheelLegend"></div>
+            <button class="wheel-spin-btn" type="button" id="scWheelSpinBtn">🎰 หมุนวงล้อ</button>
+            <div class="wheel-result empty" id="scWheelResult">ยังไม่ได้จับรางวัล</div>
+          </div>
+        </div>
+      </div>
+      <div class="mini-flow">
+        <span class="mf-n">ลูกค้าที่ถึงยอดเข้าร่วมอัตโนมัติ ไม่โชว์เหลือกี่สิทธิ์</span><span class="mf-a">→</span>
+        <span class="mf-n">ถึงวันประกาศผล แอดมินกดหมุนวงล้อ</span><span class="mf-a">→</span>
+        <span class="mf-n">ระบบสุ่มผู้โชคดีต่อหน้าทุกคน โปร่งใส ตรวจสอบได้</span>
+      </div>
+      <a class="try-link" href="admin.html">↝ ดูฝั่งแอดมิน ตั้งขั้นรางวัล/เงื่อนไขเองได้</a>
     </div>
   </div>
 
@@ -462,6 +540,47 @@
       document.getElementById("fbPreviewList").appendChild(inp);
     }
     if (extraIdx >= extraFields.length) { fbAddBtn.textContent = "เพิ่มครบทุกฟิลด์ตัวอย่างแล้ว"; fbAddBtn.disabled = true; }
+  });
+
+  /* ---- raffle spin wheel ---- */
+  const SC_ENTRANTS = [
+    "ร้านยาสุขภาพดี สาขา 2", "ร้านยา รุ่งเรืองเภสัช", "คลินิกหมอสมชาย", "ร้านยาดีดี ฟาร์มาซี",
+    "ร้านยา บ้านหมอ", "ตัวแทนจำหน่าย เชียงใหม่", "ร้านยาชุมชนพลัส", "เภสัชกรออนไลน์ 24",
+  ];
+  const SC_COLORS = ["#0E5C52", "#4FC2AC", "#A8722C", "#E2AC5C", "#154B3F", "#B8894A", "#0A4038", "#D9A25C"];
+  let scRotation = 0;
+  let scSpinning = false;
+
+  const scDisc = document.getElementById("scWheelDisc");
+  const scLegend = document.getElementById("scWheelLegend");
+  const scBtn = document.getElementById("scWheelSpinBtn");
+  const scResult = document.getElementById("scWheelResult");
+  const scN = SC_ENTRANTS.length;
+  const scSeg = 360 / scN;
+  scDisc.style.background = "conic-gradient(" + SC_ENTRANTS.map((_, i) => `${SC_COLORS[i % SC_COLORS.length]} ${i * scSeg}deg ${(i + 1) * scSeg}deg`).join(",") + ")";
+  SC_ENTRANTS.forEach((name, i) => {
+    const row = document.createElement("div");
+    row.className = "wl-item";
+    row.innerHTML = `<span class="wl-dot" style="background:${SC_COLORS[i % SC_COLORS.length]}"></span>${name}`;
+    scLegend.appendChild(row);
+  });
+  scBtn.addEventListener("click", () => {
+    if (scSpinning) return;
+    scSpinning = true;
+    scBtn.disabled = true;
+    scResult.className = "wheel-result empty";
+    scResult.textContent = "กำลังหมุน...";
+    const winnerIdx = Math.floor(Math.random() * scN);
+    const segCenter = winnerIdx * scSeg + scSeg / 2;
+    const delta = 6 * 360 + (360 - segCenter) - (scRotation % 360);
+    scRotation += delta;
+    scDisc.style.transform = `rotate(${scRotation}deg)`;
+    setTimeout(() => {
+      scSpinning = false;
+      scBtn.disabled = false;
+      scResult.className = "wheel-result";
+      scResult.textContent = "🎉 ผู้โชคดีคือ " + SC_ENTRANTS[winnerIdx];
+    }, 4300);
   });
 </script>
 </body>

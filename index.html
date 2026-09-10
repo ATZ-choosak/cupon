@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Taviraj:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="showcase.css">
+<link rel="stylesheet" href="admin.css">
 </head>
 <body>
 <div class="wrap showcase">
@@ -46,13 +47,32 @@
 
   <!-- CUSTOMER FACING REWARD CARDS -->
   <div class="section-title"><span class="tag">มุมมองลูกค้า</span><h2>รางวัลที่ลูกค้าเห็นตามยอดสะสม</h2></div>
-  <p class="section-note">🪜 ขั้นบันได ปลดล็อกจากยอดสะสมของลูกค้ารายนี้เท่านั้น &nbsp;·&nbsp; 🏁 คนแรกที่ถึงเกณฑ์ ต้องถึงยอดและยังเหลือโควตา — กด "จำลองคนอื่นถึงเกณฑ์ก่อน" เพื่อดูโควตาถูกแย่งได้</p>
+  <p class="section-note">🪜 ขั้นบันได ปลดล็อกจากยอดสะสมของลูกค้ารายนี้เท่านั้น &nbsp;·&nbsp; 🏁 คนแรกที่ถึงเกณฑ์ ต้องถึงยอดและยังเหลือโควตา &nbsp;·&nbsp; 🎰 สุ่มจับรางวัล ถึงยอดแค่ได้สิทธิ์ลุ้น ไม่การันตี — ลองกดปุ่มจำลองในการ์ดแต่ละใบดูได้</p>
   <div class="reward-row" id="rewardRow"></div>
 
   <div class="mini-flow">
     <span class="mf-n">ทุกบิลที่จ่ายสำเร็จบวกเข้ายอดสะสม</span><span class="mf-a">→</span>
-    <span class="mf-n">🪜 ถึงเกณฑ์ = ปลดล็อกทันที &nbsp; 🏁 ถึงเกณฑ์ + ยังมีโควตา = ปลดล็อก</span><span class="mf-a">→</span>
+    <span class="mf-n">🪜 ถึงเกณฑ์ = ปลดล็อกทันที &nbsp; 🏁 ถึงเกณฑ์+มีคิว = ปลดล็อก &nbsp; 🎰 ถึงเกณฑ์ = ได้สิทธิ์ลุ้น</span><span class="mf-a">→</span>
     <span class="mf-n">ลูกค้ากดขอรับสิทธิ์เองได้ตลอด ไม่มีกำหนดวันหมดสิทธิ์</span>
+  </div>
+
+  <!-- RAFFLE DRAW WHEEL (shown only while at least one milestone is set to "สุ่มจับรางวัล") -->
+  <div id="wheelSection" hidden>
+    <div class="section-title" style="margin-top:36px"><span class="tag">แอดมิน</span><h2>วงล้อสุ่ม — ประกาศผู้โชคดี</h2></div>
+    <div class="panel">
+      <div class="field" style="max-width:420px;margin-bottom:16px"><label>กำลังจับรางวัลของขั้น</label><select id="wheelMilestoneSelect"></select></div>
+      <div class="wheel-block">
+        <div class="wheel-stage">
+          <div class="wheel-pointer"></div>
+          <div class="wheel-disc" id="wheelDisc"><div class="wheel-hub">🎁</div></div>
+        </div>
+        <div class="wheel-side">
+          <div class="wheel-legend" id="wheelLegend"></div>
+          <button class="wheel-spin-btn" type="button" id="wheelSpinBtn">🎰 หมุนวงล้อ</button>
+          <div class="wheel-result empty" id="wheelResult">ยังไม่ได้จับรางวัล</div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- ADMIN CONFIG + FULFILLMENT QUEUE -->
