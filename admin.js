@@ -1,19 +1,15 @@
-/* admin.js — backend settings, fully wired: real input types, live state, live previews */
+/* admin.js — backend settings, fully wired: real input types, live state, live previews
+   ค่าที่ตั้งทั้งหมดเก็บลง localStorage ผ่าน shared-state.js (pmpcSaveSettings) —
+   เปิด index.html คู่กันไว้อีกแท็บ แก้ตรงนี้แล้วฝั่งลูกค้าจะ sync สดให้เอง (storage event) */
 
-const PRODUCTS = [
-  "พาราเซตามอล 500mg", "วิตามินซี 1000mg (Blackmores)", "น้ำมันปลา Omega-3 (Blackmores)",
-  "แคลเซียม+ดี (Blackmores)", "หน้ากากอนามัย (กล่อง)", "เจลล้างมือ",
-  "ยาน้ำแก้ไอ", "เข็มฉีดยา (กล่อง)", "นมผงสูตร 3 ตรา A", "ขวดนม PP 240ml",
-];
-const PRICE_MAP = {
-  "พาราเซตามอล 500mg": 60, "วิตามินซี 1000mg (Blackmores)": 250, "น้ำมันปลา Omega-3 (Blackmores)": 450,
-  "แคลเซียม+ดี (Blackmores)": 380, "หน้ากากอนามัย (กล่อง)": 120, "เจลล้างมือ": 85,
-  "ยาน้ำแก้ไอ": 180, "เข็มฉีดยา (กล่อง)": 90, "นมผงสูตร 3 ตรา A": 690, "ขวดนม PP 240ml": 200,
-};
-const CATEGORIES = ["หมวดยาสามัญประจำบ้าน", "หมวดวิตามิน/อาหารเสริม", "หมวดเวชภัณฑ์", "หมวดแม่และเด็ก"];
-const CATEGORY_ICONS = { "หมวดยาสามัญประจำบ้าน": "💊", "หมวดวิตามิน/อาหารเสริม": "🧴", "หมวดเวชภัณฑ์": "🩹", "หมวดแม่และเด็ก": "🍼" };
-const BRANDS = ["Blackmores", "Generic", "ตรา A"];
-const AUDIENCE_OPTIONS = ["ลูกค้าทุกคน", "เฉพาะสมาชิกพิเศษ", "เฉพาะลูกค้าที่เคยซื้อมาก่อน"];
+const PRODUCTS = PMPC_PRODUCT_NAMES;
+const PRICE_MAP = PMPC_PRICE_MAP;
+const CATEGORIES = PMPC_CATEGORIES;
+const CATEGORY_ICONS = PMPC_CATEGORY_ICONS;
+const BRANDS = PMPC_BRANDS;
+
+const SETTINGS = pmpcLoadSettings();
+function persist() { pmpcSaveSettings(SETTINGS); }
 
 function fmt(n) { return Number(n).toLocaleString("th-TH"); }
 function escapeHtml(s) {
@@ -23,7 +19,7 @@ function selectHtml(options, selected) {
   return options.map((o) => `<option value="${escapeHtml(o)}"${o === selected ? " selected" : ""}>${escapeHtml(o)}</option>`).join("");
 }
 
-/* reusable removable-chip list, e.g. "สินค้าคู่", "สินค้ายกเว้น" */
+/* reusable removable-chip list, e.g. "สินค้าคู่", "สินค้ายกเว้น", "ลูกค้าบางคน" */
 function renderChipList(container, items, onRemove) {
   container.innerHTML = "";
   if (items.length === 0) {
@@ -61,106 +57,455 @@ function wireToggle(groupEl, onPick) {
     });
   });
 }
-function activePick(groupEl) {
-  const btn = groupEl.querySelector(".type-btn.active");
-  return btn ? btn.dataset.pick : null;
+
+/* reusable: "กลุ่มลูกค้าเป้าหมาย" — ทุกคน / บางคน (พิมพ์รายชื่อเพิ่มเอง) */
+function renderAudienceField(container, obj, onChange) {
+  if (!obj.audienceType) obj.audienceType = "all";
+  if (!obj.audienceCustomers) obj.audienceCustomers = [];
+  container.innerHTML = "";
+  const label = document.createElement("label");
+  label.textContent = "กลุ่มลูกค้าเป้าหมาย";
+  container.appendChild(label);
+
+  const toggle = document.createElement("div");
+  toggle.className = "type-toggle";
+  const allBtn = document.createElement("button");
+  allBtn.type = "button"; allBtn.className = "type-btn" + (obj.audienceType !== "some" ? " active" : ""); allBtn.textContent = "ลูกค้าทุกคน";
+  allBtn.onclick = () => { obj.audienceType = "all"; renderAudienceField(container, obj, onChange); onChange(); };
+  const someBtn = document.createElement("button");
+  someBtn.type = "button"; someBtn.className = "type-btn" + (obj.audienceType === "some" ? " active" : ""); someBtn.textContent = "ลูกค้าบางคน";
+  someBtn.onclick = () => { obj.audienceType = "some"; renderAudienceField(container, obj, onChange); onChange(); };
+  toggle.appendChild(allBtn); toggle.appendChild(someBtn);
+  container.appendChild(toggle);
+
+  if (obj.audienceType === "some") {
+    const chipWrap = document.createElement("div");
+    chipWrap.className = "chk-group";
+    chipWrap.style.marginTop = "8px";
+    renderChipList(chipWrap, obj.audienceCustomers, (idx) => {
+      obj.audienceCustomers.splice(idx, 1);
+      renderAudienceField(container, obj, onChange);
+      onChange();
+    });
+    container.appendChild(chipWrap);
+
+    const addRow = document.createElement("div");
+    addRow.style.cssText = "display:flex;gap:6px;margin-top:8px;";
+    const input = document.createElement("input");
+    input.type = "text"; input.placeholder = "ชื่อ/รหัสลูกค้า เช่น ร้านยาสุขภาพดี สาขา 2";
+    input.style.cssText = "flex:1;border:1px solid var(--line);background:var(--surface);border-radius:6px;padding:6px 8px;font-size:12px;";
+    const addBtn = document.createElement("button");
+    addBtn.type = "button"; addBtn.textContent = "+ เพิ่ม";
+    addBtn.style.cssText = "border:none;background:var(--a);color:#fff;border-radius:6px;padding:6px 12px;font-size:12px;";
+    const doAdd = () => {
+      const v = input.value.trim();
+      if (!v) return;
+      obj.audienceCustomers.push(v);
+      input.value = "";
+      renderAudienceField(container, obj, onChange);
+      onChange();
+    };
+    addBtn.onclick = doAdd;
+    input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); doAdd(); } });
+    addRow.appendChild(input); addRow.appendChild(addBtn);
+    container.appendChild(addRow);
+    const hint = document.createElement("div");
+    hint.className = "cond-hint";
+    hint.textContent = "พิมพ์ชื่อ/รหัสลูกค้าแล้วกดเพิ่มทีละคน (mockup — ระบบจริงควรค้นหาจากฐานลูกค้า)";
+    container.appendChild(hint);
+  }
 }
 
 /* =========================================================
-   1. ซื้อคู่สินค้าที่เข้ากัน (cross-sell, ต่อยอด Bundle)
+   1. โปรโมชั่นอัตโนมัติ — ไม่ต้องมีโค้ด รวม 3 กลไกเดิมไว้ setting เดียวกัน เพิ่มได้หลายกฎ
+      targetMode="items": เจาะจงสินค้า (โครงจากหน้าตั้งค่า Bundle/ของแถมจริงของ pmpc)
+      targetMode="group": ทั้งแบรนด์/หมวดหมู่ + ยอดขั้นต่ำ (เดิมคือ "ส่วนลดท้ายบิล")
+      rewardType="discount": ลดราคาเฉพาะยอดของรายการที่เข้าเงื่อนไข (ไม่ใช่ทั้งบิล)
+      rewardType="freeship": ฟรีค่าส่งเฉพาะรายการที่เข้าเงื่อนไขกฎนี้ (เดิมคือ "ส่งฟรีไม่ใช่คูปอง")
+      กฎ targetMode="group" ที่แย่งกลุ่มสินค้าเดียวกัน ใช้ priority สูงสุดที่ผ่านเกณฑ์ชนะแค่ 1 กฎ ไม่บวกซ้อน
+      ส่วนกฎ targetMode="items" ใช้ร่วมกับกฎอื่นได้เสมอ (คนละสินค้ากัน ไม่ชนกัน)
    ========================================================= */
-const combo = {
-  name: "ซื้อคู่นมผง + ขวดนม คุ้มกว่า",
-  mainProduct: "นมผงสูตร 3 ตรา A",
-  pairProducts: ["ขวดนม PP 240ml"],
-  discountType: "fixed",
-  discountValue: 100,
-  maxDiscountCap: null,
-  perCustomerLimit: null,
-  priority: 5,
-  active: true,
-  startDate: "2026-10-01",
-  endDate: "",
-};
+let promotions = SETTINGS.promotions;
+const DEMO_CART = ["พาราเซตามอล 500mg", "วิตามินซี 1000mg (Blackmores)", "ยาน้ำแก้ไอ", "เข็มฉีดยา (กล่อง)"];
+const DEMO_BRAND_OF = { "พาราเซตามอล 500mg": "Generic", "วิตามินซี 1000mg (Blackmores)": "Blackmores", "ยาน้ำแก้ไอ": "Generic", "เข็มฉีดยา (กล่อง)": "Generic" };
+const DEMO_CATEGORY_OF = { "พาราเซตามอล 500mg": "หมวดยาสามัญประจำบ้าน", "วิตามินซี 1000mg (Blackmores)": "หมวดวิตามิน/อาหารเสริม", "ยาน้ำแก้ไอ": "หมวดยาสามัญประจำบ้าน", "เข็มฉีดยา (กล่อง)": "หมวดเวชภัณฑ์" };
 
-function comboBase() {
-  return (PRICE_MAP[combo.mainProduct] || 0) + combo.pairProducts.reduce((s, p) => s + (PRICE_MAP[p] || 0), 0);
+function promoPreviewCalc(promo) {
+  let base = 0;
+  const lines = [];
+  if (promo.targetMode === "items") {
+    promo.requiredItems.forEach((item) => {
+      if (item.matchAnyUnit) { lines.push({ label: "สินค้าใดก็ได้ 1 รายการ (ไม่จำกัดเฉพาะเจาะจง)", price: null }); return; }
+      const name = item.choices[0];
+      if (!name) { lines.push({ label: "(ยังไม่เลือกสินค้า)", price: null }); return; }
+      const qty = promo.conditionType === "QUANTITY" ? (item.requiredQuantity || 1) : 1;
+      const price = (PRICE_MAP[name] || 0) * qty;
+      base += price;
+      const altNote = item.choices.length > 1 ? ` (หรืออีก ${item.choices.length - 1} ตัวเลือก)` : "";
+      lines.push({ label: name + (qty > 1 ? ` × ${qty}` : "") + altNote, price });
+    });
+  } else {
+    const matcher = promo.groupTargetType === "brand" ? (p) => DEMO_BRAND_OF[p] === promo.groupTarget : (p) => DEMO_CATEGORY_OF[p] === promo.groupTarget;
+    const matched = DEMO_CART.filter(matcher);
+    if (matched.length === 0) lines.push({ label: `(ไม่มีสินค้ากลุ่ม "${promo.groupTarget}" ในตะกร้าตัวอย่าง)`, price: null });
+    matched.forEach((p) => { base += PRICE_MAP[p]; lines.push({ label: p, price: PRICE_MAP[p] }); });
+  }
+  const minSpend = promo.targetMode === "group" ? (promo.groupMinSpend || 0) : (promo.conditionType === "TOTAL_AMOUNT" ? (promo.totalAmount || 0) : 0);
+  const qualifies = base >= minSpend;
+  if (promo.rewardType === "freeship") return { lines, base, off: 0, result: base, qualifies, freeship: true };
+  let off = qualifies ? (promo.discountType === "percent" ? Math.round(base * (promo.discountValue / 100)) : promo.discountValue) : 0;
+  if (promo.discountType === "percent" && promo.maxDiscountCap) off = Math.min(off, promo.maxDiscountCap);
+  off = Math.min(off, base);
+  return { lines, base, off, result: Math.max(0, base - off), qualifies, freeship: false };
 }
 
-function renderCombo() {
-  document.getElementById("comboMainSelect").innerHTML = selectHtml(PRODUCTS, combo.mainProduct);
-  const addSel = document.getElementById("comboPairAddSelect");
-  addSel.innerHTML = selectHtml(PRODUCTS.filter((p) => p !== combo.mainProduct && !combo.pairProducts.includes(p)), null);
-  renderChipList(document.getElementById("comboPairList"), combo.pairProducts, (idx) => {
-    combo.pairProducts.splice(idx, 1);
-    renderCombo();
+function buildRequiredItemsEditor(promo, onChange) {
+  const wrap = document.createElement("div");
+  wrap.style.marginTop = "10px";
+  wrap.innerHTML = `<label style="font-size:11px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace;display:block;margin-bottom:6px">รายการสินค้าที่ต้องซื้อ (เพิ่มได้หลายรายการ แต่ละรายการเลือกได้หลายตัวเลือก)</label>`;
+  promo.requiredItems.forEach((item, idx) => {
+    const card = document.createElement("div");
+    card.className = "m-card";
+    const head = document.createElement("div");
+    head.className = "m-card-head";
+    head.innerHTML = `<span class="idx">รายการที่ ${idx + 1}</span>`;
+    const del = document.createElement("button");
+    del.className = "del-btn"; del.type = "button"; del.textContent = "ลบ";
+    del.onclick = () => { promo.requiredItems.splice(idx, 1); onChange(); };
+    head.appendChild(del);
+    card.appendChild(head);
+
+    if (promo.conditionType === "QUANTITY") {
+      const qField = document.createElement("div");
+      qField.className = "field"; qField.style.cssText = "margin-bottom:8px;max-width:200px";
+      qField.innerHTML = `<label>จำนวนที่ต้องซื้อ</label>`;
+      const qInput = document.createElement("input");
+      qInput.type = "number"; qInput.min = 1; qInput.value = item.requiredQuantity;
+      qInput.onchange = () => { item.requiredQuantity = Math.max(1, Number(qInput.value) || 1); onChange(); };
+      qField.appendChild(qInput);
+      card.appendChild(qField);
+    } else {
+      const mField = document.createElement("div");
+      mField.className = "field"; mField.style.marginBottom = "8px";
+      const pill = document.createElement("label");
+      pill.className = "chk-pill";
+      const chk = document.createElement("input");
+      chk.type = "checkbox"; chk.checked = item.matchAnyUnit;
+      chk.onchange = () => { item.matchAnyUnit = chk.checked; onChange(); };
+      pill.appendChild(chk);
+      pill.appendChild(document.createTextNode("จับคู่สินค้าใดก็ได้ (ไม่ระบุเจาะจง) — ใช้ยอดรวมของรายการนี้แทน"));
+      mField.appendChild(pill);
+      card.appendChild(mField);
+    }
+
+    if (!(promo.conditionType === "TOTAL_AMOUNT" && item.matchAnyUnit)) {
+      const cField = document.createElement("div");
+      cField.className = "field"; cField.style.marginBottom = "4px";
+      cField.innerHTML = `<label>สินค้าที่นับเข้าเงื่อนไข (เลือกได้หลายตัวเลือก — อันใดอันหนึ่งก็ได้)</label>`;
+      const chipWrap = document.createElement("div");
+      chipWrap.className = "chk-group";
+      renderChipList(chipWrap, item.choices, (cidx) => { item.choices.splice(cidx, 1); onChange(); });
+      cField.appendChild(chipWrap);
+      const addRow = document.createElement("div");
+      addRow.style.cssText = "display:flex;gap:6px;margin-top:8px;";
+      const sel = document.createElement("select");
+      sel.style.cssText = "flex:1";
+      sel.innerHTML = selectHtml(PRODUCTS.filter((p) => !item.choices.includes(p)), null);
+      const addBtn = document.createElement("button");
+      addBtn.type = "button"; addBtn.className = "fb-add"; addBtn.style.cssText = "width:auto;padding:0 12px";
+      addBtn.textContent = "+";
+      addBtn.onclick = () => { if (sel.value) { item.choices.push(sel.value); onChange(); } };
+      addRow.appendChild(sel); addRow.appendChild(addBtn);
+      cField.appendChild(addRow);
+      card.appendChild(cField);
+    }
+    wrap.appendChild(card);
   });
-
-  document.getElementById("comboCapField").hidden = combo.discountType !== "percent";
-
-  const base = comboBase();
-  let off = combo.discountType === "percent" ? Math.round(base * (combo.discountValue / 100)) : combo.discountValue;
-  if (combo.discountType === "percent" && combo.maxDiscountCap) off = Math.min(off, combo.maxDiscountCap);
-  const result = Math.max(0, base - off);
-
-  document.getElementById("comboPreviewMain").textContent = combo.mainProduct;
-  document.getElementById("comboPreviewPairs").textContent = combo.pairProducts.length ? combo.pairProducts.join(" + ") : "(ยังไม่เลือกสินค้าคู่)";
-  document.getElementById("comboPreviewOld").textContent = "฿" + fmt(base);
-  document.getElementById("comboPreviewNew").textContent = "฿" + fmt(result);
-  document.getElementById("comboPreviewSave").textContent = combo.pairProducts.length ? "ประหยัด ฿" + fmt(base - result) : "";
+  const addBtn = document.createElement("button");
+  addBtn.className = "add-btn"; addBtn.type = "button"; addBtn.style.marginTop = "8px";
+  addBtn.textContent = "+ เพิ่มรายการสินค้า";
+  addBtn.onclick = () => { promo.requiredItems.push({ requiredQuantity: 1, matchAnyUnit: false, choices: [] }); onChange(); };
+  wrap.appendChild(addBtn);
+  return wrap;
 }
 
-function bootCombo() {
-  document.getElementById("comboName").value = combo.name;
-  document.getElementById("comboName").oninput = (e) => { combo.name = e.target.value; };
-
-  document.getElementById("comboMainSelect").onchange = (e) => {
-    combo.mainProduct = e.target.value;
-    combo.pairProducts = combo.pairProducts.filter((p) => p !== combo.mainProduct);
-    renderCombo();
-  };
-  wireAddRow(document.getElementById("comboPairAddSelect"), document.getElementById("comboPairAddBtn"), (v) => {
-    combo.pairProducts.push(v);
-    renderCombo();
+function renderPromotionPreview(promo) {
+  const { lines, base, off, result, qualifies, freeship } = promoPreviewCalc(promo);
+  const wrap = document.createElement("div");
+  wrap.style.marginTop = "14px";
+  wrap.innerHTML = `<div class="preview-label">มุมมองลูกค้า (สด)</div>`;
+  const frame = document.createElement("div");
+  frame.className = "preview-frame"; frame.style.cssText = "flex-direction:column;gap:0;align-items:stretch";
+  const list = document.createElement("div");
+  lines.forEach((l) => {
+    const row = document.createElement("div");
+    row.className = "item";
+    row.innerHTML = `<span>${escapeHtml(l.label)}</span><span class="num">${l.price === null ? "—" : "฿" + fmt(l.price)}</span>`;
+    list.appendChild(row);
   });
+  frame.appendChild(list);
+  const strip = document.createElement("div");
+  strip.className = "result-strip"; strip.style.marginTop = "12px";
+  strip.textContent = freeship
+    ? (qualifies ? `ยอดรายการที่เข้าเงื่อนไข ฿${fmt(base)} → ฟรีค่าส่งเฉพาะรายการนี้` : `ยอดรายการที่เข้าเงื่อนไข ฿${fmt(base)} — ยังไม่ถึงเกณฑ์ฟรีค่าส่ง`)
+    : (qualifies && off > 0 ? `ยอดรายการที่เข้าเงื่อนไข ฿${fmt(base)} → ลด ฿${fmt(off)} → จ่ายเฉพาะส่วนนี้ ฿${fmt(result)}` : `ยอดรายการที่เข้าเงื่อนไข ฿${fmt(base)} (ยังไม่เข้าเงื่อนไข/ยังไม่ได้ตั้งส่วนลด)`);
+  frame.appendChild(strip);
+  const note = document.createElement("div");
+  note.className = "cond-hint";
+  note.textContent = freeship
+    ? "ฟรีค่าส่งนี้คิดเฉพาะรายการที่อยู่ในเงื่อนไขด้านบนเท่านั้น ไม่ใช่ทั้งบิล"
+    : "ส่วนลดนี้คิดเฉพาะยอดของรายการที่อยู่ในเงื่อนไขด้านบนเท่านั้น ไม่ใช่ทั้งบิล";
+  frame.appendChild(note);
+  wrap.appendChild(frame);
+  return wrap;
+}
 
-  wireToggle(document.getElementById("comboDiscountType"), (pick) => { combo.discountType = pick; renderCombo(); });
-  const valInput = document.getElementById("comboDiscountValue");
-  valInput.value = combo.discountValue;
-  valInput.oninput = (e) => { combo.discountValue = Number(e.target.value) || 0; renderCombo(); };
-  const capInput = document.getElementById("comboMaxCap");
-  capInput.oninput = (e) => { combo.maxDiscountCap = e.target.value === "" ? null : Number(e.target.value); renderCombo(); };
+function renderPromotions() {
+  const el = document.getElementById("promotionsList");
+  el.innerHTML = "";
+  promotions.forEach((promo, idx) => {
+    const card = document.createElement("div");
+    card.className = "m-card";
 
-  const limitInput = document.getElementById("comboPerCustomerLimit");
-  limitInput.oninput = (e) => { combo.perCustomerLimit = e.target.value === "" ? null : Number(e.target.value); };
+    const head = document.createElement("div");
+    head.className = "m-card-head";
+    head.innerHTML = `<span class="idx">โปรที่ ${idx + 1}</span>`;
+    const del = document.createElement("button");
+    del.className = "del-btn"; del.type = "button"; del.textContent = "ลบ";
+    del.onclick = () => { promotions.splice(idx, 1); renderPromotions(); };
+    head.appendChild(del);
+    card.appendChild(head);
 
-  const prioInput = document.getElementById("comboPriority");
-  prioInput.value = combo.priority;
-  prioInput.oninput = (e) => { combo.priority = Number(e.target.value) || 0; };
+    const nameRow = document.createElement("div");
+    nameRow.className = "field-row single";
+    nameRow.innerHTML = `<div class="field"><label>ชื่อโปรโมชั่น</label></div>`;
+    const nameInput = document.createElement("input");
+    nameInput.type = "text"; nameInput.value = promo.name;
+    nameInput.oninput = () => { promo.name = nameInput.value; };
+    nameRow.children[0].appendChild(nameInput);
+    card.appendChild(nameRow);
 
-  wireToggle(document.getElementById("comboActiveToggle"), (pick) => { combo.active = pick === "on"; });
+    const condRow = document.createElement("div");
+    condRow.className = "field-row single";
+    condRow.innerHTML = `<div class="field"><label>เงื่อนไข (ข้อความอธิบายให้ลูกค้าเห็น)</label></div>`;
+    const condTa = document.createElement("textarea");
+    condTa.rows = 2; condTa.value = promo.condition;
+    condTa.oninput = () => { promo.condition = condTa.value; };
+    condRow.children[0].appendChild(condTa);
+    card.appendChild(condRow);
 
-  document.getElementById("comboStart").value = combo.startDate;
-  document.getElementById("comboStart").onchange = (e) => { combo.startDate = e.target.value; };
-  document.getElementById("comboEnd").onchange = (e) => { combo.endDate = e.target.value; };
+    const row1 = document.createElement("div");
+    row1.className = "field-row";
+    row1.innerHTML = `<div class="field"><label>จำกัดจำนวนต่อคน (เว้นว่าง = ไม่จำกัด)</label></div><div class="field"><label>สถานะ</label></div>`;
+    const quotaInput = document.createElement("input");
+    quotaInput.type = "number"; quotaInput.min = 1; quotaInput.value = promo.quotaPerCustomer ?? "";
+    quotaInput.oninput = () => { promo.quotaPerCustomer = quotaInput.value === "" ? null : Number(quotaInput.value); };
+    row1.children[0].appendChild(quotaInput);
+    const activeToggle = document.createElement("div");
+    activeToggle.className = "type-toggle";
+    const onBtn = document.createElement("button");
+    onBtn.type = "button"; onBtn.className = "type-btn" + (promo.active ? " active" : ""); onBtn.textContent = "เปิดใช้งาน";
+    onBtn.onclick = () => { promo.active = true; renderPromotions(); };
+    const offBtn = document.createElement("button");
+    offBtn.type = "button"; offBtn.className = "type-btn" + (!promo.active ? " active" : ""); offBtn.textContent = "ปิด";
+    offBtn.onclick = () => { promo.active = false; renderPromotions(); };
+    activeToggle.appendChild(onBtn); activeToggle.appendChild(offBtn);
+    row1.children[1].appendChild(activeToggle);
+    card.appendChild(row1);
 
-  renderCombo();
+    const tmField = document.createElement("div");
+    tmField.className = "field"; tmField.style.marginBottom = "8px";
+    tmField.innerHTML = `<label>เป้าหมาย</label>`;
+    const tmToggle = document.createElement("div");
+    tmToggle.className = "type-toggle";
+    const itemsBtn = document.createElement("button");
+    itemsBtn.type = "button"; itemsBtn.className = "type-btn" + (promo.targetMode === "items" ? " active" : ""); itemsBtn.textContent = "เจาะจงสินค้า";
+    itemsBtn.onclick = () => { promo.targetMode = "items"; renderPromotions(); };
+    const groupBtn = document.createElement("button");
+    groupBtn.type = "button"; groupBtn.className = "type-btn" + (promo.targetMode === "group" ? " active" : ""); groupBtn.textContent = "แบรนด์/หมวดหมู่";
+    groupBtn.onclick = () => { promo.targetMode = "group"; renderPromotions(); };
+    tmToggle.appendChild(itemsBtn); tmToggle.appendChild(groupBtn);
+    tmField.appendChild(tmToggle);
+    card.appendChild(tmField);
+
+    if (promo.targetMode === "items") {
+      const ctField = document.createElement("div");
+      ctField.className = "field"; ctField.style.marginBottom = "8px";
+      ctField.innerHTML = `<label>ประเภทเงื่อนไข</label>`;
+      const ctToggle = document.createElement("div");
+      ctToggle.className = "type-toggle";
+      const qBtn = document.createElement("button");
+      qBtn.type = "button"; qBtn.className = "type-btn" + (promo.conditionType === "QUANTITY" ? " active" : ""); qBtn.textContent = "ตามจำนวนชิ้น";
+      qBtn.onclick = () => { promo.conditionType = "QUANTITY"; renderPromotions(); };
+      const taBtn = document.createElement("button");
+      taBtn.type = "button"; taBtn.className = "type-btn" + (promo.conditionType === "TOTAL_AMOUNT" ? " active" : ""); taBtn.textContent = "ตามยอดรวม";
+      taBtn.onclick = () => { promo.conditionType = "TOTAL_AMOUNT"; renderPromotions(); };
+      ctToggle.appendChild(qBtn); ctToggle.appendChild(taBtn);
+      ctField.appendChild(ctToggle);
+      card.appendChild(ctField);
+
+      if (promo.conditionType === "TOTAL_AMOUNT") {
+        const taRow = document.createElement("div");
+        taRow.className = "field-row single";
+        taRow.innerHTML = `<div class="field"><label>ยอดรวมที่ต้องซื้อ (บาท)</label></div>`;
+        const taInput = document.createElement("input");
+        taInput.type = "number"; taInput.min = 0; taInput.value = promo.totalAmount || 0;
+        taInput.oninput = () => { promo.totalAmount = Number(taInput.value) || 0; renderPromotions(); };
+        taRow.children[0].appendChild(taInput);
+        card.appendChild(taRow);
+      }
+
+      const stField = document.createElement("div");
+      stField.className = "field"; stField.style.marginBottom = "8px";
+      stField.innerHTML = `<label>บังคับหน่วยสินค้าให้ตรงเป๊ะ (strictUnit)</label>`;
+      const stToggle = document.createElement("div");
+      stToggle.className = "type-toggle";
+      const stOn = document.createElement("button");
+      stOn.type = "button"; stOn.className = "type-btn" + (promo.strictUnit ? " active" : ""); stOn.textContent = "เปิด";
+      stOn.onclick = () => { promo.strictUnit = true; renderPromotions(); };
+      const stOff = document.createElement("button");
+      stOff.type = "button"; stOff.className = "type-btn" + (!promo.strictUnit ? " active" : ""); stOff.textContent = "ปิด";
+      stOff.onclick = () => { promo.strictUnit = false; renderPromotions(); };
+      stToggle.appendChild(stOn); stToggle.appendChild(stOff);
+      stField.appendChild(stToggle);
+      const stHint = document.createElement("div");
+      stHint.className = "cond-hint";
+      stHint.textContent = "เปิดไว้ถ้าไม่อยากให้ระบบแปลงหน่วยสินค้าอัตโนมัติ (เช่น กล่อง↔แผง) ตอนเช็คเงื่อนไข";
+      stField.appendChild(stHint);
+      card.appendChild(stField);
+
+      card.appendChild(buildRequiredItemsEditor(promo, renderPromotions));
+    } else {
+      const gtRow = document.createElement("div");
+      gtRow.className = "field-row";
+      gtRow.innerHTML = `<div class="field"><label>ประเภทเป้าหมาย</label></div><div class="field"><label>เป้าหมาย</label></div>`;
+      const gtSel = document.createElement("select");
+      gtSel.innerHTML = `<option value="brand"${promo.groupTargetType === "brand" ? " selected" : ""}>แบรนด์</option><option value="category"${promo.groupTargetType === "category" ? " selected" : ""}>หมวดหมู่</option>`;
+      gtSel.onchange = () => { promo.groupTargetType = gtSel.value; promo.groupTarget = (gtSel.value === "brand" ? BRANDS : CATEGORIES)[0]; renderPromotions(); };
+      gtRow.children[0].appendChild(gtSel);
+      const targetSel = document.createElement("select");
+      targetSel.innerHTML = selectHtml(promo.groupTargetType === "brand" ? BRANDS : CATEGORIES, promo.groupTarget);
+      targetSel.onchange = () => { promo.groupTarget = targetSel.value; renderPromotions(); };
+      gtRow.children[1].appendChild(targetSel);
+      card.appendChild(gtRow);
+
+      const msRow = document.createElement("div");
+      msRow.className = "field-row";
+      msRow.innerHTML = `<div class="field"><label>ยอดขั้นต่ำ (บาท)</label></div><div class="field"><label>Priority (ชนกันแล้วเลขสูงชนะ)</label></div>`;
+      const msInput = document.createElement("input");
+      msInput.type = "number"; msInput.min = 0; msInput.value = promo.groupMinSpend;
+      msInput.oninput = () => { promo.groupMinSpend = Number(msInput.value) || 0; };
+      msRow.children[0].appendChild(msInput);
+      const prInput = document.createElement("input");
+      prInput.type = "number"; prInput.min = 0; prInput.value = promo.priority;
+      prInput.oninput = () => { promo.priority = Number(prInput.value) || 0; };
+      msRow.children[1].appendChild(prInput);
+      card.appendChild(msRow);
+      const grpHint = document.createElement("div");
+      grpHint.className = "cond-hint";
+      grpHint.textContent = "โปรแบบ \"แบรนด์/หมวดหมู่\" ที่แย่งกลุ่มสินค้าเดียวกันจะให้ priority สูงสุดที่ผ่านเกณฑ์ชนะแค่ 1 อัน ไม่บวกซ้อนกัน — ส่วนแบบ \"เจาะจงสินค้า\" ใช้ร่วมกับโปรอื่นได้เสมอ";
+      card.appendChild(grpHint);
+    }
+
+    const rtField = document.createElement("div");
+    rtField.className = "field"; rtField.style.cssText = "margin:14px 0 8px";
+    rtField.innerHTML = `<label>ผลตอบแทน</label>`;
+    const rtToggle = document.createElement("div");
+    rtToggle.className = "type-toggle";
+    const discBtn = document.createElement("button");
+    discBtn.type = "button"; discBtn.className = "type-btn" + (promo.rewardType === "discount" ? " active" : ""); discBtn.textContent = "ส่วนลด";
+    discBtn.onclick = () => { promo.rewardType = "discount"; renderPromotions(); };
+    const shipBtn = document.createElement("button");
+    shipBtn.type = "button"; shipBtn.className = "type-btn" + (promo.rewardType === "freeship" ? " active" : ""); shipBtn.textContent = "ฟรีค่าส่ง";
+    shipBtn.onclick = () => { promo.rewardType = "freeship"; renderPromotions(); };
+    rtToggle.appendChild(discBtn); rtToggle.appendChild(shipBtn);
+    rtField.appendChild(rtToggle);
+    card.appendChild(rtField);
+
+    if (promo.rewardType === "discount") {
+      const dtField = document.createElement("div");
+      dtField.className = "field"; dtField.style.marginBottom = "8px";
+      dtField.innerHTML = `<label>ประเภทส่วนลด</label>`;
+      const dtToggle = document.createElement("div");
+      dtToggle.className = "type-toggle";
+      const fixedBtn = document.createElement("button");
+      fixedBtn.type = "button"; fixedBtn.className = "type-btn" + (promo.discountType === "fixed" ? " active" : ""); fixedBtn.textContent = "ลดราคาคงที่ (บาท)";
+      fixedBtn.onclick = () => { promo.discountType = "fixed"; renderPromotions(); };
+      const pctBtn = document.createElement("button");
+      pctBtn.type = "button"; pctBtn.className = "type-btn" + (promo.discountType === "percent" ? " active" : ""); pctBtn.textContent = "ลดเป็นเปอร์เซ็นต์ (%)";
+      pctBtn.onclick = () => { promo.discountType = "percent"; renderPromotions(); };
+      dtToggle.appendChild(fixedBtn); dtToggle.appendChild(pctBtn);
+      dtField.appendChild(dtToggle);
+      card.appendChild(dtField);
+
+      const valRow = document.createElement("div");
+      valRow.className = "field-row";
+      valRow.innerHTML = `<div class="field"><label>มูลค่าส่วนลด</label></div>` + (promo.discountType === "percent" ? `<div class="field"><label>ลดสูงสุดไม่เกิน (บาท, เว้นว่าง = ไม่จำกัด)</label></div>` : `<div></div>`);
+      const valInput = document.createElement("input");
+      valInput.type = "number"; valInput.min = 0; valInput.value = promo.discountValue;
+      valInput.oninput = () => { promo.discountValue = Number(valInput.value) || 0; renderPromotions(); };
+      valRow.children[0].appendChild(valInput);
+      if (promo.discountType === "percent") {
+        const capInput = document.createElement("input");
+        capInput.type = "number"; capInput.min = 0; capInput.value = promo.maxDiscountCap ?? "";
+        capInput.oninput = () => { promo.maxDiscountCap = capInput.value === "" ? null : Number(capInput.value); renderPromotions(); };
+        valRow.children[1].appendChild(capInput);
+      }
+      card.appendChild(valRow);
+    } else {
+      const shipHint = document.createElement("div");
+      shipHint.className = "cond-hint";
+      shipHint.textContent = "ฟรีค่าส่งเฉพาะรายการที่เข้าเงื่อนไขโปรนี้เท่านั้น ไม่ใช่ทั้งบิล — สินค้าอื่นในตะกร้ายังคิดค่าส่งปกติ";
+      card.appendChild(shipHint);
+    }
+
+    const dateRow = document.createElement("div");
+    dateRow.className = "field-row";
+    dateRow.innerHTML = `<div class="field"><label>เริ่มวันที่</label></div><div class="field"><label>ถึงวันที่ (เว้นว่าง = ไม่มีกำหนด)</label></div>`;
+    const startInput = document.createElement("input");
+    startInput.type = "date"; startInput.value = promo.startDate;
+    startInput.onchange = () => { promo.startDate = startInput.value; };
+    dateRow.children[0].appendChild(startInput);
+    const endInput = document.createElement("input");
+    endInput.type = "date"; endInput.value = promo.endDate;
+    endInput.onchange = () => { promo.endDate = endInput.value; };
+    dateRow.children[1].appendChild(endInput);
+    card.appendChild(dateRow);
+
+    const audField = document.createElement("div");
+    audField.className = "field"; audField.style.marginTop = "10px";
+    card.appendChild(audField);
+    renderAudienceField(audField, promo, () => {});
+
+    card.appendChild(renderPromotionPreview(promo));
+
+    el.appendChild(card);
+  });
+}
+
+function addPromotion() {
+  promotions.push({
+    id: "promo_" + Math.random().toString(36).slice(2, 8),
+    name: "โปรโมชั่นใหม่", description: "", condition: "",
+    active: true, quotaPerCustomer: null, strictUnit: false, startDate: "", endDate: "",
+    targetMode: "group",
+    conditionType: "QUANTITY", requiredItems: [], totalAmount: null,
+    groupTargetType: "brand", groupTarget: BRANDS[0], groupMinSpend: 500, priority: 0,
+    rewardType: "discount", discountType: "fixed", discountValue: 50, maxDiscountCap: null,
+    audienceType: "all", audienceCustomers: [],
+  });
+  renderPromotions();
+}
+
+function bootPromotions() {
+  document.getElementById("addPromotionBtn").addEventListener("click", addPromotion);
+  renderPromotions();
 }
 
 /* =========================================================
    2. ลดกลุ่มสินค้าตามวัน (flash / campaign day)
    ========================================================= */
-const flashSale = {
-  name: "9.9 MEGA SALE",
-  start: "2026-09-09T00:00",
-  end: "2026-09-09T23:59",
-  recurring: "yearly",
-  groups: [
-    { target: "หมวดยาสามัญประจำบ้าน", percent: 50 },
-    { target: "หมวดวิตามิน/อาหารเสริม", percent: 30 },
-    { target: "หมวดเวชภัณฑ์", percent: 70 },
-  ],
-};
+const flashSale = SETTINGS.flashSale;
 
 function renderFlash() {
   const tbody = document.getElementById("flashGroupsBody");
@@ -179,6 +524,9 @@ function renderFlash() {
   addSel.innerHTML = selectHtml(CATEGORIES.filter((c) => !flashSale.groups.some((g) => g.target === c)), null);
 
   document.getElementById("flashPreviewTitle").textContent = flashSale.name;
+  document.getElementById("flashActiveNote").textContent = flashSale.active
+    ? "สถานะ (จำลอง): กำลังอยู่ในช่วงเวลาโปร — ลูกค้าเห็นราคานี้ตอนนี้"
+    : "สถานะ (จำลอง): นอกช่วงเวลาโปร — ราคากลับปกติ";
   const catsEl = document.getElementById("flashPreviewCats");
   catsEl.innerHTML = "";
   flashSale.groups.forEach((g) => {
@@ -197,6 +545,7 @@ function bootFlash() {
   document.getElementById("flashEnd").value = flashSale.end;
   document.getElementById("flashEnd").onchange = (e) => { flashSale.end = e.target.value; };
   wireToggle(document.getElementById("flashRecurringToggle"), (pick) => { flashSale.recurring = pick; });
+  wireToggle(document.getElementById("flashActiveToggle"), (pick) => { flashSale.active = pick === "on"; renderFlash(); });
 
   document.getElementById("flashAddPercent").value = 20;
   document.getElementById("flashAddBtn").addEventListener("click", () => {
@@ -207,397 +556,543 @@ function bootFlash() {
     renderFlash();
   });
 
+  renderAudienceField(document.getElementById("flashAudienceField"), flashSale, () => {});
   renderFlash();
 }
 
+
 /* =========================================================
-   3. ส่วนลดท้ายบิล / ส่งฟรีกลุ่มนี้ (self-contained, ไม่ต้องออกไปหน้าอื่น)
+   4. คูปองกระดาษ — สร้างได้หลายชุดพร้อมกัน (self-contained, ไม่ผูกกับ SETTINGS)
    ========================================================= */
-let billRules = [
-  { targetType: "brand", target: "Blackmores", minSpend: 1000, discountType: "fixed", discountValue: 100, maxCap: null, priority: 10 },
+let paperCoupons = [
+  { id: "pc1", code: "ABC100", qty: 1000, discountAmount: 50, minSpend: 300, expiry: "2026-12-31" },
 ];
-const freeShip = { mode: "exclude", list: ["ยาน้ำแก้ไอ", "เข็มฉีดยา (กล่อง)"], minSpend: 0, active: true };
-const DEMO_CART = ["พาราเซตามอล 500mg", "วิตามินซี 1000mg (Blackmores)", "ยาน้ำแก้ไอ", "เข็มฉีดยา (กล่อง)"];
-const DEMO_BRAND_OF = { "พาราเซตามอล 500mg": "Generic", "วิตามินซี 1000mg (Blackmores)": "Blackmores", "ยาน้ำแก้ไอ": "Generic", "เข็มฉีดยา (กล่อง)": "Generic" };
-const DEMO_CATEGORY_OF = { "พาราเซตามอล 500mg": "หมวดยาสามัญประจำบ้าน", "วิตามินซี 1000mg (Blackmores)": "หมวดวิตามิน/อาหารเสริม", "ยาน้ำแก้ไอ": "หมวดยาสามัญประจำบ้าน", "เข็มฉีดยา (กล่อง)": "หมวดเวชภัณฑ์" };
+let paperClaims = [
+  { shop: "ร้านยาสุขภาพดี สาขา 2", code: "ABC100", stubs: 47, status: "pending" },
+  { shop: "ตัวแทนจำหน่าย เชียงใหม่", code: "ABC100", stubs: 112, status: "paid" },
+  { shop: "ร้านยาสุขภาพดี สาขา 5", code: "ABC100", stubs: 30, status: "paid" },
+];
 
-function ruleGroupTotal(rule) {
-  const matcher = rule.targetType === "brand" ? (p) => DEMO_BRAND_OF[p] === rule.target : (p) => DEMO_CATEGORY_OF[p] === rule.target;
-  return DEMO_CART.filter(matcher).reduce((s, p) => s + PRICE_MAP[p], 0);
-}
-function ruleDiscountAmount(rule, groupTotal) {
-  let off = rule.discountType === "percent" ? Math.round(groupTotal * (rule.discountValue / 100)) : rule.discountValue;
-  if (rule.discountType === "percent" && rule.maxCap) off = Math.min(off, rule.maxCap);
-  return off;
-}
-
-function renderBillRules() {
-  const tbody = document.getElementById("billRulesBody");
+function renderPaperCoupons() {
+  const tbody = document.getElementById("paperCouponsBody");
   tbody.innerHTML = "";
-  billRules.forEach((rule, idx) => {
-    const groupTotal = ruleGroupTotal(rule);
-    const discLabel = rule.discountType === "percent" ? `${rule.discountValue}%${rule.maxCap ? " (สูงสุด ฿" + fmt(rule.maxCap) + ")" : ""}` : `฿${fmt(rule.discountValue)}`;
+  paperCoupons.forEach((pc, idx) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${rule.targetType === "brand" ? "แบรนด์" : "หมวด"}: ${escapeHtml(rule.target)}</td>
-      <td class="mono">฿${fmt(rule.minSpend)}</td>
-      <td class="mono">${discLabel}</td>
-      <td class="mono">${rule.priority}</td>
+      <td class="mono">${escapeHtml(pc.code)}</td>
+      <td class="mono">${fmt(pc.qty)} ใบ</td>
+      <td class="mono">฿${fmt(pc.discountAmount)}</td>
+      <td class="mono">฿${fmt(pc.minSpend)}</td>
+      <td class="mono">${escapeHtml(pc.expiry)}</td>
       <td></td>
     `;
     const del = document.createElement("button");
     del.className = "del-btn"; del.type = "button"; del.textContent = "ลบ";
-    del.onclick = () => { billRules.splice(idx, 1); renderBillFreeShip(); };
-    tr.children[4].appendChild(del);
+    del.onclick = () => { paperCoupons.splice(idx, 1); renderPaperCoupons(); };
+    tr.children[5].appendChild(del);
     tbody.appendChild(tr);
   });
 
-  const typeSel = document.getElementById("billAddTargetType");
-  const targetSel = document.getElementById("billAddTarget");
-  targetSel.innerHTML = selectHtml(typeSel.value === "brand" ? BRANDS : CATEGORIES, null);
+  const preview = paperCoupons[paperCoupons.length - 1];
+  document.getElementById("pcCode").textContent = preview ? preview.code : "—";
+  document.getElementById("pcValue").textContent = preview ? "ลด ฿" + fmt(preview.discountAmount) : "—";
+  document.getElementById("pcMinSpendText").textContent = preview ? "เมื่อซื้อสินค้าครบ ฿" + fmt(preview.minSpend) : "";
+  document.getElementById("pcExpiryText").textContent = preview ? "ใช้ได้ถึง " + preview.expiry : "";
+
+  document.getElementById("paperAddCode").innerHTML = selectHtml(paperCoupons.map((p) => p.code), null);
+
+  renderPaperClaims();
 }
 
-function renderBillFreeShip() {
-  renderBillRules();
-
-  freeShip.list = freeShip.list || [];
-  const label = freeShip.mode === "exclude" ? "สินค้ายกเว้น (ไม่ฟรีค่าส่ง ต้องคิดค่าส่งเสมอ)" : "สินค้าที่เข้าเงื่อนไข (ฟรีค่าส่งเฉพาะรายการนี้เท่านั้น)";
-  document.getElementById("freeShipListLabel").textContent = label;
-  const excludedContainer = document.getElementById("freeShipExcludedList");
-  renderChipList(excludedContainer, freeShip.list, (idx) => { freeShip.list.splice(idx, 1); renderBillFreeShip(); });
-  document.getElementById("freeShipAddSelect").innerHTML = selectHtml(PRODUCTS.filter((p) => !freeShip.list.includes(p)), null);
-
-  // preview: split demo cart live by current mode + list
-  const inList = (p) => freeShip.list.includes(p);
-  const freeGroup = DEMO_CART.filter((p) => (freeShip.mode === "exclude" ? !inList(p) : inList(p)));
-  const chargeGroup = DEMO_CART.filter((p) => (freeShip.mode === "exclude" ? inList(p) : !inList(p)));
-  document.getElementById("previewFreeGroup").innerHTML = freeGroup.map((p) => `<div class="item"><span>${escapeHtml(p)}</span><span class="num">฿${fmt(PRICE_MAP[p])}</span></div>`).join("") || `<div class="item" style="color:var(--ink-faint)">(ไม่มี)</div>`;
-  document.getElementById("previewChargeGroup").innerHTML = chargeGroup.map((p) => `<div class="item"><span>${escapeHtml(p)}</span><span class="num">฿${fmt(PRICE_MAP[p])}</span></div>`).join("") || `<div class="item" style="color:var(--ink-faint)">(ไม่มี)</div>`;
-
-  const eligible = billRules.filter((r) => ruleGroupTotal(r) >= r.minSpend).sort((a, b) => b.priority - a.priority);
-  const winner = eligible[0];
-  document.getElementById("previewBillBadge").textContent = winner
-    ? `🏷️ เข้าเงื่อนไข "${winner.targetType === "brand" ? "แบรนด์" : "หมวด"} ${winner.target}" ลดทันที ${winner.discountType === "percent" ? winner.discountValue + "%" : "฿" + fmt(winner.discountValue)}${eligible.length > 1 ? " (ชนะกติกาอื่นด้วย priority)" : ""}`
-    : "🏷️ ยังไม่มีกติกาไหนถึงเกณฑ์ในตะกร้านี้";
-
-  document.getElementById("previewShipBadge").textContent = freeShip.active
-    ? (chargeGroup.length ? `🚚 ฟรีค่าส่งกลุ่มที่เข้าเงื่อนไข — คิดค่าส่งเฉพาะ ${chargeGroup.length} รายการ` : `🚚 ฟรีค่าส่งทั้งบิล ไม่มีรายการต้องคิดค่าส่งในตะกร้านี้`)
-    : "🚚 ปิดใช้งานอยู่";
-}
-
-function bootBillFreeShip() {
-  const typeSel = document.getElementById("billAddTargetType");
-  typeSel.onchange = () => renderBillRules();
-  document.getElementById("billAddDiscountType").value = "fixed";
-  document.getElementById("billAddBtn").addEventListener("click", () => {
-    const targetType = typeSel.value;
-    const target = document.getElementById("billAddTarget").value;
-    const minSpend = Number(document.getElementById("billAddMinSpend").value) || 0;
-    const discountType = document.getElementById("billAddDiscountType").value;
-    const discountValue = Number(document.getElementById("billAddValue").value) || 0;
-    const maxCap = document.getElementById("billAddCap").value === "" ? null : Number(document.getElementById("billAddCap").value);
-    const priority = Number(document.getElementById("billAddPriority").value) || 0;
-    if (!target || discountValue <= 0) return;
-    billRules.push({ targetType, target, minSpend, discountType, discountValue, maxCap, priority });
-    renderBillFreeShip();
-  });
-
-  wireAddRow(document.getElementById("freeShipAddSelect"), document.getElementById("freeShipAddBtn"), (v) => {
-    freeShip.list.push(v);
-    renderBillFreeShip();
-  });
-  const shipMinInput = document.getElementById("freeShipMinSpend");
-  shipMinInput.oninput = (e) => { freeShip.minSpend = Number(e.target.value) || 0; };
-  wireToggle(document.getElementById("freeShipActiveToggle"), (pick) => { freeShip.active = pick === "on"; renderBillFreeShip(); });
-  wireToggle(document.getElementById("freeShipModeToggle"), (pick) => { freeShip.mode = pick; renderBillFreeShip(); });
-
-  renderBillFreeShip();
-}
-
-/* =========================================================
-   4. คูปองกระดาษ (self-contained)
-   ========================================================= */
-const paperCoupon = { code: "ABC100", qty: 1000, discountAmount: 50, minSpend: 300, expiry: "2026-12-31", combinable: false };
-let paperClaims = [
-  { shop: "ร้านยาสุขภาพดี สาขา 2", stubs: 47, status: "pending" },
-  { shop: "ตัวแทนจำหน่าย เชียงใหม่", stubs: 112, status: "paid" },
-  { shop: "ร้านยาสุขภาพดี สาขา 5", stubs: 30, status: "paid" },
-];
-
-function renderPaperCoupon() {
-  document.getElementById("pcCode").textContent = paperCoupon.code;
-  document.getElementById("pcValue").textContent = "ลด ฿" + fmt(paperCoupon.discountAmount);
-  document.getElementById("pcMinSpendText").textContent = "เมื่อซื้อสินค้าครบ ฿" + fmt(paperCoupon.minSpend);
-  document.getElementById("pcExpiryText").textContent = "ใช้ได้ถึง " + paperCoupon.expiry;
-  document.getElementById("genOut").innerHTML = `สร้างแล้ว: โค้ด ${escapeHtml(paperCoupon.code)} × ${fmt(paperCoupon.qty)} ใบ<br>สถานะ: พร้อมส่งไฟล์พิมพ์`;
-
-  const tbody = document.getElementById("paperClaimsBody");
-  tbody.innerHTML = "";
+function renderPaperClaims() {
+  const wrap = document.getElementById("paperClaimsBody");
+  wrap.innerHTML = "";
   paperClaims.forEach((c, idx) => {
-    const tr = document.createElement("tr");
-    const value = c.stubs * paperCoupon.discountAmount;
-    tr.innerHTML = `<td>${escapeHtml(c.shop)}</td><td class="mono">${escapeHtml(paperCoupon.code)}</td><td class="num">${c.stubs} ใบ</td><td class="num">฿${fmt(value)}</td><td></td>`;
+    const pc = paperCoupons.find((p) => p.code === c.code);
+    const value = c.stubs * (pc ? pc.discountAmount : 0);
+    const row = document.createElement("div");
+    row.className = "cq-row";
+    row.innerHTML = `<span>${escapeHtml(c.shop)}</span><span class="mono">${escapeHtml(c.code)}</span><span class="num">${c.stubs} ใบ</span><span class="num">฿${fmt(value)}</span>`;
     if (c.status === "pending") {
       const btn = document.createElement("button");
       btn.className = "cq-status pending"; btn.type = "button"; btn.textContent = "รอตรวจนับ";
-      btn.onclick = () => { c.status = "paid"; renderPaperCoupon(); };
-      tr.children[4].appendChild(btn);
+      btn.onclick = () => { c.status = "paid"; renderPaperClaims(); };
+      row.appendChild(btn);
     } else {
-      tr.children[4].innerHTML = `<span class="cq-status paid">จ่ายเงินแล้ว</span>`;
+      const span = document.createElement("span");
+      span.className = "cq-status paid"; span.textContent = "จ่ายเงินแล้ว";
+      row.appendChild(span);
     }
-    tbody.appendChild(tr);
+    wrap.appendChild(row);
   });
 }
 
 function bootPaperCoupon() {
-  document.getElementById("genCode").value = paperCoupon.code;
-  document.getElementById("genQty").value = paperCoupon.qty;
-  document.getElementById("genDiscount").value = paperCoupon.discountAmount;
-  document.getElementById("genMinSpend").value = paperCoupon.minSpend;
-  document.getElementById("genExpiry").value = paperCoupon.expiry;
+  document.getElementById("genQty").value = 1000;
+  document.getElementById("genDiscount").value = 50;
+  document.getElementById("genMinSpend").value = 300;
+  document.getElementById("genExpiry").value = "2026-12-31";
 
   document.getElementById("genBtn").addEventListener("click", () => {
-    paperCoupon.code = (document.getElementById("genCode").value.trim() || "ABC100").toUpperCase();
-    paperCoupon.qty = Number(document.getElementById("genQty").value) || 0;
-    paperCoupon.discountAmount = Number(document.getElementById("genDiscount").value) || 0;
-    paperCoupon.minSpend = Number(document.getElementById("genMinSpend").value) || 0;
-    paperCoupon.expiry = document.getElementById("genExpiry").value || paperCoupon.expiry;
-    renderPaperCoupon();
+    const code = (document.getElementById("genCode").value.trim() || "CODE" + (paperCoupons.length + 1)).toUpperCase();
+    const qty = Number(document.getElementById("genQty").value) || 0;
+    const discountAmount = Number(document.getElementById("genDiscount").value) || 0;
+    const minSpend = Number(document.getElementById("genMinSpend").value) || 0;
+    const expiry = document.getElementById("genExpiry").value || "2026-12-31";
+    paperCoupons.push({ id: "pc_" + Math.random().toString(36).slice(2, 8), code, qty, discountAmount, minSpend, expiry });
+    document.getElementById("genOut").innerHTML = `สร้างแล้ว: โค้ด ${escapeHtml(code)} × ${fmt(qty)} ใบ<br>สถานะ: พร้อมส่งไฟล์พิมพ์`;
+    document.getElementById("genCode").value = "";
+    renderPaperCoupons();
   });
-  wireToggle(document.getElementById("paperCombinableToggle"), (pick) => { paperCoupon.combinable = pick === "yes"; });
 
   document.getElementById("paperAddBtn").addEventListener("click", () => {
     const shop = document.getElementById("paperAddShop").value.trim();
+    const code = document.getElementById("paperAddCode").value;
     const stubs = Number(document.getElementById("paperAddStubs").value) || 0;
-    if (!shop || stubs <= 0) return;
-    paperClaims.unshift({ shop, stubs, status: "pending" });
+    if (!shop || !code || stubs <= 0) return;
+    paperClaims.unshift({ shop, code, stubs, status: "pending" });
     document.getElementById("paperAddShop").value = "";
     document.getElementById("paperAddStubs").value = "";
-    renderPaperCoupon();
+    renderPaperClaims();
   });
 
-  renderPaperCoupon();
+  renderPaperCoupons();
 }
 
 /* =========================================================
-   5. คูปองออนไลน์ (ไม่ unique) — ทดลองใช้โค้ดจริงกับ log
+   5. คูปองออนไลน์ (ไม่ unique) — สร้างได้หลายโค้ดพร้อมกัน, ทดลองใช้โค้ดจริงกับ log
    ========================================================= */
-const onlineCoupon = { code: "SAVE100", minSpend: 500, discountAmount: 100, excluded: [], totalLimit: null, perCustomerLimit: 1, startDate: "2026-09-01", endDate: "2026-09-30", combinable: false };
+let onlineCoupons = SETTINGS.onlineCoupons;
 let onlineLog = [
-  { time: "09:14", customer: "ร้านยา A", order: "#A1502", verdict: "ok", note: "ใช้ครั้งที่ 1" },
-  { time: "09:20", customer: "ร้านยา B", order: "#A1503", verdict: "ok", note: "ใช้ครั้งที่ 1" },
+  { time: "09:14", customer: "ร้านยา A", order: "#A1502", code: "SAVE100", verdict: "ok", note: "ใช้ครั้งที่ 1" },
+  { time: "09:20", customer: "ร้านยา B", order: "#A1503", code: "SAVE100", verdict: "ok", note: "ใช้ครั้งที่ 1" },
 ];
 let onlineOrderSeq = 1503;
 
-function usageCountFor(customer) {
-  return onlineLog.filter((l) => l.customer === customer && l.verdict === "ok").length;
+function usageCountFor(customer, code) {
+  return onlineLog.filter((l) => l.customer === customer && l.code === code && l.verdict === "ok").length;
+}
+function totalUsedCount(code) {
+  return onlineLog.filter((l) => l.code === code && l.verdict === "ok").length;
 }
 
-function totalUsedCount() {
-  return onlineLog.filter((l) => l.verdict === "ok").length;
+function renderOnlineCoupons() {
+  const el = document.getElementById("onlineCouponsList");
+  el.innerHTML = "";
+  onlineCoupons.forEach((oc, idx) => {
+    const card = document.createElement("div");
+    card.className = "m-card";
+
+    const head = document.createElement("div");
+    head.className = "m-card-head";
+    head.innerHTML = `<span class="idx">โค้ดที่ ${idx + 1}</span>`;
+    const del = document.createElement("button");
+    del.className = "del-btn"; del.type = "button"; del.textContent = "ลบ";
+    del.onclick = () => { onlineCoupons.splice(idx, 1); renderOnlineCoupons(); };
+    head.appendChild(del);
+    card.appendChild(head);
+
+    const row1 = document.createElement("div");
+    row1.className = "field-row";
+    row1.innerHTML = `<div class="field"><label>โค้ด (พิมพ์เองได้ ไม่บังคับ unique)</label></div><div class="field"><label>ยอดขั้นต่ำ (บาท)</label></div>`;
+    const codeInput = document.createElement("input");
+    codeInput.type = "text"; codeInput.value = oc.code;
+    codeInput.onchange = () => { oc.code = codeInput.value.trim().toUpperCase() || oc.code; renderOnlineCoupons(); };
+    row1.children[0].appendChild(codeInput);
+    const minInput = document.createElement("input");
+    minInput.type = "number"; minInput.value = oc.minSpend; minInput.min = 0;
+    minInput.oninput = () => { oc.minSpend = Number(minInput.value) || 0; };
+    row1.children[1].appendChild(minInput);
+    card.appendChild(row1);
+
+    const row2 = document.createElement("div");
+    row2.className = "field-row";
+    row2.innerHTML = `<div class="field"><label>ส่วนลด (บาท)</label></div><div class="field"><label>จำกัดจำนวนครั้งใช้ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label></div>`;
+    const discInput = document.createElement("input");
+    discInput.type = "number"; discInput.value = oc.discountAmount; discInput.min = 0;
+    discInput.oninput = () => { oc.discountAmount = Number(discInput.value) || 0; };
+    row2.children[0].appendChild(discInput);
+    const totalInput = document.createElement("input");
+    totalInput.type = "number"; totalInput.value = oc.totalLimit ?? ""; totalInput.min = 1;
+    totalInput.oninput = () => { oc.totalLimit = totalInput.value === "" ? null : Number(totalInput.value); renderOnlineUsageSummary(); };
+    row2.children[1].appendChild(totalInput);
+    card.appendChild(row2);
+
+    const row3 = document.createElement("div");
+    row3.className = "field-row";
+    row3.innerHTML = `<div class="field"><label>จำกัดจำนวนครั้งต่อคน</label></div><div class="field"><label>เริ่มใช้ได้</label></div>`;
+    const perInput = document.createElement("input");
+    perInput.type = "number"; perInput.value = oc.perCustomerLimit; perInput.min = 1;
+    perInput.oninput = () => { oc.perCustomerLimit = Number(perInput.value) || 1; };
+    row3.children[0].appendChild(perInput);
+    const startInput = document.createElement("input");
+    startInput.type = "date"; startInput.value = oc.startDate;
+    startInput.onchange = () => { oc.startDate = startInput.value; };
+    row3.children[1].appendChild(startInput);
+    card.appendChild(row3);
+
+    const row4 = document.createElement("div");
+    row4.className = "field-row single";
+    row4.innerHTML = `<div class="field"><label>ใช้ได้ถึง</label></div>`;
+    const endInput = document.createElement("input");
+    endInput.type = "date"; endInput.value = oc.endDate;
+    endInput.onchange = () => { oc.endDate = endInput.value; };
+    row4.children[0].appendChild(endInput);
+    card.appendChild(row4);
+
+    const exField = document.createElement("div");
+    exField.className = "field"; exField.style.marginTop = "6px";
+    exField.innerHTML = `<label>ยกเว้นสินค้า</label>`;
+    const exChip = document.createElement("div");
+    exChip.className = "chk-group";
+    renderChipList(exChip, oc.excluded, (i) => { oc.excluded.splice(i, 1); renderOnlineCoupons(); });
+    exField.appendChild(exChip);
+    const exAddRow = document.createElement("div");
+    exAddRow.style.cssText = "display:flex;gap:6px;margin-top:8px;";
+    const exSel = document.createElement("select");
+    exSel.style.flex = "1";
+    exSel.innerHTML = selectHtml(PRODUCTS.filter((p) => !oc.excluded.includes(p)), null);
+    const exBtn = document.createElement("button");
+    exBtn.type = "button"; exBtn.className = "fb-add"; exBtn.style.cssText = "width:auto;padding:0 12px"; exBtn.textContent = "+";
+    exBtn.onclick = () => { if (exSel.value) { oc.excluded.push(exSel.value); renderOnlineCoupons(); } };
+    exAddRow.appendChild(exSel); exAddRow.appendChild(exBtn);
+    exField.appendChild(exAddRow);
+    card.appendChild(exField);
+
+    const audField = document.createElement("div");
+    audField.className = "field"; audField.style.marginTop = "10px";
+    card.appendChild(audField);
+    renderAudienceField(audField, oc, () => {});
+
+    el.appendChild(card);
+  });
+
+  const trySel = document.getElementById("onlineTryCode");
+  if (trySel) trySel.innerHTML = selectHtml(onlineCoupons.map((c) => c.code), null);
+
+  renderOnlineUsageSummary();
+  renderOnlineLog();
 }
 
-function renderOnlineCoupon() {
-  const excludedContainer = document.getElementById("onlineExcludedList");
-  renderChipList(excludedContainer, onlineCoupon.excluded, (idx) => { onlineCoupon.excluded.splice(idx, 1); renderOnlineCoupon(); });
-  document.getElementById("onlineExcludedAddSelect").innerHTML = selectHtml(PRODUCTS.filter((p) => !onlineCoupon.excluded.includes(p)), null);
+function addOnlineCoupon() {
+  onlineCoupons.push({
+    id: "onl_" + Math.random().toString(36).slice(2, 8),
+    code: "NEWCODE" + (onlineCoupons.length + 1), minSpend: 500, discountAmount: 50, excluded: [],
+    totalLimit: null, perCustomerLimit: 1, startDate: "", endDate: "", audienceType: "all", audienceCustomers: [], usedTotal: 0,
+  });
+  renderOnlineCoupons();
+}
 
-  const used = totalUsedCount();
-  document.getElementById("onlineUsageSummary").textContent = onlineCoupon.totalLimit
-    ? `ใช้ไปแล้ว ${fmt(used)} / ${fmt(onlineCoupon.totalLimit)} ครั้ง (รวมทุกคน)`
-    : `ใช้ไปแล้ว ${fmt(used)} ครั้ง (ไม่จำกัดจำนวนครั้งรวม)`;
+function renderOnlineUsageSummary() {
+  const el = document.getElementById("onlineUsageSummary");
+  if (onlineCoupons.length === 0) { el.textContent = "ยังไม่มีโค้ดออนไลน์ — เพิ่มด้านบนก่อน"; return; }
+  el.innerHTML = onlineCoupons.map((oc) => {
+    const used = totalUsedCount(oc.code);
+    return `<b class="mono">${escapeHtml(oc.code)}</b>: ใช้ไปแล้ว ${fmt(used)}${oc.totalLimit ? " / " + fmt(oc.totalLimit) : ""} ครั้ง (รวมทุกคน)`;
+  }).join("<br>");
+}
 
+function renderOnlineLog() {
   const tbody = document.getElementById("onlineLogBody");
   tbody.innerHTML = "";
   onlineLog.forEach((l) => {
     const tr = document.createElement("tr");
     if (l.verdict === "blocked") tr.className = "blocked";
-    tr.innerHTML = `<td>${escapeHtml(l.time)}</td><td>${escapeHtml(l.customer)}</td><td class="mono">${escapeHtml(l.order)}</td><td><span class="log-verdict ${l.verdict === "ok" ? "ok" : "blocked"}">${l.verdict === "ok" ? "ผ่าน — " : "บล็อก — "}${escapeHtml(l.note)}</span></td>`;
+    tr.innerHTML = `<td>${escapeHtml(l.time)}</td><td>${escapeHtml(l.customer)}</td><td class="mono">${escapeHtml(l.code)}</td><td class="mono">${escapeHtml(l.order)}</td><td><span class="log-verdict ${l.verdict === "ok" ? "ok" : "blocked"}">${l.verdict === "ok" ? "ผ่าน — " : "บล็อก — "}${escapeHtml(l.note)}</span></td>`;
     tbody.appendChild(tr);
   });
 }
 
 function bootOnlineCoupon() {
-  document.getElementById("onlineCode").value = onlineCoupon.code;
-  document.getElementById("onlineCode").onchange = (e) => { onlineCoupon.code = e.target.value.toUpperCase(); };
-  document.getElementById("onlineMinSpend").value = onlineCoupon.minSpend;
-  document.getElementById("onlineMinSpend").oninput = (e) => { onlineCoupon.minSpend = Number(e.target.value) || 0; };
-  document.getElementById("onlineDiscount").value = onlineCoupon.discountAmount;
-  document.getElementById("onlineDiscount").oninput = (e) => { onlineCoupon.discountAmount = Number(e.target.value) || 0; };
-  document.getElementById("onlineTotalLimit").oninput = (e) => { onlineCoupon.totalLimit = e.target.value === "" ? null : Number(e.target.value); renderOnlineCoupon(); };
-  const perLimitInput = document.getElementById("onlinePerCustomerLimit");
-  perLimitInput.value = onlineCoupon.perCustomerLimit;
-  perLimitInput.oninput = (e) => { onlineCoupon.perCustomerLimit = Number(e.target.value) || 1; };
-  document.getElementById("onlineStart").value = onlineCoupon.startDate;
-  document.getElementById("onlineStart").onchange = (e) => { onlineCoupon.startDate = e.target.value; };
-  document.getElementById("onlineEnd").value = onlineCoupon.endDate;
-  document.getElementById("onlineEnd").onchange = (e) => { onlineCoupon.endDate = e.target.value; };
-  wireToggle(document.getElementById("onlineCombinableToggle"), (pick) => { onlineCoupon.combinable = pick === "yes"; });
-
-  wireAddRow(document.getElementById("onlineExcludedAddSelect"), document.getElementById("onlineExcludedAddBtn"), (v) => {
-    onlineCoupon.excluded.push(v);
-    renderOnlineCoupon();
-  });
+  document.getElementById("addOnlineCouponBtn").addEventListener("click", addOnlineCoupon);
 
   document.getElementById("onlineTrySubmit").addEventListener("click", () => {
     const customer = document.getElementById("onlineTryCustomer").value.trim();
-    if (!customer) return;
+    const code = (document.getElementById("onlineTryCode").value || "").toUpperCase();
+    if (!customer || !code) return;
+    const oc = onlineCoupons.find((c) => c.code.toUpperCase() === code);
     onlineOrderSeq += 1;
-    const used = usageCountFor(customer);
-    const totalUsed = totalUsedCount();
     const now = new Date();
     const time = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
-    if (onlineCoupon.totalLimit && totalUsed >= onlineCoupon.totalLimit) {
-      onlineLog.unshift({ time, customer, order: "#A" + onlineOrderSeq, verdict: "blocked", note: `โค้ดหมดโควตารวมแล้ว (${onlineCoupon.totalLimit} ครั้ง)` });
-    } else if (used >= onlineCoupon.perCustomerLimit) {
-      onlineLog.unshift({ time, customer, order: "#A" + onlineOrderSeq, verdict: "blocked", note: `เกินโควตาต่อคน (${onlineCoupon.perCustomerLimit})` });
+    if (!oc) {
+      onlineLog.unshift({ time, customer, order: "#A" + onlineOrderSeq, code, verdict: "blocked", note: "ไม่พบโค้ดนี้" });
     } else {
-      onlineLog.unshift({ time, customer, order: "#A" + onlineOrderSeq, verdict: "ok", note: `ใช้ครั้งที่ ${used + 1}` });
+      const used = usageCountFor(customer, oc.code);
+      const totalUsed = totalUsedCount(oc.code);
+      if (oc.totalLimit && totalUsed >= oc.totalLimit) {
+        onlineLog.unshift({ time, customer, order: "#A" + onlineOrderSeq, code: oc.code, verdict: "blocked", note: `โค้ดหมดโควตารวมแล้ว (${oc.totalLimit} ครั้ง)` });
+      } else if (used >= oc.perCustomerLimit) {
+        onlineLog.unshift({ time, customer, order: "#A" + onlineOrderSeq, code: oc.code, verdict: "blocked", note: `เกินโควตาต่อคน (${oc.perCustomerLimit})` });
+      } else {
+        onlineLog.unshift({ time, customer, order: "#A" + onlineOrderSeq, code: oc.code, verdict: "ok", note: `ใช้ครั้งที่ ${used + 1}` });
+      }
     }
-    renderOnlineCoupon();
+    renderOnlineUsageSummary();
+    renderOnlineLog();
   });
 
-  renderOnlineCoupon();
+  renderOnlineCoupons();
 }
 
 /* =========================================================
-   6. คูปองเก็บล่วงหน้า
+   6. คูปองเก็บล่วงหน้า / แจกอัตโนมัติทุกเดือน — สร้างได้หลายใบพร้อมกัน
+      แต่ละใบเลือกรูปแบบการแจกอิสระจากกัน (กดรับเอง หรือแจกอัตโนมัติทุกเดือน)
    ========================================================= */
-const walletCoupon = {
-  name: "ส่งฟรีทั้งบิล ไม่มีขั้นต่ำ",
-  discountType: "freeship",
-  discountValue: 0,
-  maxDiscountCap: null,
-  excluded: [],
-  minSpend: 0,
-  quotaTotal: 500,
-  perCustomerLimit: 1,
-  combinable: true,
-  collectStart: "2026-09-01",
-  collectEnd: "2026-09-15",
-  expiryMode: "fixed",
-  expiryDate: "2026-09-30",
-  expiryDays: 14,
-};
+let collectibleCoupons = SETTINGS.collectibleCoupons;
 
-function renderWallet() {
-  document.getElementById("walletValueField").hidden = walletCoupon.discountType === "freeship";
-  document.getElementById("walletCapField").hidden = walletCoupon.discountType !== "percent";
-  document.getElementById("walletTicketTitle").textContent = walletCoupon.name;
-  const capText = walletCoupon.discountType === "percent" && walletCoupon.maxDiscountCap ? ` (สูงสุด ฿${fmt(walletCoupon.maxDiscountCap)})` : "";
-  const desc = walletCoupon.discountType === "freeship"
+function collectibleDescText(c) {
+  const cap = c.discountType === "percent" && c.maxDiscountCap ? ` (สูงสุด ฿${fmt(c.maxDiscountCap)})` : "";
+  return c.discountType === "freeship"
     ? "ฟรีค่าส่งเฉพาะกลุ่มเข้าเงื่อนไข (มีข้อยกเว้น)"
-    : `ลด ${walletCoupon.discountType === "percent" ? walletCoupon.discountValue + "%" + capText : "฿" + fmt(walletCoupon.discountValue)} เมื่อซื้อครบ ฿${fmt(walletCoupon.minSpend)}`;
-  document.getElementById("walletTicketDesc").textContent = desc;
-
-  const excludedContainer = document.getElementById("walletExcludedList");
-  if (excludedContainer) {
-    renderChipList(excludedContainer, walletCoupon.excluded, (idx) => { walletCoupon.excluded.splice(idx, 1); renderWallet(); });
-    document.getElementById("walletExcludedAddSelect").innerHTML = selectHtml(PRODUCTS.filter((p) => !walletCoupon.excluded.includes(p)), null);
-  }
-  const quotaText = (walletCoupon.quotaTotal ? fmt(walletCoupon.quotaTotal) : "ไม่จำกัด") + " สิทธิ์" + (walletCoupon.perCustomerLimit ? " · คนละ " + walletCoupon.perCustomerLimit + " ใบ" : "");
-  document.getElementById("walletTicketQty").textContent = quotaText;
-  document.getElementById("walletTicketExpiry").textContent = walletCoupon.expiryMode === "fixed"
-    ? "ใช้ได้ถึง " + walletCoupon.expiryDate
-    : "ใช้ได้ " + walletCoupon.expiryDays + " วันหลังเก็บ";
+    : `ลด ${c.discountType === "percent" ? c.discountValue + "%" + cap : "฿" + fmt(c.discountValue)} เมื่อซื้อครบ ฿${fmt(c.minSpend)}`;
 }
 
-function bootWallet() {
-  document.getElementById("walletName").value = walletCoupon.name;
-  document.getElementById("walletName").oninput = (e) => { walletCoupon.name = e.target.value; renderWallet(); };
+function renderCollectibleCoupons() {
+  const el = document.getElementById("collectibleCouponsList");
+  el.innerHTML = "";
+  collectibleCoupons.forEach((cc, idx) => {
+    const isAuto = cc.distributionMode === "auto_monthly";
+    const card = document.createElement("div");
+    card.className = "m-card";
 
-  wireToggle(document.getElementById("walletDiscountType"), (pick) => { walletCoupon.discountType = pick; renderWallet(); });
-  document.getElementById("walletMinSpend").oninput = (e) => { walletCoupon.minSpend = Number(e.target.value) || 0; renderWallet(); };
-  document.getElementById("walletDiscountValue").oninput = (e) => { walletCoupon.discountValue = Number(e.target.value) || 0; renderWallet(); };
-  document.getElementById("walletMaxCap").oninput = (e) => { walletCoupon.maxDiscountCap = e.target.value === "" ? null : Number(e.target.value); renderWallet(); };
-  wireAddRow(document.getElementById("walletExcludedAddSelect"), document.getElementById("walletExcludedAddBtn"), (v) => {
-    walletCoupon.excluded.push(v);
-    renderWallet();
+    const head = document.createElement("div");
+    head.className = "m-card-head";
+    head.innerHTML = `<span class="idx">ใบที่ ${idx + 1}</span>`;
+    const del = document.createElement("button");
+    del.className = "del-btn"; del.type = "button"; del.textContent = "ลบ";
+    del.onclick = () => { collectibleCoupons.splice(idx, 1); renderCollectibleCoupons(); };
+    head.appendChild(del);
+    card.appendChild(head);
+
+    const distField = document.createElement("div");
+    distField.className = "field"; distField.style.marginBottom = "8px";
+    distField.innerHTML = `<label>รูปแบบการแจก</label>`;
+    const distToggle = document.createElement("div");
+    distToggle.className = "type-toggle";
+    const manualBtn = document.createElement("button");
+    manualBtn.type = "button"; manualBtn.className = "type-btn" + (!isAuto ? " active" : ""); manualBtn.textContent = "เปิดให้กดรับเอง";
+    manualBtn.onclick = () => { cc.distributionMode = "manual"; renderCollectibleCoupons(); };
+    const autoBtn = document.createElement("button");
+    autoBtn.type = "button"; autoBtn.className = "type-btn" + (isAuto ? " active" : ""); autoBtn.textContent = "แจกอัตโนมัติทุกเดือน";
+    autoBtn.onclick = () => { cc.distributionMode = "auto_monthly"; renderCollectibleCoupons(); };
+    distToggle.appendChild(manualBtn); distToggle.appendChild(autoBtn);
+    distField.appendChild(distToggle);
+    card.appendChild(distField);
+
+    const nameRow = document.createElement("div");
+    nameRow.className = "field-row single";
+    nameRow.innerHTML = `<div class="field"><label>ชื่อคูปอง/สิทธิ์</label></div>`;
+    const nameInput = document.createElement("input");
+    nameInput.type = "text"; nameInput.value = cc.name;
+    nameInput.oninput = () => { cc.name = nameInput.value; };
+    nameRow.children[0].appendChild(nameInput);
+    card.appendChild(nameRow);
+
+    const dtField = document.createElement("div");
+    dtField.className = "field"; dtField.style.marginBottom = "8px";
+    dtField.innerHTML = `<label>ประเภทส่วนลด</label>`;
+    const dtToggle = document.createElement("div");
+    dtToggle.className = "type-toggle";
+    [["freeship", "ส่งฟรี"], ["fixed", "ลดราคาคงที่"], ["percent", "ลดเปอร์เซ็นต์"]].forEach(([val, label]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "type-btn" + (cc.discountType === val ? " active" : ""); b.textContent = label;
+      b.onclick = () => { cc.discountType = val; renderCollectibleCoupons(); };
+      dtToggle.appendChild(b);
+    });
+    dtField.appendChild(dtToggle);
+    card.appendChild(dtField);
+
+    if (cc.discountType !== "freeship") {
+      const valRow = document.createElement("div");
+      valRow.className = "field-row";
+      valRow.innerHTML = `<div class="field"><label>มูลค่าส่วนลด</label></div>` + (cc.discountType === "percent" ? `<div class="field"><label>ลดสูงสุดไม่เกิน (บาท)</label></div>` : `<div></div>`);
+      const valInput = document.createElement("input");
+      valInput.type = "number"; valInput.value = cc.discountValue; valInput.min = 0;
+      valInput.oninput = () => { cc.discountValue = Number(valInput.value) || 0; };
+      valRow.children[0].appendChild(valInput);
+      if (cc.discountType === "percent") {
+        const capInput = document.createElement("input");
+        capInput.type = "number"; capInput.value = cc.maxDiscountCap ?? ""; capInput.min = 0;
+        capInput.oninput = () => { cc.maxDiscountCap = capInput.value === "" ? null : Number(capInput.value); };
+        valRow.children[1].appendChild(capInput);
+      }
+      card.appendChild(valRow);
+    }
+
+    const minRow = document.createElement("div");
+    minRow.className = "field-row single";
+    minRow.innerHTML = `<div class="field"><label>ยอดขั้นต่ำ (บาท)</label></div>`;
+    const minInput = document.createElement("input");
+    minInput.type = "number"; minInput.value = cc.minSpend; minInput.min = 0;
+    minInput.oninput = () => { cc.minSpend = Number(minInput.value) || 0; };
+    minRow.children[0].appendChild(minInput);
+    card.appendChild(minRow);
+
+    const exField = document.createElement("div");
+    exField.className = "field"; exField.style.marginBottom = "8px";
+    exField.innerHTML = `<label>ยกเว้นสินค้า</label>`;
+    const exChip = document.createElement("div");
+    exChip.className = "chk-group";
+    renderChipList(exChip, cc.excluded, (i) => { cc.excluded.splice(i, 1); renderCollectibleCoupons(); });
+    exField.appendChild(exChip);
+    const exAddRow = document.createElement("div");
+    exAddRow.style.cssText = "display:flex;gap:6px;margin-top:8px;";
+    const exSel = document.createElement("select");
+    exSel.style.flex = "1";
+    exSel.innerHTML = selectHtml(PRODUCTS.filter((p) => !cc.excluded.includes(p)), null);
+    const exBtn = document.createElement("button");
+    exBtn.type = "button"; exBtn.className = "fb-add"; exBtn.style.cssText = "width:auto;padding:0 12px"; exBtn.textContent = "+";
+    exBtn.onclick = () => { if (exSel.value) { cc.excluded.push(exSel.value); renderCollectibleCoupons(); } };
+    exAddRow.appendChild(exSel); exAddRow.appendChild(exBtn);
+    exField.appendChild(exAddRow);
+    card.appendChild(exField);
+
+    const qRow = document.createElement("div");
+    qRow.className = "field-row";
+    qRow.innerHTML = `<div class="field"><label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label></div><div class="field"><label>จำกัดต่อคน (เว้นว่าง = ไม่จำกัด)</label></div>`;
+    const quotaInput = document.createElement("input");
+    quotaInput.type = "number"; quotaInput.value = cc.quotaTotal ?? ""; quotaInput.min = 1;
+    quotaInput.oninput = () => { cc.quotaTotal = quotaInput.value === "" ? null : Number(quotaInput.value); };
+    qRow.children[0].appendChild(quotaInput);
+    const perInput = document.createElement("input");
+    perInput.type = "number"; perInput.value = cc.perCustomerLimit ?? ""; perInput.min = 1;
+    perInput.oninput = () => { cc.perCustomerLimit = perInput.value === "" ? null : Number(perInput.value); };
+    qRow.children[1].appendChild(perInput);
+    card.appendChild(qRow);
+
+    if (!isAuto) {
+      const dateRow = document.createElement("div");
+      dateRow.className = "field-row";
+      dateRow.innerHTML = `<div class="field"><label>เริ่มเก็บได้</label></div><div class="field"><label>เก็บได้ถึง</label></div>`;
+      const csInput = document.createElement("input");
+      csInput.type = "date"; csInput.value = cc.collectStart;
+      csInput.onchange = () => { cc.collectStart = csInput.value; };
+      dateRow.children[0].appendChild(csInput);
+      const ceInput = document.createElement("input");
+      ceInput.type = "date"; ceInput.value = cc.collectEnd;
+      ceInput.onchange = () => { cc.collectEnd = ceInput.value; };
+      dateRow.children[1].appendChild(ceInput);
+      card.appendChild(dateRow);
+
+      const expField = document.createElement("div");
+      expField.className = "field"; expField.style.marginBottom = "8px";
+      expField.innerHTML = `<label>การหมดอายุ</label>`;
+      const expToggle = document.createElement("div");
+      expToggle.className = "type-toggle";
+      const fixedBtn = document.createElement("button");
+      fixedBtn.type = "button"; fixedBtn.className = "type-btn" + (cc.expiryMode === "fixed" ? " active" : ""); fixedBtn.textContent = "วันที่ตายตัว";
+      fixedBtn.onclick = () => { cc.expiryMode = "fixed"; renderCollectibleCoupons(); };
+      const relBtn = document.createElement("button");
+      relBtn.type = "button"; relBtn.className = "type-btn" + (cc.expiryMode === "relative" ? " active" : ""); relBtn.textContent = "นับจากวันเก็บ (กี่วัน)";
+      relBtn.onclick = () => { cc.expiryMode = "relative"; renderCollectibleCoupons(); };
+      expToggle.appendChild(fixedBtn); expToggle.appendChild(relBtn);
+      expField.appendChild(expToggle);
+      card.appendChild(expField);
+
+      if (cc.expiryMode === "fixed") {
+        const edRow = document.createElement("div");
+        edRow.className = "field-row single";
+        edRow.innerHTML = `<div class="field"><label>วันหมดอายุ</label></div>`;
+        const edInput = document.createElement("input");
+        edInput.type = "date"; edInput.value = cc.expiryDate;
+        edInput.onchange = () => { cc.expiryDate = edInput.value; renderCollectibleCoupons(); };
+        edRow.children[0].appendChild(edInput);
+        card.appendChild(edRow);
+      } else {
+        const eDaysRow = document.createElement("div");
+        eDaysRow.className = "field-row single";
+        eDaysRow.innerHTML = `<div class="field"><label>จำนวนวันหลังเก็บ</label></div>`;
+        const eDaysInput = document.createElement("input");
+        eDaysInput.type = "number"; eDaysInput.value = cc.expiryDays; eDaysInput.min = 1;
+        eDaysInput.oninput = () => { cc.expiryDays = Number(eDaysInput.value) || 1; renderCollectibleCoupons(); };
+        eDaysRow.children[0].appendChild(eDaysInput);
+        card.appendChild(eDaysRow);
+      }
+      const hint = document.createElement("div");
+      hint.className = "cond-hint";
+      hint.textContent = "วันที่ตายตัวเหมาะกับแคมเปญช่วงเวลาจำกัด — นับจากวันเก็บเหมาะกับให้ลูกค้าใช้เมื่อไหร่ก็ได้ ไม่ผูกปฏิทิน";
+      card.appendChild(hint);
+    } else {
+      const dayRow = document.createElement("div");
+      dayRow.className = "field-row single";
+      dayRow.innerHTML = `<div class="field"><label>วันที่ออกสิทธิ์ในแต่ละเดือน</label></div>`;
+      const daySel = document.createElement("select");
+      daySel.innerHTML = Array.from({ length: 28 }, (_, i) => i + 1).map((d) => `<option value="${d}"${d === cc.dayOfMonth ? " selected" : ""}>วันที่ ${d}</option>`).join("");
+      daySel.onchange = () => { cc.dayOfMonth = Number(daySel.value); };
+      dayRow.children[0].appendChild(daySel);
+      card.appendChild(dayRow);
+      const hint = document.createElement("div");
+      hint.className = "cond-hint";
+      hint.textContent = "หมดอายุล็อกไว้ที่ \"สิ้นเดือนเดียวกันเสมอ\" ไม่ให้ตั้งเอง กันลูกค้ากักตุนสิทธิ์ข้ามเดือน";
+      card.appendChild(hint);
+    }
+
+    const audField = document.createElement("div");
+    audField.className = "field"; audField.style.marginTop = "10px";
+    card.appendChild(audField);
+    renderAudienceField(audField, cc, () => {});
+
+    const previewWrap = document.createElement("div");
+    previewWrap.style.marginTop = "14px";
+    previewWrap.innerHTML = `<div class="preview-label">มุมมองลูกค้า (สด)</div>`;
+    const qtyText = (cc.quotaTotal ? fmt(cc.quotaTotal) : "ไม่จำกัด") + " สิทธิ์" + (cc.perCustomerLimit ? " · คนละ " + cc.perCustomerLimit + " ใบ" : "");
+    const expText = isAuto ? "หมดอายุสิ้นเดือนเดียวกันเสมอ" : (cc.expiryMode === "fixed" ? "ใช้ได้ถึง " + cc.expiryDate : "ใช้ได้ " + cc.expiryDays + " วันหลังเก็บ");
+    const ticket = document.createElement("div");
+    ticket.className = "ticket";
+    ticket.innerHTML = `
+      <span class="notch top"></span><span class="notch bottom"></span>
+      <div class="main">
+        <div class="t-title">${escapeHtml(cc.name)}</div>
+        <div class="t-desc">${escapeHtml(collectibleDescText(cc))}</div>
+        <div class="t-qty" style="margin-top:8px">${escapeHtml(qtyText)}</div>
+      </div>
+      <div class="stub"><span class="t-btn" style="background:var(--a);color:#fff;border-radius:20px;padding:6px 12px">เก็บ</span><span class="t-exp" style="margin-top:6px">${escapeHtml(expText)}</span></div>
+    `;
+    previewWrap.appendChild(ticket);
+    if (isAuto) {
+      const monthPreview = document.createElement("div");
+      monthPreview.className = "month-strip"; monthPreview.style.marginTop = "10px";
+      monthPreview.innerHTML = `<div class="month-cell now"><div class="mc-m">เดือนนี้</div><div class="mc-icon">🎁</div><div class="mc-s">ออกอัตโนมัติ</div></div>`;
+      previewWrap.appendChild(monthPreview);
+    }
+    card.appendChild(previewWrap);
+
+    el.appendChild(card);
   });
+}
 
-  const quotaInput = document.getElementById("walletQuotaTotal");
-  quotaInput.value = walletCoupon.quotaTotal;
-  quotaInput.oninput = (e) => { walletCoupon.quotaTotal = e.target.value === "" ? null : Number(e.target.value); renderWallet(); };
-  const perInput = document.getElementById("walletPerCustomerLimit");
-  perInput.value = walletCoupon.perCustomerLimit;
-  perInput.oninput = (e) => { walletCoupon.perCustomerLimit = e.target.value === "" ? null : Number(e.target.value); renderWallet(); };
-
-  document.getElementById("walletCollectStart").value = walletCoupon.collectStart;
-  document.getElementById("walletCollectStart").onchange = (e) => { walletCoupon.collectStart = e.target.value; };
-  document.getElementById("walletCollectEnd").value = walletCoupon.collectEnd;
-  document.getElementById("walletCollectEnd").onchange = (e) => { walletCoupon.collectEnd = e.target.value; };
-
-  const fixedField = document.getElementById("walletExpiryFixedField");
-  const relField = document.getElementById("walletExpiryRelField");
-  wireToggle(document.getElementById("walletExpiryModeToggle"), (pick) => {
-    walletCoupon.expiryMode = pick;
-    fixedField.hidden = pick !== "fixed";
-    relField.hidden = pick !== "relative";
-    renderWallet();
+function addCollectibleCoupon() {
+  collectibleCoupons.push({
+    id: "col_" + Math.random().toString(36).slice(2, 8),
+    name: "คูปองใหม่", discountType: "fixed", discountValue: 50, maxDiscountCap: null,
+    excluded: [], minSpend: 0, quotaTotal: 100, quotaClaimed: 0, perCustomerLimit: 1,
+    distributionMode: "manual", collectStart: "", collectEnd: "", expiryMode: "fixed", expiryDate: "", expiryDays: 14,
+    dayOfMonth: 1, audienceType: "all", audienceCustomers: [],
   });
-  document.getElementById("walletExpiryDate").value = walletCoupon.expiryDate;
-  document.getElementById("walletExpiryDate").onchange = (e) => { walletCoupon.expiryDate = e.target.value; renderWallet(); };
-  document.getElementById("walletExpiryDays").value = walletCoupon.expiryDays;
-  document.getElementById("walletExpiryDays").oninput = (e) => { walletCoupon.expiryDays = Number(e.target.value) || 1; renderWallet(); };
-  wireToggle(document.getElementById("walletCombinableToggle"), (pick) => { walletCoupon.combinable = pick === "yes"; });
+  renderCollectibleCoupons();
+}
 
-  renderWallet();
+function bootCollectible() {
+  document.getElementById("addCollectibleCouponBtn").addEventListener("click", addCollectibleCoupon);
+  renderCollectibleCoupons();
 }
 
 /* =========================================================
-   7. คูปองรายเดือน
+   7. ระบบสะสมพอยท์
    ========================================================= */
-const monthlyCoupon = { name: "สิทธิ์ส่งฟรีประจำเดือน", dayOfMonth: 1, audience: "สมาชิกพิเศษเท่านั้น", discountType: "freeship", discountValue: 0, minSpend: 0, combinable: true };
-
-function renderMonthlyPreview() {
-  const desc = monthlyCoupon.discountType === "freeship"
-    ? "ส่งฟรีทั้งบิล"
-    : `ลด ${monthlyCoupon.discountType === "percent" ? monthlyCoupon.discountValue + "%" : "฿" + fmt(monthlyCoupon.discountValue)}${monthlyCoupon.minSpend ? " เมื่อซื้อครบ ฿" + fmt(monthlyCoupon.minSpend) : ""}`;
-  document.getElementById("monthlyPreviewDesc").textContent = `รอบนี้ให้: ${desc} · ออกทุกวันที่ ${monthlyCoupon.dayOfMonth}`;
-  document.getElementById("monthlyValueField").hidden = monthlyCoupon.discountType === "freeship";
-}
-
-function bootMonthly() {
-  document.getElementById("monthlyName").value = monthlyCoupon.name;
-  document.getElementById("monthlyName").oninput = (e) => { monthlyCoupon.name = e.target.value; renderMonthlyPreview(); };
-
-  const daySel = document.getElementById("monthlyDay");
-  daySel.innerHTML = Array.from({ length: 28 }, (_, i) => i + 1).map((d) => `<option value="${d}"${d === monthlyCoupon.dayOfMonth ? " selected" : ""}>วันที่ ${d}</option>`).join("");
-  daySel.onchange = (e) => { monthlyCoupon.dayOfMonth = Number(e.target.value); renderMonthlyPreview(); };
-
-  const audSel = document.getElementById("monthlyAudience");
-  audSel.innerHTML = selectHtml(["ทุกคน", "สมาชิกพิเศษเท่านั้น", "เฉพาะที่เคยซื้อเดือนก่อน"], monthlyCoupon.audience);
-  audSel.onchange = (e) => { monthlyCoupon.audience = e.target.value; };
-
-  wireToggle(document.getElementById("monthlyDiscountType"), (pick) => { monthlyCoupon.discountType = pick; renderMonthlyPreview(); });
-  document.getElementById("monthlyDiscountValue").oninput = (e) => { monthlyCoupon.discountValue = Number(e.target.value) || 0; renderMonthlyPreview(); };
-  document.getElementById("monthlyMinSpend").oninput = (e) => { monthlyCoupon.minSpend = Number(e.target.value) || 0; renderMonthlyPreview(); };
-  wireToggle(document.getElementById("monthlyCombinableToggle"), (pick) => { monthlyCoupon.combinable = pick === "yes"; });
-  renderMonthlyPreview();
-
-  const nowCell = document.getElementById("monthNow");
-  nowCell.addEventListener("click", () => {
-    if (nowCell.classList.contains("got")) return;
-    nowCell.classList.remove("now");
-    nowCell.classList.add("got");
-    nowCell.innerHTML = '<div class="mc-m">ก.ย.</div><div class="mc-icon">✅</div><div class="mc-s">ใช้แล้ว</div>';
-  });
-}
-
-/* =========================================================
-   8. ระบบสะสมพอยท์
-   ========================================================= */
-const pointSettings = { spendPer: 100, pointsPer: 10, rounding: "floor" };
-let redeemCatalog = [
-  { name: "คูปองลด ฿50", type: "คูปอง", cost: 500, quota: null, active: true },
-  { name: "คูปองส่งฟรี", type: "คูปอง", cost: 300, quota: null, active: true },
-  { name: "ของแถมพรีเมียม", type: "สินค้า", cost: 1200, quota: 50, active: true },
-  { name: "เครดิตเงินคืน ฿100", type: "เครดิต", cost: 1000, quota: null, active: false },
-];
+const pointSettings = SETTINGS.pointSettings;
+let redeemCatalog = SETTINGS.redeemCatalog;
 
 function renderPointRate() {
   const roundLabel = pointSettings.rounding === "floor" ? "ปัดเศษที่เหลือทิ้ง" : "ปัดพอยท์ใกล้เคียง";
   document.getElementById("pointRatePreview").textContent = `ทุกยอดซื้อ ฿${fmt(pointSettings.spendPer)} ได้ ${fmt(pointSettings.pointsPer)} พอยท์ · ยอดที่ไม่ลงตัว ${roundLabel} — เช่น ซื้อ ฿${fmt(pointSettings.spendPer * 1.5)} ได้ ${pointSettings.rounding === "floor" ? fmt(pointSettings.pointsPer) : fmt(Math.round(pointSettings.pointsPer * 1.5))} พอยท์`;
+}
+
+function redeemRewardText(item) {
+  if (item.type === "สินค้า") return "ของจริง — เข้าคิวจัดส่ง";
+  if (item.discountType === "freeship") return "คูปองส่งฟรี (ทันที)";
+  if (item.discountType === "percent") return `คูปองลด ${item.discountValue || 0}%${item.maxDiscountCap ? " (สูงสุด ฿" + fmt(item.maxDiscountCap) + ")" : ""} (ทันที)`;
+  return `คูปองลด ฿${fmt(item.discountValue || 0)} (ทันที)`;
 }
 
 function renderRedeemCatalog() {
@@ -608,6 +1103,7 @@ function renderRedeemCatalog() {
     tr.innerHTML = `
       <td>${escapeHtml(item.name)}</td>
       <td>${escapeHtml(item.type)}</td>
+      <td>${escapeHtml(redeemRewardText(item))}</td>
       <td class="mono">${fmt(item.cost)}</td>
       <td class="mono">${item.quota ? fmt(item.quota) : "ไม่จำกัด"}</td>
       <td></td><td></td>
@@ -617,12 +1113,12 @@ function renderRedeemCatalog() {
     statusBtn.style.cssText = "border:none;cursor:pointer;";
     statusBtn.textContent = item.active ? "เปิดใช้งาน" : "ปิดชั่วคราว";
     statusBtn.onclick = () => { item.active = !item.active; renderRedeemCatalog(); };
-    tr.children[4].appendChild(statusBtn);
+    tr.children[5].appendChild(statusBtn);
 
     const del = document.createElement("button");
     del.className = "del-btn"; del.type = "button"; del.textContent = "ลบ";
     del.onclick = () => { redeemCatalog.splice(idx, 1); renderRedeemCatalog(); };
-    tr.children[5].appendChild(del);
+    tr.children[6].appendChild(del);
 
     tbody.appendChild(tr);
   });
@@ -649,16 +1145,35 @@ function bootPoint() {
   });
   renderExcludedPoint();
 
+  const redeemTypeSel = document.getElementById("redeemAddType");
+  const redeemDiscTypeSel = document.getElementById("redeemAddDiscountType");
+  const redeemDiscValInput = document.getElementById("redeemAddDiscountValue");
+  const syncRedeemDiscountFields = () => {
+    const isPhysical = redeemTypeSel.value === "สินค้า";
+    redeemDiscTypeSel.hidden = isPhysical;
+    redeemDiscValInput.hidden = isPhysical || redeemDiscTypeSel.value === "freeship";
+  };
+  redeemTypeSel.onchange = syncRedeemDiscountFields;
+  redeemDiscTypeSel.onchange = syncRedeemDiscountFields;
+  syncRedeemDiscountFields();
+
   document.getElementById("redeemAddBtn").addEventListener("click", () => {
     const name = document.getElementById("redeemAddName").value.trim();
-    const type = document.getElementById("redeemAddType").value;
+    const type = redeemTypeSel.value;
     const cost = Number(document.getElementById("redeemAddCost").value) || 0;
     const quotaRaw = document.getElementById("redeemAddQuota").value;
     if (!name || cost <= 0) return;
-    redeemCatalog.push({ name, type, cost, quota: quotaRaw === "" ? null : Number(quotaRaw), active: true });
+    const item = { name, type, cost, quota: quotaRaw === "" ? null : Number(quotaRaw), active: true };
+    if (type !== "สินค้า") {
+      item.discountType = redeemDiscTypeSel.value;
+      item.discountValue = item.discountType === "freeship" ? 0 : (Number(redeemDiscValInput.value) || 0);
+      item.maxDiscountCap = null;
+    }
+    redeemCatalog.push(item);
     document.getElementById("redeemAddName").value = "";
     document.getElementById("redeemAddCost").value = "";
     document.getElementById("redeemAddQuota").value = "";
+    redeemDiscValInput.value = "";
     renderRedeemCatalog();
   });
 
@@ -666,36 +1181,14 @@ function bootPoint() {
 }
 
 /* =========================================================
-   9. แคมเปญ — รายการขั้นรางวัล เลือกเงื่อนไขปลดล็อกได้ 3 แบบต่อขั้น
+   8. แคมเปญ — ขั้นบันไดล้วน ไม่มีเงื่อนไขปลดล็อกแยก
+      "คนแรกถึงเกณฑ์" = ตั้งโควตาน้อย, "สุ่มจับรางวัล" = ไม่ตั้งโควตา + รางวัลนอกระบบ
+      ทั้งสองแบบคือ milestone ปกติ ต่างกันแค่ค่าที่แอดมินตั้งเอง ไม่ใช่ mechanic แยก
    ========================================================= */
 const MFIELD_TYPES = ["TEXT", "TEL", "NUMBER", "DATE", "SELECT"];
 
-function seedMilestones() {
-  return [
-    {
-      id: "cm1", name: "เครื่องวัดความดันโลหิตดิจิทัล", requiredAmount: 100000,
-      conditionType: "amount", quotaTotal: 50,
-      rewardType: "catalog", catalogItem: PRODUCTS[0], detail: "",
-      combinable: true,
-      requiredFields: [{ label: "ที่อยู่จัดส่ง", type: "TEXT" }],
-    },
-    {
-      id: "cm2", name: "ทริปสัมมนาเภสัชกรต่างประเทศ 3 วัน 2 คืน", requiredAmount: 500000,
-      conditionType: "first_n", quotaTotal: 20,
-      rewardType: "experience", catalogItem: "", detail: "รวมตั๋วเครื่องบิน ที่พัก และค่าลงทะเบียนสัมมนา",
-      combinable: true,
-      requiredFields: [{ label: "ชื่อผู้เดินทางตามพาสปอร์ต", type: "TEXT" }, { label: "เบอร์ติดต่อ", type: "TEL" }],
-    },
-    {
-      id: "cm3", name: "ตั๋วเครื่องบินไป-กลับต่างประเทศ 1 ที่นั่ง", requiredAmount: 1000000,
-      conditionType: "raffle", winnersCount: 3, drawDate: "2026-12-31",
-      rewardType: "experience", catalogItem: "", detail: "เลือกปลายทางได้ตามเงื่อนไขสายการบินคู่สัญญา",
-      combinable: true,
-      requiredFields: [{ label: "ชื่อผู้เดินทางตามพาสปอร์ต", type: "TEXT" }, { label: "เลขหนังสือเดินทาง", type: "NUMBER" }],
-    },
-  ];
-}
-let milestones = seedMilestones();
+let milestones = SETTINGS.milestones;
+let claimedDemo = {}; // milestone id -> จำนวนที่ถูกกดรับไปแล้ว (จำลอง, สำหรับปุ่ม "จำลองคนอื่นรับไปก่อน")
 
 function buildMilestoneFieldEditor(fields, onChange) {
   const wrap = document.createElement("div");
@@ -754,89 +1247,39 @@ function renderMilestones() {
     head.innerHTML = `<span class="idx">ขั้นที่ ${idx + 1}</span>`;
     const del = document.createElement("button");
     del.className = "del-btn"; del.type = "button"; del.textContent = "ลบ";
-    del.onclick = () => { milestones = milestones.filter((x) => x.id !== m.id); renderMilestones(); renderWheelMilestoneSelect(); };
+    del.onclick = () => { const i = milestones.findIndex((x) => x.id === m.id); if (i >= 0) milestones.splice(i, 1); renderMilestones(); };
     head.appendChild(del);
     card.appendChild(head);
 
     const row1 = document.createElement("div");
     row1.className = "field-row";
-    row1.innerHTML = `<div class="field"><label>ยอดเกณฑ์ (บาท)</label></div><div class="field"><label>ชื่อรางวัล</label></div>`;
+    row1.innerHTML = `<div class="field"><label>ยอดเกณฑ์สะสม (บาท)</label></div><div class="field"><label>ชื่อรางวัล</label></div>`;
     const amtInput = document.createElement("input");
     amtInput.type = "number"; amtInput.value = m.requiredAmount; amtInput.step = 1000;
     amtInput.onchange = () => { m.requiredAmount = Number(amtInput.value) || 0; renderMilestones(); };
     row1.children[0].appendChild(amtInput);
     const nameInput = document.createElement("input");
     nameInput.type = "text"; nameInput.value = m.name;
-    nameInput.onchange = () => { m.name = nameInput.value; renderMilestones(); renderWheelMilestoneSelect(); };
+    nameInput.onchange = () => { m.name = nameInput.value; renderMilestones(); };
     row1.children[1].appendChild(nameInput);
     card.appendChild(row1);
 
-    // condition type — the 3-way rethink
-    const condField = document.createElement("div");
-    condField.className = "field"; condField.style.marginBottom = "8px";
-    condField.innerHTML = `<label>เงื่อนไขปลดล็อก</label>`;
-    const condToggle = document.createElement("div");
-    condToggle.className = "type-toggle";
-    [["amount", "🪜 ขั้นบันได (การันตี)"], ["first_n", "🏁 คนแรกที่ถึงเกณฑ์"], ["raffle", "🎰 สุ่มจับรางวัล"]].forEach(([val, label]) => {
-      const b = document.createElement("button");
-      b.type = "button"; b.className = "type-btn" + (m.conditionType === val ? " active" : ""); b.textContent = label;
-      b.onclick = () => {
-        m.conditionType = val;
-        if (val !== "raffle" && !m.quotaTotal) m.quotaTotal = 50;
-        if (val === "raffle" && !m.winnersCount) { m.winnersCount = 3; m.drawDate = m.drawDate || "2026-12-31"; }
-        renderMilestones(); renderWheelMilestoneSelect();
-      };
-      condToggle.appendChild(b);
-    });
-    condField.appendChild(condToggle);
-    card.appendChild(condField);
+    const qField = document.createElement("div");
+    qField.className = "field"; qField.style.cssText = "margin-bottom:8px;max-width:280px";
+    qField.innerHTML = `<label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label>`;
+    const qInput = document.createElement("input");
+    qInput.type = "number"; qInput.min = 1; qInput.value = m.quotaTotal ?? "";
+    qInput.placeholder = "ไม่จำกัด";
+    qInput.onchange = () => { m.quotaTotal = qInput.value === "" ? null : Math.max(1, Number(qInput.value) || 1); renderMilestones(); };
+    qField.appendChild(qInput);
+    card.appendChild(qField);
+    const hint = document.createElement("div");
+    hint.className = "cond-hint";
+    hint.textContent = m.quotaTotal
+      ? `ตั้งจำนวนน้อย = ลูกค้าจะแข่งกันแบบใครถึงก่อนได้ก่อน (ระบบโชว์ "เหลือ X/${m.quotaTotal} สิทธิ์" ให้ลูกค้าเห็นเอง)`
+      : "ไม่จำกัดสิทธิ์ — ทุกคนที่ถึงยอดกดรับได้เสมอ (เหมาะกับของที่ต้องคัดเลือก/จับรางวัลกันเองนอกระบบภายหลัง เช่นตั๋วเครื่องบิน)";
+    card.appendChild(hint);
 
-    if (m.conditionType === "amount") {
-      const hint = document.createElement("div");
-      hint.className = "cond-hint";
-      hint.textContent = "ลูกค้าทุกคนที่ถึงยอดได้รับสิทธิ์แน่นอน — จำนวนสิทธิ์ด้านล่างเป็นแค่เพดานความปลอดภัย";
-      card.appendChild(hint);
-      const qField = document.createElement("div");
-      qField.className = "field"; qField.style.cssText = "margin-bottom:8px;max-width:220px";
-      qField.innerHTML = `<label>จำนวนสิทธิ์ทั้งหมด</label>`;
-      const qInput = document.createElement("input");
-      qInput.type = "number"; qInput.min = 1; qInput.value = m.quotaTotal || 50;
-      qInput.onchange = () => { m.quotaTotal = Math.max(1, Number(qInput.value) || 1); };
-      qField.appendChild(qInput);
-      card.appendChild(qField);
-    } else if (m.conditionType === "first_n") {
-      const qField = document.createElement("div");
-      qField.className = "field"; qField.style.cssText = "margin-bottom:8px;max-width:260px";
-      qField.innerHTML = `<label>จำนวนคนแรกที่รับสิทธิ์ได้</label>`;
-      const qInput = document.createElement("input");
-      qInput.type = "number"; qInput.min = 1; qInput.value = m.quotaTotal || 20;
-      qInput.onchange = () => { m.quotaTotal = Math.max(1, Number(qInput.value) || 1); };
-      qField.appendChild(qInput);
-      card.appendChild(qField);
-      const hint = document.createElement("div");
-      hint.className = "cond-hint";
-      hint.textContent = "แสดง \"เหลือ X/Y สิทธิ์\" กับลูกค้าตรงๆ ได้ เพราะเป็นกติกาที่โปร่งใสอยู่แล้ว";
-      card.appendChild(hint);
-    } else {
-      const row = document.createElement("div");
-      row.className = "field-row";
-      row.innerHTML = `<div class="field"><label>จำนวนผู้โชคดีที่จะสุ่ม</label></div><div class="field"><label>วันที่ประกาศผล</label></div>`;
-      const winInput = document.createElement("input");
-      winInput.type = "number"; winInput.min = 1; winInput.value = m.winnersCount || 3;
-      winInput.onchange = () => { m.winnersCount = Math.max(1, Number(winInput.value) || 1); };
-      row.children[0].appendChild(winInput);
-      const dateInput = document.createElement("input");
-      dateInput.type = "date"; dateInput.value = m.drawDate || "";
-      dateInput.onchange = () => { m.drawDate = dateInput.value; };
-      row.children[1].appendChild(dateInput);
-      card.appendChild(row);
-      const hint = document.createElement("div");
-      hint.className = "cond-hint";
-      hint.innerHTML = `<b>ไม่แสดง</b> "เหลือกี่สิทธิ์" กับลูกค้า — แสดงแค่ "เข้าร่วมลุ้นแล้ว N คน" แทน ผู้โชคดีตัดสินด้วยการจับรางวัลวันที่ประกาศผลเท่านั้น`;
-      card.appendChild(hint);
-    }
-
-    // reward type
     const typeField = document.createElement("div");
     typeField.className = "field"; typeField.style.marginBottom = "8px";
     typeField.innerHTML = `<label>ประเภทรางวัล</label>`;
@@ -858,13 +1301,13 @@ function renderMilestones() {
       f.innerHTML = `<label>เลือกสินค้าในเว็บ</label>`;
       const sel = document.createElement("select");
       sel.innerHTML = selectHtml(PRODUCTS, m.catalogItem);
-      sel.onchange = () => { m.catalogItem = sel.value; m.name = sel.value; renderMilestones(); renderWheelMilestoneSelect(); };
+      sel.onchange = () => { m.catalogItem = sel.value; m.name = sel.value; renderMilestones(); };
       f.appendChild(sel);
       card.appendChild(f);
     } else {
       const f = document.createElement("div");
       f.className = "field"; f.style.marginBottom = "8px";
-      f.innerHTML = `<label>รายละเอียดของรางวัล</label>`;
+      f.innerHTML = `<label>รายละเอียดของรางวัล (แอดมินพิมพ์เอง)</label>`;
       const ta = document.createElement("textarea");
       ta.value = m.detail;
       ta.oninput = () => { m.detail = ta.value; };
@@ -874,21 +1317,22 @@ function renderMilestones() {
 
     card.appendChild(buildMilestoneFieldEditor(m.requiredFields, renderMilestones));
 
-    // combinability
-    const combField = document.createElement("div");
-    combField.className = "field";
-    combField.innerHTML = `<label>ใช้ร่วมกับโปรโมชั่น/คูปองอื่นพร้อมกันได้ไหม</label>`;
-    const combToggle = document.createElement("div");
-    combToggle.className = "type-toggle";
-    const yesBtn = document.createElement("button");
-    yesBtn.type = "button"; yesBtn.className = "type-btn" + (m.combinable ? " active" : ""); yesBtn.textContent = "ใช้ร่วมกันได้";
-    yesBtn.onclick = () => { m.combinable = true; renderMilestones(); };
-    const noBtn = document.createElement("button");
-    noBtn.type = "button"; noBtn.className = "type-btn" + (!m.combinable ? " active" : ""); noBtn.textContent = "นับเฉพาะยอดซื้อเดี่ยวๆ";
-    noBtn.onclick = () => { m.combinable = false; renderMilestones(); };
-    combToggle.appendChild(yesBtn); combToggle.appendChild(noBtn);
-    combField.appendChild(combToggle);
-    card.appendChild(combField);
+    // demo: มุมมองลูกค้าสั้นๆ + ปุ่มจำลองคนอื่นรับไปก่อน (ใช้ได้กับทุกขั้นที่มีโควตา)
+    const claimed = claimedDemo[m.id] || 0;
+    const remaining = m.quotaTotal ? Math.max(0, m.quotaTotal - claimed) : null;
+    const demoRow = document.createElement("div");
+    demoRow.className = "cond-hint";
+    demoRow.style.marginTop = "6px";
+    demoRow.textContent = remaining === null ? "มุมมองลูกค้า: ไม่จำกัดสิทธิ์ (จำลองไม่ต้องมีคนแย่ง)" : `มุมมองลูกค้า: เหลือ ${remaining}/${m.quotaTotal} สิทธิ์`;
+    card.appendChild(demoRow);
+    if (m.quotaTotal) {
+      const simBtn = document.createElement("button");
+      simBtn.type = "button"; simBtn.className = "fb-add"; simBtn.style.marginTop = "6px";
+      simBtn.textContent = "+ จำลองคนอื่นรับไปก่อน 1 คน";
+      simBtn.disabled = remaining <= 0;
+      simBtn.onclick = () => { claimedDemo[m.id] = (claimedDemo[m.id] || 0) + 1; renderMilestones(); };
+      card.appendChild(simBtn);
+    }
 
     el.appendChild(card);
   });
@@ -898,13 +1342,11 @@ function addMilestone() {
   milestones.push({
     id: "cm_" + Math.random().toString(36).slice(2, 8),
     name: "รางวัลใหม่", requiredAmount: 50000,
-    conditionType: "amount", quotaTotal: 50,
+    quotaTotal: 50,
     rewardType: "catalog", catalogItem: PRODUCTS[0], detail: "",
-    combinable: true,
     requiredFields: [{ label: "ที่อยู่จัดส่ง", type: "TEXT" }],
   });
   renderMilestones();
-  renderWheelMilestoneSelect();
 }
 
 function bootCondition() {
@@ -912,96 +1354,27 @@ function bootCondition() {
   document.getElementById("addMilestoneBtn").addEventListener("click", addMilestone);
 }
 
-/* =========================================================
-   10. วงล้อสุ่ม
-   ========================================================= */
-const RAFFLE_ENTRANTS = [
-  "ร้านยาสุขภาพดี สาขา 2", "ร้านยา รุ่งเรืองเภสัช", "คลินิกหมอสมชาย", "ร้านยาดีดี ฟาร์มาซี",
-  "ร้านยา บ้านหมอ", "ตัวแทนจำหน่าย เชียงใหม่", "ร้านยาชุมชนพลัส", "เภสัชกรออนไลน์ 24",
-];
-const WHEEL_COLORS = ["#0E5C52", "#4FC2AC", "#A8722C", "#E2AC5C", "#154B3F", "#B8894A", "#0A4038", "#D9A25C"];
-let wheelRotation = 0;
-let wheelSpinning = false;
-
-function buildWheelGradient(n) {
-  const seg = 360 / n;
-  const stops = [];
-  for (let i = 0; i < n; i++) stops.push(`${WHEEL_COLORS[i % WHEEL_COLORS.length]} ${i * seg}deg ${(i + 1) * seg}deg`);
-  return `conic-gradient(${stops.join(",")})`;
-}
-
-function renderWheelMilestoneSelect() {
-  const sel = document.getElementById("wheelMilestoneSelect");
-  if (!sel) return;
-  const raffles = milestones.filter((m) => m.conditionType === "raffle");
-  if (raffles.length === 0) {
-    sel.innerHTML = `<option value="">— ไม่มีขั้นแบบสุ่มจับรางวัลตอนนี้ —</option>`;
-    document.getElementById("wheelHub").textContent = "🎁";
-    return;
-  }
-  sel.innerHTML = selectHtml(raffles.map((m) => m.name), null);
-  document.getElementById("wheelHub").textContent = "🎁";
-}
-
-function bootWheel() {
-  const disc = document.getElementById("wheelDisc");
-  const legend = document.getElementById("wheelLegend");
-  const btn = document.getElementById("wheelSpinBtn");
-  const result = document.getElementById("wheelResult");
-  if (!disc) return;
-
-  renderWheelMilestoneSelect();
-  const n = RAFFLE_ENTRANTS.length;
-  disc.style.background = buildWheelGradient(n);
-  legend.innerHTML = "";
-  RAFFLE_ENTRANTS.forEach((name, i) => {
-    const row = document.createElement("div");
-    row.className = "wl-item";
-    row.innerHTML = `<span class="wl-dot" style="background:${WHEEL_COLORS[i % WHEEL_COLORS.length]}"></span>${escapeHtml(name)}`;
-    legend.appendChild(row);
-  });
-
+function bootResetButton() {
+  const btn = document.getElementById("resetSettingsBtn");
+  if (!btn) return;
   btn.addEventListener("click", () => {
-    if (wheelSpinning) return;
-    wheelSpinning = true;
-    btn.disabled = true;
-    result.className = "wheel-result empty";
-    result.textContent = "กำลังหมุน...";
-
-    const seg = 360 / n;
-    const winnerIdx = Math.floor(Math.random() * n);
-    const segCenter = winnerIdx * seg + seg / 2;
-    const extraSpins = 6 * 360;
-    const targetWithinTurn = 360 - segCenter;
-    const delta = extraSpins + targetWithinTurn - (wheelRotation % 360);
-    wheelRotation += delta;
-    disc.style.transform = `rotate(${wheelRotation}deg)`;
-
-    setTimeout(() => {
-      wheelSpinning = false;
-      btn.disabled = false;
-      result.className = "wheel-result";
-      result.textContent = "🎉 ผู้โชคดีคือ " + RAFFLE_ENTRANTS[winnerIdx];
-    }, 4300);
-  });
-}
-
-function bootAudienceSelects() {
-  document.querySelectorAll(".audience-select").forEach((sel) => {
-    sel.innerHTML = selectHtml(AUDIENCE_OPTIONS, "ลูกค้าทุกคน");
+    pmpcResetSettings();
+    location.reload();
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  bootAudienceSelects();
-  bootCombo();
+  bootPromotions();
   bootFlash();
-  bootBillFreeShip();
   bootPaperCoupon();
   bootOnlineCoupon();
-  bootWallet();
-  bootMonthly();
+  bootCollectible();
   bootPoint();
   bootCondition();
-  bootWheel();
+  bootResetButton();
+
+  // ค่าที่ตั้งทุกจุด (promotions/flashSale/onlineCoupons/collectibleCoupons/pointSettings/redeemCatalog/milestones)
+  // เซฟลง localStorage เป็นระยะ ให้ index.html อ่านไปใช้ได้เสมอ ไม่ต้องดักทุก handler ทีละจุด
+  setInterval(persist, 1000);
+  window.addEventListener("beforeunload", persist);
 });

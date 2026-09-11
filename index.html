@@ -3,97 +3,136 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>จำลองแคมเปญสะสม — ระบบ B</title>
+<title>ร้านค้าจำลอง Pharmaplex</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Taviraj:wght@500;600;700&family=IBM+Plex+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="showcase.css">
-<link rel="stylesheet" href="admin.css">
+<link rel="stylesheet" href="shop.css">
 </head>
 <body>
-<div class="wrap showcase">
+<div class="wrap">
 
   <nav class="site-nav">
     <a href="showcase.html">ภาพรวมระบบ</a>
-    <a href="system-a.html">ระบบ A — จำลอง</a>
-    <a href="index.html" class="active">ระบบ B — จำลอง</a>
+    <a href="index.html" class="active">ระบบจำลอง — ลูกค้าเข้าซื้อจริง</a>
     <a href="admin.html">ตั้งค่าแอดมิน</a>
   </nav>
 
-  <header class="top showcase-intro">
-    <span class="eyebrow">PHARMAPLEX · แคมเปญสะสมข้ามบิล</span>
-    <h1>จำลองการตั้งค่ารางวัลขั้นบันได</h1>
-    <p>ต่อขั้นเลือกเงื่อนไขปลดล็อกได้อิสระ — "ขั้นบันได" ปลดล็อกตามยอดสะสมของลูกค้ารายนั้นเอง หรือ "คนแรกที่ถึงเกณฑ์" แข่งโควตากับลูกค้าคนอื่นในระบบ ผสมกันในแคมเปญเดียวได้เลย แก้ค่าฝั่งแอดมินด้านล่างแล้วดูผลด้านบนเปลี่ยนทันที</p>
-    <button class="reset-btn" id="resetBtn" type="button">↺ รีเซ็ตค่าเริ่มต้น</button>
+  <header class="top">
+    <span class="eyebrow">PHARMAPLEX · ร้านค้าจำลอง</span>
+    <h1>จำลองลูกค้าเข้ามาเลือกซื้อสินค้าจริง</h1>
+    <p>หยิบสินค้าใส่ตะกร้า กดชำระเงิน แล้วดูส่วนลด/แต้ม/รางวัลขั้นบันไดคำนวณสดจากค่าที่ตั้งไว้ในหน้า "ตั้งค่าแอดมิน" ทั้งหมด — เปิดหน้านั้นคู่กันอีกแท็บ แก้ค่าแล้วกลับมาที่นี่จะเห็นผลทันที (sync ผ่าน localStorage)</p>
+    <button class="reset-btn" id="resetCustomerBtn" type="button">↺ เริ่มลูกค้าใหม่ (ล้างตะกร้า/แต้ม/ประวัติ)</button>
+    <div class="shop-persona">
+      <label>เข้าสู่ระบบเป็นลูกค้า</label>
+      <input type="text" id="personaNameInput" value="ร้านยา ทดสอบ จำกัด">
+      <span class="sync-note" id="syncNote"></span>
+    </div>
   </header>
 
-  <!-- SIMULATED CUSTOMER AMOUNT CONTROL -->
-  <div class="control-panel">
+  <div class="preset-bar">
+    <span class="preset-label">ลองสถานการณ์ตัวอย่าง</span>
+    <button type="button" id="presetBillBtn">🏷️ หยิบให้เข้าเงื่อนไขส่วนลดท้ายบิล</button>
+    <button type="button" id="presetMilestoneBtn">🪜 ซื้อครบขั้นแคมเปญถัดไป + จ่ายให้เลย</button>
+    <button type="button" id="presetPointsBtn">🎟️ เติมพอยท์ให้ 2,000 (แลกของได้เลย)</button>
+  </div>
+
+  <div id="flashBanner"></div>
+  <div id="comboWidget"></div>
+
+  <div class="shop-two-col">
+    <div class="panel">
+      <h2>สินค้า</h2>
+      <div class="sub">ราคาที่เห็นคำนวณสดตาม Flash Sale ที่แอดมินตั้งไว้ (ถ้ามี) — แท็กบอกแบรนด์/หมวดหมู่</div>
+      <div id="catalogByCategory"></div>
+    </div>
+
+    <div class="panel cart-panel">
+      <h2>ตะกร้าของฉัน</h2>
+      <div class="sub" id="cartSub">ยังไม่มีสินค้าในตะกร้า</div>
+      <div id="cartLines"></div>
+
+      <div id="cartBreakdown" style="margin-top:6px"></div>
+
+      <div style="margin-top:16px">
+        <h3 style="font-size:13px;margin-bottom:6px">คูปอง <span style="font-weight:400;color:var(--ink-faint)">(ใช้ได้ครั้งละ 1 ใบ)</span></h3>
+        <div id="activeCouponSlot"></div>
+        <button type="button" id="openCouponModalBtn" class="coupon-select-btn">🎟️ เลือก/เปลี่ยนคูปอง</button>
+      </div>
+
+      <button class="checkout-btn" id="checkoutBtn" type="button">ชำระเงิน</button>
+      <div class="checkout-msg" id="checkoutMsg"></div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="couponModal" hidden>
+    <div class="modal-panel">
+      <div class="modal-head">
+        <h3>เลือกคูปอง</h3>
+        <button type="button" id="closeCouponModalBtn" class="modal-close" aria-label="ปิด">✕</button>
+      </div>
+      <div class="modal-body">
+        <h3 style="font-size:13px;margin-bottom:6px">มีโค้ดคูปอง?</h3>
+        <div class="code-row">
+          <input type="text" id="codeInput" placeholder="กรอกโค้ด เช่น SAVE100">
+          <button type="button" id="codeApplyBtn">ใช้โค้ด</button>
+        </div>
+        <div class="code-msg" id="codeMsg"></div>
+
+        <div id="walletWrap" style="margin-top:18px"></div>
+        <div id="collectOfferWrap" style="margin-top:18px"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="margin-top:48px"><span class="tag">มุมมองลูกค้า</span><h2>แคมเปญสะสมยอด — รางวัลขั้นบันได</h2></div>
+  <p class="section-note">ยอดสะสมนับจากยอดที่ลูกค้าคนนี้ชำระสำเร็จจริง (ไม่รวมค่าส่ง) — ปิดการขายด้านบนสักออเดอร์สองออเดอร์แล้วดูแถบนี้ขยับ</p>
+  <div class="control-panel" style="margin-top:0">
     <div class="control-top">
       <div>
-        <div class="label">ยอดสะสมจำลองของลูกค้า "ร้านยา ทดสอบ จำกัด"</div>
-        <div class="amount num">฿<span id="amountDisplay">0</span><span id="amountPct"></span></div>
+        <div class="label">ยอดสะสมของฉัน</div>
+        <div class="amount num">฿<span id="lifetimeSpendDisplay">0</span></div>
       </div>
-      <input type="number" id="amountNumber" class="mono" style="width:140px;border:1px solid var(--line);background:var(--surface-2);border-radius:8px;padding:8px 10px;font-size:14px" value="0">
     </div>
-    <input type="range" id="amountSlider" min="0" max="1200000" step="1000" value="0">
-    <div class="presets" id="presets"></div>
-
     <div class="ladder-wrap">
       <div class="ladder-track"><div class="ladder-fill" id="ladderFill"></div></div>
       <div class="ladder-marks" id="ladderMarks"></div>
     </div>
   </div>
+  <div class="reward-row" id="rewardRow" style="margin-top:20px"></div>
 
-  <!-- CUSTOMER FACING REWARD CARDS -->
-  <div class="section-title"><span class="tag">มุมมองลูกค้า</span><h2>รางวัลที่ลูกค้าเห็นตามยอดสะสม</h2></div>
-  <p class="section-note">🪜 ขั้นบันได ปลดล็อกจากยอดสะสมของลูกค้ารายนี้เท่านั้น &nbsp;·&nbsp; 🏁 คนแรกที่ถึงเกณฑ์ ต้องถึงยอดและยังเหลือโควตา &nbsp;·&nbsp; 🎰 สุ่มจับรางวัล ถึงยอดแค่ได้สิทธิ์ลุ้น ไม่การันตี — ลองกดปุ่มจำลองในการ์ดแต่ละใบดูได้</p>
-  <div class="reward-row" id="rewardRow"></div>
-
-  <div class="mini-flow">
-    <span class="mf-n">ทุกบิลที่จ่ายสำเร็จบวกเข้ายอดสะสม</span><span class="mf-a">→</span>
-    <span class="mf-n">🪜 ถึงเกณฑ์ = ปลดล็อกทันที &nbsp; 🏁 ถึงเกณฑ์+มีคิว = ปลดล็อก &nbsp; 🎰 ถึงเกณฑ์ = ได้สิทธิ์ลุ้น</span><span class="mf-a">→</span>
-    <span class="mf-n">ลูกค้ากดขอรับสิทธิ์เองได้ตลอด ไม่มีกำหนดวันหมดสิทธิ์</span>
-  </div>
-
-  <!-- RAFFLE DRAW WHEEL (shown only while at least one milestone is set to "สุ่มจับรางวัล") -->
-  <div id="wheelSection" hidden>
-    <div class="section-title" style="margin-top:36px"><span class="tag">แอดมิน</span><h2>วงล้อสุ่ม — ประกาศผู้โชคดี</h2></div>
+  <div class="section-title" style="margin-top:48px"><span class="tag">พอยท์</span><h2>สะสมพอยท์ → แลกของรางวัล</h2></div>
+  <div class="two-col">
     <div class="panel">
-      <div class="field" style="max-width:420px;margin-bottom:16px"><label>กำลังจับรางวัลของขั้น</label><select id="wheelMilestoneSelect"></select></div>
-      <div class="wheel-block">
-        <div class="wheel-stage">
-          <div class="wheel-pointer"></div>
-          <div class="wheel-disc" id="wheelDisc"><div class="wheel-hub">🎁</div></div>
-        </div>
-        <div class="wheel-side">
-          <div class="wheel-legend" id="wheelLegend"></div>
-          <button class="wheel-spin-btn" type="button" id="wheelSpinBtn">🎰 หมุนวงล้อ</button>
-          <div class="wheel-result empty" id="wheelResult">ยังไม่ได้จับรางวัล</div>
+      <div class="mock-row" style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+        <div class="point-card">
+          <div class="pk-label">พอยท์ของฉัน</div>
+          <div class="pk-val"><span id="pointBalance">0</span><span>พอยท์</span></div>
+          <div class="pk-rate" id="pointRateNote"></div>
         </div>
       </div>
+      <div id="convertBox" style="margin-top:16px"></div>
+      <div class="shop-stat-row">
+        <div class="shop-stat"><div class="v" id="statOrders">0</div><div class="l">ออเดอร์ที่ชำระแล้ว</div></div>
+        <div class="shop-stat"><div class="v" id="statSpend">฿0</div><div class="l">ยอดสะสมสุทธิ</div></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2 style="font-size:15px">แลกของรางวัลด้วยพอยท์</h2>
+      <div class="redeem-grid" id="redeemGrid"></div>
     </div>
   </div>
 
-  <!-- ADMIN CONFIG + FULFILLMENT QUEUE -->
-  <div class="two-col" style="margin-top:32px">
-    <div class="panel">
-      <h2>ตั้งค่าฝั่งแอดมิน</h2>
-      <div class="sub">แก้เงื่อนไขปลดล็อก ยอดเกณฑ์ ชื่อ ประเภท และจำนวนสิทธิ์ของแต่ละขั้นได้โดยตรง เปลี่ยนแล้วมีผลทันทีที่มุมมองลูกค้าด้านบน</div>
-      <div id="milestoneEditor"></div>
-      <button class="add-btn" id="addMilestoneBtn" type="button">+ เพิ่มขั้นรางวัลใหม่</button>
-    </div>
-
-    <div class="panel">
-      <h2>คิวคำขอรับรางวัล</h2>
-      <div class="sub">รายการที่ลูกค้ากดขอรับ — ของนอกระบบต้องมีคนไปดำเนินการต่อ ไม่ auto-fulfill เหมือนสินค้าเว็บ</div>
-      <div class="queue-list" id="queueList"></div>
-    </div>
+  <div class="section-title" style="margin-top:48px"><span class="tag">ของฉัน</span><h2>ประวัติคำขอรับของ (แคมเปญ + แลกพอยท์)</h2></div>
+  <div class="panel">
+    <div class="queue-list" id="myClaimsList"></div>
   </div>
 
-  <footer class="foot">Prototype สำหรับหารือแนวคิด — ยอด/รางวัลทั้งหมดเป็นข้อมูลจำลอง ไม่ผูกฐานข้อมูลจริง</footer>
+  <footer class="foot">Prototype สำหรับหารือแนวคิด — ค่าที่ตั้งอ่านสดจาก localStorage ที่หน้า "ตั้งค่าแอดมิน" เขียนไว้ ไม่ผูกฐานข้อมูลจริง/ไม่มีระบบชำระเงินจริง</footer>
 
 </div>
-<script src="app.js"></script>
+<script src="shared-state.js"></script>
+<script src="shop.js"></script>
 </body>
 </html>

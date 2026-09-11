@@ -21,36 +21,5 @@ table.log{ width:100%; border-collapse:collapse; font-size:12.5px; min-width:520
 .log-verdict.ok{ background:var(--a-soft); color:var(--a-ink); }
 .log-verdict.blocked{ background:var(--risk-soft); color:var(--risk-ink); }
 
-/* ---------- spin wheel ---------- */
-.wheel-block{ display:flex; gap:34px; align-items:center; flex-wrap:wrap; justify-content:center; padding:10px 4px; }
-.wheel-stage{ position:relative; width:260px; height:260px; flex:none; }
-.wheel-pointer{
-  position:absolute; top:-6px; left:50%; transform:translateX(-50%); z-index:3;
-  width:0; height:0; border-left:12px solid transparent; border-right:12px solid transparent; border-top:20px solid var(--ink);
-}
-.wheel-disc{
-  width:100%; height:100%; border-radius:50%; position:relative;
-  box-shadow:0 8px 24px rgba(0,0,0,.25), inset 0 0 0 6px rgba(255,255,255,.15);
-  transition: transform 4.2s cubic-bezier(.12,.67,.1,1);
-}
-.wheel-hub{
-  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:46px; height:46px; border-radius:50%;
-  background:var(--surface); box-shadow:0 2px 8px rgba(0,0,0,.2); display:flex; align-items:center; justify-content:center;
-  font-size:18px; z-index:2;
-}
-.wheel-legend{ display:flex; flex-direction:column; gap:7px; min-width:200px; }
-.wheel-legend .wl-item{ display:flex; align-items:center; gap:8px; font-size:12.5px; color:var(--ink-soft); }
-.wheel-legend .wl-dot{ width:11px; height:11px; border-radius:3px; flex:none; }
-.wheel-side{ display:flex; flex-direction:column; gap:14px; align-items:flex-start; }
-.wheel-spin-btn{
-  border:none; background:var(--a); color:#fff; padding:11px 22px; border-radius:10px; font-size:14px; font-weight:600;
-}
-.wheel-spin-btn:disabled{ opacity:.5; }
-.wheel-result{
-  border:1px solid var(--line); border-radius:10px; padding:12px 16px; background:var(--a-soft); color:var(--a-ink);
-  font-size:14px; font-weight:600; min-width:200px;
-}
-.wheel-result.empty{ background:var(--surface-2); color:var(--ink-faint); font-weight:400; font-size:13px; }
-
 /* condition-type 3-way note blocks under the toggle */
 .cond-hint{ font-size:11.5px; color:var(--ink-faint); margin-top:6px; line-height:1.5; }

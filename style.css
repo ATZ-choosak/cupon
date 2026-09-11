@@ -104,8 +104,6 @@ input[type="range"]{
   display:flex; align-items:center; justify-content:center; font-size:10px; transition:background .2s; z-index:2;
 }
 .mark.unlocked{ background:var(--b); }
-.mark.entered{ background:var(--b); }
-.mark.won{ background:var(--a); }
 .mark.full{ background:var(--risk); }
 .mark.claimed{ background:var(--a); }
 .mark-label{
@@ -136,8 +134,6 @@ input[type="range"]{
 }
 .status-badge.locked{ background:var(--lock-soft); color:var(--ink-faint); }
 .status-badge.unlocked{ background:var(--b-soft); color:var(--b-ink); }
-.status-badge.entered{ background:var(--b-soft); color:var(--b-ink); }
-.status-badge.won{ background:var(--a-soft); color:var(--a-ink); }
 .status-badge.full{ background:var(--risk-soft); color:var(--risk-ink); }
 .status-badge.claimed{ background:var(--a-soft); color:var(--a-ink); }
 .claim-btn{
@@ -249,13 +245,6 @@ hr.rule{ border:0; border-top:1px solid var(--line); margin:52px 0; }
 .flow-step.a{ border-top:3px solid var(--a); }
 .flow-arrow{ flex:none; width:30px; display:flex; align-items:center; justify-content:center; color:var(--ink-faint); font-size:16px; }
 @media (max-width:700px){ .flow{ flex-direction:column; } .flow-arrow{ width:auto; height:20px; transform:rotate(90deg); } }
-
-.mech-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:20px; }
-.mech{ border:1px solid var(--line); border-radius:10px; padding:16px 17px 18px; display:flex; flex-direction:column; gap:7px; background:var(--surface); }
-.mech .no{ font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--a-ink); }
-.mech h3{ font-size:15.5px; font-weight:600; font-family:"IBM Plex Sans Thai",sans-serif; }
-.mech p{ font-size:13.5px; margin-top:2px; color:var(--ink-soft); }
-@media (max-width:760px){ .mech-grid{ grid-template-columns:1fr; } }
 
 .callout{ border-left:3px solid var(--a); background:var(--a-soft); padding:13px 17px; border-radius:0 8px 8px 0; margin-top:20px; font-size:14px; color:var(--ink); }
 .callout .lbl{ font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.05em; color:var(--a-ink); display:block; margin-bottom:5px; }
@@ -386,6 +375,26 @@ table.ledger{ width:100%; border-collapse:collapse; font-size:12.5px; min-width:
   background:var(--a-soft); color:var(--a-ink); border-radius:8px; padding:9px 13px; font-size:13px; margin-top:10px;
 }
 .applied-banner button{ border:none; background:transparent; color:var(--a-ink); text-decoration:underline; font-size:12px; }
+
+/* collectible coupon ticket (perforated stub look) — used in admin preview + shop wallet */
+.ticket-row{ display:flex; gap:14px; flex-wrap:wrap; margin-top:12px; }
+.ticket{ position:relative; display:flex; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface); box-shadow:var(--shadow); min-width:240px; }
+.ticket.collected{ border-color:var(--a); }
+.ticket .notch{ position:absolute; width:14px; height:14px; border-radius:50%; background:var(--paper); left:calc(100% - 92px); z-index:2; }
+.ticket .notch.top{ top:0; transform:translate(-50%,-50%); }
+.ticket .notch.bottom{ bottom:0; transform:translate(-50%,50%); }
+.ticket .main{ flex:1; padding:14px 16px; border-right:1px dashed var(--line); min-width:0; }
+.ticket .t-title{ font-weight:600; font-size:14px; }
+.ticket .t-desc{ font-size:12px; color:var(--ink-faint); margin-top:4px; line-height:1.5; }
+.ticket .t-progress{ height:5px; background:var(--surface-2); border-radius:3px; margin-top:10px; overflow:hidden; }
+.ticket .t-progress i{ display:block; height:100%; background:var(--a); }
+.ticket .t-qty{ font-size:11px; color:var(--ink-faint); margin-top:6px; font-family:"IBM Plex Mono",monospace; }
+.ticket .stub{ width:92px; flex:none; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:10px 8px; text-align:center; }
+.ticket .t-code{ font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink-faint); }
+.ticket .t-btn{ border:none; background:var(--a); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:20px; cursor:pointer; }
+.ticket .t-btn:disabled{ opacity:.5; cursor:default; }
+.ticket .t-got{ font-size:11px; color:var(--a-ink); font-weight:600; }
+.ticket .t-exp{ font-size:10px; color:var(--ink-faint); }
 
 footer.foot{
   margin-top:44px; padding-top:20px; border-top:1px solid var(--line);

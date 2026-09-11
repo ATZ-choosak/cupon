@@ -15,8 +15,7 @@
 
   <nav class="site-nav">
     <a href="showcase.html" class="active">ภาพรวมระบบ</a>
-    <a href="system-a.html">ระบบ A — จำลอง</a>
-    <a href="index.html">ระบบ B — จำลอง</a>
+    <a href="index.html">ระบบจำลอง — ลูกค้าเข้าซื้อจริง</a>
     <a href="admin.html">ตั้งค่าแอดมิน</a>
   </nav>
 
@@ -31,6 +30,12 @@
   <div class="cat">
     <div class="cat-head"><span class="cn">01</span><h2>โปรโมชั่น</h2></div>
     <p class="cat-sub">ส่วนลดที่เกิดตอนลูกค้าเลือกซื้อ ไม่ต้องมีโค้ด</p>
+
+    <div class="ruling warn" style="margin-bottom:26px">
+      <div class="rq">คำถามที่ต้องถามลูกค้า</div>
+      <h3>สินค้าที่เข้าร่วมโปรโมชั่นต่างๆ จะให้แยกเป็นแบบไหน — ตามแบรนด์ ตามหมวดหมู่ หรือเลือกรายสินค้าเอง?</h3>
+      <div class="rw">ข้อเสนอ: ให้แอดมินเลือกเป้าหมายเป็น "แบรนด์" หรือ "หมวดหมู่" ก่อน (จัดการง่าย ไม่ต้องไล่เลือกทีละ SKU) แล้วค่อยมา "ยกเว้น" รายสินค้าเฉพาะจุดที่ไม่ต้องการทีหลัง — ผสมสองระดับเข้าด้วยกัน ไม่ต้องเลือกรายชิ้นทั้งหมดตั้งแต่แรก</div>
+    </div>
 
     <div class="block">
       <div class="block-head"><h3>ซื้อคู่สินค้าที่เข้ากัน ถูกกว่า (แนะนำอัตโนมัติ)</h3></div>
@@ -95,11 +100,11 @@
         </div>
       </div></div>
       <div class="mini-flow">
-        <span class="mf-n">ตั้งได้หลายกติกาพร้อมกัน (คนละแบรนด์/หมวด)</span><span class="mf-a">→</span>
+        <span class="mf-n">ตั้งได้หลายกติกาพร้อมกัน (คนละแบรนด์/หมวด, ส่วนลดหรือส่งฟรีก็ได้)</span><span class="mf-a">→</span>
         <span class="mf-n">ตะกร้าเข้าเงื่อนไขหลายอัน กติกาที่ตั้ง priority สูงกว่าชนะ</span><span class="mf-a">→</span>
-        <span class="mf-n">ส่งฟรีเลือกได้ว่า "ยกเว้นรายการนี้" หรือ "ฟรีเฉพาะรายการนี้"</span>
+        <span class="mf-n">ผลตอบแทนคิดเฉพาะกลุ่มสินค้าที่เข้าเงื่อนไขกฎนั้น ไม่ใช่ทั้งบิล</span>
       </div>
-      <a class="try-link" href="system-a.html">↝ ลองคำนวณเอง</a>
+      <a class="try-link" href="index.html">↝ ลองคำนวณเอง</a>
     </div>
   </div>
 
@@ -212,10 +217,14 @@
     </div>
 
     <div class="block">
-      <div class="block-head"><h3>คูปองเก็บล่วงหน้า</h3></div>
+      <div class="block-head"><h3>คูปองเก็บล่วงหน้า / แจกอัตโนมัติทุกเดือน — setting เดียวกัน เลือกโหมดแจก</h3></div>
+      <div class="callout">
+        <span class="lbl">แนวคิด</span>
+        เงื่อนไขส่วนลด/ยกเว้นสินค้า/โควตาตั้งครั้งเดียว แล้วเลือกแค่ <b>โหมดแจก</b>: ปล่อยไว้ให้ลูกค้ากดเก็บเอง (ด้านล่าง) หรือให้ระบบออกสิทธิ์ให้อัตโนมัติทุกวันที่ 1 ของเดือน (ตัวอย่างถัดไป)
+      </div>
       <div class="mock"><div class="mock-row">
         <div class="brand-ticket shopee">
-          <div class="bt-main"><div class="bt-title">ส่งฟรี ไม่มีขั้นต่ำ</div><div class="bt-desc" id="bt1desc">เก็บไปแล้ว 320/500 สิทธิ์<br>ใช้ได้ถึง 30 ก.ย.</div></div>
+          <div class="bt-main"><div class="bt-title">ส่งฟรี ไม่มีขั้นต่ำ</div><div class="bt-desc" id="bt1desc">โหมด: ปล่อยให้กดเก็บเอง<br>เก็บไปแล้ว 320/500 สิทธิ์</div></div>
           <div class="bt-stub"><button type="button" class="collect-btn">เก็บ</button></div>
         </div>
         <div class="brand-ticket lazada">
@@ -224,16 +233,13 @@
         </div>
       </div></div>
       <div class="mini-flow">
-        <span class="mf-n">ลูกค้ากดเก็บ (ตัดโควตารวมทันที)</span><span class="mf-a">→</span>
+        <span class="mf-n">ลูกค้ากดเก็บเอง (ตัดโควตารวมทันที)</span><span class="mf-a">→</span>
         <span class="mf-n">ระบบออกรหัส unique ผูกกับบัญชีนั้นคนเดียว</span><span class="mf-a">→</span>
         <span class="mf-n">ใช้ครั้งเดียว ระบบตัดสิทธิ์อัตโนมัติหลังใช้</span>
       </div>
-      <a class="try-link" href="system-a.html">↝ ลองใช้งานกระเป๋าคูปองจริง</a>
-    </div>
+      <a class="try-link" href="index.html">↝ ลองใช้งานกระเป๋าคูปองจริง</a>
 
-    <div class="block">
-      <div class="block-head"><h3>คูปองส่งฟรี/ส่วนลดให้ทุกเดือน</h3></div>
-      <div class="mock"><div class="mock-row">
+      <div class="mock" style="margin-top:22px"><div class="mock-row">
         <div class="month-strip" id="monthStrip">
           <div class="month-cell got"><div class="mc-m">ก.ค.</div><div class="mc-icon">✅</div><div class="mc-s">ใช้แล้ว</div></div>
           <div class="month-cell got"><div class="mc-m">ส.ค.</div><div class="mc-icon">✅</div><div class="mc-s">ใช้แล้ว</div></div>
@@ -243,7 +249,7 @@
         </div>
       </div></div>
       <div class="mini-flow">
-        <span class="mf-n">ระบบออกสิทธิ์ให้อัตโนมัติทุกวันที่ 1</span><span class="mf-a">→</span>
+        <span class="mf-n">โหมด: แจกอัตโนมัติ — ระบบออกสิทธิ์ให้ทุกวันที่ 1</span><span class="mf-a">→</span>
         <span class="mf-n">ใช้ได้ถึงสิ้นเดือนนั้นเท่านั้น</span><span class="mf-a">→</span>
         <span class="mf-n">ไม่ใช้ = หมดสิทธิ์ ไม่ทบไปเดือนถัดไป</span>
       </div>
@@ -253,10 +259,15 @@
   <!-- ============ สะสมพอยท์ ============ -->
   <div class="cat">
     <div class="cat-head"><span class="cn">03</span><h2>ระบบสะสมพอยท์</h2></div>
-    <p class="cat-sub">แปลงยอดสั่งซื้อเป็นพอยท์ ใช้แลกส่วนลด/ของรางวัลในเว็บ</p>
+    <p class="cat-sub">ยอดสั่งซื้อเข้าคิว "รอแปลงเป็นพอยท์" ลูกค้ากดแปลงเองเมื่อพร้อม ไม่ auto ตอนจ่ายเงิน — ใช้แลกส่วนลด/ของรางวัลในเว็บ</p>
+
+    <div class="callout">
+      <span class="lbl">แนวคิด</span>
+      แยกยอดออกเป็น 2 เส้นที่ไม่แตะกัน: <b>ยอดสะสมแคมเปญ</b> (สำหรับปลดล็อกขั้นบันไดด้านล่าง) บวกอัตโนมัติทุกออเดอร์ ไม่มีวันถูกหัก กับ <b>ยอดรอแปลงพอยท์</b> ที่ก็บวกจากทุกออเดอร์เหมือนกัน แต่ลูกค้าต้องกด "แปลงเป็นพอยท์" เองถึงจะกลายเป็นพอยท์จริง — แปลงแล้วไม่กระทบยอดสะสมแคมเปญเลย
+    </div>
 
     <div class="block">
-      <div class="block-head"><h3>ยอดซื้อ → พอยท์ → แลกของ</h3></div>
+      <div class="block-head"><h3>ยอดซื้อ → รอแปลง → กดแปลงเป็นพอยท์ → แลกของ</h3></div>
       <div class="mock"><div class="mock-row">
         <div class="point-card">
           <div class="pk-label">พอยท์ของฉัน</div>
@@ -265,21 +276,21 @@
         </div>
 
         <div class="point-sim">
-          <label style="font-size:11.5px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace">จำลอง: ยอดสั่งซื้อ</label>
+          <label style="font-size:11.5px;color:var(--ink-faint);font-family:'IBM Plex Mono',monospace">จำลอง: ยอดที่รอแปลงเป็นพอยท์</label>
           <input type="range" id="pointSlider" min="0" max="10000" step="100" value="1000">
-          <div class="ps-out">ยอด <b id="pointBaht">฿1,000</b> → ได้ <b id="pointOut">100</b> พอยท์</div>
+          <div class="ps-out">ยอด <b id="pointBaht">฿1,000</b> → กดแปลงได้ <b id="pointOut">100</b> พอยท์</div>
         </div>
 
         <div class="point-hist" id="pointHist">
-          <div class="ph-row"><span>คำสั่งซื้อ #A1502 · 5 ก.ย.</span><span class="ph-plus">+750</span></div>
-          <div class="ph-row"><span>คำสั่งซื้อ #A1410 · 20 ก.ค.</span><span class="ph-plus">+1,100</span></div>
+          <div class="ph-row"><span>แปลงยอด ฿7,500 เป็นพอยท์ · 5 ก.ย.</span><span class="ph-plus">+750</span></div>
+          <div class="ph-row"><span>แปลงยอด ฿11,000 เป็นพอยท์ · 20 ก.ค.</span><span class="ph-plus">+1,100</span></div>
           <div class="ph-row"><span>แลกส่วนลด ฿50</span><span>−500</span></div>
         </div>
       </div></div>
       <div class="mini-flow">
-        <span class="mf-n">ออเดอร์จ่ายสำเร็จ</span><span class="mf-a">→</span>
-        <span class="mf-n">ระบบคำนวณพอยท์ (ยอด ÷ 10) เข้าบัญชีทันที</span><span class="mf-a">→</span>
-        <span class="mf-n">ใช้แลกของ/ส่วนลดได้เลยไม่ต้องรอ</span>
+        <span class="mf-n">ออเดอร์จ่ายสำเร็จ — เข้ายอดสะสมแคมเปญ + ยอดรอแปลงพอยท์ทันที</span><span class="mf-a">→</span>
+        <span class="mf-n">ลูกค้ากด "แปลงเป็นพอยท์" เองเมื่อไหร่ก็ได้ (แปลงได้ทั้งหมดในครั้งเดียว)</span><span class="mf-a">→</span>
+        <span class="mf-n">พอยท์เข้าบัญชี ใช้แลกของ/ส่วนลดได้ทันที</span>
       </div>
     </div>
 
@@ -301,26 +312,10 @@
     <div class="cat-head"><span class="cn">04</span><h2>แคมเปญ</h2></div>
     <p class="cat-sub">รางวัลปลดล็อกตามยอดสะสม เก็บข้อมูลลูกค้าได้ตามที่กำหนด ไม่มีกำหนดวันหมดสิทธิ์การรับจนกว่าแคมเปญจะจบ</p>
 
-    <div class="block">
-      <div class="block-head"><h3>เลือกวิธีปลดล็อกได้ 3 แบบต่อขั้นรางวัล</h3></div>
-      <p class="cat-sub" style="margin:0 0 4px">ของราคาสูง/จำนวนจำกัดมาก ไม่ควรสัญญาว่า "ถึงยอด = ได้แน่" — เลือกวิธีที่เหมาะกับความหายากของรางวัลแต่ละขั้น</p>
-      <div class="mech-grid">
-        <div class="mech">
-          <span class="no">🪜 การันตี</span>
-          <h3>ขั้นบันได</h3>
-          <p>ถึงยอด = ได้แน่ทุกคน เหมาะของที่มีเยอะ ต้นทุนต่ำ</p>
-        </div>
-        <div class="mech">
-          <span class="no">🏁 ความเร็ว</span>
-          <h3>คนแรกที่ถึงเกณฑ์</h3>
-          <p>ถึงยอด + ยังมีคิว = ได้ สร้างความเร่งด่วน โปร่งใสเห็นคิวได้</p>
-        </div>
-        <div class="mech">
-          <span class="no">🎰 จับรางวัล</span>
-          <h3>สุ่มจับรางวัล</h3>
-          <p>ถึงยอด = ได้แค่สิทธิ์ลุ้น ไม่การันตี เหมาะของหายาก/แพงสุด</p>
-        </div>
-      </div>
+    <div class="ruling ok" style="margin-bottom:26px">
+      <div class="rq">แนวคิดหลัก</div>
+      <h3>ทุกขั้นคือ "ขั้นบันได" เหมือนกันหมด — ต่างกันแค่ตั้งโควตาไว้เท่าไหร่</h3>
+      <div class="rw">ถึงยอด = กดขอรับสิทธิ์ได้เสมอ ไม่ต้องมีเงื่อนไขปลดล็อกหลายแบบให้เลือก — <b>ตั้งโควตาน้อยๆ</b> ก็ได้ผลแบบ "คนแรกที่ถึงเกณฑ์" ในตัว, <b>เว้นโควตาว่างไว้ (ไม่จำกัด)</b> ก็คือของหายาก/แพงสุดที่ใครถึงยอดก็กดขอรับสิทธิ์ลุ้นได้ แล้วให้ทีมงานไปคัดเลือก/จับรางวัลกันเองนอกระบบ ไม่ต้องมีกลไกสุ่มในเว็บ</div>
     </div>
 
     <div class="block">
@@ -359,45 +354,39 @@
     </div>
 
     <div class="block">
-      <div class="block-head"><h3>แคมเปญแบบ "คนแรกที่ถึงเกณฑ์" (กดจำลองคนซื้อเพิ่มได้)</h3></div>
-      <div class="mock"><div class="mock-row">
-        <div class="race-wrap">
-          <div class="race-goal"><span>ซื้อครบ ฿50,000 แรก รับของรางวัลทันที</span><b id="raceCount">43/100 คน</b></div>
-          <div class="race-track"><div class="race-fill" id="raceFill" style="width:43%"></div></div>
-          <div class="race-you">คุณอยู่อันดับ <b id="raceRank">#44</b> — เหลืออีก <b id="raceLeft">57</b> สิทธิ์</div>
-          <div class="race-slots" id="raceSlots"></div>
-          <button class="fb-add" type="button" id="raceBtn" style="margin-top:12px">+ จำลองมีคนซื้อครบเพิ่ม 1 คน</button>
-        </div>
-      </div></div>
-      <div class="mini-flow">
-        <span class="mf-n">ทุกคนสะสมยอดพร้อมกันแบบเรียลไทม์</span><span class="mf-a">→</span>
-        <span class="mf-n">เต็มโควตาปุ๊บปิดรับทันที</span><span class="mf-a">→</span>
-        <span class="mf-n">คนถัดไปเข้าคิวสำรอง เลื่อนขึ้นถ้ามีคนสละสิทธิ์</span>
-      </div>
-    </div>
-
-    <div class="block">
-      <div class="block-head"><h3>แคมเปญแบบ "สุ่มจับรางวัล" — เหมาะของหายากสุด (กดหมุนวงล้อได้จริง)</h3></div>
+      <div class="block-head"><h3>มุมมองลูกค้า — การ์ดรางวัลขั้นบันได (หน้าตาเดียวกับหน้าจำลองจริง)</h3></div>
       <div class="mock">
-        <div class="race-goal" style="margin-bottom:16px"><span>ตั๋วเครื่องบินไป-กลับต่างประเทศ · ถึงยอด ฿1,000,000 = ได้สิทธิ์ลุ้น</span><b>เข้าร่วมแล้ว 8 คน</b></div>
-        <div class="wheel-block">
-          <div class="wheel-stage">
-            <div class="wheel-pointer"></div>
-            <div class="wheel-disc" id="scWheelDisc"><div class="wheel-hub">✈️</div></div>
+        <div class="reward-row">
+          <div class="reward-card">
+            <div class="icon">🎁</div>
+            <div class="r-name">เครื่องวัดความดันโลหิตดิจิทัล</div>
+            <div class="r-detail">สินค้าจากเว็บ</div>
+            <div class="r-meta"><span>เกณฑ์ ฿100,000</span><span>เหลือ 38/50 สิทธิ์</span></div>
+            <span class="status-badge unlocked">ปลดล็อกแล้ว</span>
+            <button class="claim-btn" type="button" id="showcaseClaimBtn">ขอรับสิทธิ์</button>
           </div>
-          <div class="wheel-side">
-            <div class="wheel-legend" id="scWheelLegend"></div>
-            <button class="wheel-spin-btn" type="button" id="scWheelSpinBtn">🎰 หมุนวงล้อ</button>
-            <div class="wheel-result empty" id="scWheelResult">ยังไม่ได้จับรางวัล</div>
+          <div class="reward-card locked">
+            <div class="icon">🎫</div>
+            <div class="r-name">ทริปสัมมนาเภสัชกรต่างประเทศ 3 วัน 2 คืน</div>
+            <div class="r-detail">ของพิเศษนอกระบบ</div>
+            <div class="r-meta"><span>เกณฑ์ ฿500,000</span><span>เหลือ 17/20 สิทธิ์</span></div>
+            <span class="status-badge locked">ล็อกอยู่</span>
+          </div>
+          <div class="reward-card locked">
+            <div class="icon">🎫</div>
+            <div class="r-name">ตั๋วเครื่องบินไป-กลับต่างประเทศ</div>
+            <div class="r-detail">จำนวนจำกัด ทีมงานจะติดต่อคัดเลือกผู้โชคดีและแจ้งรายละเอียดการเดินทางภายหลัง</div>
+            <div class="r-meta"><span>เกณฑ์ ฿1,000,000</span><span>ไม่จำกัดสิทธิ์</span></div>
+            <span class="status-badge locked">ล็อกอยู่</span>
           </div>
         </div>
       </div>
       <div class="mini-flow">
-        <span class="mf-n">ลูกค้าที่ถึงยอดเข้าร่วมอัตโนมัติ ไม่โชว์เหลือกี่สิทธิ์</span><span class="mf-a">→</span>
-        <span class="mf-n">ถึงวันประกาศผล แอดมินกดหมุนวงล้อ</span><span class="mf-a">→</span>
-        <span class="mf-n">ระบบสุ่มผู้โชคดีต่อหน้าทุกคน โปร่งใส ตรวจสอบได้</span>
+        <span class="mf-n">ทุกขั้นการ์ดหน้าตาเดียวกัน ไม่มีกลไกพิเศษแยกประเภท</span><span class="mf-a">→</span>
+        <span class="mf-n">ตั้งโควตาน้อย = การ์ดโชว์ "เหลือ X/Y สิทธิ์" เอง (เท่ากับ "คนแรกถึงเกณฑ์")</span><span class="mf-a">→</span>
+        <span class="mf-n">เว้นโควตาว่าง = การ์ดโชว์ "ไม่จำกัดสิทธิ์" แทน (ของหายากคัดเลือกนอกระบบ)</span>
       </div>
-      <a class="try-link" href="admin.html">↝ ดูฝั่งแอดมิน ตั้งขั้นรางวัล/เงื่อนไขเองได้</a>
+      <a class="try-link" href="index.html">↝ ลองปลดล็อก/กดขอรับสิทธิ์จริงที่หน้าจำลอง</a>
     </div>
   </div>
 
@@ -417,32 +406,12 @@
   slider.addEventListener("input", updatePoint);
   updatePoint();
 
-  /* ---- race slots + simulate button ---- */
-  const raceSlots = document.getElementById("raceSlots");
-  let raceFilled = 43;
-  const RACE_TOTAL = 100;
-  function renderRaceSlots(){
-    raceSlots.innerHTML = "";
-    for (let i = 0; i < RACE_TOTAL; i++) {
-      const s = document.createElement("div");
-      s.className = "race-slot" + (i < raceFilled ? " filled" : "");
-      raceSlots.appendChild(s);
-    }
-  }
-  function updateRace(){
-    document.getElementById("raceCount").textContent = raceFilled + "/" + RACE_TOTAL + " คน";
-    document.getElementById("raceFill").style.width = raceFilled + "%";
-    document.getElementById("raceRank").textContent = "#" + (raceFilled + 1);
-    document.getElementById("raceLeft").textContent = Math.max(0, RACE_TOTAL - raceFilled);
-    renderRaceSlots();
-  }
-  document.getElementById("raceBtn").addEventListener("click", () => {
-    if (raceFilled >= RACE_TOTAL) return;
-    raceFilled++;
-    updateRace();
-    if (raceFilled >= RACE_TOTAL) document.getElementById("raceBtn").textContent = "เต็มโควตาแล้ว — ปิดรับ";
+  /* ---- reward card: claim button (mirrors the real claim flow in index.html) ---- */
+  const showcaseClaimBtn = document.getElementById("showcaseClaimBtn");
+  showcaseClaimBtn.addEventListener("click", () => {
+    showcaseClaimBtn.textContent = "✓ ขอรับสิทธิ์แล้ว";
+    showcaseClaimBtn.disabled = true;
   });
-  updateRace();
 
   /* ---- combo widget toggle ---- */
   let comboIncluded = true;
@@ -542,46 +511,6 @@
     if (extraIdx >= extraFields.length) { fbAddBtn.textContent = "เพิ่มครบทุกฟิลด์ตัวอย่างแล้ว"; fbAddBtn.disabled = true; }
   });
 
-  /* ---- raffle spin wheel ---- */
-  const SC_ENTRANTS = [
-    "ร้านยาสุขภาพดี สาขา 2", "ร้านยา รุ่งเรืองเภสัช", "คลินิกหมอสมชาย", "ร้านยาดีดี ฟาร์มาซี",
-    "ร้านยา บ้านหมอ", "ตัวแทนจำหน่าย เชียงใหม่", "ร้านยาชุมชนพลัส", "เภสัชกรออนไลน์ 24",
-  ];
-  const SC_COLORS = ["#0E5C52", "#4FC2AC", "#A8722C", "#E2AC5C", "#154B3F", "#B8894A", "#0A4038", "#D9A25C"];
-  let scRotation = 0;
-  let scSpinning = false;
-
-  const scDisc = document.getElementById("scWheelDisc");
-  const scLegend = document.getElementById("scWheelLegend");
-  const scBtn = document.getElementById("scWheelSpinBtn");
-  const scResult = document.getElementById("scWheelResult");
-  const scN = SC_ENTRANTS.length;
-  const scSeg = 360 / scN;
-  scDisc.style.background = "conic-gradient(" + SC_ENTRANTS.map((_, i) => `${SC_COLORS[i % SC_COLORS.length]} ${i * scSeg}deg ${(i + 1) * scSeg}deg`).join(",") + ")";
-  SC_ENTRANTS.forEach((name, i) => {
-    const row = document.createElement("div");
-    row.className = "wl-item";
-    row.innerHTML = `<span class="wl-dot" style="background:${SC_COLORS[i % SC_COLORS.length]}"></span>${name}`;
-    scLegend.appendChild(row);
-  });
-  scBtn.addEventListener("click", () => {
-    if (scSpinning) return;
-    scSpinning = true;
-    scBtn.disabled = true;
-    scResult.className = "wheel-result empty";
-    scResult.textContent = "กำลังหมุน...";
-    const winnerIdx = Math.floor(Math.random() * scN);
-    const segCenter = winnerIdx * scSeg + scSeg / 2;
-    const delta = 6 * 360 + (360 - segCenter) - (scRotation % 360);
-    scRotation += delta;
-    scDisc.style.transform = `rotate(${scRotation}deg)`;
-    setTimeout(() => {
-      scSpinning = false;
-      scBtn.disabled = false;
-      scResult.className = "wheel-result";
-      scResult.textContent = "🎉 ผู้โชคดีคือ " + SC_ENTRANTS[winnerIdx];
-    }, 4300);
-  });
 </script>
 </body>
 </html>

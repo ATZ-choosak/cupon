@@ -15,93 +15,36 @@
 
   <nav class="site-nav">
     <a href="showcase.html">ภาพรวมระบบ</a>
-    <a href="system-a.html">ระบบ A — จำลอง</a>
-    <a href="index.html">ระบบ B — จำลอง</a>
+    <a href="index.html">ระบบจำลอง — ลูกค้าเข้าซื้อจริง</a>
     <a href="admin.html" class="active">ตั้งค่าแอดมิน</a>
   </nav>
 
   <header class="top showcase-intro">
     <span class="eyebrow">PHARMAPLEX · หลังบ้าน</span>
     <h1>หน้าตาการตั้งค่าฝั่งแอดมิน</h1>
-    <p>ทุกกลไก (โปรโมชั่น คูปอง พอยท์ แคมเปญ) ตั้งค่าและทดลองได้จบในหน้านี้หน้าเดียว — ทุกช่องกรอกจริง ทุก preview คำนวณสดจากค่าที่ตั้งจริง</p>
+    <p>ทุกกลไก (โปรโมชั่น คูปอง พอยท์ แคมเปญ) ตั้งค่าและทดลองได้จบในหน้านี้หน้าเดียว — ทุกช่องกรอกจริง ทุก preview คำนวณสดจากค่าที่ตั้งจริง แล้วค่าที่ตั้งจะไปโผล่ที่ <a href="index.html" style="color:inherit;text-decoration:underline">หน้าจำลองลูกค้า</a> ทันที (เปิดคู่กันอีกแท็บแล้วแก้ดูได้เลย)</p>
+    <button class="reset-btn" id="resetSettingsBtn" type="button">↺ รีเซ็ตค่าเริ่มต้น</button>
   </header>
 
   <!-- ============ โปรโมชั่น ============ -->
   <div class="cat">
     <div class="cat-head"><span class="cn">01</span><h2>โปรโมชั่น</h2></div>
 
-    <!-- 1. cross-sell -->
+    <div class="ruling warn" style="margin-bottom:26px">
+      <div class="rq">คำถามที่ต้องถามลูกค้า</div>
+      <h3>สินค้าที่เข้าร่วมโปรโมชั่นต่างๆ จะให้แยกเป็นแบบไหน — ตามแบรนด์ ตามหมวดหมู่ หรือเลือกรายสินค้าเอง?</h3>
+      <div class="rw">ข้อเสนอ: ให้แอดมินเลือกเป้าหมายเป็น "แบรนด์" หรือ "หมวดหมู่" ก่อน (จัดการง่าย ไม่ต้องไล่เลือกทีละ SKU) แล้วค่อยมา "ยกเว้น" รายสินค้าเฉพาะจุดที่ไม่ต้องการทีหลัง — ผสมสองระดับเข้าด้วยกัน ไม่ต้องเลือกรายชิ้นทั้งหมดตั้งแต่แรก</div>
+    </div>
+
+    <!-- 1. automatic promotions — merged: cross-sell combo + bill discount + non-coupon free-ship -->
     <div class="block">
-      <div class="block-head"><h3>ซื้อคู่สินค้าที่เข้ากัน ถูกกว่า</h3></div>
+      <div class="block-head"><h3>โปรโมชั่นอัตโนมัติ — ไม่ต้องมีโค้ด</h3></div>
       <div class="callout">
         <span class="lbl">หลักการ</span>
-        ต่อยอดจากระบบ Bundle ที่มีอยู่แล้ว (เงื่อนไข/ลำดับความสำคัญ/ช่วงเวลา/โควตาต่อคน ใช้โครงเดิม) เพิ่มแค่ผลตอบแทนให้เลือกเป็น "ส่วนลด" ได้ แทนที่จะบังคับเป็นของแถมฟรีอย่างเดียวแบบเดิม
+        รวม "ซื้อคู่สินค้าเฉพาะเจาะจง" (โครงจากหน้าตั้งค่า "ของแถม" จริงของ pmpc), "ส่วนลดท้ายบิลตามแบรนด์/หมวด" และ "ส่งฟรีแบบไม่ใช่คูปอง" ไว้ setting เดียวกัน — เพิ่มกฎได้หลายข้อ แต่ละข้อเลือกได้ว่าจะเจาะจงสินค้าหรือทั้งแบรนด์/หมวด แล้วเลือกผลตอบแทนเป็น "ส่วนลด" หรือ "ฟรีค่าส่ง" ก็ได้ — ผลตอบแทนคิด<b>เฉพาะรายการที่เข้าเงื่อนไขกฎนั้นๆ เท่านั้น</b> ไม่ใช่ทั้งบิล (กฎแบบแบรนด์/หมวดที่แย่งกลุ่มเดียวกัน ใช้ priority สูงสุดที่ผ่านเกณฑ์ชนะแค่ 1 กฎ ไม่บวกซ้อน)
       </div>
-
-      <div class="settings-grid">
-        <div class="panel">
-          <h2 style="font-size:15px">ตั้งค่า</h2>
-          <div class="field-row single"><div class="field"><label>ชื่อโปรโมชั่น</label><input type="text" id="comboName"></div></div>
-
-          <div class="field-row">
-            <div class="field"><label>สินค้าหลัก</label><select id="comboMainSelect"></select></div>
-            <div class="field"><label>เพิ่มสินค้าคู่</label>
-              <div style="display:flex;gap:6px">
-                <select id="comboPairAddSelect" style="flex:1"></select>
-                <button class="fb-add" type="button" id="comboPairAddBtn" style="width:auto;padding:0 12px">+</button>
-              </div>
-            </div>
-          </div>
-          <div class="field" style="margin-bottom:8px">
-            <label>สินค้าคู่ที่เลือกไว้ (เลือกได้หลายตัว)</label>
-            <div class="chk-group" id="comboPairList"></div>
-          </div>
-
-          <div class="field" style="margin-bottom:8px">
-            <label>ประเภทส่วนลด</label>
-            <div class="type-toggle" id="comboDiscountType">
-              <button type="button" class="type-btn active" data-pick="fixed">ลดราคาคงที่ (บาท)</button>
-              <button type="button" class="type-btn" data-pick="percent">ลดเป็นเปอร์เซ็นต์ (%)</button>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>มูลค่าส่วนลด</label><input type="number" id="comboDiscountValue" min="0"></div>
-            <div class="field" id="comboCapField" hidden><label>ลดสูงสุดไม่เกิน (บาท, เว้นว่าง = ไม่จำกัด)</label><input type="number" id="comboMaxCap" min="0"></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>จำกัดสิทธิ์ต่อคน (เว้นว่าง = ไม่จำกัด)</label><input type="number" id="comboPerCustomerLimit" min="1"></div>
-            <div class="field"><label>กลุ่มลูกค้าเป้าหมาย</label><select class="audience-select"></select></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>ลำดับความสำคัญ (ชนกับโปรอื่น เลขสูงชนะ)</label><input type="number" id="comboPriority" min="0"></div>
-            <div class="field"><label>สถานะ</label>
-              <div class="type-toggle" id="comboActiveToggle"><button type="button" class="type-btn active" data-pick="on">เปิดใช้งาน</button><button type="button" class="type-btn" data-pick="off">ปิด</button></div>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>เริ่มวันที่</label><input type="date" id="comboStart"></div>
-            <div class="field"><label>ถึงวันที่ (เว้นว่าง = ไม่มีกำหนด)</label><input type="date" id="comboEnd"></div>
-          </div>
-        </div>
-
-        <div class="preview-col">
-          <div class="preview-label">มุมมองลูกค้า (สด)</div>
-          <div class="preview-frame">
-            <div class="combo-widget">
-              <div class="cw-head">🔗 ซื้อคู่กัน คุ้มกว่า</div>
-              <div class="cw-body" style="flex-direction:column;align-items:flex-start;gap:10px">
-                <div style="font-weight:600;font-size:13px" id="comboPreviewMain"></div>
-                <div style="font-size:12px;color:var(--ink-faint)">+ <span id="comboPreviewPairs"></span></div>
-                <div style="display:flex;justify-content:space-between;width:100%;align-items:baseline">
-                  <span class="cw-old" id="comboPreviewOld"></span>
-                  <span class="cw-new" id="comboPreviewNew"></span>
-                </div>
-              </div>
-              <div class="cw-foot"><button class="cw-btn" type="button" id="comboPreviewSave"></button></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <div id="promotionsList"></div>
+      <button class="add-btn" type="button" id="addPromotionBtn">+ เพิ่มโปรโมชั่นใหม่</button>
     </div>
 
     <!-- 2. flash sale -->
@@ -124,12 +67,15 @@
                 <button type="button" class="type-btn active" data-pick="yearly">ทุกปี (วันเดิม)</button>
               </div>
             </div>
-            <div class="field"><label>กลุ่มลูกค้าเป้าหมาย</label><select class="audience-select"></select></div>
+            <div class="field"><label>สถานะสำหรับจำลอง (ข้ามเช็ควันเวลาจริง)</label>
+              <div class="type-toggle" id="flashActiveToggle">
+                <button type="button" class="type-btn active" data-pick="on">อยู่ในช่วงโปรตอนนี้</button>
+                <button type="button" class="type-btn" data-pick="off">นอกช่วงโปร</button>
+              </div>
+            </div>
           </div>
-          <div class="field-row">
-            <div class="field"><label>ลำดับความสำคัญ (ชนกับโปรอื่นช่วงเวลาเดียวกัน)</label><input type="number" value="8" min="0"></div>
-            <div class="field"><label>จำกัดจำนวนซื้อต่อคนช่วงเซล (เว้นว่าง = ไม่จำกัด)</label><input type="number" min="1" placeholder="เช่น 2 ชิ้น/คน"></div>
-          </div>
+          <div class="cond-hint" style="margin:-4px 0 10px">ใช้สลับสถานะเพื่อจำลองตอนนำเสนอ — ระบบจริงจะเช็คจากวันเวลาที่ตั้งด้านบนอัตโนมัติ</div>
+          <div class="field" id="flashAudienceField" style="margin-bottom:10px"></div>
 
           <div class="field" style="margin-top:6px">
             <label>กลุ่มสินค้าที่ร่วมรายการ</label>
@@ -153,7 +99,7 @@
             <div class="flash-hero" style="width:100%">
               <div class="fh-top">
                 <div class="ft" id="flashPreviewTitle"></div>
-                <div class="fs">ลดสูงสุดตามกลุ่มที่ตั้งไว้</div>
+                <div class="fs" id="flashActiveNote">ลดสูงสุดตามกลุ่มที่ตั้งไว้</div>
                 <div class="flash-timer"><span>08</span><span>:</span><span>42</span><span>:</span><span>17</span></div>
               </div>
               <div class="flash-cats" id="flashPreviewCats"></div>
@@ -163,77 +109,6 @@
       </div>
     </div>
 
-    <!-- 3. bill discount / free ship -->
-    <div class="block">
-      <div class="block-head"><h3>ส่วนลดท้ายบิล / ซื้อกลุ่มนี้ส่งฟรี</h3></div>
-      <p class="cat-sub" style="margin:0 0 4px">สองกลไกอิสระจากกัน แต่คำนวณจากตะกร้าเดียวกันเสมอ — ส่วนลดท้ายบิลตัดก่อนเสมอ แล้วค่อยพิจารณาสิทธิ์ส่งฟรีทีหลัง</p>
-
-      <div class="settings-grid">
-        <div class="panel">
-          <h2 style="font-size:15px">ส่วนลดท้ายบิลอัตโนมัติ — ตั้งได้หลายกติกา</h2>
-          <p style="font-size:12.5px;color:var(--ink-faint);margin:0 0 10px">แต่ละกติกาเล็งเป้าที่แบรนด์หรือหมวดหมู่ก็ได้ — ถ้าตะกร้าเข้าเงื่อนไขหลายกติกาพร้อมกัน กติกาที่ <b>priority สูงกว่าชนะ</b> เพียงอันเดียว (ไม่บวกซ้อนกัน)</p>
-          <div class="log-wrap">
-            <table class="log">
-              <thead><tr><th>เป้าหมาย</th><th>ยอดขั้นต่ำ</th><th>ส่วนลด</th><th>Priority</th><th></th></tr></thead>
-              <tbody id="billRulesBody"></tbody>
-            </table>
-          </div>
-          <div style="display:flex;gap:6px;margin-top:8px;flex-wrap:wrap">
-            <select id="billAddTargetType" style="border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
-              <option value="brand">แบรนด์</option><option value="category">หมวดหมู่</option>
-            </select>
-            <select id="billAddTarget" style="flex:1;min-width:100px"></select>
-            <input type="number" id="billAddMinSpend" placeholder="ยอดขั้นต่ำ" min="0" style="width:110px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
-            <select id="billAddDiscountType" style="border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
-              <option value="fixed">ลดบาท</option><option value="percent">ลด %</option>
-            </select>
-            <input type="number" id="billAddValue" placeholder="มูลค่า" min="0" style="width:90px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
-            <input type="number" id="billAddCap" placeholder="เพดาน ฿ (ถ้าลด%)" min="0" style="width:130px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
-            <input type="number" id="billAddPriority" placeholder="Priority" min="0" value="5" style="width:90px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
-            <button class="fb-add" type="button" id="billAddBtn" style="width:auto;padding:0 14px">+ เพิ่มกติกา</button>
-          </div>
-          <div class="field" style="margin-top:12px"><label>กลุ่มลูกค้าเป้าหมาย (ใช้ร่วมทุกกติกาข้างต้น)</label><select class="audience-select"></select></div>
-
-          <h2 style="font-size:15px;margin-top:20px">เงื่อนไขส่งฟรี</h2>
-          <div class="field" style="margin-bottom:8px">
-            <label>รูปแบบเงื่อนไข</label>
-            <div class="type-toggle" id="freeShipModeToggle">
-              <button type="button" class="type-btn active" data-pick="exclude">ฟรีทั้งหมด ยกเว้นรายการนี้</button>
-              <button type="button" class="type-btn" data-pick="include_only">ฟรีเฉพาะรายการนี้เท่านั้น</button>
-            </div>
-          </div>
-          <div class="field" style="margin-bottom:8px">
-            <label id="freeShipListLabel">สินค้ายกเว้น (ไม่ฟรีค่าส่ง ต้องคิดค่าส่งเสมอ)</label>
-            <div class="chk-group" id="freeShipExcludedList"></div>
-            <div style="display:flex;gap:6px;margin-top:8px">
-              <select id="freeShipAddSelect" style="flex:1"></select>
-              <button class="fb-add" type="button" id="freeShipAddBtn" style="width:auto;padding:0 12px">+</button>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>ยอดขั้นต่ำเพื่อสิทธิ์ส่งฟรี (0 = ไม่มีขั้นต่ำ)</label><input type="number" id="freeShipMinSpend" min="0"></div>
-            <div class="field"><label>สถานะ</label>
-              <div class="type-toggle" id="freeShipActiveToggle"><button type="button" class="type-btn active" data-pick="on">เปิดใช้งาน</button><button type="button" class="type-btn" data-pick="off">ปิด</button></div>
-            </div>
-          </div>
-          <div class="field"><label>กลุ่มลูกค้าเป้าหมาย</label><select class="audience-select"></select></div>
-        </div>
-
-        <div class="preview-col">
-          <div class="preview-label">มุมมองลูกค้า — ตะกร้าตัวอย่าง (สด)</div>
-          <div class="preview-frame" style="flex-direction:column;gap:14px">
-            <div class="cart-sim" style="width:100%;margin-top:0">
-              <div class="cart-col free"><div class="col-head"><span class="dot" style="background:var(--a)"></span>กลุ่มฟรีค่าส่ง</div><div id="previewFreeGroup"></div></div>
-              <div class="cart-col"><div class="col-head"><span class="dot" style="background:var(--ink-faint)"></span>กลุ่มคิดค่าส่งปกติ</div><div id="previewChargeGroup"></div></div>
-            </div>
-            <div class="badge-row" style="flex-direction:column;align-items:stretch;gap:8px">
-              <span class="freeship-badge" id="previewBillBadge" style="justify-content:flex-start"></span>
-              <span class="freeship-badge" id="previewShipBadge" style="justify-content:flex-start"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <hr class="rule">
@@ -244,23 +119,27 @@
 
     <!-- paper coupon -->
     <div class="block">
-      <div class="block-head"><h3>คูปองกระดาษ</h3></div>
+      <div class="block-head"><h3>คูปองกระดาษ — สร้างได้หลายชุด</h3></div>
       <p class="cat-sub" style="margin:0 0 6px">พิมพ์แจกหน้างาน/บูท — โค้ดเดียวกันทั้งชุด (พิมพ์ง่าย ต้นทุนต่ำ) กันใช้ซ้ำด้วยตัวกระดาษที่ถูกฉีก ไม่ใช่ระบบเช็คเลข</p>
 
-      <div class="mock">
+      <div class="log-wrap">
+        <table class="log">
+          <thead><tr><th>โค้ด</th><th>จำนวน</th><th>ส่วนลด/ใบ</th><th>ขั้นต่ำ</th><th>ใช้ได้ถึง</th><th></th></tr></thead>
+          <tbody id="paperCouponsBody"></tbody>
+        </table>
+      </div>
+
+      <div class="mock" style="margin-top:16px">
         <div class="mock-row">
           <div class="gen-form">
-            <div class="gf-row"><label>รหัสคูปอง (ใช้ร่วมกันทั้งชุด)</label><input type="text" id="genCode">
+            <div class="gf-row"><label>รหัสคูปองชุดใหม่</label><input type="text" id="genCode">
               <div class="gf-hint">*ใบเดียวกันหมดทั้งชุด ไม่ต้องรันเลข</div>
             </div>
             <div class="gf-row"><label>จำนวนที่พิมพ์ (ใบ)</label><input type="number" id="genQty" min="1"></div>
             <div class="gf-row"><label>มูลค่าส่วนลด (บาท/ใบ)</label><input type="number" id="genDiscount" min="0"></div>
             <div class="gf-row"><label>ยอดซื้อขั้นต่ำ (บาท)</label><input type="number" id="genMinSpend" min="0"></div>
             <div class="gf-row"><label>ใช้ได้ถึง</label><input type="date" id="genExpiry"></div>
-            <div class="gf-row"><label>ใช้ร่วมกับโปรอื่นได้ไหม</label>
-              <div class="type-toggle" id="paperCombinableToggle"><button type="button" class="type-btn" data-pick="yes">ใช้ร่วมกันได้</button><button type="button" class="type-btn active" data-pick="no">ใช้เดี่ยวเท่านั้น</button></div>
-            </div>
-            <button class="gf-btn" type="button" id="genBtn">🖨️ สร้างชุดคูปอง + สั่งพิมพ์</button>
+            <button class="gf-btn" type="button" id="genBtn">🖨️ สร้างชุดใหม่ + สั่งพิมพ์</button>
             <div class="gf-out" id="genOut"></div>
           </div>
 
@@ -280,7 +159,7 @@
                 </div>
               </div>
             </div>
-            <div class="stack-cap">ทั้งชุดหน้าตา/รหัสเหมือนกันทุกใบ</div>
+            <div class="stack-cap">พรีวิวของชุดล่าสุดที่สร้าง</div>
           </div>
         </div>
 
@@ -290,8 +169,9 @@
             <div class="cq-head"><span>ร้าน/ตัวแทน</span><span>ชุดโค้ด</span><span>ก้นที่ส่งคืนมา</span><span>มูลค่าที่ต้องจ่าย</span><span>สถานะ</span></div>
             <div id="paperClaimsBody"></div>
           </div>
-          <div style="display:flex;gap:6px;margin-top:10px">
-            <input type="text" id="paperAddShop" placeholder="ชื่อร้าน/ตัวแทน" style="flex:1;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
+          <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">
+            <input type="text" id="paperAddShop" placeholder="ชื่อร้าน/ตัวแทน" style="flex:1;min-width:160px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
+            <select id="paperAddCode" style="border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px"></select>
             <input type="number" id="paperAddStubs" placeholder="จำนวนก้น" min="1" style="width:120px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
             <button class="fb-add" type="button" id="paperAddBtn" style="width:auto;padding:0 14px">+ เพิ่มรายการเบิก</button>
           </div>
@@ -302,185 +182,42 @@
 
     <!-- online coupon -->
     <div class="block">
-      <div class="block-head"><h3>คูปองออนไลน์ — ไม่จำเป็นต้อง unique</h3></div>
+      <div class="block-head"><h3>คูปองออนไลน์ — สร้างได้หลายโค้ด ไม่จำเป็นต้อง unique</h3></div>
       <div class="callout">
         <span class="lbl">แนวคิด</span>
-        โค้ดออนไลน์ใช้ "โค้ดเดียวรวม" ได้เหมือนกระดาษ (เช่น <b>SAVE100</b> แจกทาง Facebook/Influencer ใครก็พิมพ์ใช้ได้) แต่ต่างตรงที่ไม่มีตัวจับต้องได้ป้องกันการใช้ซ้ำ — ระบบจึงบันทึก "ประวัติการใช้คูปอง" ทุกครั้งก่อนอนุมัติ แล้วเช็คจากประวัตินั้นแทนตัวโค้ด ลองพิมพ์ชื่อลูกค้าคนเดิมซ้ำๆ ด้านล่างดูได้เลย
+        โค้ดออนไลน์ใช้ "โค้ดเดียวรวม" ได้เหมือนกระดาษ (เช่น <b>SAVE100</b> แจกทาง Facebook/Influencer ใครก็พิมพ์ใช้ได้) แต่ต่างตรงที่ไม่มีตัวจับต้องได้ป้องกันการใช้ซ้ำ — ระบบจึงบันทึก "ประวัติการใช้คูปอง" ทุกครั้งก่อนอนุมัติ แล้วเช็คจากประวัตินั้นแทนตัวโค้ด สร้างได้หลายโค้ดพร้อมกัน แต่ละโค้ดตั้งเงื่อนไขอิสระจากกัน
       </div>
 
-      <div class="settings-grid">
-        <div class="panel">
-          <h2 style="font-size:15px">ตั้งค่าคูปอง</h2>
-          <div class="field-row">
-            <div class="field"><label>โค้ด (พิมพ์เองได้ ไม่บังคับ unique)</label><input type="text" id="onlineCode"></div>
-            <div class="field"><label>ยอดขั้นต่ำ (บาท)</label><input type="number" id="onlineMinSpend" min="0"></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>ส่วนลด (บาท)</label><input type="number" id="onlineDiscount" min="0"></div>
-            <div class="field"><label>จำกัดจำนวนครั้งใช้ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label><input type="number" id="onlineTotalLimit" min="1"></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>จำกัดจำนวนครั้งต่อคน</label><input type="number" id="onlinePerCustomerLimit" min="1"></div>
-            <div class="field"><label>ใช้ร่วมกับโปรอื่นได้ไหม</label>
-              <div class="type-toggle" id="onlineCombinableToggle"><button type="button" class="type-btn" data-pick="yes">ใช้ร่วมกันได้</button><button type="button" class="type-btn active" data-pick="no">ใช้เดี่ยวเท่านั้น</button></div>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>เริ่มใช้ได้</label><input type="date" id="onlineStart"></div>
-            <div class="field"><label>ใช้ได้ถึง</label><input type="date" id="onlineEnd"></div>
-          </div>
-          <div class="field" style="margin-top:6px">
-            <label>ยกเว้นสินค้า</label>
-            <div class="chk-group" id="onlineExcludedList"></div>
-            <div style="display:flex;gap:6px;margin-top:8px">
-              <select id="onlineExcludedAddSelect" style="flex:1"></select>
-              <button class="fb-add" type="button" id="onlineExcludedAddBtn" style="width:auto;padding:0 12px">+</button>
-            </div>
-          </div>
-          <div class="field" style="margin-top:6px"><label>กลุ่มลูกค้าเป้าหมาย</label><select class="audience-select"></select></div>
-        </div>
+      <div id="onlineCouponsList"></div>
+      <button class="add-btn" type="button" id="addOnlineCouponBtn">+ เพิ่มโค้ดออนไลน์ใหม่</button>
 
-        <div class="panel">
-          <h2 style="font-size:15px">ทดลองใช้โค้ด — เช็คสิทธิ์สด</h2>
-          <div style="display:flex;gap:6px;margin-bottom:12px">
-            <input type="text" id="onlineTryCustomer" placeholder="ชื่อลูกค้า เช่น ร้านยา A" style="flex:1;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
-            <button class="gf-btn" type="button" id="onlineTrySubmit" style="width:auto;padding:0 16px">ทดลองใช้โค้ด</button>
-          </div>
-          <p style="font-size:12px;color:var(--ink-faint);margin:0 0 10px" id="onlineUsageSummary"></p>
-          <div class="log-wrap">
-            <table class="log">
-              <thead><tr><th>เวลา</th><th>ลูกค้า</th><th>ออเดอร์</th><th>ผล</th></tr></thead>
-              <tbody id="onlineLogBody"></tbody>
-            </table>
-          </div>
+      <div class="block" style="margin-top:24px">
+        <div class="block-head"><h3 style="font-size:15px">ทดลองใช้โค้ด — เช็คสิทธิ์สด</h3></div>
+        <div style="display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap">
+          <input type="text" id="onlineTryCustomer" placeholder="ชื่อลูกค้า เช่น ร้านยา A" style="flex:1;min-width:160px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
+          <select id="onlineTryCode" style="border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px"></select>
+          <button class="gf-btn" type="button" id="onlineTrySubmit" style="width:auto;padding:0 16px">ทดลองใช้โค้ด</button>
+        </div>
+        <p style="font-size:12px;color:var(--ink-faint);margin:0 0 10px" id="onlineUsageSummary"></p>
+        <div class="log-wrap">
+          <table class="log">
+            <thead><tr><th>เวลา</th><th>ลูกค้า</th><th>โค้ด</th><th>ออเดอร์</th><th>ผล</th></tr></thead>
+            <tbody id="onlineLogBody"></tbody>
+          </table>
         </div>
       </div>
     </div>
 
-    <!-- wallet coupon -->
+    <!-- collectible / monthly — merged, multi-instance -->
     <div class="block">
-      <div class="block-head"><h3>คูปองเก็บล่วงหน้า</h3></div>
-      <p class="cat-sub" style="margin:0 0 4px">โควตารวมกับโควตาต่อคนตั้งพร้อมกันได้ — เว้นว่างช่องใดหมายถึงไม่จำกัดด้านนั้น เลือกได้ว่าจะให้หมดอายุตายตัวหรือนับจากวันที่เก็บ</p>
-
-      <div class="settings-grid">
-        <div class="panel">
-          <h2 style="font-size:15px">ตั้งค่า</h2>
-          <div class="field-row single"><div class="field"><label>ชื่อคูปอง</label><input type="text" id="walletName"></div></div>
-          <div class="field" style="margin-bottom:8px">
-            <label>ประเภทส่วนลด</label>
-            <div class="type-toggle" id="walletDiscountType">
-              <button type="button" class="type-btn active" data-pick="freeship">ส่งฟรี</button>
-              <button type="button" class="type-btn" data-pick="fixed">ลดราคาคงที่</button>
-              <button type="button" class="type-btn" data-pick="percent">ลดเปอร์เซ็นต์</button>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field" id="walletValueField"><label>มูลค่าส่วนลด</label><input type="number" id="walletDiscountValue" min="0"></div>
-            <div class="field" id="walletCapField" hidden><label>ลดสูงสุดไม่เกิน (บาท, เว้นว่าง = ไม่จำกัด)</label><input type="number" id="walletMaxCap" min="0"></div>
-          </div>
-          <div class="field-row single"><div class="field"><label>ยอดขั้นต่ำ (บาท)</label><input type="number" id="walletMinSpend" min="0"></div></div>
-          <div class="field" style="margin-bottom:8px">
-            <label>ยกเว้นสินค้า (ไม่ร่วมสิทธิ์คูปองนี้)</label>
-            <div class="chk-group" id="walletExcludedList"></div>
-            <div style="display:flex;gap:6px;margin-top:8px">
-              <select id="walletExcludedAddSelect" style="flex:1"></select>
-              <button class="fb-add" type="button" id="walletExcludedAddBtn" style="width:auto;padding:0 12px">+</button>
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field"><label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label><input type="number" id="walletQuotaTotal" min="1"></div>
-            <div class="field"><label>จำกัดต่อคน (เว้นว่าง = ไม่จำกัด)</label><input type="number" id="walletPerCustomerLimit" min="1"></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>กลุ่มลูกค้าที่เก็บสิทธิ์ได้</label><select class="audience-select"></select></div>
-            <div class="field"><label>ใช้ร่วมกับโปรอื่นได้ไหม</label>
-              <div class="type-toggle" id="walletCombinableToggle"><button type="button" class="type-btn active" data-pick="yes">ใช้ร่วมกันได้</button><button type="button" class="type-btn" data-pick="no">ใช้เดี่ยวเท่านั้น</button></div>
-            </div>
-          </div>
-
-          <div class="field-row">
-            <div class="field"><label>เริ่มเก็บได้</label><input type="date" id="walletCollectStart"></div>
-            <div class="field"><label>เก็บได้ถึง</label><input type="date" id="walletCollectEnd"></div>
-          </div>
-
-          <div class="field" style="margin-bottom:8px">
-            <label>การหมดอายุ</label>
-            <div class="type-toggle" id="walletExpiryModeToggle">
-              <button type="button" class="type-btn active" data-pick="fixed">วันที่ตายตัว</button>
-              <button type="button" class="type-btn" data-pick="relative">นับจากวันเก็บ (กี่วัน)</button>
-            </div>
-          </div>
-          <div class="field-row single" id="walletExpiryFixedField"><div class="field"><label>วันหมดอายุ</label><input type="date" id="walletExpiryDate"></div></div>
-          <div class="field-row single" id="walletExpiryRelField" hidden><div class="field"><label>จำนวนวันหลังเก็บ</label><input type="number" id="walletExpiryDays" min="1"></div></div>
-          <div class="cond-hint">วันที่ตายตัวเหมาะกับแคมเปญช่วงเวลาจำกัด (หมดพร้อมกันหมด) — นับจากวันเก็บเหมาะกับให้ลูกค้าใช้เมื่อไหร่ก็ได้ ไม่ผูกปฏิทิน</div>
-        </div>
-
-        <div class="preview-col">
-          <div class="preview-label">มุมมองลูกค้า (สด)</div>
-          <div class="preview-frame">
-            <div class="ticket">
-              <span class="notch top"></span><span class="notch bottom"></span>
-              <div class="main">
-                <div class="t-title" id="walletTicketTitle"></div>
-                <div class="t-desc" id="walletTicketDesc"></div>
-                <div class="t-qty" id="walletTicketQty" style="margin-top:8px"></div>
-              </div>
-              <div class="stub"><span class="t-btn" style="background:var(--a);color:#fff;border-radius:20px;padding:6px 12px">เก็บ</span><span class="t-exp" id="walletTicketExpiry" style="margin-top:6px"></span></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- monthly coupon -->
-    <div class="block">
-      <div class="block-head"><h3>คูปองส่งฟรี/ส่วนลดให้ทุกเดือน</h3></div>
+      <div class="block-head"><h3>คูปองเก็บล่วงหน้า / แจกอัตโนมัติทุกเดือน — สร้างได้หลายใบ</h3></div>
       <div class="callout">
-        <span class="lbl">ข้อเสนอ</span>
-        ให้เป็นแบบ "กดรับ" เหมือนคูปองเก็บล่วงหน้าทั่วไป ไม่ auto-grant เข้าบัญชีเอง — เพราะการต้องกลับมากดรับทุกเดือนสร้างเหตุผลให้ลูกค้าเข้าเว็บสม่ำเสมอ ใช้ "กระเป๋าคูปอง" หน้าเดียวกับคูปองเก็บล่วงหน้าเลย ไม่ต้องแยกที่เก็บใหม่ — และล็อกวันหมดอายุไว้ที่สิ้นเดือนเดียวกันเสมอ ไม่ให้ตั้งเอง กันลูกค้ากักตุนสิทธิ์ข้ามเดือน
+        <span class="lbl">แนวคิด</span>
+        แต่ละใบเป็น setting เดียวกัน แค่เลือก "รูปแบบการแจก" ต่อใบ — <b>เปิดให้กดรับเอง</b> (แบบ Shopee ลูกค้าเข้ามาเก็บ) หรือ <b>แจกอัตโนมัติทุกเดือน</b> (ออกสิทธิ์ให้ทุกวันที่กำหนด หมดอายุสิ้นเดือนเดียวกันเสมอ) — สร้างได้หลายใบพร้อมกัน เช่น ใบนึงให้กดเก็บเอง อีกใบแจกอัตโนมัติทุกเดือน ทั้งหมดใช้กระเป๋าคูปองเดียวกันฝั่งลูกค้า
       </div>
 
-      <div class="settings-grid">
-        <div class="panel">
-          <h2 style="font-size:15px">ตั้งค่า</h2>
-          <div class="field-row single"><div class="field"><label>ชื่อสิทธิ์รายเดือน</label><input type="text" id="monthlyName"></div></div>
-          <div class="field-row">
-            <div class="field"><label>วันที่ออกสิทธิ์ในแต่ละเดือน</label><select id="monthlyDay"></select></div>
-            <div class="field"><label>กลุ่มลูกค้าที่ได้สิทธิ์</label><select id="monthlyAudience"></select></div>
-          </div>
-          <div class="field" style="margin-bottom:8px">
-            <label>ประเภทสิทธิ์</label>
-            <div class="type-toggle" id="monthlyDiscountType">
-              <button type="button" class="type-btn active" data-pick="freeship">ส่งฟรี</button>
-              <button type="button" class="type-btn" data-pick="fixed">ลดราคาคงที่</button>
-              <button type="button" class="type-btn" data-pick="percent">ลดเปอร์เซ็นต์</button>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field" id="monthlyValueField"><label>มูลค่าส่วนลด</label><input type="number" id="monthlyDiscountValue" min="0"></div>
-            <div class="field"><label>ยอดขั้นต่ำ (0 = ไม่มีขั้นต่ำ)</label><input type="number" id="monthlyMinSpend" min="0"></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>การหมดอายุ</label><input type="text" value="สิ้นเดือนเดียวกันเสมอ (ล็อกไว้)" readonly></div>
-            <div class="field"><label>ใช้ร่วมกับโปรอื่นได้ไหม</label>
-              <div class="type-toggle" id="monthlyCombinableToggle"><button type="button" class="type-btn active" data-pick="yes">ใช้ร่วมกันได้</button><button type="button" class="type-btn" data-pick="no">ใช้เดี่ยวเท่านั้น</button></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="preview-col">
-          <div class="preview-label">มุมมองลูกค้า — ลองกดรับดูได้</div>
-          <div class="preview-frame" style="flex-direction:column;gap:12px">
-            <div class="month-strip">
-              <div class="month-cell got"><div class="mc-m">ก.ค.</div><div class="mc-icon">✅</div><div class="mc-s">ใช้แล้ว</div></div>
-              <div class="month-cell now" id="monthNow" style="cursor:pointer"><div class="mc-m">ก.ย.</div><div class="mc-icon">🎁</div><div class="mc-s">กดรับ</div></div>
-              <div class="month-cell"><div class="mc-m">ต.ค.</div><div class="mc-icon">🔒</div><div class="mc-s">รอวันที่ 1</div></div>
-            </div>
-            <p style="font-size:12px;color:var(--ink-faint);margin:0;text-align:center" id="monthlyPreviewDesc"></p>
-          </div>
-        </div>
-      </div>
+      <div id="collectibleCouponsList"></div>
+      <button class="add-btn" type="button" id="addCollectibleCouponBtn">+ เพิ่มคูปองเก็บล่วงหน้า/รายเดือนใหม่</button>
     </div>
   </div>
 
@@ -498,6 +235,10 @@
           <div class="field"><label>ได้กี่พอยท์</label><input type="number" id="pointPointsPer" min="0" step="1"></div>
         </div>
         <p style="font-size:12.5px;color:var(--ink-faint);margin:0 0 10px" id="pointRatePreview"></p>
+        <div class="field" style="margin-bottom:10px">
+          <label>ปัดเศษพอยท์เมื่อยอดไม่ลงตัว</label>
+          <div class="type-toggle" id="pointRoundingToggle"><button type="button" class="type-btn active" data-pick="floor">ปัดเศษทิ้ง</button><button type="button" class="type-btn" data-pick="round">ปัดใกล้เคียง</button></div>
+        </div>
 
         <div class="field" style="margin-bottom:8px">
           <label>สินค้า/หมวดที่ไม่นับพอยท์</label>
@@ -516,9 +257,6 @@
             <div class="type-toggle"><button type="button" class="type-btn active">หักพอยท์คืนอัตโนมัติ</button><button type="button" class="type-btn">ไม่หักคืน</button></div>
           </div>
         </div>
-        <div class="field"><label>ปัดเศษพอยท์เมื่อยอดไม่ลงตัว</label>
-          <div class="type-toggle" id="pointRoundingToggle"><button type="button" class="type-btn active" data-pick="floor">ปัดเศษทิ้ง</button><button type="button" class="type-btn" data-pick="round">ปัดใกล้เคียง</button></div>
-        </div>
       </div>
 
       <div class="preview-col">
@@ -527,7 +265,7 @@
           <div class="point-card" style="width:100%">
             <div class="pk-label">พอยท์ของฉัน</div>
             <div class="pk-val">2,480<span>พอยท์</span></div>
-            <div class="pk-rate" id="pointRateBadge">ทุกยอดซื้อ ฿100 ได้ 10 พอยท์</div>
+            <div class="pk-rate">ทุกยอดซื้อ ฿100 ได้ 10 พอยท์</div>
           </div>
         </div>
       </div>
@@ -535,9 +273,13 @@
 
     <div class="block">
       <div class="block-head"><h3>แคตตาล็อกแลกของด้วยพอยท์</h3></div>
+      <div class="callout">
+        <span class="lbl">กลไกตอนแลก</span>
+        "คูปอง"/"เครดิต" แลกแล้วได้คูปองจริงเข้ากระเป๋าทันที ใช้ที่หน้าจำลองได้เลย ไม่ต้องรออนุมัติ — "สินค้า" เป็นของจริงต้องแพ็ก/จัดส่ง แลกแล้วเข้าคิวเดียวกับคำขอรับรางวัลแคมเปญ ให้ทีมหลังบ้านดำเนินการต่อ
+      </div>
       <div class="log-wrap">
         <table class="log">
-          <thead><tr><th>รายการ</th><th>ประเภท</th><th>พอยท์ที่ใช้</th><th>โควตา</th><th>สถานะ</th><th></th></tr></thead>
+          <thead><tr><th>รายการ</th><th>ประเภท</th><th>ได้รับ</th><th>พอยท์ที่ใช้</th><th>โควตา</th><th>สถานะ</th><th></th></tr></thead>
           <tbody id="redeemCatalogBody"></tbody>
         </table>
       </div>
@@ -546,6 +288,10 @@
         <select id="redeemAddType" style="border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
           <option>คูปอง</option><option>สินค้า</option><option>เครดิต</option>
         </select>
+        <select id="redeemAddDiscountType" style="border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
+          <option value="fixed">ลดบาท</option><option value="percent">ลด %</option><option value="freeship">ส่งฟรี</option>
+        </select>
+        <input type="number" id="redeemAddDiscountValue" placeholder="มูลค่า" min="0" style="width:90px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
         <input type="number" id="redeemAddCost" placeholder="พอยท์" min="1" style="width:100px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
         <input type="number" id="redeemAddQuota" placeholder="โควตา (ว่าง=ไม่จำกัด)" min="1" style="width:170px;border:1px solid var(--line);background:var(--surface-2);border-radius:6px;padding:7px 9px;font-size:13px">
         <button class="fb-add" type="button" id="redeemAddBtn" style="width:auto;padding:0 14px">+ เพิ่มรายการแลก</button>
@@ -558,59 +304,32 @@
   <!-- ============ แคมเปญ ============ -->
   <div class="cat">
     <div class="cat-head"><span class="cn">04</span><h2>แคมเปญ</h2></div>
-    <p class="cat-sub">วิเคราะห์ใหม่: ของรางวัลไม่ได้มีจำนวนเท่ากันทุกชิ้น การการันตีทุกคนที่ถึงยอดใช้ไม่ได้กับของหายาก</p>
+    <p class="cat-sub">มองเป็นขั้นบันไดล้วน ไม่มีเงื่อนไขปลดล็อกแยกประเภท</p>
 
     <div class="ruling-group">
-      <div class="rg-head"><span class="rg-dot" style="background:var(--b)"></span><span class="rg-title">ทำไมต้องมี 3 เงื่อนไข ไม่ใช่แบบเดียว</span></div>
-
-      <div class="ruling warn">
-        <div class="rq">ปัญหาที่พบ</div>
-        <h3>ของราคาสูง/จำนวนจำกัดมาก (เช่นตั๋วเครื่องบิน 3 ที่) ถ้าสัญญาว่า "ใครถึงยอดได้แน่นอน" ลูกค้าที่ถึงยอดแต่มาทีหลังจะรู้สึกโดนโกงตอนเจอว่าของหมด</h3>
-        <div class="rw">การโชว์ "เหลือ X/Y สิทธิ์" แบบเดียวกับของที่มีเยอะ ทำให้ลูกค้าคาดหวังว่าถึงยอด = ได้แน่ ทั้งที่ความจริงของมีจำกัดมาก ควรแยกวิธีสื่อสารตามความหายากของรางวัล ไม่ใช่ใช้กติกาเดียวกับทุกขั้น</div>
-      </div>
-
+      <div class="rg-head"><span class="rg-dot" style="background:var(--a)"></span><span class="rg-title">ทำไมเหลือกลไกเดียว</span></div>
       <div class="ruling ok">
-        <div class="rq">ทางแก้</div>
-        <h3>แยกเป็น 3 เงื่อนไขให้แอดมินเลือกต่อขั้นรางวัล ตามความหายาก/งบประมาณของรางวัลนั้น</h3>
+        <div class="rq">แนวคิด</div>
+        <h3>ทุกขั้นคือ "ขั้นบันได" เหมือนกันหมด ต่างกันแค่ค่าที่แอดมินตั้ง ไม่ใช่กลไกคนละแบบ</h3>
         <div class="rw">
-          🪜 <b>ขั้นบันได (การันตี)</b> — ถึงยอด = ได้แน่ ใช้กับของที่มีเยอะ ต้นทุนต่ำ (เช่นเครื่องวัดความดัน)<br>
-          🏁 <b>คนแรกที่ถึงเกณฑ์</b> — ถึงยอด + ยังมีคิว = ได้ สร้างความเร่งด่วน เหมาะของระดับกลาง<br>
-          🎰 <b>สุ่มจับรางวัล</b> — ถึงยอด = ได้แค่ "สิทธิ์ลุ้น" ไม่การันตี เหมาะของหายากสุด/แพงสุด ประกาศผลด้วยการจับรางวัลแยกต่างหาก
+          <b>"คนแรกที่ถึงเกณฑ์"</b> ไม่ต้องมีโหมดแยก — แค่ตั้ง "จำนวนสิทธิ์" เป็นเลขน้อยๆ ระบบก็โชว์ "เหลือ X/Y สิทธิ์" ให้ลูกค้าเห็นเองโดยธรรมชาติอยู่แล้ว<br>
+          <b>"สุ่มจับรางวัล"</b> ก็แค่ขั้นที่ <b>ไม่ตั้งโควตา</b> (เว้นว่าง = ไม่จำกัด) — ใครถึงยอดกดรับสิทธิ์ได้ทันที เพื่อเข้าคิวลุ้น ส่วนของรางวัลให้ตั้งเป็น "ของพิเศษนอกระบบ" แล้วแอดมินพิมพ์รายละเอียดเอง (เช่น "ทีมงานจะติดต่อคัดเลือกภายหลัง") การคัดเลือก/จับรางวัลจริงเป็นงาน<b>นอกระบบ</b>ที่ทีมงานทำเอง ไม่ต้องมีเครื่องมือพิเศษในเว็บ
         </div>
       </div>
     </div>
 
     <div class="block" style="margin-top:30px">
-      <div class="block-head"><h3>ขั้นรางวัลในแคมเปญ — เพิ่ม/ลบได้ แต่ละขั้นเลือกเงื่อนไขเอง</h3></div>
-      <p class="cat-sub" style="margin:0 0 4px">ทุกขั้นตั้งยอดเกณฑ์ เงื่อนไขปลดล็อก ประเภทรางวัล และแบบฟอร์มขอข้อมูลตอนรับสิทธิ์ได้อิสระจากกัน</p>
+      <div class="block-head"><h3>ขั้นรางวัลในแคมเปญ — เพิ่ม/ลบได้</h3></div>
+      <p class="cat-sub" style="margin:0 0 4px">ทุกขั้นตั้งยอดเกณฑ์ จำนวนสิทธิ์ ประเภทรางวัล และแบบฟอร์มขอข้อมูลตอนรับสิทธิ์ได้อิสระจากกัน</p>
       <div id="milestonesList"></div>
       <button class="add-btn" type="button" id="addMilestoneBtn">+ เพิ่มขั้นรางวัลใหม่</button>
-    </div>
-
-    <div class="block">
-      <div class="block-head"><h3>วงล้อสุ่ม — ประกาศผู้โชคดี</h3></div>
-      <p class="cat-sub" style="margin:0 0 4px">ลูกค้าทุกคนที่ถึงยอดเกณฑ์ของขั้น "สุ่มจับรางวัล" เข้าเป็นผู้เข้าร่วมอัตโนมัติ แอดมินกดหมุนวงล้อตอนถึงวันประกาศผล</p>
-
-      <div class="panel">
-        <div class="field" style="max-width:420px;margin-bottom:16px"><label>กำลังจับรางวัลของขั้น</label><select id="wheelMilestoneSelect"></select></div>
-        <div class="wheel-block">
-          <div class="wheel-stage">
-            <div class="wheel-pointer"></div>
-            <div class="wheel-disc" id="wheelDisc"><div class="wheel-hub" id="wheelHub">🎁</div></div>
-          </div>
-          <div class="wheel-side">
-            <div class="wheel-legend" id="wheelLegend"></div>
-            <button class="wheel-spin-btn" type="button" id="wheelSpinBtn">🎰 หมุนวงล้อ</button>
-            <div class="wheel-result empty" id="wheelResult">ยังไม่ได้จับรางวัล</div>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
   <footer class="foot" style="margin-top:52px">ทุกช่องกรอกและ preview คำนวณสดจากค่าที่ตั้งจริง — เป็น prototype สำหรับหารือแนวคิด ไม่ผูกฐานข้อมูลจริง</footer>
 
 </div>
+<script src="shared-state.js"></script>
 <script src="admin.js"></script>
 </body>
 </html>
