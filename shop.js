@@ -4,15 +4,16 @@
    admin.html writes to localStorage. No separate "system A/B" simulators anymore —
    this page IS the realistic simulation, settings-driven end to end. */
 
-const FLAT_SHIP = 45;          // ค่าส่งมาตรฐานเมื่อไม่เข้าเงื่อนไขส่งฟรี
-const SHIP_EXEMPT_RATE = 0.10; // สูตรจำลองค่าส่งต่อชิ้นของกลุ่มยกเว้น (10% ของราคา)
+// ค่าส่งคิดเหมาตามบิล: ถ้ายังมีสินค้าที่ "ไม่ได้" ฟรีค่าส่งเหลืออยู่แม้แต่รายการเดียว คิด ฿45 — ถ้าทุกรายการได้ฟรีค่าส่งแล้ว = ฿0
+// (ตรงกับตัวอย่างใน explain.html: กลุ่มเข้าเงื่อนไข ฿0 + กลุ่มยกเว้น ฿45 → จ่ายจริง ฿45)
+const FLAT_SHIP = 45;
 const CUSTOMER_KEY = "pmpc_shop_customer_v1";
 const THAI_MONTHS = ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.", "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."];
 const MFIELD_HTML_TYPE = { TEXT: "text", TEL: "tel", NUMBER: "number", DATE: "date" };
 
 let SETTINGS = pmpcLoadSettings();
 let cart = {};              // productName -> qty
-let appliedCoupon = null;   // {kind:'online'} | {kind:'wallet', key}
+let appliedCoupons = [];    // [{kind:'online'|'wallet', key}] — ใช้ได้หลายใบ ขึ้นกับเงื่อนไขใช้ร่วมของแต่ละใบ
 let codeMsgState = null;    // {type:'ok'|'err', text}
 let openClaimFormId = null; // milestone id ที่กางฟอร์มขอรับอยู่
 let checkoutMsg = "";
@@ -27,10 +28,27 @@ function inAudience(obj, name) { return !obj || obj.audienceType !== "some" || (
 function computeOff(discountType, discountValue, base, maxCap) {
   base = num(base);
   discountValue = num(discountValue);
-  let off = discountType === "percent" ? Math.round(base * (discountValue / 100)) : discountValue;
+  let off = discountType === "percent" ? Math.round(base * (discountValue / 100)) : Math.round(discountValue);
   if (discountType === "percent" && maxCap) off = Math.min(off, num(maxCap, Infinity));
   return Math.max(0, Math.min(off, base));
 }
+
+// กระจายส่วนลดลงราย line ตามสัดส่วนยอดคงเหลือ (lineNet: ชื่อสินค้า -> ยอดหลังหักส่วนลดก่อนหน้า)
+// ส่วนลดที่ซ้อนกันหลายชั้น (โปร -> คูปองใบที่ 1 -> ใบที่ 2 ...) จึงไม่มีทางหักเกินมูลค่าสินค้าจริง — คืนยอดที่หักได้จริง
+function allocateOff(off, names, lineNet) {
+  const pool = [...new Set(names)].filter((n) => lineNet[n] > 0);
+  const total = pool.reduce((s, n) => s + lineNet[n], 0);
+  off = Math.min(Math.max(0, Math.round(off)), total);
+  if (off <= 0) return 0;
+  const shares = pool.map((n) => Math.floor((off * lineNet[n]) / total));
+  let rem = off - shares.reduce((s, v) => s + v, 0);
+  for (let i = 0; rem > 0; i = (i + 1) % pool.length) {
+    if (shares[i] < lineNet[pool[i]]) { shares[i]++; rem--; }
+  }
+  pool.forEach((n, i) => { lineNet[n] -= shares[i]; });
+  return off;
+}
+function netOf(names, lineNet) { return [...new Set(names)].reduce((s, n) => s + (lineNet[n] || 0), 0); }
 
 /* ---------------- customer (this browser's demo persona) ---------------- */
 
@@ -104,13 +122,13 @@ function computeItemPromoMatch(promo, lines) {
   promo.requiredItems.forEach((item) => {
     if (promo.conditionType === "QUANTITY") {
       const need = item.requiredQuantity || 1;
-      let have = 0, unitP = 0, matched = false;
+      const units = []; // ราคาต่อชิ้นของทุกชิ้นที่เข้าเงื่อนไข — ฐานส่วนลดคิดจาก "need" ชิ้นที่ถูกที่สุด ไม่ใช่ราคาของ choice ตัวสุดท้าย
       (item.choices || []).forEach((n) => {
         const l = lines.find((x) => x.name === n);
-        if (l) { have += l.qty; unitP = l.unitPrice; matched = true; matchedNames.push(n); }
+        if (l) { for (let i = 0; i < l.qty; i++) units.push(l.unitPrice); matchedNames.push(n); }
       });
-      if (!matched || have < need) { satisfied = false; return; }
-      base += unitP * need;
+      if (units.length < need) { satisfied = false; return; }
+      base += units.sort((a, b) => a - b).slice(0, need).reduce((s, v) => s + v, 0);
     } else if (item.matchAnyUnit) {
       base += lines.reduce((s, l) => s + l.unitPrice * l.qty, 0);
       lines.forEach((l) => matchedNames.push(l.name));
@@ -127,15 +145,15 @@ function computeItemPromoMatch(promo, lines) {
   if (promo.conditionType === "TOTAL_AMOUNT" && base < (promo.totalAmount || 0)) satisfied = false;
   if (!satisfied) return null;
 
-  if (promo.rewardType === "freeship") return { base, off: 0, matchedNames };
-  let off = promo.discountType === "percent" ? Math.round(base * ((promo.discountValue || 0) / 100)) : (promo.discountValue || 0);
-  if (promo.discountType === "percent" && promo.maxDiscountCap) off = Math.min(off, promo.maxDiscountCap);
-  off = Math.min(off, base);
-  return { base, off, matchedNames };
+  const uniqueNames = [...new Set(matchedNames)];
+  if (promo.rewardType === "freeship") return { base, off: 0, matchedNames: uniqueNames };
+  return { base, off: computeOff(promo.discountType, promo.discountValue, base, promo.maxDiscountCap), matchedNames: uniqueNames };
 }
 
 // คำนวณโปรทั้งหมดที่เข้าเงื่อนไขในตะกร้านี้ — คืนส่วนลดรวม + รายการสินค้าที่ได้ฟรีค่าส่ง (เฉพาะที่เข้าเงื่อนไขเท่านั้น ไม่ใช่ทั้งบิล)
-function computePromotions(lines, name) {
+// + promoTouchedNames = สินค้าที่ "จับคู่โปรโมชั่นแล้ว" (ใช้ตัดสิทธิ์คูปองที่ตั้งว่าใช้ร่วมกับโปรไม่ได้)
+// ส่วนลดถูกหักลง lineNet ราย line ทันที เพื่อให้คูปองคิดต่อจากยอดคงเหลือจริง
+function computePromotions(lines, name, lineNet) {
   const active = SETTINGS.promotions.filter((p) => p.active && inAudience(p, name));
   const itemPromos = active.filter((p) => p.targetMode === "items");
   const groupPromos = active.filter((p) => p.targetMode === "group");
@@ -143,19 +161,27 @@ function computePromotions(lines, name) {
   let discountOff = 0;
   const discountBreakdown = []; // [{name, off}]
   const shipExemptNames = new Set();
+  const promoTouchedNames = new Set();
   const appliedPromoIds = [];
 
   itemPromos.forEach((promo) => {
     const m = computeItemPromoMatch(promo, lines);
     if (!m) return;
     appliedPromoIds.push(promo.id);
+    m.matchedNames.forEach((n) => promoTouchedNames.add(n));
     if (promo.rewardType === "freeship") {
       m.matchedNames.forEach((n) => shipExemptNames.add(n));
-    } else if (m.off > 0) {
-      discountOff += m.off;
-      discountBreakdown.push({ name: promo.name, off: m.off });
+    } else {
+      const off = allocateOff(m.off, m.matchedNames, lineNet);
+      if (off > 0) {
+        discountOff += off;
+        discountBreakdown.push({ name: promo.name, off });
+      }
     }
   });
+  const groupLineNames = (promo) => lines
+    .filter((l) => (promo.groupTargetType === "brand" ? l.brand : l.category) === promo.groupTarget)
+    .map((l) => l.name);
 
   // กฎแบบแบรนด์/หมวด แย่งกันเองเป็นคนละสนาม: ฝั่งส่วนลดแข่งกันเอง ฝั่งฟรีค่าส่งแข่งกันเอง — ชนะได้ฝั่งละ 1 กฎ ไม่บวกซ้อน
   const qualifyGroup = (rewardType) => groupPromos
@@ -166,54 +192,121 @@ function computePromotions(lines, name) {
 
   const discWinner = qualifyGroup("discount")[0];
   if (discWinner) {
-    const off = computeOff(discWinner.promo.discountType, discWinner.promo.discountValue, discWinner.groupTotal, discWinner.promo.maxDiscountCap);
+    const names = groupLineNames(discWinner.promo);
+    const off = allocateOff(computeOff(discWinner.promo.discountType, discWinner.promo.discountValue, discWinner.groupTotal, discWinner.promo.maxDiscountCap), names, lineNet);
     if (off > 0) {
       discountOff += off;
       discountBreakdown.push({ name: discWinner.promo.name, off });
       appliedPromoIds.push(discWinner.promo.id);
+      names.forEach((n) => promoTouchedNames.add(n));
     }
   }
 
   const shipWinner = qualifyGroup("freeship")[0];
   if (shipWinner) {
-    lines.filter((l) => (shipWinner.promo.groupTargetType === "brand" ? l.brand : l.category) === shipWinner.promo.groupTarget)
-      .forEach((l) => shipExemptNames.add(l.name));
+    groupLineNames(shipWinner.promo).forEach((n) => { shipExemptNames.add(n); promoTouchedNames.add(n); });
     appliedPromoIds.push(shipWinner.promo.id);
   }
 
-  return { discountOff, discountBreakdown, shipExemptNames, appliedPromoIds };
+  return { discountOff, discountBreakdown, shipExemptNames, promoTouchedNames, appliedPromoIds };
 }
 
 function findOnlineCouponByCode(code) {
   return SETTINGS.onlineCoupons.find((c) => c.code.toUpperCase() === code.toUpperCase());
 }
 
+// คูปองในกระเป๋าเก็บ snapshot ไว้ตอนกดเก็บ — แต่เงื่อนไขใช้ร่วมอ่านสดจากคูปองต้นทางในหน้าแอดมิน (ถ้ายังมีอยู่)
+// ให้แอดมินแก้แล้วมีผลกับใบที่ลูกค้าเก็บไว้แล้วด้วย
+function walletSourceCoupon(held) {
+  const sid = held.sourceId || (/^(?:COLLECT|MONTHLY)-(.+?)-/.exec(held.key) || [])[1];
+  return sid ? SETTINGS.collectibleCoupons.find((c) => c.id === sid) : null;
+}
+
 function normalizeCouponSpec(kind, key) {
   if (kind === "online") {
     const c = SETTINGS.onlineCoupons.find((x) => x.id === key);
     if (!c) return null;
-    return { code: c.code, discountType: "fixed", discountValue: c.discountAmount, maxDiscountCap: null,
+    return { code: c.code, label: c.code, discountType: "fixed", discountValue: c.discountAmount, maxDiscountCap: null,
       minSpend: c.minSpend, excluded: c.excluded, audienceType: c.audienceType, audienceCustomers: c.audienceCustomers,
-      totalLimit: c.totalLimit, usedTotal: c.usedTotal || 0, perCustomerLimit: c.perCustomerLimit };
+      totalLimit: c.totalLimit, usedTotal: c.usedTotal || 0, perCustomerLimit: c.perCustomerLimit,
+      stackWithPromotions: c.stackWithPromotions !== false, stackWithCoupons: c.stackWithCoupons !== false };
   }
   const held = customer.collectedCoupons.find((x) => x.key === key);
   if (!held) return null;
-  return { code: held.key, discountType: held.discountType, discountValue: held.discountValue, maxDiscountCap: held.maxDiscountCap,
+  const src = walletSourceCoupon(held) || held;
+  return { code: held.key, label: held.name, discountType: held.discountType, discountValue: held.discountValue, maxDiscountCap: held.maxDiscountCap,
     minSpend: held.minSpend, excluded: held.excluded, audienceType: "all", audienceCustomers: [],
-    totalLimit: null, usedTotal: 0, perCustomerLimit: 1 };
+    totalLimit: null, usedTotal: 0, perCustomerLimit: 1,
+    stackWithPromotions: src.stackWithPromotions !== false, stackWithCoupons: src.stackWithCoupons !== false };
 }
 
-function evaluateCoupon(spec, name, baseAmount, lines) {
+function sameCoupon(a, b) { return a.kind === b.kind && a.key === b.key; }
+
+// เช็คเงื่อนไข "ใช้ร่วมกับคูปองอื่น" ก่อนเพิ่มคูปองใบใหม่เข้าบิล — คืนข้อความเหตุผลถ้าเพิ่มไม่ได้
+function couponStackConflict(ac) {
+  if (appliedCoupons.some((x) => sameCoupon(x, ac))) return "ใช้คูปองนี้อยู่แล้วในบิลนี้";
+  const spec = normalizeCouponSpec(ac.kind, ac.key);
+  const others = appliedCoupons.map((x) => normalizeCouponSpec(x.kind, x.key)).filter(Boolean);
+  if (!spec || others.length === 0) return null;
+  if (!spec.stackWithCoupons) return "คูปองนี้ใช้ร่วมกับคูปองอื่นไม่ได้ — เอาคูปองที่ใช้อยู่ออกก่อน";
+  const lock = others.find((o) => !o.stackWithCoupons);
+  if (lock) return `คูปอง "${lock.label}" ที่ใช้อยู่ ใช้ร่วมกับคูปองอื่นไม่ได้ — เอาออกก่อน`;
+  return null;
+}
+
+// ตรวจสิทธิ์คูปอง 1 ใบ — ฐานที่ใช้คิด = เฉพาะรายการที่คูปองนี้ครอบคลุม (ไม่นับสินค้ายกเว้น และไม่นับรายการที่จับคู่โปรแล้ว
+// ถ้าคูปองตั้งว่าใช้ร่วมกับโปรไม่ได้) — ยอดขั้นต่ำเทียบกับฐานนี้หลังหักโปร ก่อนหักคูปองใบอื่น (ลำดับการใส่คูปองไม่มีผลกับขั้นต่ำ)
+function evaluateCoupon(spec, name, lines, promoTouchedNames, preCouponNet) {
   if (!spec) return { ok: false, reason: "ไม่พบคูปองนี้" };
   if (!inAudience(spec, name)) return { ok: false, reason: "บัญชีนี้ไม่อยู่ในกลุ่มเป้าหมายของคูปองนี้" };
-  if (baseAmount < spec.minSpend) return { ok: false, reason: `ยอดยังไม่ถึงขั้นต่ำ ฿${fmt(spec.minSpend)}` };
   if (spec.totalLimit && spec.usedTotal >= spec.totalLimit) return { ok: false, reason: `โค้ดหมดโควตารวมแล้ว (${fmt(spec.totalLimit)} ครั้ง)` };
   const usedByMe = customer.couponUsage[spec.code.toUpperCase()] || 0;
   if (spec.perCustomerLimit && usedByMe >= spec.perCustomerLimit) return { ok: false, reason: `บัญชีนี้ใช้โค้ดนี้ครบโควตาแล้ว (${spec.perCustomerLimit} ครั้ง)` };
-  const excludedTotal = lines.filter((l) => (spec.excluded || []).includes(l.name)).reduce((s, l) => s + l.unitPrice * l.qty, 0);
-  const base = Math.max(0, baseAmount - excludedTotal);
-  if (spec.discountType === "freeship") return { ok: true, discount: 0, freeship: true };
-  return { ok: true, discount: computeOff(spec.discountType || "fixed", spec.discountValue, base, spec.maxDiscountCap) };
+  const notExcluded = lines.filter((l) => !(spec.excluded || []).includes(l.name));
+  const eligibleNames = notExcluded.filter((l) => spec.stackWithPromotions || !promoTouchedNames.has(l.name)).map((l) => l.name);
+  const promoBlocked = eligibleNames.length < notExcluded.length;
+  if (lines.length > 0 && eligibleNames.length === 0) {
+    return { ok: false, reason: promoBlocked
+      ? "สินค้าทุกรายการจับคู่โปรโมชั่นแล้ว — คูปองนี้ใช้ร่วมกับโปรโมชั่นไม่ได้"
+      : "สินค้าในตะกร้าอยู่ในรายการยกเว้นของคูปองนี้ทั้งหมด" };
+  }
+  const base = netOf(eligibleNames, preCouponNet);
+  if (base < num(spec.minSpend)) {
+    return { ok: false, reason: `ยอดที่ใช้คูปองนี้ได้ ฿${fmt(base)} ยังไม่ถึงขั้นต่ำ ฿${fmt(spec.minSpend)}` + (promoBlocked ? " (ไม่นับรายการที่จับคู่โปรโมชั่นแล้ว)" : "") };
+  }
+  return { ok: true, eligibleNames, promoBlocked };
+}
+
+// ใช้คูปองทุกใบตามลำดับที่ใส่ — ส่วนลดใบถัดไปคิดจากยอดคงเหลือหลังใบก่อนหน้า (lineNet) ไม่มีทางหักจนติดลบ
+function computeCoupons(list, name, lines, promoTouchedNames, lineNet) {
+  const preCouponNet = { ...lineNet };
+  const results = [];
+  let lock = null; // คูปองที่ใช้ร่วมกับใบอื่นไม่ได้ ที่ผ่านเงื่อนไขไปแล้ว
+  list.forEach((ac) => {
+    const spec = normalizeCouponSpec(ac.kind, ac.key);
+    const hasAccepted = results.some((r) => r.ok);
+    let res;
+    if (spec && hasAccepted && (!spec.stackWithCoupons || lock)) {
+      res = { ok: false, reason: !spec.stackWithCoupons ? "คูปองนี้ใช้ร่วมกับคูปองอื่นไม่ได้" : `คูปอง "${lock.label}" ใช้ร่วมกับคูปองอื่นไม่ได้` };
+    } else {
+      res = evaluateCoupon(spec, name, lines, promoTouchedNames, preCouponNet);
+    }
+    res.spec = spec;
+    res.applied = ac;
+    res.discount = 0;
+    res.freeship = false;
+    if (res.ok) {
+      if (spec.discountType === "freeship") {
+        res.freeship = true;
+      } else {
+        const remaining = netOf(res.eligibleNames, lineNet);
+        res.discount = allocateOff(computeOff(spec.discountType || "fixed", spec.discountValue, remaining, spec.maxDiscountCap), res.eligibleNames, lineNet);
+      }
+      if (!spec.stackWithCoupons) lock = spec;
+    }
+    results.push(res);
+  });
+  return results;
 }
 
 function computePoints(amount) {
@@ -222,7 +315,7 @@ function computePoints(amount) {
   return Math.max(0, ps.rounding === "floor" ? Math.floor(raw) : Math.round(raw));
 }
 
-function computeCart() {
+function computeCart(couponList) {
   const name = customerName();
   const rawLines = Object.entries(cart).filter(([, q]) => q > 0).map(([pname, qty]) => {
     const p = PMPC_PRODUCTS.find((x) => x.name === pname);
@@ -240,34 +333,36 @@ function computeCart() {
   const subtotal = lines.reduce((s, l) => s + l.unitPrice * l.qty, 0);
   const flashSavings = subtotalRaw - subtotal;
 
-  const promoResult = computePromotions(lines, name);
+  const lineNet = {};
+  lines.forEach((l) => { lineNet[l.name] = l.unitPrice * l.qty; });
+
+  const promoResult = computePromotions(lines, name, lineNet);
   const afterBill = subtotal - promoResult.discountOff;
 
-  let couponResult = null;
-  if (appliedCoupon) {
-    const spec = normalizeCouponSpec(appliedCoupon.kind, appliedCoupon.key);
-    couponResult = evaluateCoupon(spec, name, afterBill, lines);
-    couponResult.spec = spec;
-  }
-  const couponDiscount = couponResult && couponResult.ok ? (couponResult.discount || 0) : 0;
-  const couponFreeship = !!(couponResult && couponResult.ok && couponResult.freeship);
+  const couponResults = computeCoupons(couponList || appliedCoupons, name, lines, promoResult.promoTouchedNames, lineNet);
+  const couponDiscount = couponResults.reduce((s, c) => s + c.discount, 0);
+  const couponShipNames = new Set();
+  couponResults.forEach((c) => { if (c.ok && c.freeship) c.eligibleNames.forEach((n) => couponShipNames.add(n)); });
   const afterCoupon = afterBill - couponDiscount;
 
-  // ค่าส่ง: จ่ายเต็มอัตราเป็นค่าเริ่มต้นเสมอ — ฟรีค่าส่งต้อง "ได้มา" จากโปร/คูปองที่เข้าเงื่อนไขเท่านั้น ไม่ใช่ฟรีอัตโนมัติตั้งแต่ใส่ตะกร้า
-  const shipExemptLines = lines.filter((l) => promoResult.shipExemptNames.has(l.name));
-  const shipChargeLines = lines.filter((l) => !promoResult.shipExemptNames.has(l.name));
-  const freeshipActive = couponFreeship || promoResult.shipExemptNames.size > 0;
-  let shippingFee = 0;
-  if (lines.length > 0) {
-    shippingFee = couponFreeship ? 0 : shipChargeLines.reduce((s, l) => s + Math.round(l.unitPrice * SHIP_EXEMPT_RATE) * l.qty, 0);
-    if (!freeshipActive) shippingFee = FLAT_SHIP;
-  }
+  // ค่าส่ง: จ่ายเต็มอัตราเป็นค่าเริ่มต้นเสมอ — ฟรีค่าส่งต้อง "ได้มา" จากโปร/คูปองที่เข้าเงื่อนไขเท่านั้น
+  // ฟรีเฉพาะรายการที่เข้าเงื่อนไข (คูปองส่งฟรีก็ไม่ครอบคลุมสินค้ายกเว้น) — เหลือรายการที่ต้องคิดค่าส่งแม้ 1 รายการ = ฿45 เต็ม
+  const shipExemptNames = new Set([...promoResult.shipExemptNames, ...couponShipNames]);
+  const shipExemptLines = lines.filter((l) => shipExemptNames.has(l.name));
+  const shipChargeLines = lines.filter((l) => !shipExemptNames.has(l.name));
+  const freeshipActive = shipExemptNames.size > 0;
+  const shippingFull = lines.length > 0 ? FLAT_SHIP : 0;
+  const shippingFee = shipChargeLines.length > 0 ? FLAT_SHIP : 0;
+  const shippingSaved = shippingFull - shippingFee;
+  // ใครทำให้ได้ส่งฟรีจริง: ถ้าโปรอย่างเดียวครอบคลุมทุกรายการแล้ว คูปองส่งฟรีไม่ได้ช่วยอะไรเพิ่ม
+  const promoAloneFree = lines.length > 0 && lines.every((l) => promoResult.shipExemptNames.has(l.name));
 
   const total = afterCoupon + shippingFee;
   const pointsEarned = computePoints(afterCoupon);
 
   return { name, lines, subtotalRaw, subtotal, flashOn, flashSavings, promoResult, afterBill,
-    couponResult, couponDiscount, afterCoupon, freeshipActive, couponFreeship, shipExemptLines, shipChargeLines, shippingFee, total, pointsEarned };
+    couponResults, couponDiscount, couponShipNames, afterCoupon, freeshipActive, shipExemptNames, shipExemptLines, shipChargeLines,
+    shippingFull, shippingFee, shippingSaved, promoAloneFree, total, pointsEarned };
 }
 
 /* ---------------- render: flash banner ---------------- */
@@ -365,7 +460,7 @@ function renderCatalog(r) {
       // สถานะค่าส่ง "ได้มา" จากโปร/คูปองที่เข้าเงื่อนไขจริงในตะกร้าตอนนี้เท่านั้น ไม่ใช่ตั้งไว้ล่วงหน้าเป็นสมบัติของสินค้า
       const shipTag = !line
         ? `<span class="tag-pill">🚚 ค่าส่งตามเงื่อนไขโปร</span>`
-        : r.promoResult.shipExemptNames.has(p.name)
+        : r.shipExemptNames.has(p.name)
           ? `<span class="tag-pill ship-ok">🟢 ฟรีค่าส่งอยู่ตอนนี้</span>`
           : `<span class="tag-pill ship-x">🔴 คิดค่าส่งปกติ</span>`;
       const card = document.createElement("div");
@@ -430,19 +525,24 @@ function renderBreakdown(r) {
   r.promoResult.discountBreakdown.forEach((d) => {
     row(`${escapeHtml(d.name)}<small>เฉพาะยอดของรายการที่เข้าเงื่อนไข</small>`, "−฿" + fmt(d.off), { deduct: true });
   });
-  if (r.couponResult) {
-    if (!r.couponResult.ok) {
-      row(`คูปอง<small>${escapeHtml(r.couponResult.reason)}</small>`, "ไม่ใช้งาน");
-    } else if (r.couponFreeship) {
-      row(`คูปอง ${escapeHtml(r.couponResult.spec.code)}<small>สิทธิ์ส่งฟรี</small>`, "ใช้งานอยู่", { deduct: true });
+  r.couponResults.forEach((c) => {
+    const label = c.spec ? c.spec.label : "คูปอง";
+    if (!c.ok) {
+      row(`คูปอง ${escapeHtml(label)}<small>${escapeHtml(c.reason)}</small>`, "ไม่ใช้งาน");
+    } else if (c.freeship) {
+      row(`คูปอง ${escapeHtml(label)}<small>ส่งฟรี ${c.eligibleNames.length} รายการ (ไม่รวมสินค้ายกเว้น) — ดูผลที่บรรทัดค่าส่ง</small>`, "สิทธิ์ส่งฟรี", { deduct: true });
     } else {
-      row(`คูปอง ${escapeHtml(r.couponResult.spec.code)}`, "−฿" + fmt(r.couponDiscount), { deduct: true });
+      const note = c.promoBlocked ? "<small>ไม่รวมรายการที่จับคู่โปรโมชั่นแล้ว</small>" : "";
+      row(`คูปอง ${escapeHtml(label)}${note}`, "−฿" + fmt(c.discount), { deduct: true });
     }
+  });
+  row("ค่าส่ง<small>คิดเหมาทั้งบิล</small>", "฿" + fmt(r.shippingFull));
+  if (r.shippingSaved > 0) {
+    const src = r.promoAloneFree ? "โปรโมชั่น" : (r.promoResult.shipExemptNames.size > 0 ? "โปรโมชั่น + คูปอง" : "คูปอง");
+    row(`ฟรีค่าส่ง<small>ทุกรายการได้ส่งฟรีจาก${src}</small>`, "−฿" + fmt(r.shippingSaved), { deduct: true });
+  } else if (r.freeshipActive) {
+    row(`ฟรีค่าส่งยังไม่มีผล<small>ส่งฟรีได้ ${r.shipExemptLines.length} รายการ แต่ยังมีอีก ${r.shipChargeLines.length} รายการที่ต้องคิดค่าส่งปกติ (${r.shipChargeLines.map((l) => escapeHtml(l.name)).join(", ")})</small>`, "฿0");
   }
-  const shipNote = r.freeshipActive
-    ? (r.shipChargeLines.length ? `<small>ฟรีค่าส่งเฉพาะรายการที่เข้าเงื่อนไขโปร/คูปอง — คิดค่าส่งอีก ${r.shipChargeLines.length} รายการที่เหลือ</small>` : "<small>ตะกร้ามีแต่กลุ่มที่ได้ฟรีค่าส่ง</small>")
-    : "<small>ยังไม่เข้าเงื่อนไขฟรีค่าส่งใดๆ</small>";
-  row("ค่าส่ง" + shipNote, "฿" + fmt(r.shippingFee));
   row("ยอดสุทธิที่ต้องจ่าย", "฿" + fmt(r.total), { total: true });
   const ptRow = document.createElement("div");
   ptRow.className = "cond-hint";
@@ -451,36 +551,24 @@ function renderBreakdown(r) {
   el.appendChild(ptRow);
 }
 
-/* ---------------- coupons: online code + wallet ---------------- */
+/* ---------------- coupons: online code + wallet (ใช้ได้หลายใบ ตามเงื่อนไขใช้ร่วมของแต่ละใบ) ---------------- */
 
-function activeCouponLabel() {
-  if (!appliedCoupon) return "";
-  if (appliedCoupon.kind === "online") {
-    const oc = SETTINGS.onlineCoupons.find((c) => c.id === appliedCoupon.key);
-    return oc ? oc.code : "คูปองนี้";
-  }
-  const held = customer.collectedCoupons.find((c) => c.key === appliedCoupon.key);
-  return held ? held.name : "คูปองนี้";
-}
-
-// เช็คว่าโค้ดที่พิมพ์ใช้ได้ไหม โดย "ไม่" apply จริง — ไว้โชว์ผลให้เห็นก่อนกดยืนยัน
+// เช็คว่าโค้ดที่พิมพ์ใช้ได้ไหม โดย "ไม่" apply จริง — จำลองใส่เพิ่มเข้าไปในบิลปัจจุบันแล้วดูผลของใบนี้
 function validateOnlineCode(code) {
   if (!code) return null;
   const oc = findOnlineCouponByCode(code);
   if (!oc) return { ok: false, reason: "ไม่พบโค้ดนี้ หรือหมดอายุแล้ว" };
-  const r = computeCart();
-  return evaluateCoupon(normalizeCouponSpec("online", oc.id), r.name, r.afterBill, r.lines);
+  const ac = { kind: "online", key: oc.id };
+  const conflict = couponStackConflict(ac);
+  if (conflict) return { ok: false, reason: conflict };
+  const results = computeCart([...appliedCoupons, ac]).couponResults;
+  return results[results.length - 1];
 }
 
 function applyByCode() {
   const input = document.getElementById("codeInput");
   const code = input.value.trim().toUpperCase();
   if (!code) { codeMsgState = null; renderAll(); return; }
-  if (appliedCoupon) {
-    codeMsgState = { type: "err", text: `ตอนนี้ใช้คูปอง "${activeCouponLabel()}" อยู่ — กด "เอาออก" ที่ช่องด้านบนก่อน ถึงจะใช้โค้ดนี้ได้` };
-    renderAll();
-    return;
-  }
   const result = validateOnlineCode(code);
   if (!result || !result.ok) {
     codeMsgState = { type: "err", text: (result && result.reason) || "ไม่พบโค้ดนี้ หรือหมดอายุแล้ว" };
@@ -488,41 +576,55 @@ function applyByCode() {
     return;
   }
   const oc = findOnlineCouponByCode(code);
-  appliedCoupon = { kind: "online", key: oc.id };
+  appliedCoupons.push({ kind: "online", key: oc.id });
   codeMsgState = { type: "ok", text: `ใช้คูปอง "${code}" แล้ว` };
   input.value = "";
   renderAll();
   closeCouponModal();
 }
 function useWalletCoupon(key) {
-  if (appliedCoupon && !(appliedCoupon.kind === "wallet" && appliedCoupon.key === key)) return; // ต้องเอาอันเดิมออกก่อน ปุ่มถูก disable ไว้แล้ว
-  appliedCoupon = { kind: "wallet", key };
+  if (couponStackConflict({ kind: "wallet", key })) return; // ปุ่มถูก disable พร้อมบอกเหตุผลไว้แล้ว
+  appliedCoupons.push({ kind: "wallet", key });
   codeMsgState = null;
   renderAll();
   closeCouponModal();
 }
-function removeApplied() { appliedCoupon = null; codeMsgState = null; renderAll(); }
+function removeApplied(ac) {
+  appliedCoupons = appliedCoupons.filter((x) => !sameCoupon(x, ac));
+  codeMsgState = null;
+  renderAll();
+}
+
+function stackNoteText(spec) {
+  const parts = [];
+  if (!spec.stackWithPromotions) parts.push("ใช้ร่วมกับโปรโมชั่นไม่ได้");
+  if (!spec.stackWithCoupons) parts.push("ใช้ร่วมกับคูปองอื่นไม่ได้");
+  return parts.join(" · ");
+}
 
 function renderActiveCouponSlot(r) {
   const el = document.getElementById("activeCouponSlot");
-  if (!appliedCoupon) {
-    el.innerHTML = `<div class="coupon-slot empty"><span>ยังไม่ได้ใช้คูปอง — กด "เลือก/เปลี่ยนคูปอง" ด้านล่าง</span></div>`;
+  el.innerHTML = "";
+  if (r.couponResults.length === 0) {
+    el.innerHTML = `<div class="coupon-slot empty"><span>ยังไม่ได้ใช้คูปอง — กด "เพิ่มคูปอง" ด้านล่าง</span></div>`;
     return;
   }
-  const slot = document.createElement("div");
-  const ok = r.couponResult && r.couponResult.ok;
-  slot.className = "coupon-slot " + (ok ? "active" : "warn");
-  const label = activeCouponLabel();
-  const desc = ok
-    ? (r.couponFreeship ? "สิทธิ์ส่งฟรี" : `ลด ฿${fmt(r.couponDiscount)} จากยอดสุทธิ`)
-    : `ยังใช้ไม่ได้ตอนนี้ — ${r.couponResult ? r.couponResult.reason : "เงื่อนไขไม่ครบ"}`;
-  slot.innerHTML = `<div><div class="cs-name">${escapeHtml(label)}</div><div class="cs-desc">${escapeHtml(desc)}</div></div>`;
-  const rm = document.createElement("button");
-  rm.type = "button"; rm.className = "cs-remove"; rm.textContent = "เอาออก";
-  rm.onclick = removeApplied;
-  slot.appendChild(rm);
-  el.innerHTML = "";
-  el.appendChild(slot);
+  r.couponResults.forEach((c) => {
+    const slot = document.createElement("div");
+    slot.className = "coupon-slot " + (c.ok ? "active" : "warn");
+    slot.style.marginBottom = "6px";
+    const label = c.spec ? c.spec.label : "คูปองนี้";
+    let desc = c.ok
+      ? (c.freeship ? `สิทธิ์ส่งฟรี ${c.eligibleNames.length} รายการ` : `ลด ฿${fmt(c.discount)}`)
+      : `ยังใช้ไม่ได้ตอนนี้ — ${c.reason}`;
+    if (c.spec && stackNoteText(c.spec)) desc += ` (${stackNoteText(c.spec)})`;
+    slot.innerHTML = `<div><div class="cs-name">${escapeHtml(label)}</div><div class="cs-desc">${escapeHtml(desc)}</div></div>`;
+    const rm = document.createElement("button");
+    rm.type = "button"; rm.className = "cs-remove"; rm.textContent = "เอาออก";
+    rm.onclick = () => removeApplied(c.applied);
+    slot.appendChild(rm);
+    el.appendChild(slot);
+  });
 }
 
 function renderCodeMsg() {
@@ -536,7 +638,9 @@ function renderCodeMsg() {
 
 function collectibleDescText(c) {
   const cap = c.discountType === "percent" && c.maxDiscountCap ? ` (สูงสุด ฿${fmt(c.maxDiscountCap)})` : "";
-  return c.discountType === "freeship" ? "ฟรีค่าส่งเฉพาะกลุ่มเข้าเงื่อนไข" : `ลด ${c.discountType === "percent" ? c.discountValue + "%" + cap : "฿" + fmt(c.discountValue)} เมื่อซื้อครบ ฿${fmt(c.minSpend)}`;
+  const base = c.discountType === "freeship" ? "ฟรีค่าส่งเฉพาะกลุ่มเข้าเงื่อนไข" : `ลด ${c.discountType === "percent" ? c.discountValue + "%" + cap : "฿" + fmt(c.discountValue)} เมื่อซื้อครบ ฿${fmt(c.minSpend)}`;
+  const note = stackNoteText({ stackWithPromotions: c.stackWithPromotions !== false, stackWithCoupons: c.stackWithCoupons !== false });
+  return note ? base + " · " + note : base;
 }
 
 function renderCollectOffer(r) {
@@ -564,7 +668,7 @@ function renderCollectOffer(r) {
       cell.innerHTML = `<div class="mc-m">${escapeHtml(c.name)}</div><div class="mc-icon">${already ? "✅" : "🎁"}</div><div class="mc-s">${already ? "รับแล้ว" : "กดรับ"}</div>`;
       if (!already) cell.onclick = () => {
         customer.monthlyClaimedByCoupon[c.id] = key;
-        customer.collectedCoupons.push({ key: "MONTHLY-" + c.id + "-" + key, name: c.name, discountType: c.discountType, discountValue: c.discountValue, maxDiscountCap: c.maxDiscountCap, excluded: c.excluded, minSpend: c.minSpend, expiresLabel: "ใช้ได้ถึงสิ้นเดือนนี้" });
+        customer.collectedCoupons.push({ key: "MONTHLY-" + c.id + "-" + key, sourceId: c.id, name: c.name, discountType: c.discountType, discountValue: c.discountValue, maxDiscountCap: c.maxDiscountCap, excluded: c.excluded, minSpend: c.minSpend, expiresLabel: "ใช้ได้ถึงสิ้นเดือนนี้" });
         saveCustomer();
         renderAll();
       };
@@ -594,7 +698,7 @@ function renderCollectOffer(r) {
         onClick: () => {
           c.quotaClaimed = (c.quotaClaimed || 0) + 1;
           persistSettings();
-          customer.collectedCoupons.push({ key: prefix + Date.now(), name: c.name, discountType: c.discountType, discountValue: c.discountValue, maxDiscountCap: c.maxDiscountCap, excluded: c.excluded, minSpend: c.minSpend, expiresLabel: c.expiryMode === "fixed" ? "ใช้ได้ถึง " + c.expiryDate : "ใช้ได้ " + c.expiryDays + " วันหลังเก็บ" });
+          customer.collectedCoupons.push({ key: prefix + Date.now(), sourceId: c.id, name: c.name, discountType: c.discountType, discountValue: c.discountValue, maxDiscountCap: c.maxDiscountCap, excluded: c.excluded, minSpend: c.minSpend, expiresLabel: c.expiryMode === "fixed" ? "ใช้ได้ถึง " + c.expiryDate : "ใช้ได้ " + c.expiryDays + " วันหลังเก็บ" });
           saveCustomer();
           renderAll();
         },
@@ -644,15 +748,17 @@ function renderWallet() {
   const row = document.createElement("div");
   row.className = "ticket-row";
   customer.collectedCoupons.forEach((c) => {
-    const isActive = appliedCoupon && appliedCoupon.kind === "wallet" && appliedCoupon.key === c.key;
-    const blockedByOther = appliedCoupon && !isActive;
+    const ac = { kind: "wallet", key: c.key };
+    const isActive = appliedCoupons.some((x) => sameCoupon(x, ac));
+    const conflict = isActive ? null : couponStackConflict(ac);
+    const spec = normalizeCouponSpec("wallet", c.key);
     row.appendChild(ticketMarkup({
-      title: c.name, desc: collectibleDescText(c), qtyText: c.expiresLabel, got: true,
-      btnText: isActive ? "กำลังใช้" : (blockedByOther ? "เอาคูปองปัจจุบันออกก่อน" : "ใช้คูปองนี้"),
-      btnDisabled: isActive || blockedByOther,
+      title: c.name, desc: collectibleDescText({ ...c, ...spec }), qtyText: conflict || c.expiresLabel, got: true,
+      btnText: isActive ? "กำลังใช้" : (conflict ? "ใช้ร่วมไม่ได้" : "ใช้คูปองนี้"),
+      btnDisabled: isActive || !!conflict,
       onClick: () => useWalletCoupon(c.key),
       onRemove: () => {
-        if (isActive) appliedCoupon = null;
+        if (isActive) appliedCoupons = appliedCoupons.filter((x) => !sameCoupon(x, ac));
         customer.collectedCoupons = customer.collectedCoupons.filter((x) => x.key !== c.key);
         saveCustomer();
         renderAll();
@@ -669,15 +775,16 @@ function checkout() {
   if (r.lines.length === 0) return;
 
   r.promoResult.appliedPromoIds.forEach((id) => { customer.promoClaimsCount[id] = (customer.promoClaimsCount[id] || 0) + 1; });
-  if (appliedCoupon && r.couponResult && r.couponResult.ok) {
-    const code = r.couponResult.spec.code.toUpperCase();
+  // ตัดสิทธิ์เฉพาะคูปองที่ผ่านเงื่อนไขและถูกใช้จริงในบิลนี้ — ใบที่ยังใช้ไม่ได้คงอยู่ในกระเป๋าเหมือนเดิม
+  r.couponResults.filter((c) => c.ok).forEach((c) => {
+    const code = c.spec.code.toUpperCase();
     customer.couponUsage[code] = (customer.couponUsage[code] || 0) + 1;
-    if (appliedCoupon.kind === "online") {
-      const oc = SETTINGS.onlineCoupons.find((c) => c.id === appliedCoupon.key);
+    if (c.applied.kind === "online") {
+      const oc = SETTINGS.onlineCoupons.find((x) => x.id === c.applied.key);
       if (oc) { oc.usedTotal = (oc.usedTotal || 0) + 1; persistSettings(); }
     }
-    if (appliedCoupon.kind === "wallet") customer.collectedCoupons = customer.collectedCoupons.filter((c) => c.key !== appliedCoupon.key);
-  }
+    if (c.applied.kind === "wallet") customer.collectedCoupons = customer.collectedCoupons.filter((x) => x.key !== c.applied.key);
+  });
   // ยอดสะสมแคมเปญ (lifetimeSpend) บวกทันทีเสมอ ไม่เกี่ยวกับพอยท์เลย — ตัวขับเคลื่อนขั้นบันไดคือยอดซื้อจริง ไม่ใช่พอยท์
   customer.lifetimeSpend = num(customer.lifetimeSpend) + num(r.afterCoupon);
   // ไม่แปลงเป็นพอยท์ให้อัตโนมัติ — พักไว้ที่ "ยอดรอแปลงเป็นพอยท์" ให้ลูกค้ากดแปลงเองด้านล่าง
@@ -685,7 +792,7 @@ function checkout() {
   customer.ordersCount += 1;
 
   cart = {};
-  appliedCoupon = null;
+  appliedCoupons = [];
   codeMsgState = null;
   checkoutMsg = `✓ ชำระเงินสำเร็จ — ยอดจ่าย ฿${fmt(r.total)} · ยอดสะสมแคมเปญรวม ฿${fmt(customer.lifetimeSpend)} · มี ฿${fmt(customer.convertibleBalance)} รอแปลงเป็นพอยท์`;
   saveCartToCustomer();
@@ -984,7 +1091,6 @@ function boot() {
   document.getElementById("codeInput").addEventListener("blur", () => {
     const code = document.getElementById("codeInput").value.trim().toUpperCase();
     if (!code) { codeMsgState = null; renderCodeMsg(); return; }
-    if (appliedCoupon) { renderCodeMsg(); return; } // ปล่อยให้กด "ใช้โค้ด" เป็นคนอธิบายเหตุผลตอนนั้น
     const result = validateOnlineCode(code);
     codeMsgState = (result && result.ok)
       ? { type: "ok", text: "โค้ดนี้ใช้ได้ — กด \"ใช้โค้ด\" เพื่อยืนยัน" }
@@ -1004,7 +1110,7 @@ function boot() {
     if (!confirm("ล้างตะกร้า/แต้ม/ประวัติของลูกค้าจำลองคนนี้ทั้งหมด?")) return;
     customer = defaultCustomer();
     cart = {};
-    appliedCoupon = null;
+    appliedCoupons = [];
     codeMsgState = null;
     checkoutMsg = "";
     saveCustomer();

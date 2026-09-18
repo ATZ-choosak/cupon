@@ -58,6 +58,34 @@ function wireToggle(groupEl, onPick) {
   });
 }
 
+/* reusable: "เงื่อนไขการใช้ร่วม" ของคูปอง — ใช้ร่วมกับโปรโมชั่นได้ไหม / ใช้ร่วมกับคูปองใบอื่นได้ไหม
+   ลูกค้าใช้คูปองได้หลายใบต่อบิล ไม่ล็อก 1 ใบอีกต่อไป — แต่ละใบกำหนดเองจากตรงนี้ */
+function renderStackField(container, obj, onChange) {
+  container.innerHTML = `<label>เงื่อนไขการใช้ร่วม</label>`;
+  [
+    ["stackWithPromotions", "ใช้ร่วมกับโปรโมชั่น", "ไม่ได้ = ไม่คิดส่วนลดคูปองกับรายการที่จับคู่โปรโมชั่นไปแล้ว (ใช้ได้กับรายการที่เหลือ)"],
+    ["stackWithCoupons", "ใช้ร่วมกับคูปองอื่น", "ไม่ได้ = ต้องเป็นคูปองใบเดียวในบิล"],
+  ].forEach(([key, label, hintText]) => {
+    const row = document.createElement("div");
+    row.style.cssText = "display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap;";
+    row.innerHTML = `<span style="font-size:12.5px;min-width:140px">${label}</span>`;
+    const toggle = document.createElement("div");
+    toggle.className = "type-toggle";
+    [[true, "ได้"], [false, "ไม่ได้"]].forEach(([val, text]) => {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "type-btn" + ((obj[key] !== false) === val ? " active" : ""); b.textContent = text;
+      b.onclick = () => { obj[key] = val; if (onChange) onChange(); else renderStackField(container, obj); };
+      toggle.appendChild(b);
+    });
+    row.appendChild(toggle);
+    container.appendChild(row);
+    const hint = document.createElement("div");
+    hint.className = "cond-hint";
+    hint.textContent = hintText;
+    container.appendChild(hint);
+  });
+}
+
 /* reusable: "กลุ่มลูกค้าเป้าหมาย" — ทุกคน / บางคน (พิมพ์รายชื่อเพิ่มเอง) */
 function renderAudienceField(container, obj, onChange) {
   if (!obj.audienceType) obj.audienceType = "all";
@@ -759,6 +787,11 @@ function renderOnlineCoupons() {
     exField.appendChild(exAddRow);
     card.appendChild(exField);
 
+    const stackField = document.createElement("div");
+    stackField.className = "field"; stackField.style.marginTop = "10px";
+    card.appendChild(stackField);
+    renderStackField(stackField, oc);
+
     const audField = document.createElement("div");
     audField.className = "field"; audField.style.marginTop = "10px";
     card.appendChild(audField);
@@ -779,6 +812,7 @@ function addOnlineCoupon() {
     id: "onl_" + Math.random().toString(36).slice(2, 8),
     code: "NEWCODE" + (onlineCoupons.length + 1), minSpend: 500, discountAmount: 50, excluded: [],
     totalLimit: null, perCustomerLimit: 1, startDate: "", endDate: "", audienceType: "all", audienceCustomers: [], usedTotal: 0,
+    stackWithPromotions: true, stackWithCoupons: true,
   });
   renderOnlineCoupons();
 }
@@ -842,9 +876,13 @@ let collectibleCoupons = SETTINGS.collectibleCoupons;
 
 function collectibleDescText(c) {
   const cap = c.discountType === "percent" && c.maxDiscountCap ? ` (สูงสุด ฿${fmt(c.maxDiscountCap)})` : "";
-  return c.discountType === "freeship"
+  const base = c.discountType === "freeship"
     ? "ฟรีค่าส่งเฉพาะกลุ่มเข้าเงื่อนไข (มีข้อยกเว้น)"
     : `ลด ${c.discountType === "percent" ? c.discountValue + "%" + cap : "฿" + fmt(c.discountValue)} เมื่อซื้อครบ ฿${fmt(c.minSpend)}`;
+  const notes = [];
+  if (c.stackWithPromotions === false) notes.push("ใช้ร่วมกับโปรโมชั่นไม่ได้");
+  if (c.stackWithCoupons === false) notes.push("ใช้ร่วมกับคูปองอื่นไม่ได้");
+  return notes.length ? base + " · " + notes.join(" · ") : base;
 }
 
 function renderCollectibleCoupons() {
@@ -946,6 +984,11 @@ function renderCollectibleCoupons() {
     exAddRow.appendChild(exSel); exAddRow.appendChild(exBtn);
     exField.appendChild(exAddRow);
     card.appendChild(exField);
+
+    const stackField = document.createElement("div");
+    stackField.className = "field"; stackField.style.marginBottom = "8px";
+    card.appendChild(stackField);
+    renderStackField(stackField, cc, renderCollectibleCoupons);
 
     const qRow = document.createElement("div");
     qRow.className = "field-row";
@@ -1067,7 +1110,7 @@ function addCollectibleCoupon() {
     name: "คูปองใหม่", discountType: "fixed", discountValue: 50, maxDiscountCap: null,
     excluded: [], minSpend: 0, quotaTotal: 100, quotaClaimed: 0, perCustomerLimit: 1,
     distributionMode: "manual", collectStart: "", collectEnd: "", expiryMode: "fixed", expiryDate: "", expiryDays: 14,
-    dayOfMonth: 1, audienceType: "all", audienceCustomers: [],
+    dayOfMonth: 1, audienceType: "all", audienceCustomers: [], stackWithPromotions: true, stackWithCoupons: true,
   });
   renderCollectibleCoupons();
 }

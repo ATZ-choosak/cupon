@@ -119,8 +119,11 @@ function pmpcDefaultSettings() {
       audienceCustomers: [],
     },
     // หลายโค้ดพร้อมกันได้ — แต่ละใบตั้งเงื่อนไขอิสระจากกัน
+    // ลูกค้าใช้คูปองได้หลายใบต่อบิล — แต่ละใบกำหนดเองว่า:
+    //   stackWithPromotions: ใช้ร่วมกับโปรโมชั่นได้ไหม (false = ไม่คิดส่วนลดคูปองกับรายการที่จับคู่โปรโมชั่นไปแล้ว)
+    //   stackWithCoupons:    ใช้ร่วมกับคูปองใบอื่นได้ไหม (false = ต้องเป็นคูปองใบเดียวในบิล)
     onlineCoupons: [
-      { id: "onl1", code: "SAVE100", minSpend: 500, discountAmount: 100, excluded: [], totalLimit: null, perCustomerLimit: 1, startDate: "2026-09-01", endDate: "2026-09-30", audienceType: "all", audienceCustomers: [], usedTotal: 2 },
+      { id: "onl1", code: "SAVE100", minSpend: 500, discountAmount: 100, excluded: [], totalLimit: null, perCustomerLimit: 1, startDate: "2026-09-01", endDate: "2026-09-30", audienceType: "all", audienceCustomers: [], usedTotal: 2, stackWithPromotions: true, stackWithCoupons: true },
     ],
     // หลายใบพร้อมกันได้ — เช่น ใบนึงให้ "กดเก็บเอง" อีกใบให้ "แจกอัตโนมัติทุกเดือน"
     collectibleCoupons: [
@@ -144,6 +147,8 @@ function pmpcDefaultSettings() {
         dayOfMonth: 1,
         audienceType: "all",
         audienceCustomers: [],
+        stackWithPromotions: true,
+        stackWithCoupons: true,
       },
       {
         id: "col2",
@@ -165,6 +170,8 @@ function pmpcDefaultSettings() {
         dayOfMonth: 1,
         audienceType: "all",
         audienceCustomers: [],
+        stackWithPromotions: false,
+        stackWithCoupons: true,
       },
     ],
     pointSettings: { spendPer: 100, pointsPer: 10, rounding: "floor" },
@@ -208,6 +215,11 @@ const PMPC_SETTINGS_KEY = "pmpc_settings_v1";
 // เซฟค่าไว้ก่อนหน้านี้ — ฟังก์ชันนี้ไล่เติม field ที่ขาดกลับเข้าไปให้ ไม่แตะ field ที่ผู้ใช้ตั้งไว้แล้ว
 function pmpcMigrateSettings(s) {
   if (s.flashSale && s.flashSale.active === undefined) s.flashSale.active = true;
+  // เงื่อนไขใช้ร่วมของคูปองเพิ่มเข้ามาทีหลัง — ค่าที่เซฟไว้ก่อนหน้าไม่มี field นี้ ถือว่า "ใช้ร่วมได้" ตามพฤติกรรมเดิม
+  [...(s.onlineCoupons || []), ...(s.collectibleCoupons || [])].forEach((c) => {
+    if (c.stackWithPromotions === undefined) c.stackWithPromotions = true;
+    if (c.stackWithCoupons === undefined) c.stackWithCoupons = true;
+  });
   // เทียบชื่อกับ default ตัวจริงเพื่อดึงค่าที่ถูกต้องกลับมา (ไม่ใช่เดา 0 มั่วๆ)
   // discountValue=0 ของคูปอง fixed/percent ไม่มีความหมายทางธุรกิจเลย (คูปองลด ฿0 ไม่มีจริง) — ถือว่าเป็นรอย
   // บั๊กจาก migrate รุ่นก่อนหน้าที่เคยเขียนทับเป็น 0 ไปแล้วจริงๆ (ไม่ใช่แค่ "หายไป") เลยซ่อมแม้ field จะมีอยู่แล้วก็ตาม
