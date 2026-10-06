@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8">
+<title>Pharmaplex flow diagrams</title>
+<style>
+  :root { --red:#a32f34; --red-soft:#fbeaea; --gray:#8a8a8a; --ink:#222; --mute:#666; --green:#2e7d4f; --green-soft:#e8f5ec; --amber:#b7791f; --amber-soft:#fff6e0; --blue-soft:#eaf1fb; --blue:#2b5ea7; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #fff; font-family: "Leelawadee UI", Tahoma, sans-serif; color: var(--ink); }
+  .dg { position: relative; width: 1100px; padding: 24px; background: #fff; }
+  .grid { display: grid; gap: 14px 16px; position: relative; }
+  .n { position: relative; z-index: 2; background: #fff; border: 1.6px solid #9a9a9a; border-radius: 10px; padding: 8px 10px; text-align: center; font-size: 14px; line-height: 1.35; display: flex; flex-direction: column; justify-content: center; min-height: 52px; }
+  .n small { display: block; font-size: 12px; color: var(--mute); margin-top: 2px; }
+  .n.r { background: var(--red); border-color: var(--red); color: #fff; }
+  .n.r small { color: #fde3e3; }
+  .n.g { background: #f4f4f4; }
+  .n.ok { background: var(--green-soft); border-color: var(--green); }
+  .n.warn { background: var(--amber-soft); border-color: var(--amber); }
+  .n.blue { background: var(--blue-soft); border-color: var(--blue); }
+  .n.red-soft { background: var(--red-soft); border-color: var(--red); }
+  #svc .n { font-size: 12.5px; }
+  #svc .n small { font-size: 11px; }
+  .title { font-size: 16px; font-weight: 700; color: var(--red); margin: 0 0 12px; }
+  .lane { position: relative; z-index: 1; border-radius: 8px; }
+  .lane.a { background: #f7f7f9; }
+  .lane.b { background: #fff; }
+  .lanelabel { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; background: #3b3b44; color: #fff; border-radius: 8px; text-align: center; padding: 6px; }
+  .cap { font-size: 13px; color: var(--mute); margin-top: 8px; }
+  svg.links { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; overflow: visible; }
+  svg.links path { fill: none; stroke: #555; stroke-width: 1.8; }
+  svg.links path.dash { stroke-dasharray: 6 5; stroke: var(--red); }
+  .lbl { position: absolute; z-index: 6; font-size: 12px; background: #fff; color: var(--red); padding: 0 4px; border-radius: 4px; transform: translate(-50%, -50%); white-space: nowrap; }
+  .panel { border: 1.5px solid #cfcfcf; border-radius: 12px; padding: 12px; background: #fff; }
+  .panel h4 { margin: 0 0 8px; font-size: 14px; color: var(--ink); }
+  .step-no { display: inline-block; background: var(--red); color: #fff; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; font-size: 12px; margin-right: 4px; }
+  .ext { border-style: dashed; }
+</style></head>
+<body>
+
+<!-- 1. System context -->
+<div class="dg" id="sys">
+  <div class="title">ภาพรวมระบบ: ใครใช้อะไร และเชื่อมกับระบบใด</div>
+  <div class="grid" style="grid-template-columns: 220px 1fr 240px; align-items: stretch;">
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="n" id="u-cust">ลูกค้า<small>เว็บ / มือถือ · สั่งซื้อ ชำระเงิน ตรวจแบบ</small></div>
+      <div class="n" id="u-admin">ทีมแอดมิน<small>อนุมัติ ตั้งค่า ตรวจสลิป เปิดบิล</small></div>
+      <div class="n" id="u-graphic">ทีมกราฟิก / จัดซื้อ<small>ทำแบบ อัปโหลด Draft สั่งผลิต</small></div>
+    </div>
+    <div class="panel" style="background:#fcfcfc;" id="core">
+      <h4>Pharmaplex Platform</h4>
+      <div class="n g" id="front" style="margin-bottom:12px;">หน้าร้านออนไลน์ · ตะกร้า · ชำระเงิน · บัญชีสมาชิก</div>
+      <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+        <div class="n r" id="m1">บริการสั่งทำพิเศษ<small>ซองยา ซองซิป ถุงหูหิ้ว</small></div>
+        <div class="n r" id="m2">โปรโมชั่น<small>ซื้อคู่ · ลดกลุ่ม · ของแถม</small></div>
+        <div class="n r" id="m3">คูปอง<small>กระดาษ · ออนไลน์ · กระเป๋า</small></div>
+        <div class="n r" id="m4">พอยท์ &amp; แคมเปญ<small>พอยท์รายสินค้า · ขั้นบันได</small></div>
+        <div class="n red-soft" id="m5">สุ่มรางวัล<small>แนวทางที่เสนอ</small></div>
+        <div class="n r" id="m6">เซตร้านยาเปิดใหม่<small>ชุดสินค้า บังคับ/ทางเลือก</small></div>
+      </div>
+      <div class="n g" id="back" style="margin-top:12px;">ศูนย์กลางกติกาและราคา · รายงาน · จัดการสินค้า</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="n ext" id="pos">ระบบ POS<small>เปิดบิล · ใบกำกับภาษี · จัดส่ง</small></div>
+      <div class="n ext" id="pay">ช่องทางชำระเงิน<small>โอน · QR PromptPay · เงินสด</small></div>
+      <div class="n ext" id="notify">แจ้งเตือนทีมงาน<small>เหตุการณ์สำคัญของออเดอร์</small></div>
+    </div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 2. Service swimlane -->
+<div class="dg" id="svc">
+  <div class="title">บริการสั่งทำพิเศษ: 9 ขั้นตอนตั้งแต่สั่งจนรับสินค้า</div>
+  <div class="grid" style="grid-template-columns: 120px repeat(9, 1fr); grid-template-rows: repeat(5, 92px); gap: 6px;">
+    <div class="lanelabel" style="grid-row:1; grid-column:1;">ลูกค้า</div>
+    <div class="lanelabel" style="grid-row:2; grid-column:1;">แอดมิน</div>
+    <div class="lanelabel" style="grid-row:3; grid-column:1;">ทีมกราฟิก</div>
+    <div class="lanelabel" style="grid-row:4; grid-column:1;">จัดซื้อ / โรงงาน</div>
+    <div class="lanelabel" style="grid-row:5; grid-column:1;">POS / จัดส่ง</div>
+    <div class="lane a" style="grid-row:1; grid-column:2 / span 9;"></div>
+    <div class="lane b" style="grid-row:2; grid-column:2 / span 9;"></div>
+    <div class="lane a" style="grid-row:3; grid-column:2 / span 9;"></div>
+    <div class="lane b" style="grid-row:4; grid-column:2 / span 9;"></div>
+    <div class="lane a" style="grid-row:5; grid-column:2 / span 9;"></div>
+    <div class="n r" id="s1" style="grid-row:1; grid-column:2;"><span><span class="step-no">1</span>เลือกตัวเลือก</span><small>กรอกข้อมูลร้าน แนบโลโก้</small></div>
+    <div class="n" id="s2" style="grid-row:1; grid-column:3;"><span><span class="step-no">2</span>ชำระมัดจำ 50%</span><small>เงินสด / QR</small></div>
+    <div class="n" id="s3" style="grid-row:2; grid-column:4;"><span><span class="step-no">3</span>ตรวจสลิป อนุมัติ</span><small>แจ้งทีมงานอัตโนมัติ</small></div>
+    <div class="n" id="s4" style="grid-row:3; grid-column:5;"><span><span class="step-no">4</span>ทำ Draft</span><small>ส่งแบบให้ลูกค้าตรวจ</small></div>
+    <div class="n r" id="s5" style="grid-row:1; grid-column:6;"><span><span class="step-no">5</span>ตรวจแบบ</span><small>อนุมัติ หรือขอแก้ ≤ 3 ครั้ง</small></div>
+    <div class="n" id="s6" style="grid-row:4; grid-column:7;"><span><span class="step-no">6</span>สั่งผลิต</span><small>ประมาณ 2–4 สัปดาห์</small></div>
+    <div class="n" id="s7" style="grid-row:2; grid-column:8;"><span><span class="step-no">7</span>รับของ ปรับจำนวนจริง</span><small>ผลิตเกิน/ขาดได้</small></div>
+    <div class="n" id="s8" style="grid-row:1; grid-column:9;"><span><span class="step-no">8</span>ชำระรอบ 2</span><small>หรือออก Credit Note</small></div>
+    <div class="n ok" id="s9" style="grid-row:5; grid-column:10;"><span><span class="step-no">9</span>เปิดบิล จัดส่ง</span><small>หรือรับที่ร้าน</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 3. Design loop -->
+<div class="dg" id="loop">
+  <div class="title">ลูปการตรวจแบบ: ลูกค้าแก้ได้สูงสุด 3 ครั้ง</div>
+  <div class="grid" style="grid-template-columns: repeat(4, 1fr); grid-template-rows: 80px 80px 80px; gap: 26px 30px;">
+    <div class="n" id="d1" style="grid-row:1; grid-column:1;">ทีมกราฟิกส่ง Draft 1<small>พร้อมหมายเหตุการออกแบบ</small></div>
+    <div class="n blue" id="d2" style="grid-row:1; grid-column:2;">ลูกค้าเปิดดูแบบ<small>ป้าย "แบบใหม่" หายเมื่อเปิดดู</small></div>
+    <div class="n warn" id="d3" style="grid-row:1; grid-column:3;">ลูกค้าตัดสินใจ<small>อนุมัติ หรือ ขอแก้</small></div>
+    <div class="n ok" id="d4" style="grid-row:1; grid-column:4;">อนุมัติแบบ Final<small>เข้าสู่การผลิต</small></div>
+    <div class="n red-soft" id="d5" style="grid-row:2; grid-column:3;">ขอแก้ไข (ครั้งที่ 1–3)<small>ระบุจุดที่แก้ แนบไฟล์ได้</small></div>
+    <div class="n" id="d6" style="grid-row:2; grid-column:1;">ทีมกราฟิกทำ Draft ถัดไป<small>Draft 2 → 3 → 4</small></div>
+    <div class="n g" id="d7" style="grid-row:3; grid-column:1 / span 2;">ทีมกราฟิกถอน Draft ที่ส่งผิด<small>ทำได้เฉพาะฉบับล่าสุดที่ลูกค้ายังไม่เปิดดู ไม่นับเป็นรอบแก้</small></div>
+    <div class="n warn" id="d8" style="grid-row:3; grid-column:3 / span 2;">ขอแก้ครบ 3 ครั้งแล้ว<small>ปุ่มขอแก้ถูกล็อก เหลือ "ยืนยัน" หรือ "ติดต่อเจ้าหน้าที่"</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 4. Service status -->
+<div class="dg" id="status">
+  <div class="title">สถานะคำสั่งซื้อบริการสั่งทำพิเศษ</div>
+  <div class="grid" style="grid-template-columns: repeat(6, 1fr); grid-template-rows: 64px 64px 64px; gap: 26px 14px;">
+    <div class="n" id="t1" style="grid-row:1; grid-column:1;">รอตีราคา<small>ขนาดกำหนดเอง</small></div>
+    <div class="n" id="t2" style="grid-row:1; grid-column:2;">รอชำระมัดจำ</div>
+    <div class="n" id="t3" style="grid-row:1; grid-column:3;">รอแอดมินอนุมัติ</div>
+    <div class="n" id="t4" style="grid-row:1; grid-column:4;">กำลังออกแบบ</div>
+    <div class="n blue" id="t5" style="grid-row:1; grid-column:5;">รอลูกค้าตรวจแบบ</div>
+    <div class="n" id="t6" style="grid-row:1; grid-column:6;">กำลังผลิต</div>
+    <div class="n warn" id="t7" style="grid-row:2; grid-column:6;">รอชำระรอบ 2</div>
+    <div class="n warn" id="t8" style="grid-row:2; grid-column:5;">รอตรวจสลิปรอบ 2</div>
+    <div class="n" id="t9" style="grid-row:2; grid-column:4;">พร้อมเปิดบิล</div>
+    <div class="n ok" id="t10" style="grid-row:2; grid-column:3;">รอรับที่ร้าน / รอจัดส่ง</div>
+    <div class="n ok" id="t11" style="grid-row:2; grid-column:2;">รับสินค้าแล้ว</div>
+    <div class="n red-soft" id="t12" style="grid-row:3; grid-column:1 / span 2;">ยกเลิก<small>ลูกค้า: ก่อนอนุมัติมัดจำ · แอดมิน: ก่อนเปิดบิล</small></div>
+    <div class="n warn" id="t13" style="grid-row:3; grid-column:3 / span 2;">รอแก้ข้อมูล / แก้โลโก้<small>แอดมินส่งกลับให้ลูกค้าแก้</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 5. Promotion engine -->
+<div class="dg" id="promo">
+  <div class="title">โปรโมชั่นทำงานอย่างไรเมื่อลูกค้าใส่ของลงตะกร้า</div>
+  <div class="grid" style="grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: stretch;">
+    <div class="n g" id="p1">ลูกค้าเพิ่มสินค้าในตะกร้า<small>ไม่ต้องใส่โค้ด</small></div>
+    <div class="n" id="p2">ตรวจทุกกติกาที่เข้าข่าย<small>ตามแบรนด์ / หมวด / ช่วงเวลา</small></div>
+    <div class="n" id="p3">เรียงตามความสำคัญ<small>กติกาที่ตั้ง priority สูงกว่าชนะ</small></div>
+    <div class="n" id="p4">คิดเฉพาะกลุ่มที่เข้าเงื่อนไข<small>ไม่ใช่ทั้งบิล</small></div>
+    <div class="n ok" id="p5">แสดงในตะกร้าและสรุปยอด<small>ยอดที่ชำระจริงคำนวณที่เซิร์ฟเวอร์</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 7. Coupon paper lifecycle -->
+<div class="dg" id="paper">
+  <div class="title">คูปองกระดาษ: จากการพิมพ์จนถึงการเบิกเงินกับร้าน</div>
+  <div class="grid" style="grid-template-columns: repeat(3, 1fr); grid-template-rows: 80px 80px; gap: 28px 40px;">
+    <div class="n" id="c1" style="grid-row:1; grid-column:1;">แอดมินสร้างชุดคูปอง<small>รหัสเดียวกันทั้งชุด เช่น ABC100</small></div>
+    <div class="n" id="c2" style="grid-row:1; grid-column:2;">สั่งพิมพ์ตามจำนวน<small>เช่น 1,000 ใบ</small></div>
+    <div class="n" id="c3" style="grid-row:1; grid-column:3;">แจกหน้างาน / บูท / ตัวแทน</div>
+    <div class="n" id="c4" style="grid-row:2; grid-column:3;">ลูกค้านำไปซื้อที่ร้าน<small>ยอดซื้อครบตามเงื่อนไข</small></div>
+    <div class="n" id="c5" style="grid-row:2; grid-column:2;">ร้านฉีกก้นคูปองเก็บไว้<small>ส่งก้นกลับมาที่บริษัท</small></div>
+    <div class="n ok" id="c6" style="grid-row:2; grid-column:1;">นับก้นจริงแล้วเบิกเงิน<small>จำนวนก้น × มูลค่าคูปอง</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 8. Coupon online check -->
+<div class="dg" id="online">
+  <div class="title">คูปองออนไลน์ (โค้ดแชร์ได้): ระบบตรวจประวัติทุกครั้งก่อนอนุมัติ</div>
+  <div class="grid" style="grid-template-columns: 1fr 1.1fr 1fr 1fr; grid-template-rows: 90px 90px; gap: 22px 36px;">
+    <div class="n g" id="o1" style="grid-row:1; grid-column:1;">ลูกค้าพิมพ์โค้ดตอนเช็คเอาท์</div>
+    <div class="n" id="o2" style="grid-row:1; grid-column:2;">ตรวจประวัติการใช้ของบัญชีนั้น</div>
+    <div class="n warn" id="o3" style="grid-row:1; grid-column:3;">เกินโควตาต่อคน หรือโควตารวม?</div>
+    <div class="n red-soft" id="o4" style="grid-row:2; grid-column:3;">บล็อกอัตโนมัติ<small>แสดงเหตุผลให้ลูกค้าเห็น</small></div>
+    <div class="n ok" id="o5" style="grid-row:1; grid-column:4;">อนุมัติและบันทึกการใช้<small>ครั้งที่ 1, 2, ... ตามโควตา</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 9. Coupon wallet -->
+<div class="dg" id="wallet">
+  <div class="title">กระเป๋าคูปอง: 2 วิธีรับสิทธิ์</div>
+  <div class="grid" style="grid-template-columns: 170px repeat(4, 1fr); gap: 16px 14px;">
+    <div class="lanelabel" style="grid-row:1;">โหมด 1<br>ลูกค้ากดเก็บเอง</div>
+    <div class="n" id="w1" style="grid-row:1; grid-column:2;">ลูกค้ากด "เก็บ"</div>
+    <div class="n" id="w2" style="grid-row:1; grid-column:3;">ตัดโควตารวมทันที</div>
+    <div class="n" id="w3" style="grid-row:1; grid-column:4;">รหัสผูกกับบัญชีนั้นคนเดียว</div>
+    <div class="n ok" id="w4" style="grid-row:1; grid-column:5;">ใช้ได้ 1 ครั้ง ตัดสิทธิ์หลังใช้</div>
+    <div class="lanelabel" style="grid-row:2;">โหมด 2<br>แจกอัตโนมัติ</div>
+    <div class="n" id="x1" style="grid-row:2; grid-column:2;">วันที่ 1 ของทุกเดือน</div>
+    <div class="n" id="x2" style="grid-row:2; grid-column:3;">ระบบออกสิทธิ์ให้ทุกคน</div>
+    <div class="n" id="x3" style="grid-row:2; grid-column:4;">ใช้ได้ถึงสิ้นเดือนนั้น</div>
+    <div class="n red-soft" id="x4" style="grid-row:2; grid-column:5;">ไม่ใช้ = หมดสิทธิ์<small>ไม่ทบไปเดือนถัดไป</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 10. Points accrual and uses -->
+<div class="dg" id="points">
+  <div class="title">พอยท์สะสมอัตโนมัติเมื่อซื้อสินค้า และนำไปใช้ได้หลายทาง</div>
+  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 90px 90px 90px; gap: 18px 36px;">
+    <div class="n g" id="pt1" style="grid-row:2; grid-column:1;">ชำระเงินสำเร็จ<small>พอยท์เข้าบัญชีทันที ตามอัตราของแต่ละสินค้า</small></div>
+    <div class="n ok" id="pt2" style="grid-row:2; grid-column:2;">กระเป๋าพอยท์<small>ยอดพอยท์คงเหลือ ใช้ได้ทันที</small></div>
+    <div class="n warn" id="pt3" style="grid-row:1; grid-column:3;">แลกคูปองลดราคา / คูปองส่งฟรี<small>ใช้พอยท์ตามที่กำหนด</small></div>
+    <div class="n warn" id="pt4" style="grid-row:2; grid-column:3;">แลกของแถมพรีเมียม / เครดิตเงินคืน<small>ได้สิทธิ์ทันที</small></div>
+    <div class="n warn" id="pt5" style="grid-row:3; grid-column:3;">แลกสิทธิ์ลุ้นรางวัล<small>ระยะถัดไป</small></div>
+    <div class="n blue" id="pt6" style="grid-row:3; grid-column:1;">ยอดสะสมแคมเปญ<small>บัญชีแยก บวกทุกออเดอร์ ไม่ถูกหัก ใช้ปลดล็อกขั้นแคมเปญ</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 11. Campaign ladder -->
+<div class="dg" id="ladder">
+  <div class="title">แคมเปญสะสมยอดรายปี: ปลดล็อกรางวัลตามขั้นบันได</div>
+  <div style="position:relative; height: 330px;">
+    <div class="n" id="l1" style="position:absolute; left:10px; bottom:0; width:300px; height:84px;">สะสม 100,000 บาท<small>ปลดล็อก กระเป๋าพรีเมียมใบเล็ก</small></div>
+    <div class="n" id="l2" style="position:absolute; left:340px; bottom:90px; width:300px; height:84px;">สะสม 500,000 บาท<small>ปลดล็อก เครื่องฟอกอากาศ</small></div>
+    <div class="n r" id="l3" style="position:absolute; left:670px; bottom:180px; width:300px; height:84px;">สะสม 1,000,000 บาท<small>ปลดล็อก ตั๋วทัวร์เวียดนาม 1 ที่นั่ง</small></div>
+    <div class="n warn" id="l4" style="position:absolute; left:10px; top:0; width:600px; height:76px;">แจ้งเตือนอัตโนมัติ (Line / SMS)<small>เมื่อถึง 80% และ 95% ของแต่ละขั้น · ก่อนหมดสัญญา 30 วัน หากยังขาดไม่เกิน 20%</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 12. Raffle -->
+<div class="dg" id="raffle">
+  <div class="title">การสุ่มรางวัล (แนวทางที่เสนอ): ทุกทางเข้ารวมเป็น "สิทธิ์ลุ้น" หนึ่งชนิด</div>
+  <div class="grid" style="grid-template-columns: 1fr 180px 1fr 1fr; gap: 12px 26px; align-items:center;">
+    <div style="display:flex;flex-direction:column;gap:9px;">
+      <div class="n" id="r1" style="min-height:40px;font-size:13px;">แลกด้วยพอยท์<small>เช่น 300 พอยท์ = 1 สิทธิ์</small></div>
+      <div class="n" id="r2" style="min-height:40px;font-size:13px;">ยอดซื้อทุก 2,000 บาท<small>ให้อัตโนมัติ</small></div>
+      <div class="n" id="r3" style="min-height:40px;font-size:13px;">สินค้าร่วมรายการ<small>แทนส่วนลดบางรายการ</small></div>
+      <div class="n" id="r4" style="min-height:40px;font-size:13px;">ถึงขั้นแคมเปญ<small>ได้สิทธิ์ลุ้นของใหญ่</small></div>
+      <div class="n" id="r5" style="min-height:40px;font-size:13px;">กรอกโค้ดในกล่องสินค้า<small>โค้ดที่พิมพ์แจก</small></div>
+    </div>
+    <div class="n r" id="rt" style="min-height:150px;">สิทธิ์ลุ้น<small>หน่วยกลางเดียว · มีอายุ · ตรวจย้อนหลังได้ · แลกกลับเป็นเงินไม่ได้</small></div>
+    <div style="display:flex;flex-direction:column;gap:22px;">
+      <div class="n blue" id="ra" style="min-height:90px;">โหมด A: ลุ้นทันที<small>ของเล็ก เช่น คูปอง ส่งฟรี พอยท์ · งบเป็นค่าคาดหวัง คุมด้วยจำนวนต่อรางวัล</small></div>
+      <div class="n warn" id="rb" style="min-height:90px;">โหมด B: จับตามรอบ<small>ของใหญ่ เช่น ทริป ตั๋ว · แจกแน่นอนตามจำนวนที่ประกาศ</small></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:9px;">
+      <div class="n ok" id="ro1" style="min-height:40px;font-size:13px;">คูปอง / ส่งฟรี<small>เข้ากระเป๋าคูปอง</small></div>
+      <div class="n ok" id="ro2" style="min-height:40px;font-size:13px;">พอยท์<small>บวกเข้าบัญชีพอยท์</small></div>
+      <div class="n ok" id="ro3" style="min-height:40px;font-size:13px;">สินค้า / ของใหญ่<small>เข้าคิวจัดส่งเดิม</small></div>
+      <div class="n g" id="ro4" style="min-height:40px;font-size:13px;">ไม่ถูกรางวัล<small>บันทึกประวัติทุกใบ</small></div>
+    </div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 13. Starter kit -->
+<div class="dg" id="starter">
+  <div class="title">เซตร้านยาเปิดใหม่: เลือกปรับได้เฉพาะสินค้าทางเลือก</div>
+  <div style="width:620px; margin:0 auto; border:1.5px solid #cfcfcf; border-radius:12px; overflow:hidden;">
+    <div style="background:var(--red); color:#fff; padding:10px 14px; font-weight:700;">เซตร้านยาเปิดใหม่ · ขนาดมาตรฐาน</div>
+    <div style="padding:6px 14px; font-size:13px; color:var(--mute);">สินค้าบังคับ (ถอดออกไม่ได้)</div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-top:1px solid #eee;">
+      <div><b>ยาและเวชภัณฑ์มาตรฐาน</b><br><span style="font-size:12px;color:var(--mute)">จำนวนขั้นต่ำตามที่กำหนด</span></div>
+      <div style="display:flex; align-items:center; gap:8px;"><span style="background:#eee;border-radius:6px;padding:3px 8px;font-size:12px;">บังคับ</span><b>฿25,000</b></div>
+    </div>
+    <div style="padding:6px 14px; font-size:13px; color:var(--mute); background:#fafafa; border-top:1px solid #eee;">สินค้าทางเลือก (เปิด / ปิดได้)</div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-top:1px solid #eee;">
+      <div><b>อาหารเสริม</b><br><span style="font-size:12px;color:var(--mute)">เปิดอยู่ · จำนวน 2</span></div>
+      <div style="display:flex; align-items:center; gap:10px;"><span style="width:38px;height:20px;border-radius:12px;background:var(--red);display:inline-block;position:relative;"><span style="position:absolute;right:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;"></span></span><b>฿3,500</b></div>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-top:1px solid #eee;">
+      <div><b>เวชเครื่องสำอาง</b><br><span style="font-size:12px;color:var(--mute)">ปิดอยู่ · ไม่อยู่ในเซต</span></div>
+      <div style="display:flex; align-items:center; gap:10px;"><span style="width:38px;height:20px;border-radius:12px;background:#ccc;display:inline-block;position:relative;"><span style="position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;"></span></span><b>฿0</b></div>
+    </div>
+    <div style="padding:10px 14px; border-top:2px solid #eee; font-size:14px; background:#fcfcfc;">
+      <div style="display:flex;justify-content:space-between;"><span>รวมสินค้าบังคับ</span><span>฿25,000</span></div>
+      <div style="display:flex;justify-content:space-between;"><span>รวมสินค้าทางเลือก</span><span>฿3,500</span></div>
+      <div style="display:flex;justify-content:space-between;"><span>ส่วนลดชุดเซต</span><span>−฿2,000</span></div>
+      <div style="display:flex;justify-content:space-between;font-weight:700;font-size:16px;color:var(--red);margin-top:4px;"><span>ยอดสุทธิ</span><span>฿26,500</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 14. Free shipping mixed cart -->
+<div class="dg" id="ship">
+  <div class="title">คูปองส่งฟรีที่ยกเว้นสินค้าบางหมวด: คิดค่าส่งเฉพาะส่วนที่ไม่ได้รับสิทธิ์</div>
+  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 16px 20px;">
+    <div class="n ok" id="sh1" style="grid-row:1; grid-column:1; min-height:70px;">สินค้าทั่วไป<small>อยู่ในกลุ่มส่งฟรี</small></div>
+    <div class="n warn" id="sh2" style="grid-row:1; grid-column:2; min-height:70px;">สินค้าที่ยกเว้น<small>เช่น นมผง ยาน้ำน้ำหนักมาก</small></div>
+    <div class="n" id="sh3" style="grid-row:2; grid-column:2; min-height:70px;">คำนวณน้ำหนัก / ปริมาตร<small>เฉพาะกลุ่มที่ยกเว้น</small></div>
+    <div class="n ok" id="sh4" style="grid-row:2; grid-column:1; min-height:70px;">ค่าส่ง ฿0<small>ได้สิทธิ์ส่งฟรี</small></div>
+    <div class="n r" id="sh5" style="grid-row:2; grid-column:3; min-height:70px;">เก็บค่าส่งเฉพาะส่วนนี้<small>รวมในยอดชำระ</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<script>
+function drawLinks(container, pairs) {
+  const svg = container.querySelector("svg.links"); if (!svg) return;
+  const c = container.getBoundingClientRect();
+  const ns = 'http://www.w3.org/2000/svg';
+  svg.setAttribute('width', c.width); svg.setAttribute('height', c.height);
+  const defs = document.createElementNS(ns, 'defs');
+  defs.innerHTML = '<marker id="ah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#555"/></marker><marker id="ahr" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#a32f34"/></marker>';
+  svg.appendChild(defs);
+  for (const [from, to, opt] of pairs) {
+    const a = document.getElementById(from), b = document.getElementById(to);
+    if (!a || !b) { console.warn('missing', from, to); continue; }
+    const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+    const ax = ra.left - c.left + ra.width / 2, ay = ra.top - c.top + ra.height / 2;
+    const bx = rb.left - c.left + rb.width / 2, by = rb.top - c.top + rb.height / 2;
+    const dash = opt && opt.dash;
+    let d, lx, ly;
+    const horiz = Math.abs(bx - ax) > Math.abs(by - ay) * 1.2;
+    if (horiz) {
+      const sx = bx > ax ? ra.right - c.left : ra.left - c.left;
+      const ex = bx > ax ? rb.left - c.left : rb.right - c.left;
+      const sy = ay, ey = by;
+      const mx = (sx + ex) / 2;
+      d = `M${sx},${sy} L${mx},${sy} L${mx},${ey} L${ex},${ey}`;
+      lx = mx; ly = (sy + ey) / 2;
+    } else {
+      const sy = by > ay ? ra.bottom - c.top : ra.top - c.top;
+      const ey = by > ay ? rb.top - c.top : rb.bottom - c.top;
+      const sx = ax, ex = bx;
+      const my = (sy + ey) / 2;
+      d = `M${sx},${sy} L${sx},${my} L${ex},${my} L${ex},${ey}`;
+      lx = (sx + ex) / 2; ly = my;
+    }
+    const p = document.createElementNS(ns, 'path');
+    p.setAttribute('d', d);
+    p.setAttribute('marker-end', dash ? 'url(#ahr)' : 'url(#ah)');
+    if (dash) p.setAttribute('class', 'dash');
+    svg.appendChild(p);
+    if (opt && opt.label) {
+      const l = document.createElement('div');
+      l.className = 'lbl'; l.textContent = opt.label;
+      l.style.left = lx + 'px'; l.style.top = ly + 'px';
+      container.appendChild(l);
+    }
+  }
+}
+const LINKS = {
+  sys: [['u-cust','core'],['u-admin','core'],['u-graphic','core'],['core','pos'],['core','pay'],['core','notify']],
+  svc: [['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','s7'],['s7','s8'],['s8','s9']],
+  loop: [['d1','d2'],['d2','d3'],['d3','d4'],['d3','d5',{label:'ขอแก้'}],['d5','d6'],['d6','d2',{dash:true,label:'ส่งกลับให้ลูกค้า'}],['d8','d4',{dash:true,label:'ต้องอนุมัติ (แอดมินอนุมัติแทนได้)'}]],
+  status: [['t1','t2'],['t2','t3'],['t3','t4'],['t4','t5'],['t5','t6'],['t6','t7'],['t7','t8'],['t8','t9'],['t9','t10'],['t10','t11']],
+  promo: [['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5']],
+  paper: [['c1','c2'],['c2','c3'],['c3','c4'],['c4','c5'],['c5','c6']],
+  online: [['o1','o2'],['o2','o3'],['o3','o5',{label:'ไม่เกิน'}],['o3','o4',{dash:true,label:'เกิน'}]],
+  wallet: [['w1','w2'],['w2','w3'],['w3','w4'],['x1','x2'],['x2','x3'],['x3','x4']],
+  points: [['pt1','pt2'],['pt2','pt3'],['pt2','pt4'],['pt2','pt5'],['pt1','pt6',{dash:true,label:'แยกบัญชี'}]],
+  raffle: [['r1','rt'],['r2','rt'],['r3','rt'],['r4','rt'],['r5','rt'],['rt','ra'],['rt','rb'],['ra','ro1'],['ra','ro2'],['rb','ro3'],['rb','ro4',{dash:true}]],
+  ship: [['sh1','sh4'],['sh2','sh3'],['sh3','sh5']],
+  tier: [],
+  ladder: [],
+  starter: [],
+};
+window.drawAll = () => {
+  for (const id of Object.keys(LINKS)) {
+    const el = document.getElementById(id);
+    if (!el) continue;
+    drawLinks(el, LINKS[id]);
+  }
+  document.body.dataset.ready = '1';
+};
+window.addEventListener('load', () => setTimeout(window.drawAll, 150));
+</script>
+</body></html>
