@@ -6,6 +6,9 @@
   * { box-sizing: border-box; }
   body { margin: 0; background: #fff; font-family: "Leelawadee UI", Tahoma, sans-serif; color: var(--ink); }
   .dg { position: relative; width: 1100px; padding: 24px; background: #fff; }
+  #svc.dg { width: 1340px; }
+  #svc .n { font-size: 13px; }
+  #svc .n small { font-size: 11.5px; }
   .grid { display: grid; gap: 14px 16px; position: relative; }
   .n { position: relative; z-index: 2; background: #fff; border: 1.6px solid #9a9a9a; border-radius: 10px; padding: 8px 10px; text-align: center; font-size: 14px; line-height: 1.35; display: flex; flex-direction: column; justify-content: center; min-height: 52px; }
   .n small { display: block; font-size: 12px; color: var(--mute); margin-top: 2px; }
@@ -68,27 +71,28 @@
 
 <!-- 2. Service swimlane -->
 <div class="dg" id="svc">
-  <div class="title">บริการสั่งทำพิเศษ: 9 ขั้นตอนตั้งแต่สั่งจนรับสินค้า</div>
-  <div class="grid" style="grid-template-columns: 120px repeat(9, 1fr); grid-template-rows: repeat(5, 92px); gap: 6px;">
+  <div class="title">บริการสั่งทำพิเศษ: 10 ขั้นตอนตั้งแต่สั่งจนรับสินค้าและรีวิว</div>
+  <div class="grid" style="grid-template-columns: 110px repeat(10, 1fr); grid-template-rows: repeat(5, 92px); gap: 6px;">
     <div class="lanelabel" style="grid-row:1; grid-column:1;">ลูกค้า</div>
     <div class="lanelabel" style="grid-row:2; grid-column:1;">แอดมิน</div>
     <div class="lanelabel" style="grid-row:3; grid-column:1;">ทีมกราฟิก</div>
     <div class="lanelabel" style="grid-row:4; grid-column:1;">จัดซื้อ / โรงงาน</div>
     <div class="lanelabel" style="grid-row:5; grid-column:1;">POS / จัดส่ง</div>
-    <div class="lane a" style="grid-row:1; grid-column:2 / span 9;"></div>
-    <div class="lane b" style="grid-row:2; grid-column:2 / span 9;"></div>
-    <div class="lane a" style="grid-row:3; grid-column:2 / span 9;"></div>
-    <div class="lane b" style="grid-row:4; grid-column:2 / span 9;"></div>
-    <div class="lane a" style="grid-row:5; grid-column:2 / span 9;"></div>
-    <div class="n r" id="s1" style="grid-row:1; grid-column:2;"><span><span class="step-no">1</span>เลือกตัวเลือก</span><small>กรอกข้อมูลร้าน แนบโลโก้</small></div>
-    <div class="n" id="s2" style="grid-row:1; grid-column:3;"><span><span class="step-no">2</span>ชำระมัดจำ 50%</span><small>เงินสด / QR</small></div>
+    <div class="lane a" style="grid-row:1; grid-column:2 / span 10;"></div>
+    <div class="lane b" style="grid-row:2; grid-column:2 / span 10;"></div>
+    <div class="lane a" style="grid-row:3; grid-column:2 / span 10;"></div>
+    <div class="lane b" style="grid-row:4; grid-column:2 / span 10;"></div>
+    <div class="lane a" style="grid-row:5; grid-column:2 / span 10;"></div>
+    <div class="n r" id="s1" style="grid-row:1; grid-column:2;"><span><span class="step-no">1</span>เลือกตัวเลือก</span><small>กรอกข้อมูล แนบโลโก้</small></div>
+    <div class="n" id="s2" style="grid-row:1; grid-column:3;"><span><span class="step-no">2</span>วิธีรับของ + มัดจำ 50%</span><small>สลิป / QR PromptPay</small></div>
     <div class="n" id="s3" style="grid-row:2; grid-column:4;"><span><span class="step-no">3</span>ตรวจสลิป อนุมัติ</span><small>แจ้งทีมงานอัตโนมัติ</small></div>
     <div class="n" id="s4" style="grid-row:3; grid-column:5;"><span><span class="step-no">4</span>ทำ Draft</span><small>ส่งแบบให้ลูกค้าตรวจ</small></div>
     <div class="n r" id="s5" style="grid-row:1; grid-column:6;"><span><span class="step-no">5</span>ตรวจแบบ</span><small>อนุมัติ หรือขอแก้ ≤ 3 ครั้ง</small></div>
     <div class="n" id="s6" style="grid-row:4; grid-column:7;"><span><span class="step-no">6</span>สั่งผลิต</span><small>ประมาณ 2–4 สัปดาห์</small></div>
     <div class="n" id="s7" style="grid-row:2; grid-column:8;"><span><span class="step-no">7</span>รับของ ปรับจำนวนจริง</span><small>ผลิตเกิน/ขาดได้</small></div>
-    <div class="n" id="s8" style="grid-row:1; grid-column:9;"><span><span class="step-no">8</span>ชำระรอบ 2</span><small>หรือออก Credit Note</small></div>
-    <div class="n ok" id="s9" style="grid-row:5; grid-column:10;"><span><span class="step-no">9</span>เปิดบิล จัดส่ง</span><small>หรือรับที่ร้าน</small></div>
+    <div class="n" id="s8" style="grid-row:1; grid-column:9;"><span><span class="step-no">8</span>ชำระรอบ 2</span><small>หรือออกใบลดหนี้</small></div>
+    <div class="n" id="s9" style="grid-row:5; grid-column:10;"><span><span class="step-no">9</span>เปิดบิล จัดส่ง</span><small>หรือรับที่ร้าน</small></div>
+    <div class="n ok" id="s10" style="grid-row:1; grid-column:11;"><span><span class="step-no">10</span>ยืนยันรับของ + รีวิว</span><small>กดยืนยันเอง · ให้คะแนน 1-5 ดาว</small></div>
   </div>
   <svg class="links"></svg>
 </div>
@@ -101,7 +105,7 @@
     <div class="n blue" id="d2" style="grid-row:1; grid-column:2;">ลูกค้าเปิดดูแบบ<small>ป้าย "แบบใหม่" หายเมื่อเปิดดู</small></div>
     <div class="n warn" id="d3" style="grid-row:1; grid-column:3;">ลูกค้าตัดสินใจ<small>อนุมัติ หรือ ขอแก้</small></div>
     <div class="n ok" id="d4" style="grid-row:1; grid-column:4;">อนุมัติแบบ Final<small>เข้าสู่การผลิต</small></div>
-    <div class="n red-soft" id="d5" style="grid-row:2; grid-column:3;">ขอแก้ไข (ครั้งที่ 1–3)<small>ระบุจุดที่แก้ แนบไฟล์ได้</small></div>
+    <div class="n red-soft" id="d5" style="grid-row:2; grid-column:3;">ขอแก้ไข (ครั้งที่ 1–3)<small>วงจุดบนแบบ ≤ 30 จุด + ใส่โน้ต อย่างน้อย 1 รายการ</small></div>
     <div class="n" id="d6" style="grid-row:2; grid-column:1;">ทีมกราฟิกทำ Draft ถัดไป<small>Draft 2 → 3 → 4</small></div>
     <div class="n g" id="d7" style="grid-row:3; grid-column:1 / span 2;">ทีมกราฟิกถอน Draft ที่ส่งผิด<small>ทำได้เฉพาะฉบับล่าสุดที่ลูกค้ายังไม่เปิดดู ไม่นับเป็นรอบแก้</small></div>
     <div class="n warn" id="d8" style="grid-row:3; grid-column:3 / span 2;">ขอแก้ครบ 3 ครั้งแล้ว<small>ปุ่มขอแก้ถูกล็อก เหลือ "ยืนยัน" หรือ "ติดต่อเจ้าหน้าที่"</small></div>
@@ -130,15 +134,29 @@
   <svg class="links"></svg>
 </div>
 
-<!-- 5. Promotion engine -->
+<!-- 5. Bundle condition -> reward -->
 <div class="dg" id="promo">
-  <div class="title">โปรโมชั่นทำงานอย่างไรเมื่อลูกค้าใส่ของลงตะกร้า</div>
+  <div class="title">โปรโมชั่นแบบเงื่อนไข (Bundle): ตั้งเงื่อนไขแล้วเลือกผลตอบแทนได้ 3 แบบ</div>
+  <div class="grid" style="grid-template-columns: repeat(4, 1fr); grid-template-rows: 90px 90px 90px; gap: 18px 26px;">
+    <div class="n g" id="b1" style="grid-row:2; grid-column:1;">ตั้งเงื่อนไข<small>ซื้อครบจำนวนชิ้น หรือยอดซื้อครบเท่าไร</small></div>
+    <div class="n" id="b2" style="grid-row:2; grid-column:2;">เลือกสินค้าที่ร่วมโปร<small>สินค้าที่กำหนด หรือสินค้าใดก็ได้ในกลุ่ม</small></div>
+    <div class="n" id="b3" style="grid-row:2; grid-column:3;">ลำดับความสำคัญ + โควตาต่อคน<small>ถ้าเข้าหลายโปรพร้อมกัน ใช้โปรที่สำคัญกว่า</small></div>
+    <div class="n ok" id="r1" style="grid-row:1; grid-column:4;">ของแถม<small>ได้สินค้าแถมตามจำนวนที่กำหนด</small></div>
+    <div class="n warn" id="r2" style="grid-row:2; grid-column:4;">ส่วนลด<small>ลดเป็นจำนวนเงินหรือเปอร์เซ็นต์</small></div>
+    <div class="n blue" id="r3" style="grid-row:3; grid-column:4;">ฟรีค่าจัดส่ง<small>ไม่คิดค่าส่งเมื่อเข้าเงื่อนไข</small></div>
+  </div>
+  <svg class="links"></svg>
+</div>
+
+<!-- 6. Day-special promotion -->
+<div class="dg" id="flash">
+  <div class="title">โปรโมชั่นตามวันพิเศษ: ลดกลุ่มสินค้าเฉพาะ ตามเวลาและโควตาที่ตั้งไว้</div>
   <div class="grid" style="grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: stretch;">
-    <div class="n g" id="p1">ลูกค้าเพิ่มสินค้าในตะกร้า<small>ไม่ต้องใส่โค้ด</small></div>
-    <div class="n" id="p2">ตรวจทุกกติกาที่เข้าข่าย<small>ตามแบรนด์ / หมวด / ช่วงเวลา</small></div>
-    <div class="n" id="p3">เรียงตามความสำคัญ<small>กติกาที่ตั้ง priority สูงกว่าชนะ</small></div>
-    <div class="n" id="p4">คิดเฉพาะกลุ่มที่เข้าเงื่อนไข<small>ไม่ใช่ทั้งบิล</small></div>
-    <div class="n ok" id="p5">แสดงในตะกร้าและสรุปยอด<small>ยอดที่ชำระจริงคำนวณที่เซิร์ฟเวอร์</small></div>
+    <div class="n g" id="f1">แอดมินตั้งช่วงวันเวลา<small>วันเริ่ม–วันสิ้นสุดชัดเจน</small></div>
+    <div class="n" id="f2">เลือกกลุ่มสินค้าเฉพาะ<small>ไม่ใช่สินค้าทั้งหมด</small></div>
+    <div class="n" id="f3">ตั้ง % ส่วนลดและโควตาจำกัด<small>จำนวนชิ้นหรือยอดสูงสุดของรอบ</small></div>
+    <div class="n ok" id="f4">ถึงเวลา → ลดราคาอัตโนมัติ<small>ไม่ต้องมีคนกดเปิด</small></div>
+    <div class="n warn" id="f5">หมดโควตาหรือหมดเวลา<small>ราคากลับปกติทันที</small></div>
   </div>
   <svg class="links"></svg>
 </div>
@@ -205,18 +223,17 @@
 <!-- 11. Campaign ladder -->
 <div class="dg" id="ladder">
   <div class="title">แคมเปญสะสมยอดรายปี: ปลดล็อกรางวัลตามขั้นบันได</div>
-  <div style="position:relative; height: 330px;">
+  <div style="position:relative; height: 270px;">
     <div class="n" id="l1" style="position:absolute; left:10px; bottom:0; width:300px; height:84px;">สะสม 100,000 บาท<small>ปลดล็อก กระเป๋าพรีเมียมใบเล็ก</small></div>
     <div class="n" id="l2" style="position:absolute; left:340px; bottom:90px; width:300px; height:84px;">สะสม 500,000 บาท<small>ปลดล็อก เครื่องฟอกอากาศ</small></div>
     <div class="n r" id="l3" style="position:absolute; left:670px; bottom:180px; width:300px; height:84px;">สะสม 1,000,000 บาท<small>ปลดล็อก ตั๋วทัวร์เวียดนาม 1 ที่นั่ง</small></div>
-    <div class="n warn" id="l4" style="position:absolute; left:10px; top:0; width:600px; height:76px;">แจ้งเตือนอัตโนมัติ (Line / SMS)<small>เมื่อถึง 80% และ 95% ของแต่ละขั้น · ก่อนหมดสัญญา 30 วัน หากยังขาดไม่เกิน 20%</small></div>
   </div>
   <svg class="links"></svg>
 </div>
 
 <!-- 12. Raffle -->
 <div class="dg" id="raffle">
-  <div class="title">การสุ่มรางวัล (แนวทางที่เสนอ): ทุกทางเข้ารวมเป็น "สิทธิ์ลุ้น" หนึ่งชนิด</div>
+  <div class="title">การสุ่มรางวัล: ทุกทางเข้ารวมเป็น "สิทธิ์ลุ้น" หนึ่งชนิด</div>
   <div class="grid" style="grid-template-columns: 1fr 180px 1fr 1fr; gap: 12px 26px; align-items:center;">
     <div style="display:flex;flex-direction:column;gap:9px;">
       <div class="n" id="r1" style="min-height:40px;font-size:13px;">แลกด้วยพอยท์<small>เช่น 300 พอยท์ = 1 สิทธิ์</small></div>
@@ -268,31 +285,20 @@
   </div>
 </div>
 
-<!-- 14. Free shipping mixed cart -->
-<div class="dg" id="ship">
-  <div class="title">คูปองส่งฟรีที่ยกเว้นสินค้าบางหมวด: คิดค่าส่งเฉพาะส่วนที่ไม่ได้รับสิทธิ์</div>
-  <div class="grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 16px 20px;">
-    <div class="n ok" id="sh1" style="grid-row:1; grid-column:1; min-height:70px;">สินค้าทั่วไป<small>อยู่ในกลุ่มส่งฟรี</small></div>
-    <div class="n warn" id="sh2" style="grid-row:1; grid-column:2; min-height:70px;">สินค้าที่ยกเว้น<small>เช่น นมผง ยาน้ำน้ำหนักมาก</small></div>
-    <div class="n" id="sh3" style="grid-row:2; grid-column:2; min-height:70px;">คำนวณน้ำหนัก / ปริมาตร<small>เฉพาะกลุ่มที่ยกเว้น</small></div>
-    <div class="n ok" id="sh4" style="grid-row:2; grid-column:1; min-height:70px;">ค่าส่ง ฿0<small>ได้สิทธิ์ส่งฟรี</small></div>
-    <div class="n r" id="sh5" style="grid-row:2; grid-column:3; min-height:70px;">เก็บค่าส่งเฉพาะส่วนนี้<small>รวมในยอดชำระ</small></div>
-  </div>
-  <svg class="links"></svg>
-</div>
-
 <script>
 function drawLinks(container, pairs) {
   const svg = container.querySelector("svg.links"); if (!svg) return;
   const c = container.getBoundingClientRect();
   const ns = 'http://www.w3.org/2000/svg';
   svg.setAttribute('width', c.width); svg.setAttribute('height', c.height);
+  const mid = container.id;
   const defs = document.createElementNS(ns, 'defs');
-  defs.innerHTML = '<marker id="ah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#555"/></marker><marker id="ahr" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#a32f34"/></marker>';
+  defs.innerHTML = `<marker id="ah-${mid}" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#555"/></marker><marker id="ahr-${mid}" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#a32f34"/></marker>`;
   svg.appendChild(defs);
   for (const [from, to, opt] of pairs) {
-    const a = document.getElementById(from), b = document.getElementById(to);
-    if (!a || !b) { console.warn('missing', from, to); continue; }
+    // scope lookup to this diagram so duplicate ids across diagrams never collide
+    const a = container.querySelector('#' + CSS.escape(from)), b = container.querySelector('#' + CSS.escape(to));
+    if (!a || !b) { console.warn('missing', from, to, 'in', mid); continue; }
     const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
     const ax = ra.left - c.left + ra.width / 2, ay = ra.top - c.top + ra.height / 2;
     const bx = rb.left - c.left + rb.width / 2, by = rb.top - c.top + rb.height / 2;
@@ -316,7 +322,7 @@ function drawLinks(container, pairs) {
     }
     const p = document.createElementNS(ns, 'path');
     p.setAttribute('d', d);
-    p.setAttribute('marker-end', dash ? 'url(#ahr)' : 'url(#ah)');
+    p.setAttribute('marker-end', dash ? `url(#ahr-${mid})` : `url(#ah-${mid})`);
     if (dash) p.setAttribute('class', 'dash');
     svg.appendChild(p);
     if (opt && opt.label) {
@@ -329,16 +335,16 @@ function drawLinks(container, pairs) {
 }
 const LINKS = {
   sys: [['u-cust','core'],['u-admin','core'],['u-graphic','core'],['core','pos'],['core','pay'],['core','notify']],
-  svc: [['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','s7'],['s7','s8'],['s8','s9']],
+  svc: [['s1','s2'],['s2','s3'],['s3','s4'],['s4','s5'],['s5','s6'],['s6','s7'],['s7','s8'],['s8','s9'],['s9','s10']],
   loop: [['d1','d2'],['d2','d3'],['d3','d4'],['d3','d5',{label:'ขอแก้'}],['d5','d6'],['d6','d2',{dash:true,label:'ส่งกลับให้ลูกค้า'}],['d8','d4',{dash:true,label:'ต้องอนุมัติ (แอดมินอนุมัติแทนได้)'}]],
   status: [['t1','t2'],['t2','t3'],['t3','t4'],['t4','t5'],['t5','t6'],['t6','t7'],['t7','t8'],['t8','t9'],['t9','t10'],['t10','t11']],
-  promo: [['p1','p2'],['p2','p3'],['p3','p4'],['p4','p5']],
+  promo: [['b1','b2'],['b2','b3'],['b3','r1'],['b3','r2'],['b3','r3']],
+  flash: [['f1','f2'],['f2','f3'],['f3','f4'],['f4','f5']],
   paper: [['c1','c2'],['c2','c3'],['c3','c4'],['c4','c5'],['c5','c6']],
   online: [['o1','o2'],['o2','o3'],['o3','o5',{label:'ไม่เกิน'}],['o3','o4',{dash:true,label:'เกิน'}]],
   wallet: [['w1','w2'],['w2','w3'],['w3','w4'],['x1','x2'],['x2','x3'],['x3','x4']],
   points: [['pt1','pt2'],['pt2','pt3'],['pt2','pt4'],['pt2','pt5'],['pt1','pt6',{dash:true,label:'แยกบัญชี'}]],
   raffle: [['r1','rt'],['r2','rt'],['r3','rt'],['r4','rt'],['r5','rt'],['rt','ra'],['rt','rb'],['ra','ro1'],['ra','ro2'],['rb','ro3'],['rb','ro4',{dash:true}]],
-  ship: [['sh1','sh4'],['sh2','sh3'],['sh3','sh5']],
   tier: [],
   ladder: [],
   starter: [],
