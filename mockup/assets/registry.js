@@ -5,12 +5,11 @@ window.MOCKUP = {
   modules: [
     {
       slug: 'promotion', no: '01', title: 'โปรโมชั่น',
-      desc: 'แนวคิดเดียวกับ "เซตของแถม (Bundle)" ที่ใช้งานอยู่ใน pmpc — ขยายผลตอบแทนเป็นของแถม / ส่วนลด / ฟรีค่าจัดส่ง + ขั้นบันได',
+      desc: 'แนวคิดเดียวกับ "เซตของแถม (Bundle)" ที่ใช้งานอยู่ใน pmpc — ขยายผลตอบแทนเป็นของแถม / ส่วนลด / ฟรีค่าจัดส่ง',
       screens: [
         { file: '00-flow.html', title: 'ภาพรวม Flow โปรโมชั่น', role: 'both' },
         { file: '01-admin-list.html', title: 'รายการโปรโมชั่น (ลำดับ priority)', role: 'admin' },
         { file: '02-admin-editor.html', title: 'สร้าง/แก้ไขโปรโมชั่น', role: 'admin' },
-        { file: '03-admin-tier-group.html', title: 'กลุ่มขั้นบันได (GiftSetGroup)', role: 'admin' },
         { file: '04-admin-flash.html', title: 'แคมเปญลดตามวันพิเศษ', role: 'admin' },
         { file: '05-admin-simulator.html', title: 'จำลองตะกร้า ตรวจโปรที่ชนะ', role: 'admin' },
         { file: '06-customer-list.html', title: 'หน้ารวมโปรโมชั่น', role: 'customer' },

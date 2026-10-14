@@ -27,8 +27,6 @@
   .si.stage .no{background:var(--warning-dark);color:#fff;font-size:11px}
   .verdict{font-size:12px;font-weight:800;text-align:right;white-space:nowrap}
   .verdict.ok{color:var(--success-darker)}.verdict.mid{color:#B26A00}.verdict.no{color:var(--g600)}
-  .tier-sub{margin-top:8px;border-top:1px dashed var(--g300);padding-top:6px;display:grid;gap:4px;font-size:12px}
-  .tier-sub div{display:flex;justify-content:space-between;gap:8px}
   .skipped{border:1px dashed var(--g400);border-radius:10px;padding:10px 14px;font-size:12px;color:var(--text2);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
   .cart-line .thumb{width:44px;height:44px}
   .cart-line{grid-template-columns:44px 1fr auto;padding:10px 0}
@@ -55,7 +53,7 @@
         <div class="stack">
           <div class="field"><label>ลูกค้า <span class="pin">1</span></label>
             <select class="select"><option>ร้านยา ทดสอบ จำกัด (B2B)</option><option>ลูกค้าทั่วไป (B2C) — ไม่มีประวัติใช้สิทธิ์</option><option>ค้นหาลูกค้าจริง…</option></select>
-            <span class="help">ประวัติโควต้าของลูกค้ารายนี้: #3 ใช้แล้ว 2/3 · #6 ใช้แล้ว 1/1</span></div>
+            <span class="help">ประวัติโควต้าของลูกค้ารายนี้: #2 ใช้แล้ว 2/3 · #5 ใช้แล้ว 1/1</span></div>
           <div class="field"><label>วันที่จำลอง</label><input class="input" value="12 ต.ค. 2569 (วันนี้)"></div>
           <label class="check"><input type="checkbox"> รวมโปรที่ยังปิดอยู่/ยังไม่เริ่ม (ทดสอบก่อนเปิดใช้งาน) <span class="pin">3</span></label>
         </div>
@@ -78,7 +76,7 @@
         <div class="semi mb8" style="font-size:13px">สรุปผล</div>
         <div class="legend">
           <span><i style="background:var(--success)"></i>ถูกใช้ 2</span>
-          <span><i style="background:var(--warning)"></i>ผ่านแต่ไม่ถูกใช้ 2</span>
+          <span><i style="background:var(--warning)"></i>ผ่านแต่ไม่ถูกใช้ 1</span>
           <span><i style="background:var(--g400)"></i>ไม่ผ่าน 3</span>
           <span><i style="border:1.5px dashed var(--g500)"></i>ข้าม 2</span>
         </div>
@@ -104,54 +102,43 @@
 
         <div class="si win">
           <div class="no">#2</div>
-          <div><div class="t">กลุ่มขั้นบันได นมผงสูตร 3 ซื้อเยอะ แถมเยอะ</div><div class="sub">นมผงสูตร 3 รวม 5 ลัง → ถึงขั้น 2 · รับผ้าอ้อมเด็ก 1 แพ็ค (มูลค่า ฿540)</div>
-            <div class="tier-sub">
-              <div><span>ขั้น 1 · 1 ลัง → เจลแอลกอฮอล์ 1 ขวด</span><span class="chip sq">ไม่ถูกใช้ — เลือกขั้นสูงสุดขั้นเดียว</span></div>
-              <div><span><b>ขั้น 2 · 5 ลัง → ผ้าอ้อมเด็ก 1 แพ็ค</b></span><span class="chip success sq">ถูกใช้</span></div>
-              <div><span>ขั้น 3 · 10 ลัง → Vitamin C 2 ขวด</span><span class="chip soft-error sq">ยังไม่ถึง (ขาดอีก 5 ลัง)</span></div>
-            </div></div>
-          <div class="verdict ok">✓ ผ่าน · ถูกใช้ (ขั้น 2)</div>
-        </div>
-
-        <div class="si lost">
-          <div class="no">#3</div>
           <div><div class="t">ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์</div><div class="sub">เงื่อนไขครบ: นมผงสูตร 3 ≥ 5 ชิ้น · ขวดนม PP ≥ 2 ชิ้น · โควต้าเหลือ 1 ครั้ง</div>
-            <div class="chips"><span class="pin" style="margin:0">5</span><span class="chip soft-warning sq">แพ้โปร #2 ที่ priority สูงกว่า</span><span class="chip outline sq">ใช้นมผงสูตร 3 ชุดเดียวกัน</span><a class="chip soft-primary sq" href="01-admin-list.html">จัดลำดับใหม่ →</a></div></div>
-          <div class="verdict mid">✓ ผ่าน · ไม่ถูกใช้</div>
+            <div class="chips"><span class="chip success sq">ผ่านเงื่อนไข</span><span class="chip soft-success sq">แถมเจลแอลกอฮอล์ 1 ขวด</span></div></div>
+          <div class="verdict ok">✓ ผ่าน · ถูกใช้</div>
         </div>
 
         <div class="si fail">
-          <div class="no">#4</div>
+          <div class="no">#3</div>
           <div><div class="t">ซื้อเวชภัณฑ์ครบ ฿2,000 ส่งฟรี</div><div class="sub">หมวดเวชภัณฑ์ในตะกร้า: ถุงมือยาง ฿480</div>
             <div class="chips"><span class="chip soft-error sq">ยอดรวมยังไม่ถึง ฿2,000 (ขาดอีก ฿1,520)</span></div></div>
           <div class="verdict no">✗ ไม่ผ่าน</div>
         </div>
 
         <div class="si lost">
-          <div class="no">#5</div>
+          <div class="no">#4</div>
           <div><div class="t">ซื้อ Blackmores Vitamin C ครบ 3 ขวด ลด 10%</div><div class="sub">เงื่อนไขครบ: Vitamin C 4 ขวด ≥ 3 · ส่วนลดจะได้ ฿122 (สูงสุด ฿150)</div>
-            <div class="chips"><span class="chip soft-warning sq">แพ้โปร #1 ที่ priority สูงกว่า</span><span class="chip outline sq">Vitamin C 4 ขวด ถูก #1 ใช้แล้ว</span><a class="chip soft-primary sq" href="02-admin-editor.html">แก้ไขโปร #5 →</a></div></div>
+            <div class="chips"><span class="pin" style="margin:0">5</span><span class="chip soft-warning sq">แพ้โปร #1 ที่ priority สูงกว่า</span><span class="chip outline sq">Vitamin C 4 ขวด ถูก #1 ใช้แล้ว</span><a class="chip soft-primary sq" href="02-admin-editor.html">แก้ไขโปร #4 →</a></div></div>
           <div class="verdict mid">✓ ผ่าน · ไม่ถูกใช้</div>
         </div>
 
         <div class="si fail">
-          <div class="no">#6</div>
+          <div class="no">#5</div>
           <div><div class="t">ซื้อ Dumex ครบ 10 กระป๋อง แถมถุงมือยาง 1 กล่อง</div><div class="sub">เงื่อนไขครบ: นมผงสูตร 3 รวม 25 กระป๋อง (5 ลัง)</div>
             <div class="chips"><span class="chip soft-error sq">โควตาลูกค้าเต็ม (ใช้แล้ว 1 / 1)</span></div></div>
           <div class="verdict no">✗ ไม่ผ่าน</div>
         </div>
 
         <div class="si fail">
-          <div class="no">#7</div>
+          <div class="no">#6</div>
           <div><div class="t">ซื้อ Pampers ครบ 3 แพ็ค แถมเจลแอลกอฮอล์ 2 ขวด</div><div class="sub">ผ้าอ้อมเด็ก (Pampers) ในตะกร้า 2 แพ็ค</div>
             <div class="chips"><span class="chip soft-error sq">จำนวนยังไม่ครบ (มี 2 / 3 แพ็ค)</span><span class="chip soft-warning sq">ยังไม่ถึงวันเริ่ม (1 พ.ย. 2569)</span></div></div>
           <div class="verdict no">✗ ไม่ผ่าน</div>
         </div>
 
         <div class="skipped"><b>ข้ามอัตโนมัติ 2 รายการ:</b>
-          <span class="chip error sq">#8 หมดอายุ 30 ก.ย. 2569</span>
-          <span class="chip soft-error sq">#9 ปิดชั่วคราว · ของแถมหมด</span>
-          <span class="muted">(ติ๊ก "รวมโปรที่ยังปิดอยู่" เพื่อลองรวม #9)</span>
+          <span class="chip error sq">#7 หมดอายุ 30 ก.ย. 2569</span>
+          <span class="chip soft-error sq">#8 ปิดชั่วคราว · ของแถมหมด</span>
+          <span class="muted">(ติ๊ก "รวมโปรที่ยังปิดอยู่" เพื่อลองรวม #8)</span>
         </div>
       </div></div>
 
@@ -162,12 +149,12 @@
         <div class="cart-line"><span class="thumb"></span><div><b>ถุงมือยาง (กล่อง)</b><div class="small muted">฿120 × 4</div></div><b>฿480</b></div>
         <div class="cart-line"><span class="thumb"></span><div><b>ผ้าอ้อมเด็ก (แพ็ค)</b><div class="small muted">฿540 × 2</div></div><b>฿1,080</b></div>
         <div class="cart-line"><span class="thumb"></span><div><b>ขวดนม PP (ชิ้น)</b><div class="small muted">฿60 × 2</div></div><b>฿120</b></div>
-        <div class="cart-line gift"><span class="thumb"></span><div><b>ผ้าอ้อมเด็ก (แพ็ค)</b> <span class="promo-tag gift">ของแถม ฟรี</span><div class="small muted">จากกลุ่มขั้นบันได ขั้น 2 · มูลค่า ฿540 · ×1</div></div><b style="color:var(--success-dark)">฿0</b></div>
+        <div class="cart-line gift"><span class="thumb"></span><div><b>เจลแอลกอฮอล์ (ขวด)</b> <span class="promo-tag gift">ของแถม ฟรี</span><div class="small muted">จากโปร #2 · ×1</div></div><b style="color:var(--success-dark)">฿0</b></div>
         <div class="mt16" style="max-width:460px;margin-left:auto">
           <div class="sum-row"><span>ยอดสินค้า (ราคาปกติ)</span><span>฿9,650</span></div>
           <div class="sum-row disc"><span>ส่วนลด Flash Sale<small>Vitamin C −฿304 · พาราเซตามอล −฿130</small></span><span>−฿434</span></div>
           <div class="sum-row disc"><span>ส่วนลดโปรโมชั่น<small>#1 ซื้อ Blackmores ครบ ฿1,000 ลด ฿100</small></span><span>−฿100</span></div>
-          <div class="sum-row"><span>ของแถมโปรโมชั่น<small>#2 ผ้าอ้อมเด็ก 1 แพ็ค</small></span><span>฿0</span></div>
+          <div class="sum-row"><span>ของแถมโปรโมชั่น<small>#2 เจลแอลกอฮอล์ 1 ขวด</small></span><span>฿0</span></div>
           <div class="sum-row total"><span>ยอดหลังโปรโมชั่น</span><span>฿9,116</span></div>
           <div class="small muted">ส่งต่อไปคิดคูปอง → ค่าจัดส่ง → ใช้พอยท์ (ไม่แสดงในหน้านี้)</div>
         </div>
