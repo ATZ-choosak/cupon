@@ -100,19 +100,14 @@
         </div>
       </div>
 
-      <!-- mode + multiplier -->
+      <!-- mode -->
       <div class="card"><div class="card-h"><h6>วิธีให้ของแถม <span class="pin">5</span></h6></div><div class="card-b">
         <div class="radio-cards c2">
           <label class="radio-card"><input type="radio" name="gmode" checked><span><span class="rc-t">เลือกขั้นสูงสุดที่ถึงเพียงขั้นเดียว</span><span class="rc-d" style="display:block">ซื้อ 12 ลัง ได้เฉพาะของขั้น 3 (Vitamin C 2 ขวด)</span></span></label>
           <label class="radio-card"><input type="radio" name="gmode"><span><span class="rc-t">สะสมทุกขั้น</span><span class="rc-d" style="display:block">ซื้อ 12 ลัง ได้ของขั้น 1 + ขั้น 2 + ขั้น 3 รวมกัน</span></span></label>
         </div>
         <hr class="divider">
-        <div class="label mb8">การทวีคูณเมื่อซื้อเกินขั้นสูงสุด <span class="pin">6</span></div>
-        <div class="radio-cards c2">
-          <label class="radio-card"><input type="radio" name="gmult" checked><span><span class="rc-t">จำกัด 1 ชุดต่อบิล</span><span class="rc-d" style="display:block">ซื้อ 25 ลัง ได้ขั้น 3 ครั้งเดียว</span></span></label>
-          <label class="radio-card"><input type="radio" name="gmult"><span><span class="rc-t">ทวีคูณจากขั้นสูงสุด</span><span class="rc-d" style="display:block">ซื้อ 25 ลัง = ขั้น 3 ×2 (20 ลัง) + เศษ 5 ลัง ได้ขั้น 2 ×1</span></span></label>
-        </div>
-        <div class="mt16"><div class="label mb8">ตัวอย่างผลลัพธ์ตามการตั้งค่าปัจจุบัน (ขั้นเดียว + จำกัด 1 ชุด/บิล)</div>
+        <div class="mt16"><div class="label mb8">ตัวอย่างผลลัพธ์ตามการตั้งค่าปัจจุบัน (ขั้นเดียว · ได้ผลตอบแทน 1 ครั้งต่อบิล)</div>
         <table class="table ex-table" style="border:1px solid var(--g200)"><thead><tr><th>ซื้อในบิล</th><th>ขั้นที่ได้</th><th>ของแถม</th><th>เหลือกี่ลังถึงขั้นถัดไป</th></tr></thead><tbody>
           <tr><td>0 ลัง</td><td class="muted">—</td><td class="muted">ยังไม่ได้</td><td>อีก 1 ลัง</td></tr>
           <tr><td>3 ลัง</td><td>ขั้น 1</td><td>เจลแอลกอฮอล์ 1 ขวด</td><td>อีก 2 ลัง</td></tr>
@@ -126,7 +121,7 @@
     <!-- side -->
     <div class="stack" style="position:sticky;top:12px">
       <div class="side-card relative">
-        <span class="pin abs">7</span>
+        <span class="pin abs">6</span>
         <h6>ตัวอย่างที่ลูกค้าเห็น — การ์ดเดียว</h6>
         <div class="prev-card">
           <div class="row between top"><b style="font-size:14.5px">นมผงสูตร 3 ซื้อเยอะ แถมเยอะ</b><span class="chip success sq">ใช้งาน</span></div>
@@ -144,7 +139,7 @@
       </div>
 
       <div class="side-card relative">
-        <span class="pin abs">8</span>
+        <span class="pin abs">7</span>
         <h6>เก็บอย่างไรในฐานข้อมูล</h6>
         <div class="small muted mb8">แต่ละขั้น = แถวโปรโมชั่นปกติ 1 แถว ผูกกันด้วยรหัสกลุ่ม เอนจินและลำดับ priority เดิมทำงานได้โดยไม่แก้</div>
         <div class="table-wrap"><table class="mini" style="width:100%;border-collapse:collapse">
@@ -173,9 +168,8 @@
     <li><span class="pin">3</span><span><b>ตารางขั้น</b> แถวละ 1 ขั้น: "ซื้อครบ [จำนวน][หน่วย] → รับ [ของแถม][จำนวน]" · เพิ่ม/ลบ/ลากเรียง · ระบบเรียงตามจำนวนซื้อครบให้เสมอ และเตือนถ้าจำนวนซ้ำหรือลดลง (ขั้นต้องมากขึ้นเรื่อยๆ) · ต้องมีอย่างน้อย 2 ขั้น ไม่เช่นนั้นให้ใช้โปรธรรมดา</span></li>
     <li><span class="pin">4</span><span><b>สต็อกของแถมรายขั้น</b> แสดงคงเหลือและแถบ · ต่ำกว่าเกณฑ์ (ตั้งได้ ค่าเริ่มต้น 20) ขึ้นเหลืองและแจ้งเตือนในหน้ารายการ · เหลือ 0 = ปิดเฉพาะขั้นนั้นชั่วคราว (ขั้นอื่นยังใช้ได้) ลูกค้าที่ถึงขั้นนั้นจะได้ขั้นที่ต่ำลงมาแทน</span></li>
     <li><span class="pin">5</span><span><b>ขั้นสูงสุดขั้นเดียว vs สะสมทุกขั้น</b> ค่าเริ่มต้น = ขั้นสูงสุดขั้นเดียว (ลูกค้าเข้าใจง่าย ของแถมไม่บานปลาย) · คำอธิบายตัวอย่างใต้ตัวเลือกใช้เลข 12 ลัง ให้เห็นความต่างทันที</span></li>
-    <li><span class="pin">6</span><span><b>ทวีคูณ</b> ใช้ได้เฉพาะโหมดขั้นสูงสุดขั้นเดียว · คิดแบบ greedy จากขั้นสูงสุดแล้วเศษไปขั้นรองลงมา · ตารางตัวอย่างด้านล่างคำนวณสดตามค่าที่เลือก (ข้อมูลในหน้านี้ใช้ค่าตัวอย่าง)</span></li>
-    <li><span class="pin">7</span><span><b>การ์ดเดียวหน้าบ้าน</b> ลูกค้าเห็น 1 การ์ดต่อกลุ่ม แสดงบันไดทุกขั้นและ "อีก N ลัง รับขั้นถัดไป" ตามตะกร้าจริง — ไม่แสดงเป็น 3 โปรแยก</span></li>
-    <li><span class="pin">8</span><span><b>โครงสร้างข้อมูล</b> ทีมพัฒนาไม่ต้องสร้างเอนจินใหม่ — เพิ่มคอลัมน์ group_id / tier_no / stack_in_group ในตารางโปรเดิม และหน้ารายการจัดกลุ่มแถวตาม group_id</span></li>
+    <li><span class="pin">6</span><span><b>การ์ดเดียวหน้าบ้าน</b> ลูกค้าเห็น 1 การ์ดต่อกลุ่ม แสดงบันไดทุกขั้นและ "อีก N ลัง รับขั้นถัดไป" ตามตะกร้าจริง — ไม่แสดงเป็น 3 โปรแยก</span></li>
+    <li><span class="pin">7</span><span><b>โครงสร้างข้อมูล</b> ทีมพัฒนาไม่ต้องสร้างเอนจินใหม่ — เพิ่มคอลัมน์ group_id / tier_no / stack_in_group ในตารางโปรเดิม และหน้ารายการจัดกลุ่มแถวตาม group_id</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>แก้จำนวนซื้อครบของขั้นที่มีผู้ใช้แล้ว: มีผลกับตะกร้าใหม่เท่านั้น · ลบขั้นที่มีประวัติ: ไม่ลบประวัติ</li>
@@ -184,7 +178,6 @@
   </ul></div>
   <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
     <li><b>โหมดการให้ของแถม:</b> ค่าเริ่มต้นที่เสนอ = "เลือกขั้นสูงสุดที่ถึงเพียงขั้นเดียว" หรือต้องการ "สะสมทุกขั้น"</li>
-    <li>ทวีคูณในกลุ่มขั้นบันไดควรเปิดได้หรือไม่ (ค่าเริ่มต้น = ปิด จำกัด 1 ชุด/บิล)</li>
     <li>เมื่อของแถมขั้นสูงสุดหมด ให้ตกลงมาให้ขั้นต่ำกว่า (ค่าเริ่มต้น) หรือปิดทั้งกลุ่ม</li>
     <li>นับเศษกระป๋องเป็นลังหรือไม่ (ค่าเริ่มต้น = ไม่ปัดขึ้น)</li>
   </ul></div>

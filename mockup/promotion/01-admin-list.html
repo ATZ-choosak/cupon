@@ -78,7 +78,7 @@
         <tbody>
           <tr class="sel">
             <td><input type="checkbox" checked style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#1</b></td>
-            <td><div class="nm">ซื้อ Blackmores ครบ ฿1,000 ลด ฿100</div><div class="sub">แบรนด์ Blackmores · ยกเว้น 2 รายการ · ตามยอดเงินรวม · ทวีคูณได้</div></td>
+            <td><div class="nm">ซื้อ Blackmores ครบ ฿1,000 ลด ฿100</div><div class="sub">แบรนด์ Blackmores · ยกเว้น 2 รายการ · ตามยอดเงินรวม</div></td>
             <td><div class="rw"><span class="chip soft-primary">ส่วนลด ฿</span></div></td>
             <td><span class="chip success">ใช้งาน</span></td><td>1 ต.ค. 2569</td><td>31 ธ.ค. 2569</td>
             <td class="used"><b>112</b> ครั้ง<div class="sub">โควต้า/คน: ไม่จำกัด</div></td>
@@ -117,7 +117,7 @@
 
           <tr>
             <td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#3</b></td>
-            <td><div class="nm">ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์</div><div class="sub">เลือกรายสินค้า/หน่วย · ตามจำนวน · ทวีคูณสูงสุด 5 ชุด/บิล</div></td>
+            <td><div class="nm">ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์</div><div class="sub">เลือกรายสินค้า/หน่วย · ตามจำนวน</div></td>
             <td><div class="rw"><span class="chip soft-success">ของแถม</span></div></td>
             <td><span class="chip success">ใช้งาน</span></td><td>1 ต.ค. 2569</td><td>31 ธ.ค. 2569</td>
             <td class="used"><b>17</b> ครั้ง<div class="sub">โควต้า/คน: 3</div></td>
@@ -226,7 +226,7 @@
     <li>แท็บ "ลดตามวันพิเศษ" ใช้ข้อมูลคนละชุดกับโปรเงื่อนไข ไม่มีลำดับ priority — ราคาลด Flash ถูกคิดก่อน แล้วจึงตรวจโปรเงื่อนไข</li>
     <li>แถวที่หมดอายุ/ยังไม่เริ่มยังลากเรียงได้ (เพื่อเตรียมลำดับก่อนถึงวันเริ่ม)</li>
     <li>สิทธิ์จัดการ: ROLE_MARKETING, ROLE_PRODUCT (เหมือนหน้าเซตของแถมเดิม) — บทบาทอื่นเห็นข้อความ "คุณไม่มีสิทธิ์เข้าถึง"</li>
-    <li>โปรเดิมที่เป็นเซตของแถมอยู่แล้ว ถูกย้ายเข้ารายการนี้ตามเดิม (ผลตอบแทน = ของแถม ขอบเขต = เลือกรายสินค้า ทวีคูณ = จำกัด 1 ชุด/บิล) ไม่ต้องตั้งค่าใหม่</li>
+    <li>โปรเดิมที่เป็นเซตของแถมอยู่แล้ว ถูกย้ายเข้ารายการนี้ตามเดิม (ผลตอบแทน = ของแถม ขอบเขต = เลือกรายสินค้า) ไม่ต้องตั้งค่าใหม่</li>
   </ul></div>
   <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
     <li>ลบโปรที่มีประวัติใช้สิทธิ์แล้ว: ค่าเริ่มต้น = ซ่อนจากรายการและเก็บประวัติไว้ (soft delete) หรือห้ามลบ ให้ปิดใช้งานอย่างเดียว</li>

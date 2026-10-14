@@ -5,7 +5,7 @@ window.MOCKUP = {
   modules: [
     {
       slug: 'promotion', no: '01', title: 'โปรโมชั่น',
-      desc: 'แนวคิดเดียวกับ "เซตของแถม (Bundle)" ที่ใช้งานอยู่ใน pmpc — ขยายผลตอบแทนเป็นของแถม / ส่วนลด / ฟรีค่าจัดส่ง + ขั้นบันได + ทวีคูณ',
+      desc: 'แนวคิดเดียวกับ "เซตของแถม (Bundle)" ที่ใช้งานอยู่ใน pmpc — ขยายผลตอบแทนเป็นของแถม / ส่วนลด / ฟรีค่าจัดส่ง + ขั้นบันได',
       screens: [
         { file: '00-flow.html', title: 'ภาพรวม Flow โปรโมชั่น', role: 'both' },
         { file: '01-admin-list.html', title: 'รายการโปรโมชั่น (ลำดับ priority)', role: 'admin' },
