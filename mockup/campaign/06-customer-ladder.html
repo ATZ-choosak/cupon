@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ขั้นบันไดรางวัลของฉัน — Pharmaplex</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .sum{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:0}
+  .sum>div{padding:4px 24px;border-right:1px solid var(--g200)}
+  .sum>div:first-child{padding-left:0}
+  .sum>div:last-child{border-right:0}
+  .sum .big{font-size:34px;font-weight:800;color:var(--primary);line-height:1.15}
+  .track-wrap{padding:8px 36px 52px}
+  .track{position:relative;height:14px;border-radius:999px;background:var(--g200)}
+  .track .fill{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:linear-gradient(90deg,var(--primary-dark),var(--primary))}
+  .track .mk{position:absolute;top:-6px;width:26px;height:26px;margin-left:-13px;border-radius:50%;background:#fff;border:3px solid var(--g400);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--g600)}
+  .track .mk.done{border-color:var(--success);background:var(--success);color:#fff}
+  .track .mk.now{border-color:var(--primary);background:#fff;color:var(--primary);box-shadow:0 0 0 4px var(--primary-lighter)}
+  .track .lbl{position:absolute;top:26px;transform:translateX(-50%);text-align:center;font-size:11.5px;line-height:1.3;white-space:nowrap}
+  .track .lbl.end{transform:translateX(-80%)}
+  .track .you{position:absolute;top:-34px;transform:translateX(-50%);background:var(--g900);color:#fff;border-radius:8px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}
+  .track .you::after{content:"";position:absolute;left:50%;bottom:-5px;margin-left:-5px;border:5px solid transparent;border-top-color:var(--g900);border-bottom:0}
+  .rw-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .rw{background:#fff;border:1.5px solid var(--g200);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px;position:relative}
+  .rw .ico{height:84px;border-radius:10px;background:linear-gradient(135deg,var(--g100),var(--g200));display:flex;align-items:center;justify-content:center;color:var(--g500);font-size:12px;position:relative}
+  .rw .stp{position:absolute;top:8px;left:8px;background:var(--g800);color:#fff;border-radius:6px;padding:1px 8px;font-size:11px;font-weight:700}
+  .rw .meta{display:flex;justify-content:space-between;gap:8px;font-size:12px}
+  .rw .foot{margin-top:auto;display:grid;gap:8px}
+  .rw.locked{background:var(--g50)}
+  .rw.locked .ico{filter:grayscale(1);opacity:.7}
+  .rw.open{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-lighter)}
+  .rw.done{border-color:#A5D6A7;background:var(--success-lighter)}
+  .rw.sent{border-color:#90CAF9;background:var(--info-lighter)}
+  .rw.full{background:var(--g50);border-style:dashed}
+  .rw .q{font-weight:700}
+  .qbar{height:6px;background:var(--g200);border-radius:999px;overflow:hidden}
+  .qbar i{display:block;height:100%;background:var(--warning)}
+  .mini-state{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="campaign">
+<main id="screen">
+
+  <div class="crumbs">หน้าแรก / แคมเปญ / ขั้นบันไดรางวัลของฉัน</div>
+  <div class="row between top mb16">
+    <div>
+      <h4>ขั้นบันไดรางวัลของฉัน</h4>
+      <p class="muted">แคมเปญสะสมยอดซื้อรายปี สัญญาปี 2569 · ร้านยา ทดสอบ จำกัด</p>
+    </div>
+    <div class="row"><a class="btn outlined" href="08-customer-quota-product.html">แคมเปญราคาพิเศษ (โควตา)</a><a class="btn outlined primary" href="07-customer-claim-form.html">คำขอของฉัน (4)</a></div>
+  </div>
+
+  <div class="card primary-top mb16"><div class="card-b">
+    <div class="sum relative">
+      <span class="pin abs" style="top:-14px;left:-14px">1</span>
+      <div>
+        <div class="muted small">ยอดสะสมปีสัญญา 2569</div>
+        <div class="big">฿642,350</div>
+        <div class="small muted mt8">อัปเดตล่าสุดจากออเดอร์ที่ชำระแล้ว 12 ต.ค. 2569 · ไม่รวมค่าจัดส่ง</div>
+      </div>
+      <div>
+        <div class="muted small">ปลดล็อกแล้ว</div>
+        <div style="font-size:26px;font-weight:800">3 <span class="muted" style="font-size:15px;font-weight:500">จาก 4 ขั้น</span></div>
+        <div class="small mt8">อีก <b style="color:var(--primary)">฿357,650</b> ถึงขั้น 4<br><span class="muted">ตั๋วเครื่องบินไป-กลับต่างประเทศ</span></div>
+      </div>
+      <div>
+        <div class="muted small">สัญญาสิ้นสุด</div>
+        <div style="font-size:22px;font-weight:800">31 ธ.ค. 2569</div>
+        <div class="mt8"><span class="chip soft-warning">อีก 80 วัน</span></div>
+        <div class="small muted mt8">ขอรับสิทธิ์ที่ปลดล็อกได้ถึงวันสิ้นสุดแคมเปญ</div>
+      </div>
+    </div>
+    <div class="alert info mt16 relative"><span class="pin abs" style="top:-10px;left:-10px">2</span><div>
+      <div class="a-title">ยอดสะสมนี้ไม่ใช่พอยท์</div>
+      เป็นบัญชีแยกต่างหาก — ไม่ลดลงเมื่อแลกพอยท์ และแปลงเป็นพอยท์/ส่วนลดไม่ได้ · <b>รีเซ็ตเป็น ฿0 ทุกปีสัญญาใหม่</b> ไม่ยกยอดข้ามปี</div></div>
+  </div></div>
+
+  <div class="card mb24"><div class="card-b relative">
+    <span class="pin abs">3</span>
+    <h6 class="mb16">เส้นทางสู่รางวัล</h6>
+    <div class="track-wrap">
+      <div class="track">
+        <div class="fill" style="width:64.2%"></div>
+        <span class="you" style="left:64.2%">คุณอยู่ที่นี่ ฿642,350</span>
+        <span class="mk done" style="left:10%">✓</span><span class="lbl" style="left:10%"><b>฿100,000</b><br>ขั้น 1</span>
+        <span class="mk done" style="left:25%">✓</span><span class="lbl" style="left:25%"><b>฿250,000</b><br>ขั้น 2</span>
+        <span class="mk now" style="left:50%">!</span><span class="lbl" style="left:50%"><b>฿500,000</b><br>ขั้น 3</span>
+        <span class="mk" style="left:100%">4</span><span class="lbl end" style="left:100%"><b>฿1,000,000</b><br>ขั้น 4</span>
+      </div>
+    </div>
+  </div></div>
+
+  <div class="row between mb8"><h5>รางวัลแต่ละขั้น</h5><span class="small muted">ขอรับสิทธิ์ได้ทุกเมื่อจนกว่าแคมเปญจะสิ้นสุด 31 ธ.ค. 2569</span></div>
+  <div class="rw-grid mb24">
+
+    <div class="rw done relative"><span class="pin abs">4</span>
+      <div class="ico"><span class="stp">ขั้น 1</span>รูปสินค้า</div>
+      <div><span class="chip success">ได้รับแล้ว</span> <span class="chip outline">สินค้า</span></div>
+      <div><b>เครื่องวัดความดันโลหิตดิจิทัล</b><div class="small muted">ส่งมอบเมื่อ 3 ก.ค. 2569</div></div>
+      <div class="meta"><span>เกณฑ์ ฿100,000</span><span class="q">เหลือ 38/50 สิทธิ์</span></div>
+      <div class="foot"><a class="btn outlined sm" href="07-customer-claim-form.html">ดูสถานะคำขอ</a></div>
+    </div>
+
+    <div class="rw sent">
+      <div class="ico"><span class="stp">ขั้น 2</span>รูปสินค้า</div>
+      <div><span class="chip info">ขอแล้ว · กำลังจัดส่ง</span> <span class="chip outline">ของนอกระบบ</span></div>
+      <div><b>เครื่องฟอกอากาศ</b><div class="small muted">ขอเมื่อ 7 ต.ค. 2569 · EMS TH4821…</div></div>
+      <div class="meta"><span>เกณฑ์ ฿250,000</span><span class="q">เหลือ 19/30 สิทธิ์</span></div>
+      <div class="foot"><a class="btn outlined sm" href="07-customer-claim-form.html">ติดตามสถานะ</a></div>
+    </div>
+
+    <div class="rw open relative"><span class="pin abs">5</span>
+      <div class="ico"><span class="stp" style="background:var(--primary)">ขั้น 3</span>รูปทริป</div>
+      <div><span class="chip primary">ปลดล็อกแล้ว · กดขอรับได้</span> <span class="chip outline">ของนอกระบบ</span></div>
+      <div><b>ทริปสัมมนาเภสัชกรต่างประเทศ 3 วัน 2 คืน</b><div class="small muted">รวมตั๋วเครื่องบิน ที่พัก และค่าลงทะเบียนสัมมนา</div></div>
+      <div class="meta"><span>เกณฑ์ ฿500,000</span><span class="q" style="color:var(--warning-dark)">เหลือ 17/20 สิทธิ์</span></div>
+      <div class="qbar"><i style="width:85%"></i></div>
+      <div class="foot">
+        <a class="btn contained block" href="07-customer-claim-form.html">ขอรับสิทธิ์</a>
+        <div class="small muted center">สิทธิ์มีจำกัด ใครกดก่อนได้ก่อน</div>
+      </div>
+    </div>
+
+    <div class="rw locked relative"><span class="pin abs">6</span>
+      <div class="ico"><span class="stp">ขั้น 4</span>รูปตั๋ว</div>
+      <div><span class="chip">ล็อก</span> <span class="chip outline">ของนอกระบบ</span></div>
+      <div><b>ตั๋วเครื่องบินไป-กลับต่างประเทศ 1 ที่นั่ง</b><div class="small muted">จำนวนจำกัด ทีมงานจะติดต่อคัดเลือกผู้โชคดีและแจ้งรายละเอียดภายหลัง</div></div>
+      <div class="meta"><span>เกณฑ์ ฿1,000,000</span><span class="q">ไม่จำกัดสิทธิ์</span></div>
+      <div class="small"><b>ไม่จำกัดสิทธิ์ — ทีมงานคัดเลือก</b></div>
+      <div class="foot"><button class="btn outlined sm" disabled>อีก ฿357,650 ถึงจะปลดล็อก</button></div>
+    </div>
+  </div>
+
+  <h6 class="mb8">สถานะอื่นที่ลูกค้าอาจเจอ <span class="small muted" style="font-weight:400">(ตัวอย่างสำหรับ dev — ไม่ได้แสดงพร้อมกันในหน้าจริง)</span></h6>
+  <div class="mini-state mb24">
+    <div class="rw full relative"><span class="pin abs">7</span>
+      <div><span class="chip soft-error">สิทธิ์เต็มแล้ว</span> <span class="chip outline">สินค้า</span></div>
+      <div><b>ชุดสุขภาพ Blackmores (ตัวอย่างขั้นอื่น)</b><div class="small muted">ถึงเกณฑ์แล้ว แต่สิทธิ์ถูกกดครบแล้ว</div></div>
+      <div class="meta"><span>เกณฑ์ ฿150,000</span><span class="q" style="color:var(--error-dark)">เหลือ 0/40 สิทธิ์</span></div>
+      <button class="btn outlined sm" disabled>สิทธิ์เต็มแล้ว</button>
+      <div class="small muted">ยอดสะสมของคุณยังนับต่อไปยังขั้นถัดไป</div>
+    </div>
+    <div class="rw full">
+      <div><span class="chip">แคมเปญสิ้นสุด</span></div>
+      <div><b>สะสมยอดซื้อรายปี สัญญาปี 2568</b><div class="small muted">สิ้นสุด 31 ธ.ค. 2568 — ปิดรับคำขอแล้ว</div></div>
+      <div class="meta"><span>ยอดสุดท้าย ฿1,120,400</span><span>ถึงขั้น 3</span></div>
+      <a class="btn outlined sm" href="07-customer-claim-form.html">ดูประวัติ (อ่านอย่างเดียว)</a>
+    </div>
+    <div class="rw full">
+      <div class="empty" style="padding:8px 0"><b>ยังไม่ได้ร่วมแคมเปญสะสมยอด</b><div class="small mt8">บัญชีนี้ยังไม่มีสัญญาสะสมยอดรายปี ติดต่อฝ่ายขายเพื่อทำสัญญา แล้วยอดซื้อจะเริ่มนับให้ตั้งแต่วันที่สัญญามีผล</div></div>
+      <button class="btn outlined sm">ติดต่อฝ่ายขาย</button>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>การ์ดสรุป</b> — ยอดสะสมของปีสัญญานี้ · จำนวนขั้นที่ปลดล็อก · อีกเท่าไรถึงขั้นถัดไป · วันสิ้นสุดสัญญา (ชิปส้มเมื่อเหลือน้อยกว่าจำนวนวันที่ตั้งเตือน) · ตัวเลขอัปเดตทันทีหลังชำระเงิน</span></li>
+    <li><span class="pin">2</span><span><b>ข้อความย้ำ</b> — ต้องเห็นตลอดว่ายอดสะสมไม่ใช่พอยท์ และรีเซ็ตทุกปี เพื่อกันลูกค้าเข้าใจผิดว่าแลกพอยท์แล้วยอดลด</span></li>
+    <li><span class="pin">3</span><span><b>เส้นทาง</b> — สเกลตามยอดจริง (ไม่ใช่เว้นระยะเท่ากัน) ป้าย "คุณอยู่ที่นี่" บอกตำแหน่ง · ขั้นที่ผ่านแล้วเป็นเขียว ขั้นที่ปลดล็อกแต่ยังไม่ขอเป็นแดงเน้น</span></li>
+    <li><span class="pin">4</span><span><b>การ์ด "ได้รับแล้ว"</b> — ปิดงานแล้ว ปุ่มขอซ้ำหายไป เหลือลิงก์ดูสถานะ · ขอแล้วแต่ยังไม่ปิดงานแสดงสถานะล่าสุดจากคิวคำขอ (รอตรวจ/อนุมัติ/กำลังจัดส่ง)</span></li>
+    <li><span class="pin">5</span><span><b>ปลดล็อกกดขอรับได้</b> — ปุ่มหลักสีแดง · แสดง "เหลือ X/Y สิทธิ์" และแถบเหลือ · สีเหลืองเมื่อสิทธิ์เหลือไม่เกิน 20% · กดแล้วไปฟอร์มของขั้นนี้ (07)</span></li>
+    <li><span class="pin">6</span><span><b>ล็อก + ไม่จำกัดสิทธิ์</b> — ขั้นที่เว้นจำนวนสิทธิ์ว่างแสดง "ไม่จำกัดสิทธิ์ — ทีมงานคัดเลือก" พร้อมรายละเอียดที่แอดมินเขียน · ปุ่มปิดและบอกยอดที่ขาด</span></li>
+    <li><span class="pin">7</span><span><b>สิทธิ์เต็ม</b> — ปุ่มกดไม่ได้ แต่ไม่ซ่อนการ์ด เพื่อให้ลูกค้าเข้าใจว่าถึงเกณฑ์แล้วแต่สิทธิ์หมดก่อน (ไม่ใช่ระบบผิดพลาด)</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะการ์ด: ล็อก → ปลดล็อก (กดขอรับได้) → ขอแล้ว (รอตรวจ/อนุมัติ/กำลังจัดส่ง) → ได้รับแล้ว · แยก: สิทธิ์เต็ม, ปฏิเสธ (กลับเป็นปลดล็อกพร้อมเหตุผล)</li>
+    <li>ลูกค้าได้ 1 สิทธิ์ต่อ 1 ขั้นต่อปีสัญญา — ขอแล้วขอซ้ำขั้นเดิมไม่ได้ (ถ้าถูกปฏิเสธจึงขอใหม่ได้)</li>
+    <li>ถ้ายอดสะสมลดต่ำกว่าเกณฑ์เพราะยกเลิก/คืนสินค้า การ์ดที่ยังไม่ได้ขอกลับเป็น "ล็อก" ทันที</li>
+    <li>แคมเปญสิ้นสุด: การ์ดที่ปลดล็อกแล้วแต่ไม่ได้ขอ แสดง "หมดเวลาขอรับสิทธิ์" · ประวัติยังดูได้</li>
+    <li>ผู้ใช้ที่ไม่ใช่เจ้าของบัญชี (พนักงานร้าน) ดูได้แต่กดขอรับสิทธิ์ไม่ได้ — ต้องเป็นผู้มีสิทธิ์สั่งซื้อหลัก (ตามสิทธิ์บัญชี B2B เดิม)</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ต้องการให้ลูกค้าเห็นจำนวนสิทธิ์คงเหลือแบบตัวเลขจริง ("เหลือ 17/20") หรือซ่อนเป็นระดับ (เช่น "ใกล้หมด") เพื่อไม่เปิดเผยจำนวนรางวัล?</li>
+    <li>ร้านที่มีหลายสาขา (บัญชีย่อย) ยอดสะสมรวมที่บัญชีหลัก หรือแยกต่อสาขา?</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คิวคำขอรับรางวัล — Pharmaplex Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .split{display:grid;grid-template-columns:minmax(0,1fr) 450px;gap:16px;align-items:start}
+  .table th,.table td{padding:10px 10px;font-size:12.5px}
+  .table tr.sel td{background:var(--primary-lighter)}
+  .table td .sub{font-size:11.5px;color:var(--text2)}
+  .drawer{border-left:4px solid var(--primary);box-shadow:var(--z8);border-radius:16px;background:#fff}
+  .drawer-h{padding:16px 18px;border-bottom:1px solid var(--g200);display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+  .drawer-b{padding:16px 18px;display:grid;gap:16px;font-size:13px}
+  .drawer-f{padding:14px 18px;border-top:1px solid var(--g200);background:var(--g50);border-radius:0 0 12px 12px}
+  .drawer-h{border-radius:12px 12px 0 0}
+  .sec-t{font-size:12px;font-weight:700;color:var(--g700);text-transform:none;margin-bottom:6px}
+  .kv{grid-template-columns:150px 1fr}
+  .snap{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .snap .box{border:1px solid var(--g200);border-radius:10px;padding:8px 10px;background:var(--g50)}
+  .snap .box b{display:block;font-size:15px}
+  .tl .tl{padding-bottom:10px}
+  .file-chip{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--g300);border-radius:8px;padding:4px 8px;background:#fff;font-size:12px}
+  .src-pts{background:#EDE7F6;color:#4527A0}
+</style>
+</head>
+<body data-shell="admin" data-nav="campaign" data-crumb="โปรโมชั่นและสิทธิพิเศษ / แคมเปญ / คิวคำขอรับรางวัล">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>คิวคำขอรับรางวัล</h4>
+      <p class="muted">คำขอจากขั้นบันไดแคมเปญสะสมยอด และคำขอแลกของรางวัลพรีเมียมด้วยพอยท์ — ตรวจ อนุมัติ ส่งมอบ และปิดงานที่เดียว</p>
+    </div>
+    <div class="row"><a class="btn outlined" href="05-admin-progress.html">ความคืบหน้าลูกค้า</a><button class="btn outlined">ส่งออก CSV</button></div>
+  </div>
+
+  <div class="grid g4 mb16">
+    <div class="stat"><div class="l">รอตรวจ</div><div class="v" style="color:var(--primary)">7</div><div class="small muted">เก่าสุดรอมา 2 วัน</div></div>
+    <div class="stat"><div class="l">อนุมัติ รอส่งมอบ</div><div class="v">3</div></div>
+    <div class="stat"><div class="l">กำลังจัดส่ง</div><div class="v">5</div></div>
+    <div class="stat"><div class="l">เสร็จสิ้นในเดือนนี้</div><div class="v" style="color:var(--success-dark)">14</div></div>
+  </div>
+
+  <div class="split">
+    <div class="card" style="overflow:hidden">
+      <div class="table-toolbar" style="display:block">
+        <div class="row wrap relative" style="gap:8px"><span class="pin abs" style="left:-14px;top:-14px">1</span>
+          <span class="chip primary lg">รอตรวจ 7</span><span class="chip outline lg">อนุมัติ 3</span><span class="chip outline lg">กำลังจัดส่ง 5</span><span class="chip outline lg">เสร็จสิ้น 61</span><span class="chip outline lg">ปฏิเสธ 2</span>
+        </div>
+        <div class="row wrap mt8" style="gap:8px">
+          <input class="input" style="width:200px" placeholder="ค้นหาลูกค้า / เลขที่คำขอ">
+          <select class="select" style="width:170px"><option>ที่มา: ทั้งหมด</option><option>แคมเปญสะสมยอด</option><option>แลกพอยท์</option></select>
+          <select class="select" style="width:150px"><option>ผู้ดูแล: ทั้งหมด</option><option>staff1</option><option>staff2</option><option>ยังไม่มอบหมาย</option></select>
+        </div>
+      </div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>วันที่ขอ</th><th>ลูกค้า</th><th>แคมเปญ / ขั้น · รางวัล</th><th>สถานะ</th><th>ผู้ดูแล</th></tr></thead>
+        <tbody>
+          <tr><td class="nowrap">12 ต.ค. 69<div class="sub">08:15</div></td>
+            <td><b>ร้านยา ทดสอบ จำกัด</b><div class="sub">CL-2569-0045</div></td>
+            <td><span class="chip src-pts">แลกพอยท์</span><div><b>กระติกน้ำสุญญากาศ</b></div><div class="sub">ใช้ 1,200 พอยท์</div></td>
+            <td><span class="chip soft-warning">รอตรวจ</span></td><td class="muted">—</td></tr>
+          <tr class="sel"><td class="nowrap">11 ต.ค. 69<div class="sub">14:22</div></td>
+            <td><b>ร้านยาสุขใจ สาขาลาดพร้าว</b><div class="sub">CL-2569-0044</div></td>
+            <td><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 3</span><div><b>ทริปสัมมนาเภสัชกรต่างประเทศ</b></div><div class="sub">ของนอก POS</div></td>
+            <td><span class="chip soft-warning">รอตรวจ</span></td><td class="muted">—</td></tr>
+          <tr><td class="nowrap">11 ต.ค. 69<div class="sub">10:05</div></td>
+            <td><b>ร้านยาเภสัชกรเมือง</b><div class="sub">CL-2569-0043</div></td>
+            <td><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 1</span><div><b>เครื่องวัดความดันโลหิตดิจิทัล</b></div><div class="sub">สินค้า POS</div></td>
+            <td><span class="chip soft-warning">รอตรวจ</span></td><td>staff1</td></tr>
+          <tr><td class="nowrap">10 ต.ค. 69<div class="sub">16:48</div></td>
+            <td><b>ร้านยาชุมชนคลองหลวง</b><div class="sub">CL-2569-0042</div></td>
+            <td><span class="chip src-pts">แลกพอยท์</span><div><b>ชุดของพรีเมียม Dumex</b></div><div class="sub">ใช้ 2,500 พอยท์</div></td>
+            <td><span class="chip soft-info">อนุมัติ</span></td><td>staff2</td></tr>
+          <tr><td class="nowrap">9 ต.ค. 69<div class="sub">11:30</div></td>
+            <td><b>ร้านยาสุขใจ สาขาบางนา</b><div class="sub">CL-2569-0040</div></td>
+            <td><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 2</span><div><b>เครื่องฟอกอากาศ</b></div><div class="sub">ของนอก POS</div></td>
+            <td><span class="chip soft-info">อนุมัติ</span></td><td>staff2</td></tr>
+          <tr><td class="nowrap">7 ต.ค. 69<div class="sub">13:10</div></td>
+            <td><b>ร้านยา ทดสอบ จำกัด</b><div class="sub">CL-2569-0039</div></td>
+            <td><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 2</span><div><b>เครื่องฟอกอากาศ</b></div><div class="sub">ของนอก POS</div></td>
+            <td><span class="chip info">กำลังจัดส่ง</span></td><td>staff1</td></tr>
+          <tr><td class="nowrap">29 ก.ย. 69<div class="sub">15:02</div></td>
+            <td><b>ร้านยา ทดสอบ จำกัด</b><div class="sub">CL-2569-0036</div></td>
+            <td><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 3</span><div><b>ทริปสัมมนาเภสัชกรต่างประเทศ</b></div><div class="sub">สำเนาพาสปอร์ตไม่ชัด</div></td>
+            <td><span class="chip error">ปฏิเสธ</span></td><td>staff1</td></tr>
+          <tr><td class="nowrap">28 ก.ย. 69<div class="sub">09:47</div></td>
+            <td><b>ร้านยามิตรเภสัช</b><div class="sub">CL-2569-0034</div></td>
+            <td><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 1</span><div><b>เครื่องวัดความดันโลหิตดิจิทัล</b></div><div class="sub">สินค้า POS</div></td>
+            <td><span class="chip success">เสร็จสิ้น</span></td><td>staff2</td></tr>
+          <tr><td class="nowrap">3 ก.ค. 69<div class="sub">11:20</div></td>
+            <td><b>ร้านยา ทดสอบ จำกัด</b><div class="sub">CL-2569-0012</div></td>
+            <td><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 1</span><div><b>เครื่องวัดความดันโลหิตดิจิทัล</b></div><div class="sub">สินค้า POS</div></td>
+            <td><span class="chip success">เสร็จสิ้น</span></td><td>staff1</td></tr>
+        </tbody>
+      </table></div>
+      <div class="pager"><span>แถวต่อหน้า 25</span><span>1–9 จาก 78</span></div>
+    </div>
+
+    <!-- drawer -->
+    <div class="drawer relative">
+      <span class="pin abs" style="top:-10px;left:-12px">2</span>
+      <div class="drawer-h">
+        <div>
+          <div class="small muted">CL-2569-0044 · ส่งคำขอ 11 ต.ค. 2569 14:22</div>
+          <h5 style="margin:2px 0 6px">ร้านยาสุขใจ สาขาลาดพร้าว</h5>
+          <div class="row wrap" style="gap:6px"><span class="chip soft-warning">รอตรวจ</span><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 3</span><span class="chip outline">ของนอก POS</span></div>
+        </div>
+        <button class="iconbtn">✕</button>
+      </div>
+      <div class="drawer-b">
+        <div>
+          <div class="sec-t">รางวัลที่ขอ</div>
+          <b>ทริปสัมมนาเภสัชกรต่างประเทศ 3 วัน 2 คืน</b>
+          <div class="small muted">ยอดเกณฑ์ ฿500,000 · สิทธิ์ถูกตัดแล้ว (เหลือ 17/20)</div>
+        </div>
+
+        <div class="relative"><span class="pin abs" style="top:-4px;left:-21px">3</span>
+          <div class="sec-t">คำตอบในฟอร์ม (ฟอร์มขั้น 3)</div>
+          <dl class="kv" style="margin:0">
+            <dt>ชื่อผู้เดินทางตามพาสปอร์ต</dt><dd>MR. SOMCHAI JAIDEE</dd>
+            <dt>เบอร์ติดต่อ</dt><dd>081-234-5678</dd>
+            <dt>เลือกวันเดินทาง</dt><dd>รอบที่ 1 · 14–16 ก.พ. 2570</dd>
+            <dt>สำเนาพาสปอร์ต</dt><dd><span class="file-chip">passport_somchai.jpg · 1.2 MB <a href="#">ดู</a></span></dd>
+            <dt>ยืนยันความถูกต้อง</dt><dd>ติ๊กแล้ว ✓</dd>
+          </dl>
+        </div>
+
+        <div class="relative"><span class="pin abs" style="top:-4px;left:-21px">4</span>
+          <div class="sec-t">ยอดสะสม ณ วันที่ขอ (snapshot)</div>
+          <div class="snap">
+            <div class="box"><span class="small muted">ยอดสะสม ณ 11 ต.ค. 14:22</span><b>฿712,480</b></div>
+            <div class="box"><span class="small muted">ยอดเกณฑ์ขั้น 3</span><b>฿500,000 ✓</b></div>
+          </div>
+          <div class="small muted mt8">ยอดปัจจุบัน ฿718,900 (+฿6,420 หลังวันที่ขอ) · อ้างอิงจาก 63 ออเดอร์ที่ชำระแล้ว <a href="#">ดูรายการ</a> · snapshot ไม่เปลี่ยนแม้ภายหลังมีคืนสินค้า</div>
+        </div>
+
+        <div class="relative"><span class="pin abs" style="top:-4px;left:-21px">5</span>
+          <div class="sec-t">ไทม์ไลน์</div>
+          <div class="timeline tl">
+            <div class="tl done"><span class="dot"></span><div><b>ส่งคำขอโดยลูกค้า</b><div class="small muted">11 ต.ค. 69 14:22 · สิทธิ์ถูกตัด เหลือ 17/20</div></div></div>
+            <div class="tl"><span class="dot"></span><div><b>รอตรวจสอบ</b><div class="small muted">ยังไม่มีผู้ดูแลรับเรื่อง</div></div></div>
+            <div class="tl todo"><span class="dot"></span><div class="muted">อนุมัติ</div></div>
+            <div class="tl todo"><span class="dot"></span><div class="muted">จัดส่ง / ส่งมอบ</div></div>
+            <div class="tl todo"><span class="dot"></span><div class="muted">เสร็จสิ้น</div></div>
+          </div>
+        </div>
+
+        <div class="relative"><span class="pin abs" style="top:-4px;left:-21px">6</span>
+          <div class="sec-t">โน้ตภายใน (ลูกค้าไม่เห็น)</div>
+          <div class="soft small mb8"><b>staff1</b> · 11 ต.ค. 15:40<br>โทรยืนยันเบอร์แล้ว ลูกค้าขอเปลี่ยนเป็นรอบที่ 1 ถ้ายังว่าง</div>
+          <textarea class="textarea" placeholder="เพิ่มโน้ต…" style="min-height:56px"></textarea>
+        </div>
+
+        <div class="relative"><span class="pin abs" style="top:-4px;left:-21px">7</span>
+          <div class="sec-t">ส่งมอบ (ของนอก POS)</div>
+          <div class="form-grid">
+            <div class="field"><label>เลขอ้างอิง (เช่น PNR / เลขที่ทริป)</label><input class="input" placeholder="เช่น PNR 6H2KQX"></div>
+            <div class="field"><label>แนบใบส่งมอบ / เอกสาร</label><button class="btn outlined sm" style="justify-content:flex-start">เลือกไฟล์…</button></div>
+          </div>
+          <div class="small muted mt8">ถ้าเป็นสินค้า POS: ปุ่ม "สร้างรายการจัดส่ง" จะลิงก์ไปคำสั่งซื้อ/รอบจัดส่งเดิมและผูกเลขพัสดุกลับมาที่คำขอนี้</div>
+        </div>
+      </div>
+      <div class="drawer-f relative">
+        <span class="pin abs" style="top:-8px;left:-21px">8</span>
+        <div class="field mb8"><label>เหตุผลที่ปฏิเสธ <span style="color:var(--error-dark)">* (จำเป็นเมื่อกด "ปฏิเสธ")</span></label>
+          <textarea class="textarea" style="min-height:50px;border-color:var(--error)" placeholder="เช่น สำเนาพาสปอร์ตไม่ชัด ขอให้ส่งคำขอใหม่"></textarea>
+          <span class="err">กรุณาระบุเหตุผลก่อนปฏิเสธ — ข้อความนี้จะแสดงให้ลูกค้าเห็น</span></div>
+        <div class="row between"><button class="btn error sm">ปฏิเสธ…</button>
+          <div class="row"><button class="btn outlined sm">มอบหมายให้ฉัน</button><button class="btn success">อนุมัติคำขอ</button></div></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ตัวกรอง</b> — ชิปสถานะ (พร้อมจำนวน) + ที่มา (แคมเปญสะสมยอด / แลกพอยท์) + ผู้ดูแล · ค่าเริ่มต้นเปิด "รอตรวจ" เรียงเก่าสุดขึ้นก่อน เพื่อให้คำขอเก่าไม่ตกหล่น</span></li>
+    <li><span class="pin">2</span><span><b>Drawer รายละเอียด</b> — กดแถวเปิดทางขวาโดยไม่เปลี่ยนหน้า ตารางซ้ายยังเลื่อน/กรองได้ · แถวที่เปิดอยู่ไฮไลต์ · แท็กที่มาแยกสี "แลกพอยท์" (ไม่มียอดสะสม/ฟอร์มแคมเปญ มีที่อยู่จัดส่งแทน)</span></li>
+    <li><span class="pin">3</span><span><b>คำตอบในฟอร์ม</b> — แสดงตามฟอร์มที่ใช้ตอนลูกค้าส่ง (เก็บเป็น snapshot) แม้แอดมินแก้ฟอร์มภายหลังก็ไม่เปลี่ยน · ไฟล์แนบเปิดดูได้ในแท็บใหม่</span></li>
+    <li><span class="pin">4</span><span><b>ยอดสะสม ณ วันที่ขอ</b> — บันทึกค่า ณ ตอนกดส่ง เพื่อตรวจว่าถึงเกณฑ์จริง · แสดงยอดปัจจุบันควบคู่ · ถ้ายอดปัจจุบันต่ำกว่าเกณฑ์ (มีคืนสินค้า) ขึ้นแถบเตือนสีส้ม</span></li>
+    <li><span class="pin">5</span><span><b>ไทม์ไลน์</b> — ทุกการเปลี่ยนสถานะบันทึกผู้ทำ+เวลา · ลูกค้าเห็นสถานะเดียวกันในหน้า "คำขอของฉัน"</span></li>
+    <li><span class="pin">6</span><span><b>โน้ตภายใน</b> — เฉพาะทีมงาน ไม่แสดงลูกค้า ไม่แก้/ลบของคนอื่นได้</span></li>
+    <li><span class="pin">7</span><span><b>ส่งมอบ</b> — ของนอก POS: ใส่เลขอ้างอิง/ใบส่งมอบ แล้วเปลี่ยนสถานะเป็นกำลังจัดส่ง → เสร็จสิ้น · สินค้า POS: ลิงก์ออกไปรายการจัดส่งเดิม</span></li>
+    <li><span class="pin">8</span><span><b>อนุมัติ / ปฏิเสธ</b> — ปฏิเสธต้องกรอกเหตุผล (ปุ่มกดไม่ได้จนกว่าจะกรอก) · เหตุผลแสดงให้ลูกค้า และคืนสิทธิ์ 1 ที่ให้ขั้นนั้นอัตโนมัติ ลูกค้าส่งคำขอใหม่ได้</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะ: รอตรวจ → อนุมัติ → กำลังจัดส่ง → เสร็จสิ้น · แยกสาย: ปฏิเสธ (จบ) · ย้อนสถานะได้เฉพาะ "อนุมัติ → รอตรวจ" ก่อนเริ่มจัดส่ง</li>
+    <li>คำขอจาก "แลกพอยท์" ข้ามขั้นตอนตรวจยอดสะสม — ตรวจเฉพาะที่อยู่/สต็อก · ปฏิเสธแล้วคืนพอยท์เข้าบัญชีลูกค้าทั้งหมด</li>
+    <li>คนที่เป็นผู้ดูแลแล้วเท่านั้นกดอนุมัติ/ปฏิเสธได้ (กัน 2 คนกดชนกัน) · "มอบหมายให้ฉัน" ทำได้ทุกคนที่มีสิทธิ์โมดูลนี้</li>
+    <li>คำขอที่เสร็จสิ้นแล้วเป็นอ่านอย่างเดียว แก้ไขได้เฉพาะโน้ตภายใน</li>
+    <li>การส่งออก CSV ไม่รวมไฟล์แนบ (สำเนาพาสปอร์ต) เพื่อคุ้มครองข้อมูลส่วนบุคคล</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>เมื่อปฏิเสธคำขอ ให้คืนสิทธิ์และเปิดให้ส่งใหม่ทุกครั้ง (ค่าตั้งต้น) หรือให้แอดมินเลือกว่า "ปฏิเสธถาวร" ได้?</li>
+    <li>ต้องมี SLA ตรวจคำขอ (เช่น 2 วันทำการ) และแจ้งเตือนอัตโนมัติเมื่อเกินกำหนดหรือไม่</li>
+    <li>รางวัลนอก POS ที่ต้องทำสัญญา/เอกสารกับบริษัททัวร์ — ใช้ช่องแนบเอกสารนี้พอ หรือต้องการสถานะเพิ่ม (เช่น "รอเอกสารจากลูกค้า")</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

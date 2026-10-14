@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ความคืบหน้าลูกค้า + แจ้งเตือน — Pharmaplex Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .table th,.table td{padding:10px 12px;font-size:12.5px}
+  .table td .sub{font-size:11.5px;color:var(--text2)}
+  .table tr.hot95 td{background:#FFF3E0}
+  .table tr.hot80 td{background:var(--warning-lighter)}
+  .pbar{min-width:210px}
+  .pbar .progress{height:8px;margin:4px 0}
+  .pbar .progress.red>i{background:var(--error-dark)}
+  .pbar .row{gap:6px}
+  .mark80{position:relative}
+  .legend-x{display:flex;gap:16px;font-size:12px;color:var(--text2);flex-wrap:wrap}
+  .legend-x i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px;border:1px solid var(--g300)}
+</style>
+</head>
+<body data-shell="admin" data-nav="campaign" data-crumb="โปรโมชั่นและสิทธิพิเศษ / แคมเปญ / ความคืบหน้าลูกค้า">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>ความคืบหน้าลูกค้า + การแจ้งเตือน</h4>
+      <p class="muted">ติดตามยอดสะสมรายร้านในแคมเปญสะสมยอดรายปี เพื่อให้ฝ่ายขายเข้าไปช่วยปิดยอดและต่อสัญญา</p>
+    </div>
+    <div class="row">
+      <select class="select" style="width:280px"><option>สะสมยอดซื้อรายปี สัญญาปี 2569</option><option>สะสมยอดซื้อรายปี สัญญาปี 2568 (สิ้นสุด)</option></select>
+      <button class="btn outlined relative"><span class="pin abs" style="left:auto;right:-8px">7</span>ส่งออก CSV</button>
+    </div>
+  </div>
+
+  <div class="grid g4 mb16">
+    <div class="stat"><div class="l">ร้านค้าที่เข้าร่วม</div><div class="v">38</div><div class="small muted">ยอดสะสมรวม ฿14.8 ล้าน</div></div>
+    <div class="stat relative"><span class="pin abs">1</span><div class="l">ถึง 80% ของขั้นถัดไป</div><div class="v" style="color:var(--warning-dark)">12</div><div class="small muted">ในนี้ถึง 95% แล้ว 5 ร้าน</div></div>
+    <div class="stat"><div class="l">ไม่มีออเดอร์เกิน 45 วัน</div><div class="v">6</div><div class="small muted">ควรให้เซลล์ติดต่อ</div></div>
+    <div class="stat relative"><span class="pin abs">4</span><div class="l">สัญญาสิ้นสุดใน 90 วัน</div><div class="v" style="color:var(--error-dark)">38</div><div class="small muted">ในนี้สัญญาก่อนสิ้นปี 3 ร้าน</div></div>
+  </div>
+
+  <div class="card" style="overflow:hidden">
+    <div class="table-toolbar">
+      <div class="row wrap">
+        <input class="input" style="width:240px" placeholder="ค้นหาร้านค้า">
+        <span class="seg"><button class="on">ทั้งหมด 38</button><button>≥ 80% (12)</button><button>≥ 95% (5)</button><button>สัญญาใกล้หมด</button></span>
+      </div>
+      <div class="legend-x"><span><i style="background:#FFF3E0"></i>≥ 95%</span><span><i style="background:var(--warning-lighter)"></i>≥ 80%</span></div>
+    </div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>ร้านค้า</th><th class="num">ยอดสะสม</th><th>ขั้นล่าสุดที่ถึง</th><th>ความคืบหน้าสู่ขั้นถัดไป <span class="pin">2</span></th><th>สั่งซื้อล่าสุด</th><th>สัญญาสิ้นสุด <span class="pin">3</span></th><th>แจ้งเตือนล่าสุด</th><th></th></tr></thead>
+      <tbody>
+        <tr class="hot95">
+          <td><b>ร้านยาเภสัชกรเมือง</b><div class="sub">ตัวแทน นครราชสีมา</div></td>
+          <td class="num"><b>฿968,500</b></td>
+          <td>ขั้น 3 · ทริปสัมมนาฯ</td>
+          <td class="pbar"><div class="row between"><b style="color:var(--error-dark)">96.9%</b><span class="small muted">→ ขั้น 4 · ฿1,000,000</span></div><div class="progress red"><i style="width:96.9%"></i></div><div class="small">อีก <b>฿31,500</b></div></td>
+          <td>10 ต.ค. 69</td><td>31 ธ.ค. 69<div class="sub">อีก 80 วัน</div></td>
+          <td><span class="chip soft-warning">95%</span><div class="sub">8 ต.ค. · LINE</div></td>
+          <td><button class="btn text sm">ส่งเตือน</button></td>
+        </tr>
+        <tr class="hot80">
+          <td><b>ร้านยาสุขใจ สาขาบางนา</b><div class="sub">ตัวแทน</div></td>
+          <td class="num"><b>฿812,300</b></td>
+          <td>ขั้น 3 · ทริปสัมมนาฯ</td>
+          <td class="pbar"><div class="row between"><b style="color:var(--warning-dark)">81.2%</b><span class="small muted">→ ขั้น 4 · ฿1,000,000</span></div><div class="progress warn"><i style="width:81.2%"></i></div><div class="small">อีก <b>฿187,700</b></div></td>
+          <td>9 ต.ค. 69</td><td>31 ธ.ค. 69<div class="sub">อีก 80 วัน</div></td>
+          <td><span class="chip soft-warning">80%</span><div class="sub">2 ต.ค. · อีเมล</div></td>
+          <td><button class="btn text sm">ส่งเตือน</button></td>
+        </tr>
+        <tr class="hot80">
+          <td><b>ร้านยาชุมชนคลองหลวง</b><div class="sub">ตัวแทน ปทุมธานี</div></td>
+          <td class="num"><b>฿236,500</b></td>
+          <td>ขั้น 1 · เครื่องวัดความดันฯ</td>
+          <td class="pbar"><div class="row between"><b style="color:var(--warning-dark)">94.6%</b><span class="small muted">→ ขั้น 2 · ฿250,000</span></div><div class="progress warn"><i style="width:94.6%"></i></div><div class="small">อีก <b>฿13,500</b></div></td>
+          <td>11 ต.ค. 69</td><td>31 ธ.ค. 69<div class="sub">อีก 80 วัน</div></td>
+          <td><span class="chip soft-warning">80%</span><div class="sub">20 ก.ย. · LINE</div><div class="small" style="color:var(--error-dark)">95% ยังไม่ถึง (94.6)</div></td>
+          <td><button class="btn text sm">ส่งเตือน</button></td>
+        </tr>
+        <tr class="hot80">
+          <td><b>ร้านยาศรีนครเภสัช</b></td>
+          <td class="num"><b>฿88,600</b></td>
+          <td class="muted">ยังไม่ถึงขั้นใด</td>
+          <td class="pbar"><div class="row between"><b style="color:var(--warning-dark)">88.6%</b><span class="small muted">→ ขั้น 1 · ฿100,000</span></div><div class="progress warn"><i style="width:88.6%"></i></div><div class="small">อีก <b>฿11,400</b></div></td>
+          <td>6 ต.ค. 69</td><td><b style="color:var(--error-dark)">30 พ.ย. 69</b><div class="sub">อีก 49 วัน · ต่อสัญญาไม่ทัน?</div></td>
+          <td><span class="chip soft-warning">80%</span><div class="sub">1 ต.ค. · LINE</div></td>
+          <td><button class="btn text sm">ส่งเตือน</button></td>
+        </tr>
+        <tr>
+          <td><b>ร้านยาสุขใจ สาขาลาดพร้าว</b></td>
+          <td class="num"><b>฿718,900</b></td>
+          <td>ขั้น 3 · ทริปสัมมนาฯ <span class="chip soft-warning">ขอแล้ว</span></td>
+          <td class="pbar"><div class="row between"><b>71.9%</b><span class="small muted">→ ขั้น 4 · ฿1,000,000</span></div><div class="progress"><i style="width:71.9%"></i></div><div class="small">อีก <b>฿281,100</b></div></td>
+          <td>12 ต.ค. 69</td><td>31 ธ.ค. 69<div class="sub">อีก 80 วัน</div></td>
+          <td class="muted">—</td>
+          <td><button class="btn text sm">ส่งเตือน</button></td>
+        </tr>
+        <tr>
+          <td><b>ร้านยา ทดสอบ จำกัด</b></td>
+          <td class="num"><b>฿642,350</b></td>
+          <td>ขั้น 3 · ทริปสัมมนาฯ</td>
+          <td class="pbar"><div class="row between"><b>64.2%</b><span class="small muted">→ ขั้น 4 · ฿1,000,000</span></div><div class="progress"><i style="width:64.2%"></i></div><div class="small">อีก <b>฿357,650</b></div></td>
+          <td>12 ต.ค. 69</td><td>31 ธ.ค. 69<div class="sub">อีก 80 วัน</div></td>
+          <td class="muted">—</td>
+          <td><button class="btn text sm">ส่งเตือน</button></td>
+        </tr>
+        <tr>
+          <td><b>ร้านยามิตรเภสัช</b></td>
+          <td class="num"><b>฿197,400</b></td>
+          <td>ขั้น 1 · เครื่องวัดความดันฯ</td>
+          <td class="pbar"><div class="row between"><b>79.0%</b><span class="small muted">→ ขั้น 2 · ฿250,000</span></div><div class="progress"><i style="width:79%"></i></div><div class="small">อีก <b>฿52,600</b> · ใกล้ 80%</div></td>
+          <td>2 ต.ค. 69</td><td>31 ธ.ค. 69<div class="sub">อีก 80 วัน</div></td>
+          <td class="muted">—</td>
+          <td><button class="btn text sm">ส่งเตือน</button></td>
+        </tr>
+        <tr>
+          <td><b>ร้านยาหมอดี เภสัชกร</b></td>
+          <td class="num"><b>฿21,300</b></td>
+          <td class="muted">ยังไม่ถึงขั้นใด</td>
+          <td class="pbar"><div class="row between"><b>21.3%</b><span class="small muted">→ ขั้น 1 · ฿100,000</span></div><div class="progress"><i style="width:21.3%"></i></div><div class="small">อีก <b>฿78,700</b></div></td>
+          <td><b style="color:var(--error-dark)">14 ส.ค. 69</b><div class="sub">ไม่มีออเดอร์ 59 วัน</div></td><td>31 ธ.ค. 69<div class="sub">อีก 80 วัน</div></td>
+          <td class="muted">—</td>
+          <td><button class="btn text sm">ติดต่อเซลล์</button></td>
+        </tr>
+      </tbody>
+    </table></div>
+    <div class="pager"><span>แถวต่อหน้า 25</span><span>1–8 จาก 38 · เรียงตามความคืบหน้า</span></div>
+  </div>
+
+  <h6 class="mt24 mb8">ประวัติการแจ้งเตือน <span class="pin">5</span></h6>
+  <div class="card" style="overflow:hidden">
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>ส่งเมื่อ</th><th>ร้านค้า</th><th>เหตุการณ์</th><th>ช่องทาง</th><th>ข้อความ</th><th>สถานะส่ง</th><th>ผู้ส่ง</th></tr></thead>
+      <tbody>
+        <tr><td class="nowrap">8 ต.ค. 69 09:00</td><td><b>ร้านยาเภสัชกรเมือง</b></td><td>ถึง 95% · ขั้น 4</td><td><span class="chip soft-success">LINE</span></td><td class="small">เกือบถึงแล้ว! อีกเพียง ฿31,500 ปลดล็อกตั๋วเครื่องบินไป-กลับฯ</td><td><span class="chip success">ส่งแล้ว</span> <span class="small muted">อ่านแล้ว</span></td><td>ระบบ</td></tr>
+        <tr><td class="nowrap">8 ต.ค. 69 09:00</td><td><b>ร้านยาเภสัชกรเมือง</b></td><td>ถึง 95% · ขั้น 4</td><td><span class="chip soft-info">ในเว็บ</span></td><td class="small">เกือบถึงแล้ว! อีกเพียง ฿31,500 ปลดล็อกตั๋วเครื่องบินไป-กลับฯ</td><td><span class="chip success">ส่งแล้ว</span></td><td>ระบบ</td></tr>
+        <tr><td class="nowrap">2 ต.ค. 69 09:00</td><td><b>ร้านยาสุขใจ สาขาบางนา</b></td><td>ถึง 80% · ขั้น 4</td><td><span class="chip soft-primary">อีเมล</span></td><td class="small">ร้านของคุณสะสมครบ 80% ของขั้นตั๋วเครื่องบินฯ อีก ฿187,700</td><td><span class="chip success">ส่งแล้ว</span></td><td>ระบบ</td></tr>
+        <tr><td class="nowrap">1 ต.ค. 69 09:00</td><td><b>ร้านยาศรีนครเภสัช</b></td><td>ถึง 80% · ขั้น 1</td><td><span class="chip soft-success">LINE</span></td><td class="small">ร้านของคุณสะสมครบ 80% ของขั้นเครื่องวัดความดันฯ อีก ฿20,000</td><td><span class="chip error">ส่งไม่สำเร็จ</span><div class="small" style="color:var(--error-dark)">ยังไม่ได้เชื่อมบัญชี LINE</div></td><td>ระบบ</td></tr>
+        <tr><td class="nowrap">1 ต.ค. 69 14:12</td><td><b>ร้านยาศรีนครเภสัช</b></td><td>ส่งเตือนเอง</td><td><span class="chip soft-primary">อีเมล</span></td><td class="small">สัญญาของร้านจะสิ้นสุด 30 พ.ย. และยังขาดอีก ฿11,400 ถึงขั้นแรก…</td><td><span class="chip success">ส่งแล้ว</span></td><td>staff1</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <h6 class="mt24 mb8">หน้าต่าง "ส่งเตือนเอง" <span class="pin">6</span> <span class="small muted" style="font-weight:400">(เปิดเมื่อกดปุ่มส่งเตือนในแถวร้านค้า)</span></h6>
+  <div class="backdrop"><div class="dialog md">
+    <div class="dialog-h">ส่งเตือนร้านยาชุมชนคลองหลวง<button class="x">✕</button></div>
+    <div class="dialog-b">
+      <div class="soft mb16 small">ยอดสะสม <b>฿236,500</b> (94.6% ของขั้น 2 · เครื่องฟอกอากาศ ฿250,000) · อีก <b>฿13,500</b> · แจ้งเตือนอัตโนมัติล่าสุด 80% เมื่อ 20 ก.ย.</div>
+      <div class="field mb16"><label>ช่องทาง</label><div class="row"><label class="check"><input type="checkbox" checked> LINE</label><label class="check"><input type="checkbox" checked> แจ้งเตือนในเว็บ</label><label class="check"><input type="checkbox"> อีเมล</label></div></div>
+      <div class="field"><label>ข้อความ *</label>
+        <textarea class="textarea">ร้านของคุณสะสมยอดครบ 94.6% แล้ว อีกเพียง ฿13,500 ปลดล็อก "เครื่องฟอกอากาศ" — สั่งซื้อสินค้าที่ร่วมรายการเพิ่มได้เลยก่อนสัญญาสิ้นสุด 31 ธ.ค. 2569</textarea>
+        <span class="help">แก้ข้อความได้ · ตัวแปรเติมให้อัตโนมัติตามเทมเพลต</span></div>
+      <div class="alert info mt16"><div>ข้อความนี้จะถูกบันทึกในประวัติการแจ้งเตือน พร้อมชื่อผู้ส่ง · ส่งซ้ำร้านเดิมได้ไม่เกิน 1 ครั้ง/วัน</div></div>
+    </div>
+    <div class="dialog-f"><button class="btn text grey">ยกเลิก</button><button class="btn contained">ส่งเตือน</button></div>
+  </div></div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>การ์ดสรุป</b> — ตัวเลข "ถึง 80%" คลิกกรองตารางเป็นร้านที่ ≥ 80% ได้ · นับเฉพาะร้านที่ยังมีขั้นถัดไปให้ไล่ตาม (ร้านที่ปลดล็อกครบทุกขั้นไม่นับ)</span></li>
+    <li><span class="pin">2</span><span><b>ความคืบหน้า</b> — คิด% = ยอดสะสม ÷ ยอดเกณฑ์ของขั้นถัดไป (ไม่ใช่ส่วนต่างระหว่างขั้น) · แถวพื้นส้มอ่อน ≥ 95% / เหลืองอ่อน ≥ 80% · เรียงเริ่มต้นจาก % มากไปน้อย</span></li>
+    <li><span class="pin">3</span><span><b>สัญญาสิ้นสุด</b> — แสดงวันที่และจำนวนวันที่เหลือ · ตัวหนาแดงเมื่อเหลือน้อยกว่าที่ตั้งไว้เตือน (30 วัน) หรือสิ้นสุดก่อนสิ้นปีสัญญาของแคมเปญ (ร้านที่เซ็นกลางปี)</span></li>
+    <li><span class="pin">4</span><span><b>สัญญาใกล้หมด</b> — กรองร้านที่สัญญาสิ้นสุดใน 90 วัน เพื่อให้เซลล์เข้าไปเจรจาต่อสัญญาปีถัดไป</span></li>
+    <li><span class="pin">5</span><span><b>ประวัติแจ้งเตือน</b> — ทุกการส่ง (อัตโนมัติ/ส่งเอง) แยกตามช่องทาง · ส่งไม่สำเร็จเก็บเหตุผล (เช่น ยังไม่เชื่อม LINE) และไม่ retry เกิน 3 ครั้ง</span></li>
+    <li><span class="pin">6</span><span><b>ส่งเตือนเอง</b> — แก้ข้อความได้ ส่งซ้ำร้านเดิมได้ไม่เกิน 1 ครั้ง/วัน กันรบกวนลูกค้า · บันทึกชื่อผู้ส่ง</span></li>
+    <li><span class="pin">7</span><span><b>ส่งออก CSV</b> — ร้านค้า ยอดสะสม ขั้น % วันสั่งล่าสุด วันสิ้นสุดสัญญา ตามตัวกรองที่เลือก · เฉพาะผู้มีสิทธิ์ดูข้อมูลลูกค้า</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>แจ้งเตือนอัตโนมัติส่ง<b>ครั้งเดียวต่อเหตุการณ์ต่อขั้น</b> — ยอดถูกหักคืนแล้วกลับขึ้นไปอีกครั้งไม่ส่งซ้ำ</li>
+    <li>ยอดข้าม 80% และ 95% ในออเดอร์เดียว (กระโดด) → ส่งเฉพาะข้อความ 95% ข้อความเดียว</li>
+    <li>ยอดข้ามไปปลดล็อกขั้นถัดไปทันที → ไม่ส่ง 80/95% ของขั้นที่ผ่านไปแล้ว ส่งข้อความ "ปลดล็อกแล้ว" แทน (ระบบ)</li>
+    <li>แจ้งเตือนก่อนสัญญาหมดส่งทุกร้านที่ยังไม่ปลดล็อกทุกขั้น ตามจำนวนวันที่ตั้งไว้ใน 03</li>
+    <li>ร้านที่ปิดการรับแจ้งเตือนช่องทางใด ระบบข้ามช่องทางนั้นและบันทึกเป็น "ข้าม"</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ผู้ใช้ฝ่ายขาย (เซลล์) ต้องเห็นเฉพาะร้านที่ตัวเองดูแลหรือเห็นทั้งหมด?</li>
+    <li>ควรแจ้งเตือนเมื่อร้านไม่มีออเดอร์เกิน 45 วันหรือไม่ (ตอนนี้เป็นเพียงการเน้นสีในตาราง)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

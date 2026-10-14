@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สถานะสินค้าบังคับหมด / ไม่มีสิทธิ์สั่ง</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .state{scroll-margin-top:16px}
+  .state-h{display:flex;align-items:center;gap:12px;padding:16px 24px;border-bottom:1px solid var(--g200)}
+  .state-h .no{width:30px;height:30px;border-radius:50%;background:var(--g800);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+  .two{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px;align-items:start}
+  .kl{display:grid;grid-template-columns:36px 48px minmax(0,1fr) auto;gap:12px;align-items:center;padding:12px 14px;border-bottom:1px solid var(--g200)}
+  .kl:last-child{border-bottom:0}
+  .kl .thumb{width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,var(--g100),var(--g300))}
+  .kl.bad{background:var(--error-lighter)}
+  .kl.warn{background:var(--warning-lighter)}
+  .kl.mute{background:var(--g50);color:var(--g600)}
+  .lk{display:inline-block;width:18px;height:18px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B32026' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='10' rx='2'/%3E%3Cpath d='M8 11V7a4 4 0 0 1 8 0v4'/%3E%3C/svg%3E") center/contain no-repeat}
+  .box{border:1px solid var(--g200);border-radius:12px;background:#fff}
+  .net{font-size:26px;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums}
+  .strike{text-decoration:line-through;color:var(--g500)}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="starterkit">
+<main id="screen">
+  <div class="crumbs"><a href="04-customer-catalog.html">เซตร้านยาเปิดใหม่</a> / สถานะที่สั่งไม่ได้ / ข้อความที่ลูกค้าเห็น</div>
+  <div class="page-head">
+    <div><h4>เมื่อเซตสั่งไม่ได้ หรือมีสินค้าเปลี่ยนสถานะ</h4><p class="muted">4 กรณีที่ลูกค้าอาจเจอ — แต่ละกรณีบอกสาเหตุ สิ่งที่เกิดกับราคา และทางที่ทำต่อได้</p></div>
+    <a class="btn outlined" href="05-customer-builder.html">← กลับหน้าปรับเซต</a>
+  </div>
+
+  <div class="stack s24">
+
+    <!-- 1 -->
+    <div class="card state" id="s1">
+      <div class="state-h"><span class="no">1</span><h5>สินค้าบังคับหมดสต็อก — บล็อกทั้งเซต</h5><span class="chip error">สั่งไม่ได้</span><span class="muted small">เซตร้านยาเปิดใหม่ ขนาด L</span></div>
+      <div class="card-b two">
+        <div class="box" style="overflow:hidden">
+          <div class="kl bad">
+            <i class="lk" style="margin-left:8px"></i><span class="thumb"></span>
+            <div><b>ปรอทวัดไข้ดิจิทัล</b> <span class="chip soft-primary">บังคับ</span> <span class="pin">1</span>
+              <div class="small" style="color:var(--error-dark)">ต้องการ 20 อัน · คงเหลือ 12 อัน — ไม่พอสำหรับ 1 เซต</div>
+              <div class="small muted">คาดว่าเติมสต็อกวันที่ <b>18 ต.ค. 2569</b></div></div>
+            <span class="chip error">ไม่พอ</span></div>
+          <div class="kl mute"><i class="lk" style="margin-left:8px"></i><span class="thumb"></span><div><b>สินค้าบังคับอื่นอีก 11 รายการ</b><div class="small">พร้อมส่งทั้งหมด</div></div><span class="chip soft-success">พร้อมส่ง</span></div>
+          <div class="kl mute"><span></span><span class="thumb"></span><div><b>สินค้าทางเลือก 8 รายการ</b><div class="small">ดูและปรับได้ แต่ยังใส่ตะกร้าไม่ได้</div></div><span class="chip outline">ดูอย่างเดียว</span></div>
+        </div>
+        <div class="stack s12">
+          <div class="alert error"><div><div class="a-title">สั่งเซตนี้ไม่ได้ในขณะนี้</div>มีสินค้าบังคับ 1 รายการไม่พอสำหรับหนึ่งเซต เซตจะกลับมาสั่งได้เองเมื่อเติมสต็อก</div></div>
+          <button class="btn contained lg block" disabled>ใส่ตะกร้า (ไม่พร้อมให้สั่ง)</button>
+          <div class="relative"><span class="pin abs" style="left:auto;right:-8px">2</span>
+            <div class="soft stack s8"><b class="small">แจ้งเตือนเมื่อพร้อมสั่ง</b>
+              <label class="check"><input type="checkbox" checked> อีเมล ร้านยา ทดสอบ จำกัด</label>
+              <label class="check"><input type="checkbox" checked> LINE และแจ้งเตือนในเว็บ</label>
+              <button class="btn outlined primary sm">แจ้งเตือนเมื่อพร้อม</button></div></div>
+          <div class="relative"><span class="pin abs" style="left:auto;right:-8px">3</span>
+            <button class="btn outlined block">ติดต่อทีมขาย (เซลล์ staff1)</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card state" id="s2">
+      <div class="state-h"><span class="no">2</span><h5>สินค้าทางเลือกหมด — ปิดอัตโนมัติ เซตยังสั่งได้</h5><span class="chip success">สั่งได้</span><span class="muted small">เซตร้านยาเปิดใหม่ ขนาด M</span></div>
+      <div class="card-b two">
+        <div class="stack s12">
+          <div class="alert warning relative"><span class="pin abs">4</span><div><div class="a-title">ผ้าอ้อมเด็ก (แพ็ค) สินค้าหมดขณะที่คุณกำลังเลือก</div>เราปิดรายการนี้ให้อัตโนมัติ ราคาเซตปรับลงแล้ว ฿1,080 · คุณยังสั่งเซตได้ตามปกติ</div></div>
+          <div class="box" style="overflow:hidden">
+            <div class="kl warn">
+              <label class="switch"><input type="checkbox" disabled></label><span class="thumb"></span>
+              <div><b>ผ้าอ้อมเด็ก</b> <span class="chip soft-error">หมดสต็อก</span>
+                <div class="small muted">เดิมเลือกไว้ 2 แพ็ค (฿1,080) · ปิดอัตโนมัติเมื่อ 14:32 · คาดว่ามีของ 20 ต.ค. 2569</div></div>
+              <span class="strike">฿1,080</span></div>
+            <div class="kl"><label class="switch"><input type="checkbox" checked></label><span class="thumb"></span><div><b>Blackmores Vitamin C 500 mg</b><div class="small muted">5 ขวด × ฿380</div></div><b>฿1,900</b></div>
+            <div class="kl"><label class="switch"><input type="checkbox" checked></label><span class="thumb"></span><div><b>เวชสำอาง ครีมบำรุงผิวแพ้ง่าย</b><div class="small muted">5 หลอด × ฿200</div></div><b>฿1,000</b></div>
+            <div class="kl"><label class="switch"><input type="checkbox" checked></label><span class="thumb"></span><div><b>ขวดนม PP</b><div class="small muted">10 ชิ้น × ฿60</div></div><b>฿600</b></div>
+          </div>
+          <div><a class="btn text" href="05-customer-builder.html">กลับไปปรับเซตต่อ →</a> <button class="btn text grey">แจ้งเตือนเมื่อผ้าอ้อมเด็กมีของ</button></div>
+        </div>
+        <div class="box" style="padding:16px">
+          <div class="small muted mb8">ราคาเซตคำนวณใหม่</div>
+          <div class="sum-row"><span>ก่อน (รวมผ้าอ้อมเด็ก)</span><span class="strike">฿27,580</span></div>
+          <div class="sum-row"><span>ผ้าอ้อมเด็ก ถูกปิดอัตโนมัติ</span><span style="color:var(--error-dark)">−฿1,080</span></div>
+          <div class="sum-row total"><span>ราคาสุทธิตอนนี้</span><span class="net">฿26,500</span></div>
+          <div class="small muted mt8">= บังคับ 25,000 + ทางเลือก 3,500 − ส่วนลดชุด 2,000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card state" id="s3">
+      <div class="state-h"><span class="no">3</span><h5>ไม่ใช่บัญชีร้านค้า (B2B) — ไม่มีสิทธิ์สั่ง</h5><span class="chip soft-error">บัญชีทั่วไป</span><span class="muted small">เข้าสู่ระบบเป็น คุณสมชาย ใจดี</span></div>
+      <div class="card-b two">
+        <div class="stack s12">
+          <div class="alert error"><div><div class="a-title">เซตร้านยาเปิดใหม่ สำหรับร้านค้า (B2B) เท่านั้น</div>บัญชีทั่วไปดูรายการและราคาได้ แต่ใส่ตะกร้าและสั่งซื้อไม่ได้ คุณสามารถขออัปเกรดเป็นบัญชีร้านค้าได้</div></div>
+          <div class="timeline">
+            <div class="tl done"><span class="dot"></span><div><b>ส่งคำขออัปเกรด</b><div class="small muted">กรอกข้อมูลร้านและแนบเอกสาร เช่น ใบอนุญาตขายยา</div></div></div>
+            <div class="tl"><span class="dot"></span><div><b>ทีมงานตรวจสอบ</b><div class="small muted">แจ้งผลทางอีเมลภายใน 1–2 วันทำการ</div></div></div>
+            <div class="tl todo"><span class="dot"></span><div><b>สั่งเซตได้</b><div class="small muted">บัญชีเปลี่ยนเป็นร้านค้าแล้วเปิดหน้าเซตนี้อีกครั้ง</div></div></div>
+          </div>
+        </div>
+        <div class="stack s12 relative"><span class="pin abs" style="left:auto;right:-8px">5</span>
+          <button class="btn contained lg block">ขออัปเกรดเป็นบัญชีร้านค้า</button>
+          <button class="btn outlined block">เข้าสู่ระบบด้วยบัญชีร้านค้าอื่น</button>
+          <button class="btn contained lg block" disabled>ใส่ตะกร้า (ต้องเป็นบัญชีร้านค้า)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card state" id="s4">
+      <div class="state-h"><span class="no">4</span><h5>ตะกร้า/เช็คเอาต์: สต็อกเปลี่ยนระหว่างทาง</h5><span class="chip error">ชำระเงินไม่ได้</span><span class="muted small">ลูกค้าใส่ตะกร้าไว้ตอน 14:05 กดชำระตอน 14:40</span></div>
+      <div class="card-b two">
+        <div class="stack s12">
+          <div class="alert error relative"><span class="pin abs">6</span><div><div class="a-title">ชำระเงินไม่ได้ — สต็อกสินค้าในเซตเปลี่ยนแปลง</div>มีผู้สั่งซื้อก่อนหน้าคุณ ระบบตรวจสต็อกอีกครั้งตอนชำระเงินและพบรายการต่อไปนี้ ยังไม่ตัดยอดและยังไม่สร้างออเดอร์</div></div>
+          <div class="box" style="overflow:hidden">
+            <div class="kl bad"><i class="lk" style="margin-left:8px"></i><span class="thumb"></span>
+              <div><b>หน้ากากอนามัย 50 ชิ้น</b> <span class="chip soft-primary">บังคับ</span>
+                <div class="small" style="color:var(--error-dark)">ต้องการ 25 กล่อง · คงเหลือ 20 กล่อง → บล็อกทั้งเซต</div></div><span class="chip error">ไม่พอ</span></div>
+            <div class="kl warn"><span></span><span class="thumb"></span>
+              <div><b>เวชสำอาง ครีมบำรุงผิวแพ้ง่าย</b> <span class="chip outline">ทางเลือก</span> <span class="pin">8</span>
+                <div class="small" style="color:#B26A00">เลือกไว้ 5 หลอด · คงเหลือ 3 หลอด → ปรับเป็น 3 หลอด (ราคาลด ฿400)</div></div><span class="chip soft-warning">ปรับให้</span></div>
+          </div>
+          <div>
+            <div class="label mb8">เลือกวิธีแก้ <span class="pin">7</span></div>
+            <div class="radio-cards c2">
+              <label class="radio-card"><input type="radio" name="fix" checked><span><span class="rc-t">รอเติมสต็อก แล้วแจ้งเตือน</span><span class="rc-d" style="display:block">เก็บเซตไว้ในตะกร้า ส่งอีเมล/LINE เมื่อพร้อมสั่ง คาดว่า 18 ต.ค. 2569</span></span></label>
+              <label class="radio-card"><input type="radio" name="fix"><span><span class="rc-t">เปลี่ยนเป็นเซตขนาด S</span><span class="rc-d" style="display:block">สต็อกพร้อมส่ง ราคาเริ่มต้น ฿12,400 · ตรวจรายการอีกครั้งก่อนยืนยัน</span></span></label>
+              <label class="radio-card"><input type="radio" name="fix"><span><span class="rc-t">ให้ทีมขายช่วยจัดการ</span><span class="rc-d" style="display:block">เซลล์จะติดต่อกลับ และสั่งแทนให้เมื่อมีของ ราคาเท่าเดิม</span></span></label>
+              <label class="radio-card"><input type="radio" name="fix"><span><span class="rc-t">ลบเซตออกจากตะกร้า</span><span class="rc-d" style="display:block">สินค้าอื่นในตะกร้าไม่ถูกกระทบ</span></span></label>
+            </div>
+          </div>
+        </div>
+        <div class="box" style="padding:16px">
+          <h6 class="mb8">สรุปตะกร้า</h6>
+          <div class="sum-row"><span>เซตร้านยาเปิดใหม่ ขนาด M<small>บังคับ 8 + ทางเลือก 3 รายการ</small></span><span class="strike">฿26,500</span></div>
+          <div class="sum-row"><span>ค่าสินค้าทางเลือกที่ปรับลด</span><span>−฿400</span></div>
+          <div class="sum-row total"><span>ยอดหลังปรับ</span><span>฿26,100</span></div>
+          <button class="btn contained lg block mt16" disabled>ชำระเงิน</button>
+          <button class="btn outlined block mt8">ยืนยันตัวเลือกที่เลือก</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>บอกสาเหตุให้เจาะจงที่สุด: ชื่อสินค้า จำนวนที่ต้องการ vs คงเหลือ และวันที่คาดว่าจะมี (จากข้อมูลสต็อก/จัดซื้อ) — ไม่ใช้ข้อความกลางว่า "สั่งไม่ได้"</span></li>
+    <li><span class="pin">2</span><span>"แจ้งเตือนเมื่อพร้อม": ลูกค้าเลือกช่องทาง (อีเมล/LINE/ในเว็บ) · ส่งครั้งเดียวเมื่อเซตกลับเป็น "ขาย" แล้วตัดการสมัครอัตโนมัติ · แสดงสถานะ "สมัครรับแจ้งเตือนแล้ว" แทนปุ่ม</span></li>
+    <li><span class="pin">3</span><span>ติดต่อทีมขาย: ใช้เซลล์ที่ผูกกับบัญชีลูกค้า (staff1) ถ้าไม่มีให้ใช้ช่องทางกลาง · เซลล์สั่งแทนได้เมื่อเซตพร้อมเท่านั้น</span></li>
+    <li><span class="pin">4</span><span>ทางเลือกหมดระหว่างที่ลูกค้าเลือกอยู่: แถบเหลืองบอก + สวิตช์ล็อกปิด + แสดงราคาก่อน/หลัง ไม่ปล่อยให้ราคาเปลี่ยนเงียบ ๆ · สั่งเซตได้ต่อ</span></li>
+    <li><span class="pin">5</span><span>ไม่ใช่ B2B: ปุ่มหลักคือ "ขออัปเกรดเป็นบัญชีร้านค้า" · ปุ่มใส่ตะกร้ากดไม่ได้ · แสดงขั้นตอน 3 ขั้นให้เห็นว่าเสร็จเมื่อไหร่ · ใช้ข้อความเดียวกันนี้เมื่อเซลล์พยายามสั่งแทนบัญชี B2C</span></li>
+    <li><span class="pin">6</span><span>ตรวจสต็อกซ้ำทุกครั้งตอนกดชำระเงิน (ไม่เชื่อสถานะตอนใส่ตะกร้า) · ไม่ตัดสต็อก ไม่สร้างออเดอร์ ถ้ามีรายการบังคับไม่พอ</span></li>
+    <li><span class="pin">7</span><span>ทางแก้ 4 แบบ: รอ+แจ้งเตือน (ค่าเริ่มต้น) / เปลี่ยนเป็นเซตอื่นที่พร้อม / ให้เซลล์ช่วย / ลบ — ทุกทางไม่ทำให้เสียข้อมูลการเลือกของลูกค้าจนกว่าจะกดยืนยัน</span></li>
+    <li><span class="pin">8</span><span>ทางเลือกที่สต็อกไม่พอบางส่วน: ลดจำนวนให้เท่าที่มี (ถ้า ≥ 1) และแจ้งราคาที่ลดลง ไม่ถือเป็นการบล็อกเซต</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>บังคับหมด = บล็อกการสั่งทั้งเซตจนแอดมินเติมสต็อก (กติกาจาก spec 7.2) · ทางเลือกหมด = ปิดอัตโนมัติ เซตสั่งได้</li>
+    <li>ถ้าลูกค้าชำระเงินเสร็จแล้วค่อยพบว่าสินค้าไม่พอ (เหตุการณ์หายาก): ทีมขายแจ้งลูกค้า ไม่ยกเลิกเอง — ใช้กติกาเดียวกับออเดอร์ปกติ</li>
+    <li>หน้านี้เป็นข้อความตัวอย่าง 4 กรณี — ในระบบจริงแต่ละกรณีเป็นแถบ/กล่องข้อความบนหน้า 04, 05 และตะกร้า/เช็คเอาต์ ไม่ใช่หน้าแยก</li>
+    <li>ตะกร้าที่ค้างไว้ไม่จองสต็อก — สต็อกถูกตัดตอนสร้างออเดอร์เท่านั้น</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>สินค้าทางเลือกที่สต็อกไม่พอบางส่วน: ลดจำนวนอัตโนมัติ (เสนอ) หรือปิดทั้งรายการ</li>
+    <li>เซตที่ถูกบล็อก: ลูกค้ายังปรับและดูราคาได้แบบอ่านอย่างเดียว (เสนอ) หรือปิดทั้งหน้า</li>
+    <li>จะแสดง "วันที่คาดว่าจะมีของ" ให้ลูกค้าเห็นหรือไม่ และใครกรอกข้อมูลนี้ (เสนอ: แอดมินกรอกที่สินค้า/เซต)</li>
+    <li>ต้องมีตัวเลือก "เปลี่ยนเป็นเซตขนาดอื่น" ในกรณีที่ 4 หรือไม่ (เสนอ: มี เฉพาะเซตที่พร้อมขาย)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

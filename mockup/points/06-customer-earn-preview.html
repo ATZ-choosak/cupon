@@ -1,0 +1,202 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>พอยท์ที่จะได้ (สินค้า/ตะกร้า/หลังชำระ)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .state-h{display:flex;align-items:center;gap:12px;margin:0 0 12px}
+  .state-h .chip{height:28px;font-size:12.5px}
+  .state-h h5{font-size:16px}
+  .pt-badge{display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:8px;background:var(--primary-lighter);color:var(--primary-dark);font-weight:700;font-size:12px;white-space:nowrap}
+  .pt-badge i{width:14px;height:14px;border-radius:50%;background:var(--primary);display:inline-block}
+  .pt-badge.zero{background:var(--g200);color:var(--g700)}
+  .pt-badge.zero i{background:var(--g500)}
+  .mult{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;background:var(--warning-lighter);color:#8A4B00;border:1px solid #FFD180;font-size:11.5px;font-weight:700;white-space:nowrap}
+  .mult.stack{background:var(--primary-lighter);color:var(--primary-dark);border-color:var(--primary-light)}
+  .pbox{background:var(--primary-lighter);border:1.5px solid var(--primary-light);border-radius:12px;padding:14px 16px}
+  .pbox .big{font-size:28px;font-weight:800;color:var(--primary);line-height:1.1}
+  .eq{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;margin-top:8px}
+  .eq b{background:#fff;border-radius:6px;padding:2px 8px;border:1px solid var(--g300)}
+  .bk td,.bk th{padding:9px 12px!important}
+  .bk tr.zero td{background:var(--g50);color:var(--g600)}
+  .bk tfoot td{font-weight:800;background:var(--primary-lighter);border-top:2px solid var(--primary-light)}
+  .detail-img{height:200px;border-radius:12px;background:linear-gradient(135deg,var(--g100),var(--g200));display:flex;align-items:center;justify-content:center;color:var(--g500)}
+  .res{border-radius:16px;padding:22px;text-align:center}
+  .res .big{font-size:44px;font-weight:800;line-height:1.1}
+  .res.ok{background:var(--success-lighter);border:1.5px solid var(--success)}
+  .res.ok .big{color:var(--success-darker)}
+  .res.cx{background:var(--error-lighter);border:1.5px solid var(--error)}
+  .res.cx .big{color:var(--error-dark)}
+  .kvl{display:grid;grid-template-columns:1fr auto;gap:6px 16px;text-align:left;font-size:13px;background:#fff;border-radius:10px;padding:12px 14px;margin-top:14px}
+  .kvl span:nth-child(even){text-align:right;font-weight:700}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="points">
+<main id="screen">
+
+  <div class="crumbs"><a href="04-customer-dashboard.html">พอยท์ของฉัน</a> / พอยท์ที่จะได้รับ</div>
+  <div class="row between mb16" style="align-items:flex-end">
+    <div><h4>พอยท์ที่จะได้รับ — 3 จุดที่ลูกค้าเห็น</h4><p class="muted">การ์ดสินค้า/หน้าสินค้า → ตะกร้า → หลังชำระเงิน · แสดงในหน้าเดียวเพื่อดูครบทุกสถานะ</p></div>
+    <a class="btn outlined primary" href="04-customer-dashboard.html">ไปดูพอยท์ของฉัน →</a>
+  </div>
+
+  <!-- ===================== (a) ===================== -->
+  <div class="state-h"><span class="chip primary">สถานะ (a)</span><h5>การ์ดสินค้า และหน้ารายละเอียดสินค้า</h5></div>
+  <div class="product-grid mb16" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div class="relative"><span class="pin abs">1</span><div class="product-card" style="height:100%">
+      <div class="img"><div class="tags"><span class="promo-tag flash">×1.5 ถึง 31 ต.ค.</span></div>รูปสินค้า</div>
+      <div class="pc-b">
+        <b>นมผงสูตร 3 (ลัง)</b>
+        <div class="price">฿1,200</div>
+        <div class="row wrap" style="gap:6px"><span class="pt-badge"><i></i>ได้ 10 พอยท์/ลัง</span><span class="mult">×1.5 ถึง 31 ต.ค.</span></div>
+        <div class="small muted">รวมตัวคูณแล้วได้ <b style="color:var(--primary)">15 พอยท์/ลัง</b></div>
+        <button class="btn contained sm block mt8">ใส่ตะกร้า</button>
+      </div>
+    </div>
+    </div>
+    <div class="relative"><span class="pin abs">2</span><div class="product-card" style="height:100%">
+      <div class="img"><div class="tags"><span class="promo-tag flash">×3.5 ถึง 18 ต.ค.</span></div>รูปสินค้า</div>
+      <div class="pc-b">
+        <b>Blackmores Vitamin C 500 mg (ขวด)</b>
+        <div class="price">฿380</div>
+        <div class="row wrap" style="gap:6px"><span class="pt-badge"><i></i>ได้ 5 พอยท์/ขวด</span><span class="mult stack">×1.5 + ×2 = ×3.5</span></div>
+        <div class="small muted">ซื้อ 4 ขวด ได้ <b style="color:var(--primary)">70 พอยท์</b> (ตัวคูณซ้อนกันด้วยการบวก)</div>
+        <button class="btn contained sm block mt8">ใส่ตะกร้า</button>
+      </div>
+    </div>
+    </div>
+    <div class="relative"><span class="pin abs">3</span><div class="product-card" style="height:100%">
+      <div class="img">รูปสินค้า</div>
+      <div class="pc-b">
+        <b>ผ้าอ้อมเด็ก (แพ็ค)</b>
+        <div class="price">฿540</div>
+        <div class="row wrap" style="gap:6px"><span class="pt-badge zero"><i></i>ไม่ได้พอยท์</span></div>
+        <div class="small muted">สินค้านี้ไม่ร่วมรายการสะสมพอยท์</div>
+        <button class="btn contained sm block mt8">ใส่ตะกร้า</button>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div class="card mb24"><div class="card-b">
+    <div class="small muted mb8">หน้ารายละเอียดสินค้า (นมผงสูตร 3)</div>
+    <div class="grid" style="grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start">
+      <div class="detail-img">รูปสินค้า</div>
+      <div>
+        <h5>นมผงสูตร 3 (ลัง)</h5>
+        <div class="price mt8" style="font-size:22px">฿1,200 <span class="small muted" style="font-weight:400">/ ลัง</span></div>
+        <div class="row mt16"><span class="small muted">จำนวน</span><div class="qty"><button>−</button><span>5</span><button>+</button></div></div>
+        <div class="pbox mt16 relative"><span class="pin abs">4</span>
+          <div class="small muted">ซื้อ 5 ลัง คุณจะได้</div>
+          <div class="big">75 พอยท์</div>
+          <div class="eq"><b>10 พอยท์/ลัง</b> × <b>5 ลัง</b> = 50 &nbsp;→&nbsp; × <span class="mult">×1.5 ถึง 31 ต.ค. 2569</span> = <b style="color:var(--primary)">75</b></div>
+          <div class="small muted mt8">พอยท์เข้าบัญชีทันทีที่ชำระเงินสำเร็จ · หมดอายุ 31 ธ.ค. 2569 · ตัวเลขนี้เป็นประมาณการ ระบบคิดจริงตอนชำระ</div>
+        </div>
+        <div class="row mt16"><button class="btn contained lg">ใส่ตะกร้า</button><a class="btn text" href="../campaign/01-admin-list.html">ดูรายละเอียดแคมเปญตัวคูณ</a></div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- ===================== (b) ===================== -->
+  <div class="state-h"><span class="chip primary">สถานะ (b)</span><h5>ตะกร้า / สรุปก่อนชำระเงิน</h5></div>
+  <div class="grid mb24" style="grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);align-items:start">
+    <div class="card"><div class="card-b relative">
+      <div class="row between mb8">
+        <div><span class="small muted">พอยท์ที่จะได้รับ</span><div class="row" style="gap:10px"><span style="font-size:26px;font-weight:800;color:var(--primary)">340 พอยท์</span><a href="#" class="small semi">รายการละเอียด ▾</a><span class="pin">5</span></div></div>
+        <span class="chip soft-info">ประมาณการ · คิดจริงตอนชำระสำเร็จ</span>
+      </div>
+      <div class="table-wrap" style="border:1px solid var(--g200)">
+        <table class="table bk">
+          <thead><tr><th>สินค้า <span class="pin">6</span></th><th class="num">จำนวน</th><th class="num">พอยท์/หน่วย</th><th>ตัวคูณ</th><th class="num">พอยท์ที่ได้</th></tr></thead>
+          <tbody>
+            <tr><td><b>นมผงสูตร 3</b> <span class="small muted">(ลัง)</span></td><td class="num">5</td><td class="num">10</td><td><span class="mult">×1.5</span></td><td class="num"><b>75</b></td></tr>
+            <tr><td><b>Blackmores Vitamin C 500 mg</b> <span class="small muted">(ขวด)</span></td><td class="num">4</td><td class="num">5</td><td><span class="mult stack">×3.5</span></td><td class="num"><b>70</b></td></tr>
+            <tr><td><b>ถุงมือยาง</b> <span class="small muted">(กล่อง)</span></td><td class="num">10</td><td class="num">4</td><td><span class="mult">×1.5</span></td><td class="num"><b>60</b></td></tr>
+            <tr><td><b>เจลแอลกอฮอล์</b> <span class="small muted">(ขวด)</span></td><td class="num">20</td><td class="num">2</td><td><span class="mult">×1.5</span></td><td class="num"><b>60</b></td></tr>
+            <tr><td><b>ขวดนม PP</b> <span class="small muted">(ชิ้น)</span></td><td class="num">20</td><td class="num">2</td><td><span class="mult">×1.5</span></td><td class="num"><b>60</b></td></tr>
+            <tr><td><b>พาราเซตามอล 500 มก.</b> <span class="small muted">(กล่อง)</span></td><td class="num">10</td><td class="num">1</td><td><span class="mult">×1.5</span></td><td class="num"><b>15</b></td></tr>
+            <tr class="zero"><td><b>ผ้าอ้อมเด็ก</b> <span class="small">(แพ็ค)</span></td><td class="num">6</td><td class="num">0</td><td>—</td><td class="num"><span class="chip">ไม่ได้พอยท์</span></td></tr>
+            <tr class="zero"><td><b>ยาน้ำแก้ไอ</b> <span class="small">(ขวด)</span></td><td class="num">12</td><td class="num">0</td><td>—</td><td class="num"><span class="chip">ไม่ได้พอยท์</span></td></tr>
+            <tr class="zero"><td><b>ขวดนม PP</b> <span class="promo-tag gift">ของแถม</span></td><td class="num">2</td><td class="num">—</td><td>—</td><td class="num"><span class="chip">ของแถม ไม่ได้พอยท์</span></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="4">รวมพอยท์ที่จะได้รับ</td><td class="num">340 พอยท์</td></tr></tfoot>
+        </table>
+      </div>
+    </div></div>
+
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">สรุปคำสั่งซื้อ</h6>
+      <div class="sum-row"><span>ยอดสินค้า (8 รายการ)</span><span>฿15,730</span></div>
+      <div class="sum-row"><span>ค่าจัดส่ง</span><span>ฟรี</span></div>
+      <div class="sum-row total"><span>ยอดสุทธิ</span><span>฿15,730</span></div>
+      <div class="pbox mt16">
+        <div class="row between"><b>พอยท์ที่จะได้รับ</b><span class="big" style="font-size:24px">+340</span></div>
+        <div class="small muted mt8">เข้าบัญชีทันทีที่ชำระเงินสำเร็จ · หมดอายุ 31 ธ.ค. 2569</div>
+      </div>
+      <div class="soft mt16 relative" style="border-style:dashed;border-color:var(--info)"><span class="pin abs">7</span>
+        <div class="row between"><span class="small">ยอดสะสมแคมเปญ (บัญชีแยก)</span><b style="color:var(--info-dark)">+฿15,730</b></div>
+        <div class="small muted mt8">นับเข้าขั้นบันไดรางวัลรายปี ไม่ใช่พอยท์ และไม่ถูกหักเมื่อแลกพอยท์</div>
+      </div>
+      <button class="btn contained lg block mt16">ไปชำระเงิน</button>
+    </div></div>
+  </div>
+
+  <!-- ===================== (c) ===================== -->
+  <div class="state-h"><span class="chip primary">สถานะ (c)</span><h5>หน้าผลลัพธ์ออเดอร์: พอยท์เข้าแล้ว / ออเดอร์ถูกยกเลิก</h5></div>
+  <div class="grid g2">
+    <div class="res ok relative"><span class="pin abs">8</span>
+      <div class="semi" style="color:var(--success-darker)">ชำระเงินสำเร็จ · ออเดอร์ SO-69-004512</div>
+      <div class="small muted mt8">พอยท์เข้าบัญชีแล้ว</div>
+      <div class="big">+340</div>
+      <div class="semi">พอยท์</div>
+      <div class="kvl">
+        <span>พอยท์ก่อนหน้า</span><span>2,140</span>
+        <span>พอยท์คงเหลือตอนนี้</span><span style="color:var(--primary)">2,480</span>
+        <span>หมดอายุ</span><span>31 ธ.ค. 2569</span>
+        <span>ยอดสะสมแคมเปญ (แยก)</span><span style="color:var(--info-dark)">+฿15,730 → ฿742,500</span>
+      </div>
+      <div class="row mt16" style="justify-content:center"><a class="btn contained" href="04-customer-dashboard.html">ดูพอยท์ของฉัน</a><a class="btn outlined" href="05-customer-redeem.html">แลกของรางวัล</a></div>
+    </div>
+
+    <div class="res cx relative"><span class="pin abs">9</span>
+      <div class="semi" style="color:var(--error-dark)">ออเดอร์ SO-69-004512 ถูกยกเลิก (ตัวอย่างสถานะ)</div>
+      <div class="small muted mt8">หักพอยท์คืน</div>
+      <div class="big">−340</div>
+      <div class="semi">พอยท์</div>
+      <div class="kvl">
+        <span>พอยท์ก่อนหักคืน</span><span>2,480</span>
+        <span>พอยท์คงเหลือหลังหักคืน</span><span style="color:var(--primary)">2,140</span>
+        <span>เหตุผล</span><span>ยกเลิกออเดอร์ · หักพอยท์ที่ออเดอร์นี้เคยให้</span>
+      </div>
+      <div class="small muted mt16">ถ้าพอยท์ถูกแลกไปแล้ว ระบบหักได้เท่าที่คงเหลือ และไม่เรียกคืนสิทธิ์ที่ใช้ไปแล้ว</div>
+      <div class="row mt16" style="justify-content:center"><a class="btn outlined" href="04-customer-dashboard.html">ดูประวัติพอยท์</a></div>
+    </div>
+  </div>
+  <div class="alert info mt16"><div><div class="a-title">ออเดอร์ที่ยังรอชำระเงิน (เช่น โอนเงินรอตรวจสลิป)</div>พอยท์ <b>ยังไม่เข้าบัญชี</b> — หน้าผลลัพธ์แสดง "จะได้รับ 340 พอยท์เมื่อชำระเงินสำเร็จ" และสถานะรอชำระ · พอยท์เข้าทันทีที่ชำระสำเร็จ</div></div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ป้ายพอยท์บนการ์ดสินค้า:</b> "ได้ N พอยท์/หน่วย" ตามหน่วยที่ขาย (ลัง/ขวด) + ป้ายตัวคูณแคมเปญพร้อมวันสิ้นสุด · บรรทัดล่างบอกยอดรวมตัวคูณต่อหน่วย — ตัวเลขที่ลูกค้าตัดสินใจจริง</span></li>
+    <li><span class="pin">2</span><span><b>ตัวคูณซ้อนกัน:</b> แสดง "×1.5 + ×2 = ×3.5" ให้เห็นที่มา ไม่ใช่แค่ผลรวม · ป้ายบนรูปแสดงวันสิ้นสุดที่ใกล้ที่สุด (18 ต.ค.)</span></li>
+    <li><span class="pin">3</span><span><b>สินค้า 0 พอยท์:</b> ป้ายเทา "ไม่ได้พอยท์" แทนที่จะซ่อน — ลูกค้าจะได้ไม่เข้าใจผิดว่าลืมให้พอยท์ · ไม่แสดงป้ายตัวคูณ</span></li>
+    <li><span class="pin">4</span><span><b>กล่องคำนวณหน้ารายละเอียด:</b> เปลี่ยนตามจำนวนสด · แสดงสูตร พอยท์/หน่วย × จำนวน × ตัวคูณ · มีวันหมดอายุของพอยท์และข้อความว่าเป็นประมาณการ</span></li>
+    <li><span class="pin">5</span><span><b>สรุปในตะกร้า:</b> ยอด "พอยท์ที่จะได้รับ" รวมอยู่ใกล้ยอดสุทธิ + ลิงก์ "รายการละเอียด ▾" ขยาย/ยุบได้ (ค่าเริ่มต้นยุบบนมือถือ)</span></li>
+    <li><span class="pin">6</span><span><b>รายการละเอียดรายบรรทัด:</b> จำนวน × พอยท์/หน่วย × ตัวคูณ = พอยท์ · บรรทัด 0 พอยท์ใช้แถวสีเทา + เหตุผล (ไม่ได้พอยท์ / ของแถม) · ผลรวมต้องเท่ากับตัวเลขหัวตาราง</span></li>
+    <li><span class="pin">7</span><span><b>ยอดสะสมแคมเปญแยกชัดเจน:</b> กรอบประสีน้ำเงิน คนละกล่องกับพอยท์ เพื่อไม่ให้ลูกค้ารวมสองบัญชีเป็นยอดเดียว</span></li>
+    <li><span class="pin">8</span><span><b>หลังชำระสำเร็จ:</b> แสดง +พอยท์ ยอดก่อน/หลัง และวันหมดอายุ ทันทีในหน้าผลลัพธ์ · ปุ่มไปหน้าพอยท์ของฉัน และแลกของรางวัล</span></li>
+    <li><span class="pin">9</span><span><b>ออเดอร์ถูกยกเลิก:</b> แสดง "หักพอยท์คืน −N" สีแดง ในหน้าสถานะออเดอร์และในประวัติพอยท์ · ตามนโยบายยกเลิกออเดอร์ที่แอดมินเปิดไว้</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ตัวเลขก่อนชำระเป็นประมาณการ — ยอดจริงคิดที่เซิร์ฟเวอร์ตอนชำระสำเร็จ โดยใช้อัตราและตัวคูณ ณ เวลานั้น (ถ้าตัวคูณหมดอายุระหว่างตะกร้า ยอดจะลดและแจ้งเตือนที่หน้าชำระเงิน)</li>
+    <li>ปัดเศษทุกบรรทัดตามกติกาแอดมิน (ปัดทิ้ง) ก่อนรวม — ทศนิยม เช่น 17.5 พอยท์/ขวด จึงแสดงเป็นจำนวนเต็มเมื่อคูณจำนวนแล้ว</li>
+    <li>ของแถม/สินค้าที่ได้จากการแลกพอยท์ไม่ให้พอยท์ · ส่วนลดและคูปองไม่ลดพอยท์ เพราะคิดจากสินค้าต่อหน่วย (ดูข้อที่ต้องตัดสินใจ)</li>
+    <li>ลูกค้าเห็นพอยท์ที่จะได้เฉพาะสินค้าที่ตัวเองสั่งได้ · แสดงค่าเดียวกันทั้งการ์ด หน้ารายละเอียด ตะกร้า และหน้าผลลัพธ์</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>พอยท์ต้องลดตามส่วนลด/คูปองที่ใช้ในบิลหรือไม่ (มอคอัพ: ไม่ลด เพราะคิดต่อหน่วยตามสเปก)</li>
+    <li>การคืนสินค้าบางรายการ (ไม่ใช่ยกเลิกทั้งออเดอร์): หักพอยท์ตามสัดส่วนสินค้าที่คืนหรือไม่หัก (สเปกกล่าวถึงเฉพาะการยกเลิกออเดอร์)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

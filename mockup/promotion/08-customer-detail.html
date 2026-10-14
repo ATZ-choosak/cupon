@@ -1,0 +1,172 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รายละเอียดโปร + เลือกสินค้า</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .chip.sq{height:20px;font-size:10.5px;padding:0 7px}
+  .kvr{display:grid;grid-template-columns:150px 1fr;gap:8px 12px;font-size:14px;margin:0 0 16px}
+  .kvr dt{font-weight:700}.kvr dd{margin:0}
+  .quota{background:var(--g100);border-radius:8px;padding:14px 16px}
+  .quota .row2{display:flex;justify-content:space-between;gap:12px;font-size:14px}
+  .req{border:2px solid var(--primary-light);border-radius:14px;padding:16px 18px;margin-bottom:16px;background:#fff}
+  .req.any{border-color:#90CAF9}
+  .req-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .req-h h6{color:var(--primary);font-size:16px;font-weight:700}
+  .choices{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  .pu{background:#fff;border:1px solid var(--g200);border-radius:12px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+  .pu .img{height:96px;background:linear-gradient(135deg,var(--g100),var(--g200));display:flex;align-items:center;justify-content:center;color:var(--g500);font-size:12px}
+  .pu .b{padding:10px 12px;display:flex;flex-direction:column;gap:4px;flex:1;font-size:12.5px}
+  .pu .nm{font-weight:700;font-size:13px;line-height:1.4}
+  .pu .ch{position:absolute;top:8px;right:8px;background:#6D6E71;color:#fff;border-radius:8px;padding:1px 8px;font-size:10.5px;font-weight:700}
+  .pu.free{border-color:#A5D6A7;background:var(--success-lighter)}
+  .step-box{display:inline-flex;align-items:center;gap:6px}
+  .step-box button{width:32px;height:32px;border:0;border-radius:6px;background:var(--primary);color:#fff;cursor:pointer;font-size:16px}
+  .step-box button[disabled]{background:var(--g100);color:var(--g400)}
+  .step-box .v{width:64px;text-align:center;border:1px solid var(--g300);border-radius:6px;padding:5px 0;font-weight:700}
+  .chrow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--g300);border-radius:10px;padding:12px 14px}
+  .lbl{font-size:12px;font-weight:700;color:var(--text2);margin:28px 0 10px;display:flex;gap:8px;align-items:center}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="promotion">
+<main id="screen">
+
+  <div class="crumbs"><a href="06-customer-list.html">โปรโมชั่น</a> / ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์</div>
+  <div class="row between mb16"><div><h4>รายละเอียดโปรโมชั่น</h4><p class="muted">ข้อมูลและรายการสินค้าในโปรโมชั่น</p></div><a class="btn outlined" href="06-customer-list.html">← กลับ</a></div>
+
+  <!-- header -->
+  <div class="card"><div class="card-b">
+    <div class="row top between">
+      <h4 style="font-size:24px;line-height:1.35">ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์</h4>
+      <span class="chip success lg">ใช้งาน</span>
+    </div>
+    <p class="muted mt8 mb16">นมผงสูตร 3 ครบ 5 ชิ้น พร้อมขวดนม PP 2 ชิ้น รับเจลแอลกอฮอล์ฟรี</p>
+    <p class="mb16"><b>เงื่อนไข</b>: ซื้อนมผงสูตร 3 (กระป๋องหรือลัง) รวมกันครบ 5 ชิ้น และขวดนม PP 2 ชิ้นในบิลเดียว รับเจลแอลกอฮอล์ 1 ขวดต่อชุด</p>
+
+    <dl class="kvr">
+      <dt>ประเภทเงื่อนไข:</dt><dd>เลือกสินค้าที่เข้าร่วมรายการ ครบตามจำนวนที่กำหนด</dd>
+      <dt>ผลตอบแทน: <span class="chip soft-primary sq">ใหม่</span></dt><dd><span class="promo-tag gift">ของแถม</span> เจลแอลกอฮอล์ 1 ขวดต่อชุด</dd>
+      <dt>การทวีคูณ: <span class="chip soft-primary sq">ใหม่</span> <span class="pin">2</span></dt><dd>ซื้อเป็น 2 เท่าได้ 2 ชุด สูงสุด 5 ชุดต่อบิล (ซื้อนมผงสูตร 3 ครบ 10 ชิ้น + ขวดนม PP 4 ชิ้น = เจล 2 ขวด)</dd>
+      <dt>ใช้ร่วมกับ: <span class="chip soft-primary sq">ใหม่</span></dt><dd>คูปองได้ · โปรโมชั่นอื่นที่ใช้สินค้าคนละรายการได้ · ใช้พอยท์ชำระได้</dd>
+      <dt>ระยะเวลา:</dt><dd>1 ต.ค. 2569 - 31 ธ.ค. 2569</dd>
+    </dl>
+
+    <div class="quota relative"><span class="pin abs" style="top:-10px">1</span>
+      <h6 class="mb8">โควต้าต่อลูกค้า</h6>
+      <div class="row2"><span class="muted">ใช้แล้ว: 2</span><span style="color:var(--success-dark)">โควต้าที่เหลือ: 1</span></div>
+    </div>
+
+    <div class="mt16 relative">
+      <span class="pin abs" style="top:-12px;left:-10px">5</span>
+      <a class="btn contained lg block" href="#dlg-static">เพิ่มสินค้าที่ต้องมีทั้งหมดเข้าตะกร้า</a>
+    </div>
+  </div></div>
+
+  <!-- required items -->
+  <div class="card mt16"><div class="card-b">
+    <h5 class="mb16">สินค้าที่ต้องมี (2 รายการ)</h5>
+    <div class="alert info mb16 relative" style="font-size:13.5px"><span class="pin abs">3</span>
+      <div><div class="a-title">วิธีเลือกสินค้า</div>แต่ละรายการต้องเลือกจำนวนตามที่กำหนด คุณสามารถเลือกตัวเลือกใดก็ได้ในแต่ละรายการ (ไม่จำเป็นต้องเลือกตัวเลือกเดียวกัน) — เลือกตัวเลือกใดก็ได้ แล้วรวมกันให้ครบจำนวน</div></div>
+
+    <div class="req">
+      <div class="req-h"><h6>รายการที่ 1</h6><span class="chip primary">จำนวนที่ต้องมี: 5</span><span class="grow"></span><a class="btn outlined primary sm" href="#dlg-static">เลือกสินค้า</a></div>
+      <p class="small muted mb8" style="font-style:italic">เลือกได้จากตัวเลือกต่อไปนี้ (เลือกได้หลายตัวเลือกรวมกัน) <span class="pin">4</span></p>
+      <div class="choices">
+        <div class="pu"><span class="ch">ตัวเลือก 1</span><div class="img">ภาพสินค้า</div><div class="b"><div class="nm">นมผงสูตร 3</div><div>หน่วย: กระป๋อง</div><div class="price" style="font-size:14px">฿240</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+        <div class="pu"><span class="ch">ตัวเลือก 2</span><div class="img">ภาพสินค้า</div><div class="b"><div class="nm">นมผงสูตร 3</div><div>หน่วย: ลัง (5 กระป๋อง)</div><div class="price" style="font-size:14px">฿1,200</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+      </div>
+    </div>
+
+    <div class="req">
+      <div class="req-h"><h6>รายการที่ 2</h6><span class="chip primary">จำนวนที่ต้องมี: 2</span></div>
+      <div class="choices">
+        <div class="pu"><div class="img">ภาพสินค้า</div><div class="b"><div class="nm">ขวดนม PP</div><div>หน่วย: ชิ้น</div><div class="price" style="font-size:14px">฿60</div><button class="btn outlined sm block">เพิ่ม 2 ชิ้นในตะกร้า</button></div></div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- free items -->
+  <div class="card mt16"><div class="card-b relative"><span class="pin abs" style="top:-10px;left:-10px">6</span>
+    <h5 class="mb16">สินค้าฟรี (1 รายการ)</h5>
+    <div class="choices">
+      <div class="pu free"><div class="img" style="background:var(--success-lighter)">ภาพสินค้า</div><div class="b"><div class="nm">เจลแอลกอฮอล์</div><div>หน่วย: ขวด · มูลค่า ฿55</div><div><span class="promo-tag gift">ฟรี ×1 ต่อชุด</span></div><div class="small muted">สต็อกเหลือ 340 ขวด</div></div></div>
+    </div>
+  </div></div>
+
+  <!-- history -->
+  <div class="card mt16"><div class="card-b relative"><span class="pin abs" style="top:-10px;left:-10px">7</span>
+    <h5 class="mb16">ประวัติการใช้งาน</h5>
+    <div class="table-wrap" style="border:1px solid var(--g200)"><table class="table">
+      <thead><tr><th>วันที่รับสิทธิ์</th><th>ออเดอร์</th><th>ได้รับ</th><th>สถานะ</th></tr></thead>
+      <tbody>
+        <tr><td>24 กันยายน 2569 15:08</td><td><a href="#">SO-69-005320</a></td><td>เจลแอลกอฮอล์ ×2 (2 ชุด)</td><td><span class="chip success">ใช้งานแล้ว</span></td></tr>
+        <tr><td>3 กันยายน 2569 10:41</td><td><a href="#">SO-69-004871</a></td><td>เจลแอลกอฮอล์ ×1 (1 ชุด)</td><td><span class="chip success">ใช้งานแล้ว</span> <span class="small muted">ออเดอร์ถูกยกเลิก — สิทธิ์ไม่ถูกคืน</span></td></tr>
+      </tbody>
+    </table></div>
+    <div class="small muted mt8">นับโควต้า 1 ครั้งต่อ 1 ออเดอร์ที่ได้รับสิทธิ์ (แม้ได้หลายชุดในออเดอร์เดียว)</div>
+  </div></div>
+
+  <!-- dialog open -->
+  <div class="lbl"><span class="chip soft-primary sq">สถานะ</span> Dialog "เลือกตัวเลือกสินค้า" ขณะเปิด (จำนวนยังไม่ครบ ปุ่มยืนยันกดไม่ได้) <span class="pin">8</span></div>
+  <div class="backdrop" id="dlg-static"><div class="dialog md">
+    <div class="dialog-h">เลือกตัวเลือกสินค้า<button class="x">✕</button></div>
+    <div class="dialog-b">
+      <h6 class="mb8">รายการที่ 1</h6>
+      <p class="muted mb16">กรุณาระบุจำนวนสินค้าที่ต้องการสำหรับแต่ละตัวเลือก (จำนวนรวมต้องไม่น้อยกว่า 5 ชิ้น)</p>
+      <div class="quota mb16" style="background:var(--g100)">
+        <div class="row2"><span class="muted">จำนวนที่ต้องมี:</span><b>5 ชิ้น</b></div>
+        <div class="row2 mt8"><span class="muted">จำนวนรวมที่เลือก:</span><b style="color:var(--error-dark)">4 ชิ้น</b></div>
+      </div>
+      <div class="stack s12">
+        <div class="chrow"><div><div class="semi">นมผงสูตร 3</div><div class="muted small">กระป๋อง · ฿240</div></div>
+          <div class="step-box"><button>−</button><span class="v">3</span><button>+</button></div></div>
+        <div class="chrow"><div><div class="semi">นมผงสูตร 3</div><div class="muted small">ลัง (5 กระป๋อง) · ฿1,200</div></div>
+          <div class="step-box"><button>−</button><span class="v">1</span><button>+</button></div></div>
+      </div>
+      <div class="small mt8" style="color:var(--error-dark)">จำนวนรวมต้องไม่น้อยกว่า 5 ชิ้น — ขาดอีก 1 ชิ้น</div>
+    </div>
+    <div class="dialog-f"><button class="btn outlined">ยกเลิก</button><button class="btn contained" disabled>ยืนยัน</button></div>
+  </div></div>
+
+  <!-- any-unit variant -->
+  <div class="lbl"><span class="chip soft-primary sq">สถานะ</span> รายการแบบ "ตรงกับสินค้าใดก็ได้" (โปรตามยอดเงินบางโปร) <span class="pin">9</span></div>
+  <div class="card"><div class="card-b">
+    <div class="req any" style="margin-bottom:12px">
+      <div class="req-h"><h6>รายการที่ 3</h6><span class="chip primary">จำนวนที่ต้องมี: 2</span><span class="chip info">สินค้าใดก็ได้</span></div>
+      <div class="alert info" style="font-size:13px"><div>รายการนี้สามารถใช้สินค้าใดก็ได้ในตะกร้า จำนวนที่ต้องมี: 2 ชิ้น</div></div>
+    </div>
+    <div class="alert warning" style="font-size:13px"><div><b>แจ้งเตือนเมื่อกด "เพิ่มสินค้าที่ต้องมีทั้งหมดเข้าตะกร้า":</b> โปรโมชั่นนี้รองรับสินค้าใดก็ได้ กรุณาเพิ่มสินค้าเข้าตะกร้าด้วยตนเอง แล้วไปที่หน้าชำระเงินเพื่อตรวจสอบเงื่อนไข</div></div>
+  </div></div>
+
+  <div class="row mt24" style="justify-content:flex-end">
+    <a class="btn outlined" href="06-customer-list.html">← หน้ารวมโปรโมชั่น</a>
+    <a class="btn contained" href="09-customer-cart.html">ไปตะกร้าสินค้า →</a>
+  </div>
+
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>โควต้า</b> ตามหน้าเดิม (กล่องเทา ใช้แล้ว / โควต้าที่เหลือ เขียว–แดง) · เหลือ 0: ปุ่มเพิ่มสินค้าทั้งหมดและปุ่มเลือกสินค้าถูกปิด พร้อมข้อความ "โควต้าเต็มแล้ว" · ผู้เยี่ยมชมถูกพาไปล็อกอินก่อนเปิดหน้านี้</span></li>
+    <li><span class="pin">2</span><span><b>ผลตอบแทน / ทวีคูณ / ใช้ร่วมกับ</b> <span class="chip soft-primary sq">ใหม่</span> สามแถมใต้ "ประเภทเงื่อนไข" อธิบายด้วยตัวอย่างตัวเลขจริงของโปรนั้น · ผลตอบแทนเป็นส่วนลดแสดงเป็น "ลด 10% สูงสุด ฿150" · ซ่อนแถวทวีคูณถ้าตั้ง "จำกัด 1 ชุดต่อบิล" และแสดงแค่ "ได้ 1 ชุดต่อบิล"</span></li>
+    <li><span class="pin">3</span><span><b>วิธีเลือกสินค้า</b> ข้อความเดิม + คำอธิบาย OR: เลือกตัวเลือกใดก็ได้ในรายการ แล้วรวมกันให้ครบจำนวน (ไม่ต้องเป็นตัวเลือกเดียวกัน)</span></li>
+    <li><span class="pin">4</span><span><b>การ์ดตัวเลือก</b> ใช้ ProductUnitCard เดิม + ป้าย "ตัวเลือก N" มุมขวาบน · มีปุ่มเพิ่มในตะกร้าต่อใบได้ตามปกติ · สินค้าหมดสต็อกแสดงป้ายแดงและปิดปุ่ม</span></li>
+    <li><span class="pin">5</span><span><b>ปุ่มหลัก</b> "เพิ่มสินค้าที่ต้องมีทั้งหมดเข้าตะกร้า": ถ้าทุกรายการมีตัวเลือกเดียว เพิ่มเข้าตะกร้าทันทีแล้วไปตะกร้า · ถ้ามีรายการที่ต้องเลือก (หลายตัวเลือก) เปิด dialog ทีละรายการ · ถ้ามีรายการ "สินค้าใดก็ได้" แจ้งเตือนว่าต้องเพิ่มเอง</span></li>
+    <li><span class="pin">6</span><span><b>สินค้าฟรี</b> การ์ดสินค้าไม่มีปุ่ม พร้อมป้าย "ฟรี ×จำนวนต่อชุด" และมูลค่า · ของแถมหมด: ป้ายแดง "หมดชั่วคราว" และโปรถูกปิดตามกติกา</span></li>
+    <li><span class="pin">7</span><span><b>ประวัติการใช้งาน</b> เพิ่มคอลัมน์ ออเดอร์ (ลิงก์ไปรายละเอียดออเดอร์) และของที่ได้รับ · ออเดอร์ถูกยกเลิกยังนับว่าใช้สิทธิ์แล้ว (นโยบายร่วม) พร้อมข้อความบอก</span></li>
+    <li><span class="pin">8</span><span><b>Dialog เลือกตัวเลือก</b> ตัวคูณจำนวนต่อตัวเลือก (−/พิมพ์/+) · แสดงจำนวนที่ต้องมี และจำนวนรวมที่เลือก (แดงเมื่อไม่ครบ เขียวเมื่อครบ) · ปุ่มยืนยันกดไม่ได้จนกว่าจะครบ (ถ้ากดเมื่อไม่ครบ toast "จำนวนรวมต้องไม่น้อยกว่า 5 ชิ้น") · ยืนยันแล้วไปรายการถัดไปที่ต้องเลือก ครบแล้วเพิ่มลงตะกร้าและไปหน้าเช็คเอาต์/ตะกร้า</span></li>
+    <li><span class="pin">9</span><span><b>"ตรงกับสินค้าใดก็ได้"</b> การ์ดขอบฟ้า ไม่มีรายการสินค้า มีป้าย "สินค้าใดก็ได้" และข้อความอธิบาย — ไม่สามารถเพิ่มล่วงหน้าได้ ต้องไปเลือกสินค้าเองแล้วดูผลที่ตะกร้า</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>จำนวนรวมที่เลือกในรายการ นับเป็นชิ้นตามหน่วยที่เลือก (ลัง 1 = 1 ชิ้น) · ถ้าโปรเปิด "ตรวจหน่วยอย่างเข้มงวด" การ์ดตัวเลือกแสดงเฉพาะหน่วยที่ตรงเงื่อนไข</li>
+    <li>โปรหมดอายุ/ยังไม่เริ่ม: ปุ่มเพิ่มสินค้าถูกปิด แสดงสถานะบนหัวการ์ด · เปิดหน้าโปรที่ไม่มีอยู่/ถูกปิด = "ไม่พบโปรโมชั่นที่ต้องการ" + ปุ่มกลับ</li>
+    <li>ไม่มีปุ่ม "รับสิทธิ์" — สิทธิ์เกิดอัตโนมัติเมื่อตะกร้าเข้าเงื่อนไขและยืนยันออเดอร์</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ปุ่ม "เพิ่มสินค้าที่ต้องมีทั้งหมดเข้าตะกร้า" ในระบบจริงถูกซ่อนไว้ (comment) — เปิดใช้งานในหน้านี้หรือคงซ่อนต่อ</li>
+    <li>หลังเพิ่มสินค้าลงตะกร้าแล้ว ไปหน้าตะกร้า/เช็คเอาต์ทันที (พฤติกรรมเดิม) หรืออยู่หน้าเดิมพร้อม toast</li>
+    <li>การ์ดตัวเลือกบังคับให้เลือกจากกลุ่ม "กระป๋อง/ลัง" แยกหรือรวมกันได้ (ค่าเริ่มต้น = รวมกันได้)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

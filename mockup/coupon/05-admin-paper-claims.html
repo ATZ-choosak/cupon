@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คิวเบิกเงินร้าน/สาขา (นับก้นคูปอง)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.tbl-c th,.tbl-c td{padding:10px 12px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ck.y{background:var(--success)}.ck.n{background:var(--error)}.ck.w{background:var(--warning)}
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.hl td{background:var(--primary-lighter)!important}
+.dim{opacity:.55}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.lbl-sm{font-size:11.5px;color:var(--text2)}
+.err-box{border:1.5px solid var(--error);background:var(--error-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#5F2120}
+.ok-box{border:1.5px solid var(--success);background:var(--success-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1E4620}
+.warn-box{border:1.5px solid var(--warning);background:var(--warning-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#663C00}
+.input.bad{border-color:var(--error);background:var(--error-lighter)}
+.input.good{border-color:var(--success)}
+.input.amber{border-color:var(--warning)}
+label.switch{white-space:nowrap}
+details.faq{border:1px solid var(--g300);border-radius:10px;background:#fff;padding:0}
+details.faq+details.faq{margin-top:8px}
+details.faq>summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq>summary::after{content:"＋";color:var(--primary);font-weight:800}
+details.faq[open]>summary::after{content:"−"}
+details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
+</style>
+</head>
+<body data-shell="admin" data-nav="coupon" data-crumb="โปรโมชั่นและสิทธิพิเศษ / คูปอง / คูปองกระดาษ / คิวเบิกเงิน">
+<main id="screen">
+
+<div class="page-head">
+  <div><h4>คิวเบิกเงินร้าน/สาขา (นับก้นคูปอง)</h4><p class="muted">ร้านฉีกก้นคูปองเก็บไว้ ส่งเข้ามาเบิก — แอดมินนับ ตรวจเงื่อนไข แล้วบันทึกการจ่าย · เบิกเงิน = ก้นที่นับได้ × มูลค่าต่อใบ</p></div>
+  <div class="row"><a class="btn outlined" href="02-admin-paper-list.html">← รายการชุด</a><a class="btn contained" href="#add">＋ เพิ่มรายการเบิก</a></div>
+</div>
+
+<div class="stat-grid mb16">
+  <div class="stat"><div class="v">2</div><div class="l">รอตรวจนับ (฿6,700)</div></div>
+  <div class="stat"><div class="v">1</div><div class="l">ตรวจนับแล้ว รอจ่าย (฿3,900)</div></div>
+  <div class="stat"><div class="v">฿21,700</div><div class="l">จ่ายแล้วเดือนนี้</div></div>
+  <div class="stat"><div class="v">1</div><div class="l">มีธงเตือนที่ต้องตัดสินใจ</div></div>
+</div>
+
+<div class="card mb24" style="overflow:hidden">
+  <div class="table-toolbar" style="flex-wrap:wrap">
+    <input class="input" style="max-width:240px" placeholder="ค้นหาร้าน / รหัสชุด">
+    <div class="seg"><button class="on">ทั้งหมด 6</button><button>รอตรวจนับ 2</button><button>ตรวจนับแล้ว 1</button><button>จ่ายแล้ว 2</button><button>ปฏิเสธ 1</button></div>
+    <span class="muted small relative">* ยอดประมาณจากก้นที่ร้านแจ้ง (ยังไม่ตรวจนับ) <span class="pin">1</span></span>
+  </div>
+  <div class="table-wrap"><table class="table tbl-c" style="font-size:12.5px">
+    <thead><tr><th>เลขที่</th><th>ร้าน/ตัวแทน</th><th>ชุดโค้ด</th><th class="num">ก้นที่ร้านแจ้ง</th><th class="num">ก้นที่ตรวจนับได้ <span class="pin">2</span></th><th class="num">มูลค่า/ใบ</th><th class="num">ยอดที่ต้องจ่าย <span class="pin">3</span></th><th>สถานะ</th><th>วันที่รับเรื่อง</th><th></th></tr></thead>
+    <tbody><tr><td><b class="mono">C-0131</b></td><td><b>ร้านยาสุขใจ สาขาบางนา</b><div style="margin-top:2px"><span class="chip soft-primary">ตัวแทน</span></div></td><td class="mono">OCT50</td><td class="num">40</td><td class="num">—</td><td class="num">฿50</td><td class="num"><b>฿2,000*</b></td><td><span class="chip warning">รอตรวจนับ</span><div style="margin-top:4px"><span class="chip soft-error">ไม่ได้ร่วมชุดนี้</span></div></td><td class="nowrap">11 ต.ค. 69</td><td><a href="#detail">เปิด</a></td></tr><tr><td><b class="mono">C-0130</b></td><td><b>ร้านยาเภสัชกรเมือง (นครราชสีมา)</b><div style="margin-top:2px"><span class="chip soft-primary">ตัวแทน</span></div></td><td class="mono">ABC100</td><td class="num">47</td><td class="num">—</td><td class="num">฿100</td><td class="num"><b>฿4,700*</b></td><td><span class="chip warning">รอตรวจนับ</span></td><td class="nowrap">10 ต.ค. 69</td><td><a href="#detail">เปิด</a></td></tr><tr class="hl"><td><b class="mono">C-0128</b></td><td><b>ร้านยาชุมชนคลองหลวง (ปทุมธานี)</b><div style="margin-top:2px"><span class="chip soft-primary">ตัวแทน</span></div></td><td class="mono">OCT50</td><td class="num">85</td><td class="num">78</td><td class="num">฿50</td><td class="num"><b>฿3,900</b></td><td><span class="chip info">ตรวจนับแล้ว</span><div style="margin-top:4px"><span class="chip soft-warning">เกินกำหนด / เกินใบสูงสุด</span></div></td><td class="nowrap">9 ต.ค. 69</td><td><a href="#detail">เปิด</a></td></tr><tr><td><b class="mono">C-0125</b></td><td><b>Pharmaplex สาขาโคราช</b><div style="margin-top:2px"><span class="chip soft-info">สาขา</span></div></td><td class="mono">OCT50</td><td class="num">210</td><td class="num">210</td><td class="num">฿50</td><td class="num"><b>฿10,500</b></td><td><span class="chip success">จ่ายแล้ว</span></td><td class="nowrap">3 ต.ค. 69</td><td><a href="#detail">เปิด</a></td></tr><tr><td><b class="mono">C-0122</b></td><td><b>ร้านยาสุขภาพดี สาขา 2</b><div style="margin-top:2px"><span class="chip soft-info">สาขา</span></div></td><td class="mono">SEP40</td><td class="num">60</td><td class="num">0</td><td class="num">฿40</td><td class="num"><b>฿0</b></td><td><span class="chip error">ปฏิเสธ</span><div style="margin-top:4px"><span class="chip soft-error">ก้นไม่ใช่ของชุด</span></div></td><td class="nowrap">28 ก.ย. 69</td><td><a href="#detail">เปิด</a></td></tr><tr><td><b class="mono">C-0120</b></td><td><b>Pharmaplex สาขาเชียงใหม่</b><div style="margin-top:2px"><span class="chip soft-info">สาขา</span></div></td><td class="mono">ABC100</td><td class="num">112</td><td class="num">112</td><td class="num">฿100</td><td class="num"><b>฿11,200</b></td><td><span class="chip success">จ่ายแล้ว</span></td><td class="nowrap">30 ก.ย. 69</td><td><a href="#detail">เปิด</a></td></tr></tbody>
+  </table></div>
+  <div class="pager"><span>แถวต่อหน้า 25</span><span>1–6 จาก 6</span></div>
+</div>
+
+<div id="detail" class="card primary-top mb24"><div class="card-b">
+  <div class="row between mb16" style="flex-wrap:wrap">
+    <div><h5>รายการเบิก <span class="mono">C-0128</span> · ร้านยาชุมชนคลองหลวง <span class="chip soft-primary">ตัวแทน</span></h5><div class="muted small">ปทุมธานี · ชุด OCT50 (฿50/ใบ) · ร้านแจ้งเมื่อ 9 ต.ค. 69 · ก้นที่ใช้ล่าสุด 2 ก.ย. 69</div></div>
+    <span class="chip info">ตรวจนับแล้ว</span>
+  </div>
+  <div class="grid g2" style="gap:24px">
+    <div class="stack">
+      <div><div class="label mb8">เทียบก้นที่แจ้ง กับที่นับได้ <span class="pin">4</span></div>
+        <div class="grid g3">
+          <div class="stat"><div class="l">ร้านแจ้ง</div><div class="v">85</div></div>
+          <div class="stat"><div class="l">นับได้จริง</div><div class="v">78</div></div>
+          <div class="stat" style="border-color:var(--error)"><div class="l">ผลต่าง</div><div class="v" style="color:var(--error-dark)">−7</div></div>
+        </div>
+        <div class="field mt16"><label>จำนวนก้นที่นับได้ (กรอกโดยผู้ตรวจนับ)</label><div class="input-adorn"><input class="input" value="78"><span class="adorn">ใบ</span></div><span class="help">ยอดที่ต้องจ่าย = 78 × ฿50 = <b>฿3,900</b></span></div>
+      </div>
+      <div><div class="label mb8">ธงเตือนจากระบบ <span class="pin">5</span></div>
+        <div class="stack s8" style="font-size:13px">
+          <div class="row top"><span class="ck y">✓</span><span>ก้นรวมของชุด OCT50 ที่นับแล้ว 1,240 + 78 = 1,318 <b>ไม่เกิน</b>จำนวนที่ออก (2,000)</span></div>
+          <div class="row top"><span class="ck y">✓</span><span>ร้านนี้อยู่ในรายชื่อที่ร่วมชุด OCT50</span></div>
+          <div class="row top"><span class="ck w">!</span><span><b>เกินกำหนดส่งก้น:</b> ใช้ล่าสุด 2 ก.ย. 69 ส่งเมื่อ 9 ต.ค. 69 = 37 วัน (กำหนด 30 วัน) เกิน 7 วัน</span></div>
+          <div class="row top"><span class="ck w">!</span><span><b>เกินใบสูงสุดของร้าน:</b> เบิกแล้ว 130 + 78 = 208 จากเพดาน 200 ใบ (เกิน 8 ใบ)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="stack">
+      <div><div class="label mb8">การเบิกสะสมต่อร้านเทียบใบสูงสุด (ชุด OCT50) <span class="pin">6</span></div>
+        <div class="table-wrap" style="border:1px solid var(--g200)"><table class="table tbl-c" style="font-size:12.5px"><thead><tr><th>ร้าน</th><th class="num">เบิกแล้ว</th><th class="num">ใบสูงสุด</th><th></th><th></th></tr></thead><tbody><tr><td>Pharmaplex สำนักงานใหญ่</td><td class="num">400</td><td class="num">ไม่จำกัด</td><td style="width:140px"><span class="muted small">—</span></td><td><span class="chip soft-success">ปกติ</span></td></tr><tr><td>Pharmaplex สาขาโคราช</td><td class="num">210</td><td class="num">300</td><td style="width:140px"><div class="progress green"><i style="width:70%;"></i></div></td><td><span class="chip soft-success">ปกติ</span></td></tr><tr><td>Pharmaplex สาขาเชียงใหม่</td><td class="num">150</td><td class="num">300</td><td style="width:140px"><div class="progress green"><i style="width:50%;"></i></div></td><td><span class="chip soft-success">ปกติ</span></td></tr><tr><td>ร้านยาเภสัชกรเมือง</td><td class="num">90</td><td class="num">200</td><td style="width:140px"><div class="progress green"><i style="width:45%;"></i></div></td><td><span class="chip soft-success">ปกติ</span></td></tr><tr><td>ร้านยาชุมชนคลองหลวง (รวมรายการนี้)</td><td class="num">208</td><td class="num">200</td><td style="width:140px"><div class="progress "><i style="width:100%;background:var(--error)"></i></div></td><td><span class="chip soft-error">เกิน 8 ใบ</span></td></tr></tbody></table></div>
+      </div>
+      <div class="soft">
+        <div class="label mb8">ดำเนินการ <span class="pin">7</span></div>
+        <div class="row wrap">
+          <button class="btn outlined primary">ยืนยันนับ</button>
+          <button class="btn outlined">ขอตรวจใหม่</button>
+          <button class="btn outlined" style="color:var(--error-dark);border-color:var(--error)">ปฏิเสธ…</button>
+          <button class="btn contained">บันทึกการจ่าย</button>
+        </div>
+        <div class="field mt16"><label>เหตุผลที่ปฏิเสธ/จ่ายเกินเกณฑ์ (บังคับเมื่อปฏิเสธ หรือจ่ายทั้งที่มีธง !)</label><textarea class="textarea" placeholder="เช่น อนุมัติพิเศษเนื่องจากร้านแจ้งล่วงหน้าทางโทรศัพท์ 3 ต.ค."></textarea></div>
+        <div class="grid g2 mt16" style="gap:12px">
+          <div class="field"><label>ยอดที่จ่ายจริง</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="3,900"></div></div>
+          <div class="field"><label>วันที่จ่าย / อ้างอิง</label><input class="input" value="12 ต.ค. 69 · โอน SCB ****1234"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<div id="add" class="card"><div class="card-b">
+  <h6 class="mb8">เพิ่มรายการเบิก (กรณีร้านส่งก้นมาทางไปรษณีย์/หน้างาน) <span class="pin">8</span></h6>
+  <div class="grid" style="grid-template-columns:2fr 1.2fr 1fr 1fr auto;gap:12px;align-items:end">
+    <div class="field"><label>ร้าน/ตัวแทน (เลือกจากรายชื่อที่ลงทะเบียน)</label><select class="select"><option>Pharmaplex สำนักงานใหญ่ · สาขา · กรุงเทพฯ</option><option>Pharmaplex สาขาโคราช · สาขา · นครราชสีมา</option><option>Pharmaplex สาขาเชียงใหม่ · สาขา · เชียงใหม่</option><option>ร้านยาเภสัชกรเมือง · ตัวแทน · นครราชสีมา</option><option>ร้านยาสุขใจ สาขาลาดพร้าว · สาขา · กรุงเทพฯ</option><option>ร้านยาสุขใจ สาขาบางนา · ตัวแทน · กรุงเทพฯ</option><option>ร้านยาชุมชนคลองหลวง · ตัวแทน · ปทุมธานี</option><option>ร้านยาสุขภาพดี สาขา 2 · สาขา · นนทบุรี</option><option>ร้านยาหมอสมชาย · ตัวแทน · ขอนแก่น</option><option>ร้านยาเพื่อนบ้าน · ตัวแทน · ชลบุรี</option><option>ร้านยาใจดี · ตัวแทน · สงขลา</option><option>ร้านยาล้านนา (ตัวแทนจำหน่ายเชียงใหม่) · ตัวแทน · เชียงใหม่</option></select></div>
+    <div class="field"><label>ชุดโค้ด</label><select class="select"><option>OCT50</option><option>ABC100</option><option>KLONG25</option></select></div>
+    <div class="field"><label>ก้นที่ร้านแจ้ง (ใบ)</label><input class="input" placeholder="0"></div>
+    <div class="field"><label>วันที่รับก้น</label><input class="input" type="date" value="2026-10-12"></div>
+    <button class="btn contained">＋ เพิ่ม</button>
+  </div>
+  <div class="lbl-sm mt8">ไม่มีช่องพิมพ์ชื่อร้านอิสระ — ถ้าไม่พบร้านในรายการ ต้องไปลงทะเบียนร้าน/ตัวแทนก่อน (เมนูลูกค้า/ตัวแทน) เพื่อกันคนนอกอ้างชื่อมาเบิกเงิน</div>
+</div></div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ยอดที่มี * คือประมาณการจากก้นที่ร้านแจ้ง ยังไม่ตรวจนับ — ยอดจริงใช้ตัวเลขที่ตรวจนับได้เท่านั้น</span></li>
+    <li><span class="pin">2</span><span>ช่อง "ก้นที่ตรวจนับได้" ว่างจนกว่าจะนับ — ผู้ตรวจกรอกจากก้นที่ได้รับจริง ผลต่างกับที่ร้านแจ้งแสดงเป็นสีแดง</span></li>
+    <li><span class="pin">3</span><span>ยอดที่ต้องจ่าย = ก้นที่ตรวจนับได้ × มูลค่า/ใบของชุด (ฟิลด์คำนวณ แก้ตรง ๆ ไม่ได้ ยกเว้นกรอกยอดจ่ายจริงพร้อมเหตุผล)</span></li>
+    <li><span class="pin">4</span><span>ส่วนเปรียบเทียบ: ร้านแจ้ง vs นับได้ vs ผลต่าง พร้อมช่องกรอกจำนวนที่นับได้ที่คำนวณยอดจ่ายสด</span></li>
+    <li><span class="pin">5</span><span>ธงเตือนอัตโนมัติ 4 ข้อ: ก้นรวมเกินจำนวนที่ออก / ร้านไม่ได้ร่วมชุด / เกินกำหนดส่งก้น / เกินใบสูงสุดของร้าน — ✓ ผ่าน ! ต้องตัดสินใจ</span></li>
+    <li><span class="pin">6</span><span>ตารางเปรียบเทียบการเบิกสะสมของแต่ละร้านกับใบสูงสุดที่ตั้งไว้ในชุด (แถบแดงเมื่อเกิน)</span></li>
+    <li><span class="pin">7</span><span>การดำเนินการ: ยืนยันนับ → บันทึกการจ่าย · ขอตรวจใหม่ (ส่งกลับคิวรอตรวจนับ) · ปฏิเสธ (ต้องมีเหตุผล) — ทุกการกดถูกบันทึกในประวัติ</span></li>
+    <li><span class="pin">8</span><span>เพิ่มรายการเบิกต้องเลือกร้านจากรายชื่อที่ลงทะเบียนเท่านั้น (select + ค้นหา) ไม่มีช่องพิมพ์อิสระ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะ: รอตรวจนับ → ตรวจนับแล้ว → จ่ายแล้ว (หรือ ปฏิเสธ) · จ่ายแล้วแก้ตัวเลขไม่ได้ ต้องบันทึกรายการปรับยอดใหม่</li>
+    <li>ร้านที่ไม่ได้อยู่ในรายชื่อของชุด (เช่น C-0131) ระบบติดธงแดงและปุ่ม "ยืนยันนับ" ถูกล็อกจนกว่าจะเพิ่มร้านเข้าชุด หรือปฏิเสธ</li>
+    <li>ก้นรวมที่นับแล้วของชุดห้ามเกินจำนวนที่ออก — ถ้าเกินระบบบล็อกการยืนยันและแจ้งให้ตรวจก้นปลอม/ซ้ำ</li>
+    <li>ก้นเกินกำหนดส่งหรือเกินใบสูงสุด: จ่ายได้เฉพาะเมื่อกรอกเหตุผลอนุมัติพิเศษ (บันทึกชื่อผู้อนุมัติ)</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ก้นที่ส่งเกินกำหนด 30 วัน และเกินใบสูงสุดต่อร้าน: ให้ปฏิเสธอัตโนมัติ / จ่ายเฉพาะส่วนที่ไม่เกิน / ให้แอดมินอนุมัติพิเศษ (ข้อเสนอ: ธงเตือน + แอดมินอนุมัติพิเศษพร้อมเหตุผล)</li>
+    <li>ใครมีสิทธิ์ "บันทึกการจ่าย" — เฉพาะฝ่ายบัญชี หรือแอดมินการตลาดด้วย (ข้อเสนอ: ตรวจนับ = การตลาด, บันทึกจ่าย = บัญชี)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

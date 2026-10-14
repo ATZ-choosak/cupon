@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สร้าง/แก้ไขเซตร้านยา</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .ed{display:grid;grid-template-columns:minmax(0,1fr) 336px;gap:20px;align-items:start}
+  .sticky{position:sticky;top:16px;display:grid;gap:16px}
+  .lk{display:inline-block;width:15px;height:15px;vertical-align:-3px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23757575' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='10' rx='2'/%3E%3Cpath d='M8 11V7a4 4 0 0 1 8 0v4'/%3E%3C/svg%3E") center/contain no-repeat}
+  .pt th,.pt td{padding:10px 8px}
+  .pt th:first-child,.pt td:first-child{padding-left:14px}
+  .pt .input{min-height:34px;padding:6px 10px}
+  .pt .input.pc{min-height:34px;line-height:1.35;padding:6px 10px;background:#fff}
+  .pt .input.n{width:78px;text-align:right}
+  .pt .x{width:30px;height:30px;border:0;border-radius:50%;background:var(--g100);cursor:pointer}
+  .seclabel{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .foot-sum{display:flex;justify-content:space-between;padding:12px 16px;background:var(--g50);border-top:1px solid var(--g200);font-size:13px}
+  .ac{border:1px solid var(--g300);border-radius:8px;box-shadow:var(--z4);margin-top:6px;overflow:hidden;background:#fff}
+  .ac .it{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:8px 12px;border-bottom:1px solid var(--g200);font-size:13px}
+  .ac .it:last-child{border-bottom:0}
+  .ac .it .th{width:40px;height:40px;border-radius:6px;background:var(--g200)}
+  .ac .it.dis{opacity:.55;background:var(--g50)}
+  .pv-row{display:flex;justify-content:space-between;align-items:baseline;padding:10px 0;border-bottom:1px dashed var(--g300);gap:12px}
+  .pv-row:last-child{border-bottom:0}
+  .pv-row .big{font-size:20px;font-weight:800;font-variant-numeric:tabular-nums}
+  .pv-row.def .big{color:var(--primary)}
+  .kitcard{border:1px solid var(--g200);border-radius:12px;overflow:hidden;background:#fff}
+  .kitcard .img{height:96px;background:linear-gradient(135deg,var(--primary-lighter),var(--g200));display:flex;align-items:flex-start;padding:8px}
+  .kitcard .kb{padding:12px;display:grid;gap:6px}
+  .ck{display:grid;gap:6px;font-size:12.5px}
+  .ck .ok::before{content:"✓ ";color:var(--success-dark);font-weight:800}
+  .vbox{border:1px solid var(--g300);border-radius:12px;padding:12px;display:grid;gap:8px;font-size:12.5px;background:#fff}
+  .input.bad{border-color:var(--error);background:var(--error-lighter)}
+  .upload{width:120px;height:120px;border:2px dashed var(--g400);border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--g600);font-size:12px;background:var(--g50)}
+</style>
+</head>
+<body data-shell="admin" data-nav="starterkit" data-crumb="โปรโมชั่นและสิทธิพิเศษ / เซตร้านยาเปิดใหม่ / แก้ไขเซต">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <div class="small muted mb8"><a href="01-admin-list.html">← รายการเซตร้านยา</a></div>
+      <h4>แก้ไขเซต: เซตร้านยาเปิดใหม่ ขนาด M</h4>
+      <p class="muted">ตั้งสินค้าบังคับ / ทางเลือก / ส่วนลดชุดเซต · ดูราคาตัวอย่างทางขวามือแบบสด</p>
+    </div>
+    <div class="row">
+      <a class="btn text grey" href="01-admin-list.html">ยกเลิก</a>
+      <button class="btn outlined">บันทึกเป็นร่าง</button>
+      <a class="btn contained" href="01-admin-list.html">บันทึกและเปิดขาย</a>
+    </div>
+  </div>
+
+  <div class="ed">
+    <div class="stack s24">
+
+      <!-- ข้อมูลเซต -->
+      <div class="card"><div class="card-b">
+        <h6 class="mb16">ข้อมูลเซต</h6>
+        <div class="form-grid">
+          <div class="field span2"><label>ชื่อเซต *</label><input class="input" value="เซตร้านยาเปิดใหม่ ขนาด M"></div>
+          <div class="field span2"><label>คำอธิบาย</label><textarea class="textarea">ยาสามัญประจำบ้านและเวชภัณฑ์พื้นฐานที่ร้านยาเปิดใหม่ควรมีในวันแรก เลือกอาหารเสริมและเวชสำอางเพิ่มได้ตามต้องการ</textarea></div>
+          <div class="field"><label>ขนาดเซต <span class="pin">1</span></label>
+            <div class="seg" style="width:fit-content"><button>S</button><button class="on">M</button><button>L</button><button>กำหนดเอง</button></div>
+            <span class="help">มาตรฐาน S/M/L ใช้เทียบขนาดร้านในหน้าลูกค้า · "กำหนดเอง" ตั้งชื่อเซตได้อิสระ</span>
+          </div>
+          <div class="field"><label>รูปเซต</label>
+            <div class="row top"><div class="upload">รูปเซต<br>500×500 px</div><span class="help">ใช้บนการ์ดเซตและหน้าปรับเซต · ไม่มีรูปจะใช้ภาพแทน</span></div>
+          </div>
+          <div class="field"><label>สถานะการขาย</label><label class="switch"><input type="checkbox" checked> เปิดขาย</label><span class="help">เปิดได้เมื่อผ่านการตรวจ 4 ข้อทางขวา</span></div>
+          <div class="field"><label>ผู้สั่งได้ <span class="pin">2</span></label>
+            <div class="input readonly row" style="gap:8px"><i class="lk"></i><b>เฉพาะบัญชีร้านค้า (B2B)</b></div>
+            <span class="help">กำหนดตายตัวของโมดูลนี้ — แก้ไม่ได้ ลูกค้าทั่วไป (B2C) เห็นเซตแต่สั่งไม่ได้</span>
+          </div>
+        </div>
+      </div></div>
+
+      <!-- สินค้าบังคับ -->
+      <div class="card" style="overflow:hidden">
+        <div class="card-h"><div><h6>สินค้าบังคับ <span class="chip soft-primary">8 รายการ</span></h6><div class="small muted mt8">ลูกค้าถอดออกไม่ได้ · ปรับจำนวนได้ไม่ต่ำกว่าจำนวนขั้นต่ำ</div></div>
+          <button class="btn outlined primary sm">＋ เพิ่มสินค้าบังคับ</button></div>
+        <div class="table-wrap mt16"><table class="table pt">
+          <thead><tr><th style="width:28px"></th><th style="width:24px">#</th><th>สินค้า / หน่วย</th><th class="num">จำนวนขั้นต่ำ <span class="pin">3</span></th><th class="num">ราคา/หน่วย <span class="pin">4</span></th><th class="num">รวม</th><th>สต็อกคงเหลือ</th><th style="width:40px"></th></tr></thead>
+          <tbody>
+            <tr><td class="drag">⋮⋮</td><td>1</td><td><div class="input pc">พาราเซตามอล 500 มก. · กล่อง</div></td><td class="num"><input class="input n" value="100"></td><td class="num">฿45</td><td class="num"><b>฿4,500</b></td><td><span class="chip soft-success">1,240 กล่อง</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>2</td><td><div class="input pc">ยาน้ำแก้ไอ · ขวด</div></td><td class="num"><input class="input n" value="60"></td><td class="num">฿85</td><td class="num"><b>฿5,100</b></td><td><span class="chip soft-success">610 ขวด</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>3</td><td><div class="input pc">เจลแอลกอฮอล์ · ขวด</div></td><td class="num"><input class="input n" value="60"></td><td class="num">฿55</td><td class="num"><b>฿3,300</b></td><td><span class="chip soft-success">880 ขวด</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>4</td><td><div class="input pc">ถุงมือยาง · กล่อง</div></td><td class="num"><input class="input n" value="20"></td><td class="num">฿120</td><td class="num"><b>฿2,400</b></td><td><span class="chip soft-success">180 กล่อง</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>5</td><td><div class="input pc">ผงเกลือแร่ ORS · กล่อง</div></td><td class="num"><input class="input n" value="30"></td><td class="num">฿90</td><td class="num"><b>฿2,700</b></td><td><span class="chip soft-success">360 กล่อง</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>6</td><td><div class="input pc">เบตาดีน 15 มล. · ขวด</div></td><td class="num"><input class="input n" value="40"></td><td class="num">฿65</td><td class="num"><b>฿2,600</b></td><td><span class="chip soft-success">420 ขวด</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>7</td><td><div class="input pc">ยาแก้แพ้ คลอร์เฟนิรามีน 4 มก. · กล่อง</div></td><td class="num"><input class="input n" value="40"></td><td class="num">฿60</td><td class="num"><b>฿2,400</b></td><td><span class="chip soft-success">280 กล่อง</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>8</td><td><div class="input pc">หน้ากากอนามัย 50 ชิ้น · กล่อง</div></td><td class="num"><input class="input n" value="25"></td><td class="num">฿80</td><td class="num"><b>฿2,000</b></td><td><span class="chip soft-warning">175 กล่อง · พอ 7 เซต</span></td><td><button class="x">✕</button></td></tr>
+          </tbody>
+        </table></div>
+        <div class="foot-sum"><span class="muted">รวมสินค้าบังคับ (ก่อนส่วนลด)</span><b>฿25,000</b></div>
+        <div style="padding:14px 16px;border-top:1px solid var(--g200)">
+          <div class="label mb8">ค้นหาเพื่อเพิ่ม (ตัวอย่างขณะพิมพ์ "พาราเซตามอล") <span class="pin">5</span></div>
+          <input class="input" value="พาราเซตามอล">
+          <div class="ac">
+            <div class="it"><span class="th"></span><div><b>พาราเซตามอล 500 มก.</b><div class="small muted">แผง 10 เม็ด · ฿18 · คงเหลือ 3,200</div></div><span class="chip soft-info">เลือก</span></div>
+            <div class="it dis"><span class="th"></span><div><b>พาราเซตามอล 500 มก.</b><div class="small muted">กล่อง · ฿45 · คงเหลือ 1,240</div></div><span class="chip soft-primary">อยู่ในรายการบังคับแล้ว</span></div>
+            <div class="it"><span class="th"></span><div><b>พาราเซตามอล เด็ก 120 มก./5 มล.</b><div class="small muted">ขวด · ฿38 · คงเหลือ 0</div></div><span class="chip soft-error">หมดสต็อก</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- สินค้าทางเลือก -->
+      <div class="card" style="overflow:hidden">
+        <div class="card-h"><div><h6>สินค้าทางเลือก <span class="chip outline">6 รายการ</span></h6><div class="small muted mt8">ลูกค้าเปิด-ปิดได้ · จำนวนแนะนำใช้เป็นค่าเริ่มต้นเมื่อลูกค้าเปิด</div></div>
+          <button class="btn outlined primary sm">＋ เพิ่มสินค้าทางเลือก</button></div>
+        <div class="table-wrap mt16"><table class="table pt">
+          <thead><tr><th style="width:28px"></th><th style="width:24px">#</th><th>สินค้า / หน่วย</th><th class="num">จำนวนแนะนำ</th><th>เปิดเป็นค่าเริ่มต้น <span class="pin">6</span></th><th class="num">ราคา/หน่วย</th><th class="num">รวมถ้าเลือก</th><th>สต็อก</th><th style="width:40px"></th></tr></thead>
+          <tbody>
+            <tr><td class="drag">⋮⋮</td><td>1</td><td><div class="input pc">Blackmores Vitamin C 500 mg · ขวด</div></td><td class="num"><input class="input n" value="5"></td><td><label class="switch"><input type="checkbox" checked></label></td><td class="num">฿380</td><td class="num"><b>฿1,900</b></td><td><span class="chip soft-success">210 ขวด</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>2</td><td><div class="input pc">เวชสำอาง ครีมบำรุงผิวแพ้ง่าย · หลอด</div></td><td class="num"><input class="input n" value="5"></td><td><label class="switch"><input type="checkbox" checked></label></td><td class="num">฿200</td><td class="num"><b>฿1,000</b></td><td><span class="chip soft-warning">38 หลอด</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>3</td><td><div class="input pc">ขวดนม PP · ชิ้น</div></td><td class="num"><input class="input n" value="10"></td><td><label class="switch"><input type="checkbox" checked></label></td><td class="num">฿60</td><td class="num"><b>฿600</b></td><td><span class="chip soft-success">640 ชิ้น</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>4</td><td><div class="input pc">นมผงสูตร 3 · กระป๋อง</div></td><td class="num"><input class="input n" value="3"></td><td><label class="switch"><input type="checkbox"></label></td><td class="num">฿240</td><td class="num"><b>฿720</b></td><td><span class="chip soft-success">420 กระป๋อง</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>5</td><td><div class="input pc">ผ้าอ้อมเด็ก · แพ็ค</div></td><td class="num"><input class="input n" value="2"></td><td><label class="switch"><input type="checkbox"></label></td><td class="num">฿540</td><td class="num"><b>฿1,080</b></td><td><span class="chip soft-error">หมดสต็อก</span></td><td><button class="x">✕</button></td></tr>
+            <tr><td class="drag">⋮⋮</td><td>6</td><td><div class="input pc">เครื่องวัดความดันดิจิทัล · เครื่อง</div></td><td class="num"><input class="input n" value="1"></td><td><label class="switch"><input type="checkbox"></label></td><td class="num">฿1,450</td><td class="num"><b>฿1,450</b></td><td><span class="chip soft-success">14 เครื่อง</span></td><td><button class="x">✕</button></td></tr>
+          </tbody>
+        </table></div>
+        <div class="foot-sum"><span class="muted">รวมถ้าเลือกทั้งหมด / รวมค่าเริ่มต้น (เปิดไว้ 3 รายการ)</span><span><b>฿6,750</b> &nbsp;/&nbsp; <b style="color:var(--primary)">฿3,500</b></span></div>
+      </div>
+
+      <!-- ส่วนลดชุดเซต -->
+      <div class="card"><div class="card-b">
+        <div class="seclabel mb16"><h6>ส่วนลดชุดเซต <span class="pin">7</span></h6>
+          <div class="seg"><button class="on">บาท (฿)</button><button>เปอร์เซ็นต์ (%)</button></div></div>
+        <div class="form-grid">
+          <div class="field"><label>มูลค่าส่วนลด</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="2,000"></div><span class="help">หักครั้งเดียวต่อเซต ไม่ว่าลูกค้าจะเลือกทางเลือกกี่รายการ</span></div>
+          <div class="field"><label>คิดเป็น</label><div class="soft small">7.0% ของราคาเต็มค่าเริ่มต้น (฿28,500) · 8.0% ของยอดบังคับ (฿25,000)</div></div>
+        </div>
+      </div></div>
+
+      <!-- validation -->
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">9</span>
+        <h6 class="mb8">ตัวอย่างข้อความตรวจสอบ (validation) ที่ขวางการบันทึก/เปิดขาย</h6>
+        <p class="small muted mb16">ปุ่ม "บันทึกและเปิดขาย" จะกดไม่ได้จนกว่าจะแก้ครบ · บันทึกเป็นร่างได้เสมอแม้ยังไม่ผ่าน</p>
+        <div class="grid g3">
+          <div class="vbox"><b>1) ไม่มีสินค้าบังคับ</b>
+            <div class="empty soft" style="padding:16px;border-style:dashed">ยังไม่มีสินค้าบังคับ</div>
+            <span style="color:var(--error-dark)">ต้องมีสินค้าบังคับอย่างน้อย 1 รายการ จึงจะเปิดขายได้</span></div>
+          <div class="vbox"><b>2) สินค้าซ้ำสองรายการ</b>
+            <div class="small muted">แถวทางเลือกที่ 7</div>
+            <input class="input bad" value="เจลแอลกอฮอล์ · ขวด">
+            <span style="color:var(--error-dark)">สินค้า/หน่วยนี้อยู่ในรายการบังคับแล้ว (แถว 3) — เลือกได้ที่เดียว</span></div>
+          <div class="vbox"><b>3) ส่วนลดเกินราคา</b>
+            <div class="input-adorn"><span class="adorn">฿</span><input class="input bad" value="26,000"></div>
+            <span style="color:var(--error-dark)">ส่วนลดต้องน้อยกว่ายอดสินค้าบังคับรวม (฿25,000) ไม่เช่นนั้นราคาเซตจะติดลบ</span></div>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- right: preview -->
+    <div class="sticky">
+      <div class="card primary-top relative"><span class="pin abs">8</span><div class="card-b">
+        <h6 class="mb8">ราคารวมตัวอย่าง</h6>
+        <div class="pv-row"><div><b>ต่ำสุด</b><div class="small muted">เฉพาะบังคับ 25,000 − ส่วนลด 2,000</div></div><span class="big">฿23,000</span></div>
+        <div class="pv-row def"><div><b>ค่าเริ่มต้น</b><div class="small muted">บังคับ + ทางเลือกที่เปิด 3,500 − 2,000</div></div><span class="big">฿26,500</span></div>
+        <div class="pv-row"><div><b>สูงสุด</b><div class="small muted">บังคับ + ทางเลือกทั้งหมด 6,750 − 2,000</div></div><span class="big">฿29,750</span></div>
+      </div></div>
+
+      <div class="card"><div class="card-b">
+        <h6 class="mb8">การ์ดที่ลูกค้าจะเห็น</h6>
+        <div class="kitcard">
+          <div class="img"><span class="chip soft-info">มาตรฐาน M</span></div>
+          <div class="kb">
+            <b>เซตร้านยาเปิดใหม่ ขนาด M</b>
+            <span class="small muted">บังคับ 8 รายการ · ทางเลือก 6 รายการ</span>
+            <div class="row between"><div><div class="small muted">ราคาเริ่มต้น</div><b style="font-size:18px">฿23,000</b></div><span class="chip soft-success">ประหยัดสูงสุด ฿2,000</span></div>
+            <button class="btn contained sm">ดูและปรับเซต</button>
+          </div>
+        </div>
+      </div></div>
+
+      <div class="card"><div class="card-b">
+        <h6 class="mb8">ตรวจก่อนเปิดขาย</h6>
+        <div class="ck">
+          <span class="ok">มีสินค้าบังคับอย่างน้อย 1 รายการ</span>
+          <span class="ok">ไม่มีสินค้า/หน่วยซ้ำระหว่างบังคับกับทางเลือก</span>
+          <span class="ok">ส่วนลดน้อยกว่ายอดสินค้าบังคับรวม</span>
+          <span class="ok">ทุกสินค้ามีราคาและหน่วยที่ขายได้</span>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ขนาดเซตเป็นแค่ป้ายและลำดับการแสดงในหน้าลูกค้า ไม่ได้กำหนดสินค้าเอง — เปลี่ยนขนาดแล้วรายการสินค้าไม่ถูกแตะ</span></li>
+    <li><span class="pin">2</span><span>"ผู้สั่งได้" ล็อก = B2B ทุกเซต แสดงเป็นช่องอ่านอย่างเดียวพร้อมไอคอนกุญแจ เพื่อให้แอดมินรู้ว่าไม่ใช่ค่าที่ลืมตั้ง</span></li>
+    <li><span class="pin">3</span><span>จำนวนขั้นต่ำเป็นจำนวนเต็ม ≥ 1 ต่อหน่วยที่เลือก; ลูกค้าเพิ่มได้ ลดต่ำกว่านี้ไม่ได้; เซลล์สั่งแทนก็ลดต่ำกว่านี้ไม่ได้เช่นกัน</span></li>
+    <li><span class="pin">4</span><span>ราคา/หน่วยดึงอัตโนมัติจากราคาสินค้าของลูกค้ากลุ่ม B2B (แก้ในเซตไม่ได้ ถ้าจะเปลี่ยนให้แก้ที่สินค้า) · ชิปสต็อกเป็นสีส้มเมื่อพอขายน้อยกว่า 5 เซต</span></li>
+    <li><span class="pin">5</span><span>ช่องค้นหาสินค้า/หน่วย: ค้นตามชื่อ/รหัส/แบรนด์ (เหมือนหน้าเซตของแถม pmpc) · หน่วยที่อยู่ในอีกรายการแล้วเลือกไม่ได้ และบอกว่าอยู่ที่ไหน · หมดสต็อกเลือกได้แต่เตือน</span></li>
+    <li><span class="pin">6</span><span>ทางเลือก: "จำนวนแนะนำ" คือค่าเมื่อลูกค้ากดเปิด; "เปิดเป็นค่าเริ่มต้น" คือสถานะแรกเมื่อลูกค้าเปิดหน้าเซต (ลูกค้าสลับได้เสมอ) — จำนวนแนะนำ ≥ 1</span></li>
+    <li><span class="pin">7</span><span>ส่วนลดชุดเซต แบบบาท = หักคงที่ครั้งเดียว · แบบ % = คิดจากผลรวม (บังคับ + ทางเลือกที่เลือก) ทุกครั้งที่ลูกค้าปรับ · ตรวจต้องน้อยกว่ายอดบังคับ</span></li>
+    <li><span class="pin">8</span><span>แผงราคา 3 ค่า อัปเดตสดทุกครั้งที่แอดมินแก้ในหน้านี้; การ์ดตัวอย่างคือสิ่งที่หน้า "เลือกเซตร้านยา" แสดง (ราคาเริ่มต้น = ต่ำสุด)</span></li>
+    <li><span class="pin">9</span><span>ข้อความ validation 3 แบบ แสดงที่ช่องที่ผิด และสรุปเป็นรายการบนปุ่มบันทึก · แถวสีแดงอ่อน = แถวที่ต้องแก้</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>เซตที่มีออเดอร์แล้วแก้ไขได้ — มีผลกับออเดอร์ใหม่เท่านั้น ออเดอร์เดิมเก็บรายการและราคา ณ เวลาสั่ง</li>
+    <li>ลบสินค้าออกจากเซตที่ลูกค้าเปิดค้างอยู่: ตะกร้าเดิมจะคำนวณใหม่และแจ้ง "เซตมีการเปลี่ยนแปลง"</li>
+    <li>ถ้าเซตเปิดขายอยู่แล้วเหลือสินค้าบังคับ 0 รายการ (ลบหมด) ระบบไม่ให้บันทึก</li>
+    <li>เปลี่ยนจากบังคับ ↔ ทางเลือก ทำโดยลบแล้วเพิ่มใหม่ในอีกรายการ (กันสับสนเรื่องจำนวนขั้นต่ำ)</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ส่วนลดแบบ % คิดจากอะไร (เสนอ: คิดจากผลรวมสินค้าที่ลูกค้าเลือกจริง) และส่วนลดแบบบาทยังหักเต็มจำนวนแม้ลูกค้าเลือกทางเลือกน้อย</li>
+    <li>ต้องมีวันเริ่ม–สิ้นสุดของเซตหรือไม่ (เสนอ: ไม่ต้อง ใช้เปิด/ปิดขายด้วยมือ)</li>
+    <li>จำนวนสูงสุดต่อสินค้าบังคับ (เช่น ไม่เกิน 2 เท่าของขั้นต่ำ) ต้องมีหรือไม่ (เสนอ: ไม่จำกัด ยกเว้นสต็อก)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตรวจสอบคูปองกระดาษ (สาขาที่ใช้ได้)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.tbl-c th,.tbl-c td{padding:10px 12px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ck.y{background:var(--success)}.ck.n{background:var(--error)}.ck.w{background:var(--warning)}
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.hl td{background:var(--primary-lighter)!important}
+.dim{opacity:.55}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.lbl-sm{font-size:11.5px;color:var(--text2)}
+.err-box{border:1.5px solid var(--error);background:var(--error-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#5F2120}
+.ok-box{border:1.5px solid var(--success);background:var(--success-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1E4620}
+.warn-box{border:1.5px solid var(--warning);background:var(--warning-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#663C00}
+.input.bad{border-color:var(--error);background:var(--error-lighter)}
+.input.good{border-color:var(--success)}
+.input.amber{border-color:var(--warning)}
+label.switch{white-space:nowrap}
+details.faq{border:1px solid var(--g300);border-radius:10px;background:#fff;padding:0}
+details.faq+details.faq{margin-top:8px}
+details.faq>summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq>summary::after{content:"＋";color:var(--primary);font-weight:800}
+details.faq[open]>summary::after{content:"−"}
+details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
+
+.pcw{width:calc(630px*var(--s,1));height:calc(285px*var(--s,1));position:relative;flex:none}
+.pcs{width:630px;height:285px;transform:scale(var(--s,1));transform-origin:0 0}
+.pcs .pface{width:630px;height:285px;aspect-ratio:auto;padding:0;font-size:11px;line-height:1.35;color:var(--g800)}
+.pcs .flip,.pcs .flip-inner{width:630px;height:285px;cursor:pointer}
+.pf-main{position:absolute;left:0;top:0;bottom:0;width:78%;padding:24px 20px 12px 28px;display:flex;flex-direction:column}
+.pf-brand{font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--primary)}
+.pcs .big{font-size:62px;margin:4px 0 0;letter-spacing:-.02em}
+.pf-sub{font-size:16px;font-weight:700;margin-top:2px}
+.pf-chips{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.pf-chips span{border:1px solid var(--g500);border-radius:6px;padding:1px 8px;font-size:10.5px;font-weight:600;background:#fff}
+.pf-chips span.no{border-color:var(--error);color:var(--error-dark)}
+.pf-foot{margin-top:auto;font-size:10.5px;color:var(--g700);border-top:1px solid var(--g300);padding-top:6px}
+.pcs .stub{width:22%;padding:8px;gap:5px}
+.pcs .qrbox{width:62px;height:62px}
+.pcs .stub .cd{font-family:ui-monospace,Consolas,monospace;font-weight:800;font-size:13px}
+.pcs .stub .tr{font-size:9.5px;color:var(--g700);line-height:1.35}
+.pb-main{position:absolute;left:0;top:0;bottom:0;width:78%;padding:18px 14px 8px 24px;display:flex;flex-direction:column}
+.pb-h{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:12px;border-bottom:2px solid var(--g800);padding:0 0 3px 56px;margin-bottom:6px}
+.pb-h span{font-family:ui-monospace,Consolas,monospace;font-size:11px}
+.pb-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0}
+.pb-cols h6{font-size:12.5px;font-weight:800;color:var(--primary);margin:0 0 3px}
+.pb-cols ul{margin:0;padding:0;list-style:none;font-size:11.5px;line-height:1.4}
+.pb-cols li{padding-left:9px;position:relative}
+.pb-cols li::before{content:"•";position:absolute;left:0}
+.pb-cols li.ln::before{content:""}
+.pb-cols li.ln{padding-left:0;color:var(--g700)}
+.pb-chan{margin-top:6px;font-size:11.5px;font-weight:700;line-height:1.55}
+.pb-chan .y{color:var(--success-darker)}.pb-chan .n{color:var(--error-dark)}
+.pb-note{border-top:1px dashed var(--g500);margin-top:4px;padding-top:3px;font-size:10px;color:var(--g700);line-height:1.3}
+.pf-void{position:absolute;left:150px;top:100px;border:4px solid var(--error);color:var(--error);font-weight:800;font-size:34px;padding:2px 22px;border-radius:10px;transform:rotate(-12deg);background:rgba(255,255,255,.7);z-index:6}
+.pp{position:absolute;margin:0;z-index:5}
+.pface.clip-note .pb-note{outline:1.5px dashed var(--error);outline-offset:1px}
+
+.crumbs a{color:var(--text2)}
+.chan{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:10px}
+.chan.y{background:var(--success-lighter)}.chan.n{background:var(--error-lighter)}
+.chan .big{width:28px;height:28px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.chan.y .big{background:var(--success)}.chan.n .big{background:var(--error)}
+ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
+</style>
+</head>
+<body data-shell="customer" data-nav="coupon" data-cust-nav="coupon">
+<main id="screen">
+
+<div class="crumbs">หน้าแรก / <a href="08-customer-center.html">คูปอง</a> / <b>ตรวจสอบคูปองกระดาษ</b></div>
+<h4>ตรวจสอบคูปองกระดาษ</h4>
+<p class="muted mb16">กรอกรหัสบนคูปองเพื่อดูมูลค่า เงื่อนไข และร้านที่ใช้ได้ — คูปองกระดาษใช้ได้ที่หน้าร้านที่ร่วมรายการเท่านั้น</p>
+
+<div class="card mb16"><div class="card-b relative">
+  <span class="pin abs">1</span>
+  <div class="label mb8">รหัสบนคูปอง (อยู่ที่ก้นคูปองและด้านหน้า)</div>
+  <div class="row" style="flex-wrap:wrap"><input class="input mono" style="max-width:280px;font-size:15px" value="OCT50"><button class="btn contained">ตรวจสอบ</button><a class="btn text" href="08-customer-center.html">← กลับศูนย์คูปอง</a></div>
+</div></div>
+
+<div class="alert success mb16 relative"><span class="pin">2</span><div><div class="a-title">ชุด OCT50 · ใช้ได้ — ลด ฿50 เมื่อซื้อครบ ฿300</div>บูทสัมมนาเภสัช ต.ค. 69 · ใช้ได้ถึง 31 ธ.ค. 2569 (เหลือ 80 วัน) · ใช้ที่ร้านที่ร่วมรายการ 5 แห่ง</div></div>
+
+<div class="grid mb16" style="grid-template-columns:minmax(0,680px) minmax(0,1fr);gap:16px;align-items:start">
+  <div class="card"><div class="card-b">
+    <div class="row between mb8"><h6>หน้าและหลังคูปอง <span class="pin">3</span></h6><span class="chip soft-info">คลิกที่ใบเพื่อพลิก</span></div>
+    <div class="pcw" style="--s:1"><div class="pcs"><div class="flip"><div class="flip-inner"><div class="face"><div class="pface front"><span class="cap">หน้า</span>
+  <div class="pf-main">
+    <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
+    <div class="big">฿50</div>
+    <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿300</div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-foot">ใช้ได้ถึง 31 ธ.ค. 2569 · บูทสัมมนาเภสัช ต.ค. 69</div>
+  </div>
+  <div class="stub"><div class="qrbox"></div><div class="cd">OCT50</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  
+</div></div><div class="face back"><div class="pface rear"><span class="cap">หลัง</span>
+  <div class="pb-main">
+    <div class="pb-h">เงื่อนไขการใช้คูปอง<span>ชุด OCT50</span></div>
+    <div class="pb-cols">
+      <div>
+        <h6>ใช้ได้ที่ร้าน/สาขา</h6>
+        <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>Pharmaplex สาขาเชียงใหม่</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาชุมชนคลองหลวง (ปทุมธานี)</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+      </div>
+      <div>
+        <h6>สิทธิ์และเงื่อนไข</h6>
+        <ul><li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 ต.ค. – 31 ธ.ค. 2569</li></ul>
+      </div>
+    </div>
+    <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
+  </div>
+  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  
+</div></div></div></div></div></div>
+  </div></div>
+  <div class="stack">
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">ใช้ได้ที่ไหน <span class="pin">4</span></h6>
+      <div class="stack s8">
+        <div class="chan y"><span class="big">✔</span><div><b>หน้าร้าน / POS ของร้านที่ร่วมรายการ</b><div class="small muted">ยื่นคูปองที่แคชเชียร์ ร้านจะฉีกก้นคูปองเก็บไว้</div></div></div>
+        <div class="chan n"><span class="big">✘</span><div><b>สั่งซื้อออนไลน์ (เว็บ/แอป)</b><div class="small muted">ใช้ไม่ได้ — กรอกรหัสนี้ในตะกร้าไม่ได้ เพราะรหัสเหมือนกันทั้งชุด</div></div></div>
+      </div>
+    </div></div>
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">สิทธิ์และเงื่อนไข</h6>
+      <ul class="cond">
+        <li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li>
+        <li>ใช้ร่วมโปรโมชั่นได้ · ใช้ร่วมพอยท์ได้ · ใช้ร่วมคูปองอื่นไม่ได้</li>
+        <li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li>
+        <li>ใช้ได้กับลูกค้าทุกกลุ่ม</li>
+        <li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li>
+        <li>ใช้ได้ 1 ต.ค. – 31 ธ.ค. 2569</li>
+      </ul>
+    </div></div>
+  </div>
+</div>
+
+<div class="card mb16"><div class="card-b">
+  <h6 class="mb8">หน้า–หลังเทียบกัน</h6>
+  <div class="row top" style="gap:24px;flex-wrap:wrap"><div class="pcw" style="--s:0.88"><div class="pcs"><div class="pface front"><span class="cap">หน้า</span>
+  <div class="pf-main">
+    <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
+    <div class="big">฿50</div>
+    <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿300</div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-foot">ใช้ได้ถึง 31 ธ.ค. 2569 · บูทสัมมนาเภสัช ต.ค. 69</div>
+  </div>
+  <div class="stub"><div class="qrbox"></div><div class="cd">OCT50</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  
+</div></div></div><div class="pcw" style="--s:0.88"><div class="pcs"><div class="pface rear"><span class="cap">หลัง</span>
+  <div class="pb-main">
+    <div class="pb-h">เงื่อนไขการใช้คูปอง<span>ชุด OCT50</span></div>
+    <div class="pb-cols">
+      <div>
+        <h6>ใช้ได้ที่ร้าน/สาขา</h6>
+        <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>Pharmaplex สาขาเชียงใหม่</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาชุมชนคลองหลวง (ปทุมธานี)</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+      </div>
+      <div>
+        <h6>สิทธิ์และเงื่อนไข</h6>
+        <ul><li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 ต.ค. – 31 ธ.ค. 2569</li></ul>
+      </div>
+    </div>
+    <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
+  </div>
+  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  
+</div></div></div></div>
+</div></div>
+
+<div class="card mb16" style="overflow:hidden">
+  <div class="card-h"><h6>ร้าน/สาขาที่ใช้ได้ (5 แห่ง) <span class="pin">5</span></h6></div>
+  <div class="table-toolbar" style="flex-wrap:wrap;border-bottom:0">
+    <input class="input" style="max-width:260px" placeholder="ค้นหาชื่อร้าน/สาขา">
+    <select class="select" style="max-width:180px"><option>ทุกจังหวัด</option><option>กรุงเทพฯ</option><option>นครราชสีมา</option><option>เชียงใหม่</option><option>ปทุมธานี</option></select>
+    <span class="muted small">แสดง 5 จาก 5</span>
+  </div>
+  <div class="table-wrap"><table class="table tbl-c"><thead><tr><th>ร้าน/สาขา</th><th>ประเภท</th><th>จังหวัด</th><th>โทร</th></tr></thead><tbody><tr><td><b>Pharmaplex สำนักงานใหญ่</b></td><td><span class="chip soft-info">สาขา</span></td><td>กรุงเทพฯ</td><td class="mono">02-xxx-1001</td></tr><tr><td><b>Pharmaplex สาขาโคราช</b></td><td><span class="chip soft-info">สาขา</span></td><td>นครราชสีมา</td><td class="mono">044-xxx-201</td></tr><tr><td><b>Pharmaplex สาขาเชียงใหม่</b></td><td><span class="chip soft-info">สาขา</span></td><td>เชียงใหม่</td><td class="mono">053-xxx-301</td></tr><tr><td><b>ร้านยาเภสัชกรเมือง</b></td><td><span class="chip soft-primary">ตัวแทน</span></td><td>นครราชสีมา</td><td class="mono">044-xxx-512</td></tr><tr><td><b>ร้านยาชุมชนคลองหลวง</b></td><td><span class="chip soft-primary">ตัวแทน</span></td><td>ปทุมธานี</td><td class="mono">02-xxx-7788</td></tr></tbody></table></div>
+  <div class="pager" style="justify-content:flex-start"><span class="chip soft-error">ร้านที่ไม่อยู่ในรายชื่อนี้ = ใช้คูปองไม่ได้</span></div>
+</div>
+
+<div class="card mb24"><div class="card-b">
+  <h6 class="mb8">คำถามที่พบบ่อย <span class="pin">6</span></h6>
+  <details class="faq" open><summary>ใช้คูปองกระดาษออนไลน์ได้ไหม</summary><div>ไม่ได้ คูปองกระดาษใช้ที่หน้าร้านที่ร่วมรายการเท่านั้น รหัสบนใบเหมือนกันทั้งชุด ระบบจึงไม่รับกรอกรหัสนี้ในตะกร้าออนไลน์ (ถ้าต้องการคูปองสำหรับสั่งออนไลน์ ดูที่ศูนย์คูปอง)</div></details>
+  <details class="faq"><summary>ใช้ร่วมกับโปรโมชั่นหรือคูปองอื่นได้ไหม</summary><div>ดูที่ "สิทธิ์และเงื่อนไข" ของแต่ละชุด — ชุดนี้ใช้ร่วมโปรโมชั่นและพอยท์ได้ แต่ใช้ร่วมคูปองใบอื่นไม่ได้ และใช้ได้ 1 ใบต่อบิล</div></details>
+  <details class="faq"><summary>คูปองหมดอายุแล้วทำอย่างไร</summary><div>ใช้ไม่ได้ ร้านจะไม่รับคูปองที่เลยวันที่ใช้ได้ตามที่พิมพ์ไว้ (ตรวจสถานะได้จากหน้านี้) — กรุณารอแคมเปญครั้งถัดไป</div></details>
+  <details class="faq"><summary>คูปองชำรุด/ฉีกขาด/ก้นหาย ยังใช้ได้ไหม</summary><div>ต้องมีรหัสชุดและก้นคูปองครบจึงจะรับสิทธิ์ได้ — ถ้าใบชำรุดหรือก้นหาย ให้ติดต่อฝ่ายบริการลูกค้าก่อนไปใช้ที่ร้าน</div></details>
+</div></div>
+
+<h6 class="mb8 relative">สถานะอื่นที่ลูกค้าอาจเห็น <span class="pin">7</span></h6>
+<div class="grid g2 mb24">
+  <div class="card"><div class="card-b">
+    <div class="row mb8"><input class="input mono bad" value="XYZ999" style="max-width:220px"><button class="btn contained sm">ตรวจสอบ</button></div>
+    <div class="err-box"><b>ไม่พบรหัส "XYZ999"</b><br>ตรวจตัวสะกดอีกครั้ง (ระบบไม่แยกพิมพ์เล็ก/ใหญ่) · รหัสอยู่ที่ก้นคูปองและมุมด้านหน้า<div class="small mt8" style="margin-top:6px">ยังไม่พบ? ติดต่อฝ่ายบริการลูกค้า พร้อมถ่ายรูปคูปอง</div></div>
+  </div></div>
+  <div class="card"><div class="card-b">
+    <div class="row mb8"><input class="input mono" value="SEP40" style="max-width:220px"><button class="btn contained sm">ตรวจสอบ</button></div>
+    <div class="warn-box mb8"><b>ชุด SEP40 หมดอายุแล้ว</b> เมื่อ 30 ก.ย. 2569 — ใช้ที่ร้านไม่ได้</div>
+    <div class="row top" style="gap:12px"><div class="pcw" style="--s:0.4"><div class="pcs"><div class="pface front"><span class="cap">หน้า</span>
+  <div class="pf-main">
+    <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
+    <div class="big">฿40</div>
+    <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿250</div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-foot">ใช้ได้ถึง 30 ก.ย. 2569 · งานแสดงสินค้า ก.ย. 69</div>
+  </div>
+  <div class="stub"><div class="qrbox"></div><div class="cd">SEP40</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  <div class="pf-void">หมดอายุ</div>
+</div></div></div><div class="pcw" style="--s:0.4"><div class="pcs"><div class="pface rear"><span class="cap">หลัง</span>
+  <div class="pb-main">
+    <div class="pb-h">เงื่อนไขการใช้คูปอง<span>ชุด SEP40</span></div>
+    <div class="pb-cols">
+      <div>
+        <h6>ใช้ได้ที่ร้าน/สาขา</h6>
+        <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>Pharmaplex สาขาเชียงใหม่</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาสุขใจ สาขาลาดพร้าว</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+      </div>
+      <div>
+        <h6>สิทธิ์และเงื่อนไข</h6>
+        <ul><li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 – 30 ก.ย. 2569</li></ul>
+      </div>
+    </div>
+    <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
+  </div>
+  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  
+</div></div></div></div>
+  </div></div>
+</div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ช่องกรอกรหัสชุดบนคูปอง (ไม่ต้องล็อกอิน) — ไม่แยกพิมพ์เล็ก/ใหญ่ ตัดช่องว่าง · หน้านี้ "ตรวจสอบ/ให้ข้อมูล" เท่านั้น ไม่ใช้ส่วนลดให้</span></li>
+    <li><span class="pin">2</span><span>แบนเนอร์สถานะชุด: ใช้ได้ / หมดอายุ / ไม่พบ พร้อมสรุปมูลค่า ขั้นต่ำ วันที่ และจำนวนร้าน</span></li>
+    <li><span class="pin">3</span><span>แสดงคูปองทั้งหน้าและหลัง: พลิกดูได้ในใบเดียว และเทียบแบบหน้า–หลังข้างกัน เหมือนที่พิมพ์จริง</span></li>
+    <li><span class="pin">4</span><span>บรรทัดช่องทาง ✔/✘ ชัดเจน: หน้าร้าน/POS และออนไลน์ พร้อมเหตุผลเมื่อใช้ไม่ได้</span></li>
+    <li><span class="pin">5</span><span>รายชื่อร้าน/สาขาที่ใช้ได้ ค้นหาและกรองจังหวัดได้ — ร้านที่ไม่อยู่ในรายชื่อ = ใช้ไม่ได้</span></li>
+    <li><span class="pin">6</span><span>คำถามที่พบบ่อย 4 ข้อ (ออนไลน์ได้ไหม / ใช้ร่วมได้ไหม / หมดอายุ / ใบชำรุด) แบบพับเก็บได้</span></li>
+    <li><span class="pin">7</span><span>สถานะไม่พบรหัส และหมดอายุ (ตราประทับ "หมดอายุ" บนทั้งสองด้าน)</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ข้อมูลทุกอย่างมาจากชุดที่แอดมินตั้งค่า — ไม่แสดงจำนวนก้น/ยอดเบิก/ข้อมูลภายในของร้านใด ๆ</li>
+    <li>ชุดสถานะร่างหรือปิด ตอบเหมือน "ไม่พบรหัส" (ไม่เปิดเผยชุดที่ยังไม่เผยแพร่)</li>
+    <li>ถ้าชุดเลือก "ทุกร้านที่ลงทะเบียน" รายชื่อร้านจะแสดงทุกร้านที่ลงทะเบียน ณ วันที่ตรวจ</li>
+    <li>จำกัดอัตราการเรียกต่อ IP เพื่อกันการไล่เดารหัส</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>หน้านี้เปิดสาธารณะ (ไม่ต้องล็อกอิน) หรือเฉพาะสมาชิก — เสนอให้เปิดสาธารณะเพื่อให้ผู้ได้รับคูปองหน้างานเช็กได้ทันที</li>
+    <li>จะแสดงเบอร์โทรร้านหรือไม่ (ตัวอย่างนี้แสดง) ต้องให้ร้าน/ตัวแทนยินยอม</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

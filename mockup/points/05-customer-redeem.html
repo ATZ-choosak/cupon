@@ -1,0 +1,178 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แลกของรางวัลด้วยพอยท์</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .bal-bar{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px;margin-bottom:16px}
+  .bal-pts{background:linear-gradient(135deg,#B32026,#8A2622);color:#fff;border-radius:16px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;position:relative}
+  .bal-pts .v{font-size:34px;font-weight:800;line-height:1}
+  .bal-pts .v small{font-size:14px;margin-left:6px;opacity:.9}
+  .bal-camp{border:2px dashed var(--info);background:#fff;border-radius:16px;padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
+  .bal-camp .v{font-size:20px;font-weight:800;color:var(--info-dark)}
+  .rw-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .rw{background:#fff;border:1px solid var(--g200);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px;position:relative}
+  .rw .top{display:flex;gap:12px;align-items:flex-start}
+  .rw .ico{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none;color:#fff}
+  .ico.c{background:var(--primary)}.ico.s{background:var(--info-dark)}.ico.g{background:var(--success-dark)}.ico.m{background:var(--warning-dark)}.ico.t{background:#5E35B1}
+  .rw .cost{font-size:22px;font-weight:800;color:var(--primary)}
+  .rw .cost small{font-size:12px;font-weight:600;color:var(--text2);margin-left:4px}
+  .rw.off{background:var(--g50)}
+  .rw.off .cost{color:var(--g500)}
+  .rw .meta{font-size:12px;color:var(--text2)}
+  .need{font-size:12px;color:var(--error-dark);font-weight:600}
+  .ok-card{border:1.5px solid var(--success);background:var(--success-lighter);border-radius:14px;padding:18px 20px}
+  .ok-card .ic{width:44px;height:44px;border-radius:50%;background:var(--success);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex:none}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="points">
+<main id="screen">
+
+  <div class="crumbs"><a href="04-customer-dashboard.html">พอยท์ของฉัน</a> / แลกของรางวัล</div>
+  <div class="mb16"><h4>แลกของรางวัลด้วยพอยท์</h4><p class="muted">เลือกของรางวัลที่ต้องการ พอยท์ถูกหักทันทีและใช้สิทธิ์ได้ทันที</p></div>
+
+  <div class="bal-bar">
+    <div class="bal-pts"><span class="pin abs" style="left:-8px;top:-8px">1</span>
+      <div><div class="small" style="opacity:.9">พอยท์ของฉัน (ใช้แลกได้)</div><div class="v">2,480<small>พอยท์</small></div></div>
+      <div class="small" style="text-align:right;opacity:.95">120 พอยท์ หมดอายุ 31 ต.ค. 2569<br><a href="04-customer-dashboard.html" style="color:#fff;text-decoration:underline">ดูประวัติ</a></div>
+    </div>
+    <div class="bal-camp">
+      <div><div class="small muted">ยอดสะสมแคมเปญ (บัญชีแยก — ไม่ถูกหักเมื่อแลก)</div><div class="v">฿742,500</div></div>
+      <a class="btn text sm" href="../campaign/06-customer-ladder.html">ดูขั้นบันได →</a>
+    </div>
+  </div>
+
+  <div class="row between mb16 wrap">
+    <div class="seg"><button class="on">ทั้งหมด</button><button>คูปองส่วนลด</button><button>ส่งฟรี</button><button>ของพรีเมียม</button><button>เครดิต</button><button>สิทธิ์ลุ้น</button></div>
+    <label class="check"><input type="checkbox"> แสดงเฉพาะที่แลกได้ตอนนี้</label>
+  </div>
+
+  <div class="rw-grid">
+    <!-- 1 coupon -->
+    <div class="rw relative"><span class="pin abs">2</span>
+      <div class="top"><span class="ico c">คูปอง</span><div><b>คูปองลด ฿50</b><div class="meta">ซื้อขั้นต่ำ ฿500 · ใช้ได้ 30 วันหลังแลก</div></div></div>
+      <div class="cost">500<small>พอยท์</small></div>
+      <div class="meta">แลกได้อีก 4 ใบในเดือนนี้ (ใช้ไปแล้ว 1 จาก 5)</div>
+      <button class="btn contained block" data-open="#confirm">แลกเลย</button>
+    </div>
+    <!-- 2 coupon % -->
+    <div class="rw">
+      <div class="top"><span class="ico c">คูปอง</span><div><b>คูปองลด 5% (สูงสุด ฿200)</b><div class="meta">ซื้อขั้นต่ำ ฿2,000 · ใช้ได้ 30 วันหลังแลก</div></div></div>
+      <div class="cost">800<small>พอยท์</small></div>
+      <div class="meta">เหลือ 312 สิทธิ์ · 2 ใบ/เดือน</div>
+      <button class="btn contained block" data-open="#confirm">แลกเลย</button>
+    </div>
+    <!-- 3 ship -->
+    <div class="rw">
+      <div class="top"><span class="ico s">ส่งฟรี</span><div><b>คูปองส่งฟรี</b><div class="meta">ฟรีค่าจัดส่ง 1 ออเดอร์ · ใช้ได้ 14 วันหลังแลก</div></div></div>
+      <div class="cost">300<small>พอยท์</small></div>
+      <div class="meta">แลกได้อีก 2 ใบในเดือนนี้ (ใช้ไปแล้ว 1 จาก 3)</div>
+      <button class="btn contained block" data-open="#confirm">แลกเลย</button>
+    </div>
+    <!-- 4 gift low stock -->
+    <div class="rw relative"><span class="pin abs">3</span>
+      <div class="top"><span class="ico g">ของ</span><div><b>กระเป๋าผ้า Pharmaplex พรีเมียม</b><div class="meta">ของจริง · กรอกที่อยู่หลังแลก</div></div></div>
+      <div class="cost">1,200<small>พอยท์</small></div>
+      <div class="meta"><span class="chip soft-warning">เหลือ 18 ชิ้น</span> · 1 ชิ้นต่อร้าน</div>
+      <button class="btn contained block" data-open="#confirm">แลกเลย</button>
+    </div>
+    <!-- 5 sold out -->
+    <div class="rw off relative"><span class="pin abs">4</span>
+      <div class="top"><span class="ico g" style="opacity:.5">ของ</span><div><b>ร่มพับ Pharmaplex</b><div class="meta">ของจริง · กรอกที่อยู่หลังแลก</div></div></div>
+      <div class="cost">800<small>พอยท์</small></div>
+      <div class="meta"><span class="chip error">หมดแล้ว</span></div>
+      <button class="btn outlined block" disabled>หมดแล้ว</button>
+    </div>
+    <!-- 6 not enough -->
+    <div class="rw off relative"><span class="pin abs">5</span>
+      <div class="top"><span class="ico m">เครดิต</span><div><b>เครดิตเงินคืน ฿300</b><div class="meta">หักจากยอดชำระ · ใช้ได้ 90 วันหลังแลก</div></div></div>
+      <div class="cost">3,000<small>พอยท์</small></div>
+      <div class="progress"><i style="width:82.7%"></i></div>
+      <div class="need">พอยท์ไม่พอ ขาดอีก 520 พอยท์</div>
+      <button class="btn outlined block" disabled>พอยท์ไม่พอ</button>
+    </div>
+    <!-- 7 ticket -->
+    <div class="rw off">
+      <div class="top"><span class="ico t">ลุ้น</span><div><b>สิทธิ์ลุ้น: ลุ้นรับทอง ปีใหม่ 2570</b><div class="meta">1 Ticket ต่อการแลก · ไปอยู่ใน "สิทธิ์ลุ้นของฉัน"</div></div></div>
+      <div class="cost">200<small>พอยท์</small></div>
+      <div class="meta"><span class="chip warning">เปิดแลกเร็ว ๆ นี้</span> กิจกรรมเริ่ม 1 ธ.ค. 2569</div>
+      <button class="btn outlined block" disabled>ยังไม่เปิดให้แลก</button>
+    </div>
+  </div>
+
+  <h6 class="mt24 mb8">หน้าต่างยืนยัน (เปิดเมื่อกด "แลกเลย" ที่คูปองลด ฿50)</h6>
+  <div class="backdrop"><div class="dialog sm relative"><span class="pin abs" style="left:-8px;top:-8px">6</span>
+    <div class="dialog-h">ยืนยันการแลก<button class="x">✕</button></div>
+    <div class="dialog-b">
+      <div class="soft center" style="padding:16px">
+        <div class="small muted">ใช้ 500 พอยท์ แลก</div>
+        <div style="font-size:20px;font-weight:800;color:var(--primary)">คูปองลด ฿50</div>
+      </div>
+      <div class="sum-row mt16"><span>พอยท์ปัจจุบัน</span><span>2,480</span></div>
+      <div class="sum-row"><span>พอยท์ที่ใช้</span><span style="color:var(--error-dark)">−500</span></div>
+      <div class="sum-row total"><span>พอยท์คงเหลือ</span><span>1,980</span></div>
+      <div class="small muted mt8">คูปองลด ฿50 เมื่อซื้อครบ ฿500 ใช้ได้ถึง 11 พ.ย. 2569 อยู่ในกระเป๋าคูปองทันที</div>
+      <div class="alert warning mt16" style="padding:8px 12px"><div class="small">แลกแล้ว <b>ยกเลิกหรือขอคืนพอยท์เองไม่ได้</b> — โปรดตรวจสอบก่อนกดยืนยัน</div></div>
+    </div>
+    <div class="dialog-f"><button class="btn text grey">ยกเลิก</button><button class="btn contained">ยืนยันแลก 500 พอยท์</button></div>
+  </div></div>
+
+  <h6 class="mt24 mb8">หลังแลกสำเร็จ: สิทธิ์ไปอยู่ที่ไหน</h6>
+  <div class="grid g2">
+    <div class="ok-card relative"><span class="pin abs">7</span>
+      <div class="row top">
+        <span class="ic">✓</span>
+        <div style="flex:1">
+          <div class="semi" style="font-size:16px">แลกคูปองลด ฿50 สำเร็จ</div>
+          <div class="small muted">ใช้ไป 500 พอยท์ · คงเหลือ <b>1,980</b> พอยท์</div>
+          <div class="soft mt16" style="background:#fff"><b>คูปองอยู่ในกระเป๋าคูปองแล้ว</b><div class="small muted">ใช้ได้ทันทีที่ตะกร้า เมื่อซื้อครบ ฿500 · หมดอายุ 11 พ.ย. 2569</div></div>
+          <div class="row mt16 wrap"><a class="btn contained sm" href="../coupon/08-customer-center.html">ไปที่กระเป๋าคูปอง</a><a class="btn outlined sm" href="05-customer-redeem.html">แลกอย่างอื่นต่อ</a></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ok-card relative" style="border-color:var(--info);background:var(--info-lighter)"><span class="pin abs">8</span>
+      <div class="row top">
+        <span class="ic" style="background:var(--info-dark)">✓</span>
+        <div style="flex:1">
+          <div class="semi" style="font-size:16px">แลกกระเป๋าผ้า Pharmaplex พรีเมียม สำเร็จ</div>
+          <div class="small muted">ใช้ไป 1,200 พอยท์ · คงเหลือ <b>1,280</b> พอยท์ · เลขคำขอ RQ-69-00481</div>
+          <div class="soft mt16" style="background:#fff">
+            <b>ขั้นต่อไป: บอกที่อยู่จัดส่ง</b>
+            <div class="form-grid mt8" style="grid-template-columns:1fr">
+              <div class="field"><label>ที่อยู่จัดส่ง *</label><input class="input" value="เลขที่ 88 ถ.มิตรภาพ ต.ในเมือง อ.เมือง จ.นครราชสีมา 30000"></div>
+              <div class="field"><label>เบอร์ติดต่อ *</label><input class="input" value="081-234-5678"></div>
+            </div>
+          </div>
+          <div class="row mt16 wrap"><button class="btn contained sm">ส่งข้อมูลรับของ</button><a class="btn outlined sm" href="../campaign/07-customer-claim-form.html">ติดตามในประวัติคำขอรับของ</a></div>
+          <div class="small muted mt8">สถานะ: <span class="chip soft-warning">รอข้อมูลจัดส่ง</span> → กำลังเตรียม → ส่งแล้ว</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>แสดงยอดสองบัญชีแยกกัน:</b> พอยท์ (แดง ใช้จ่ายได้) กับยอดสะสมแคมเปญ (กรอบประ น้ำเงิน ไม่ถูกหัก) — เพื่อไม่ให้ลูกค้าคิดว่าแลกของแล้วยอดแคมเปญลด</span></li>
+    <li><span class="pin">2</span><span><b>การ์ดที่แลกได้:</b> ชื่อ + รายละเอียดสั้น (ขั้นต่ำ/อายุ) + พอยท์ที่ใช้ + สิทธิ์ที่เหลือของตัวเองในเดือน/ปี (ตามที่ตั้ง "ต่อคน") · ปุ่ม "แลกเลย" เปิดหน้าต่างยืนยัน ไม่แลกทันที</span></li>
+    <li><span class="pin">3</span><span><b>ใกล้หมดสต็อก:</b> เหลือน้อยกว่า 20% ของโควตาแสดงป้ายเหลือกี่ชิ้น เพื่อกระตุ้นการตัดสินใจ — ไม่แสดงจำนวนเมื่อไม่จำกัด</span></li>
+    <li><span class="pin">4</span><span><b>หมดแล้ว:</b> โควตารวมเป็น 0 — การ์ดจางลง ปุ่มกดไม่ได้ · ไม่ซ่อนเพื่อให้ลูกค้ารู้ว่ารายการนี้มีอยู่ (แอดมินเติมโควตาแล้วกลับมาแลกได้)</span></li>
+    <li><span class="pin">5</span><span><b>พอยท์ไม่พอ:</b> บอกส่วนที่ขาด (3,000 − 2,480 = 520) และแถบความคืบหน้า · ปุ่มถูกปิด ไม่ใช่ซ่อน</span></li>
+    <li><span class="pin">6</span><span><b>ยืนยันก่อนแลก:</b> แสดงพอยท์ก่อน/หลัง และข้อความเตือนว่ายกเลิกไม่ได้ · ปุ่มยืนยันมีจำนวนพอยท์กำกับ · ถ้าพอยท์เปลี่ยนระหว่างนั้น (เช่น หมดอายุ) ระบบตรวจซ้ำที่เซิร์ฟเวอร์</span></li>
+    <li><span class="pin">7</span><span><b>คูปอง/ส่งฟรี/เครดิต/สิทธิ์ลุ้น ได้ทันที:</b> แสดงว่าสิทธิ์ไปอยู่ที่ไหน (กระเป๋าคูปอง / ยอดเครดิต / Tickets) พร้อมปุ่มพาไปใช้</span></li>
+    <li><span class="pin">8</span><span><b>ของพรีเมียม:</b> สร้างคำขอเข้าคิวเดียวกับรางวัลแคมเปญ ลูกค้ากรอกที่อยู่/เบอร์ทันทีหรือกลับมากรอกทีหลังได้ — ติดตามสถานะในประวัติคำขอรับของ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>กดแลกซ้ำ/สองแท็บพร้อมกัน: ระบบหักและออกสิทธิ์ครั้งเดียว (idempotent) · แลกไม่สำเร็จ (โควตาหมดพอดี) ไม่หักพอยท์และแจ้ง "รายการนี้หมดแล้ว"</li>
+    <li>คูปองลดที่แลกแล้วอายุนับจากวันที่แลก · เครดิตหักจากยอดชำระออเดอร์ถัดไปโดยอัตโนมัติ (ผู้ใช้เลือกไม่ใช้ได้)</li>
+    <li>ถ้าแอดมินปิดรายการหลังลูกค้าเปิดหน้านี้ไว้ กดแลกแล้วจะแจ้ง "รายการนี้ไม่เปิดให้แลกแล้ว" โดยไม่หักพอยท์</li>
+    <li>ของพรีเมียมที่ยังไม่กรอกที่อยู่ภายใน 14 วัน: ระบบเตือนบนเว็บ ไม่ยกเลิกสิทธิ์เอง</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ให้แลกของพรีเมียมแล้ว "ขอคืนพอยท์" ได้หากยังไม่ได้เริ่มจัดเตรียม หรือไม่ให้คืนเลย (มอคอัพ: ไม่ให้คืนเอง ต้องผ่านแอดมิน)</li>
+    <li>ลูกค้าบัญชีร้านที่มีหลายผู้ใช้: ใครแลกได้บ้าง (เจ้าของร้านเท่านั้น หรือทุกผู้ใช้)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

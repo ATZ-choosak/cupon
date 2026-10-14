@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รายการเซตร้านยาเปิดใหม่</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .kt{table-layout:fixed;min-width:1040px}
+  .kt th,.kt td{padding:10px 8px}
+  .kt th:nth-child(1){width:auto}.kt th:nth-child(2){width:96px}.kt th:nth-child(3){width:96px}.kt th:nth-child(4){width:128px}
+  .kt th:nth-child(5){width:70px}.kt th:nth-child(6){width:200px}.kt th:nth-child(7){width:84px}.kt th:nth-child(8){width:64px}.kt th:nth-child(9){width:124px}
+  .kt .cnt{display:grid;gap:4px;justify-items:start}
+  .kt .nm b{display:block;font-size:13.5px}
+  .acts{display:flex;flex-wrap:wrap;gap:2px 0;width:112px}
+  .acts .btn{padding:3px 8px;min-height:28px;font-size:12px}
+  .health{display:grid;gap:4px;font-size:12px}
+  .health .line{color:var(--text2)}
+  .tabs.slim{margin-bottom:0;padding:0 16px;background:#fff}
+</style>
+</head>
+<body data-shell="admin" data-nav="starterkit" data-crumb="โปรโมชั่นและสิทธิพิเศษ / เซตร้านยาเปิดใหม่">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>เซตร้านยาเปิดใหม่</h4>
+      <p class="muted">จัดการชุดสินค้าเริ่มต้นสำหรับผู้เปิดร้านยาใหม่ — สินค้าบังคับ + ทางเลือก + ส่วนลดชุดเซต</p>
+    </div>
+    <div class="row">
+      <a class="btn outlined" href="03-admin-order-behalf.html">สั่งแทนลูกค้า</a>
+      <a class="btn contained" href="02-admin-editor.html">＋ สร้างเซต</a>
+    </div>
+  </div>
+
+  <div class="alert info mb16 relative">
+    <span class="pin abs">1</span>
+    <div><div class="a-title">เซตนี้แสดงและสั่งได้เฉพาะบัญชีร้านค้า (B2B)</div>บัญชีทั่วไปเห็นหน้าเซตแต่ใส่ตะกร้าไม่ได้ · ไม่มีการตั้งค่ารายลูกค้า ทุกเซตใช้กติกาเดียวกัน</div>
+  </div>
+
+  <div class="grid g4 mb16">
+    <div class="stat"><div class="v">3</div><div class="l">เซตที่กำลังขาย</div></div>
+    <div class="stat relative"><span class="pin abs">2</span><div class="v" style="color:var(--error-dark)">1</div><div class="l">เซตที่ถูกบล็อกเพราะสต็อกบังคับไม่พอ</div></div>
+    <div class="stat"><div class="v">63</div><div class="l">เซตที่สั่งแล้ว (ตั้งแต่เปิดระบบ)</div></div>
+    <div class="stat"><div class="v">2</div><div class="l">คำสั่งซื้อที่เซลล์สั่งแทน (เดือนนี้)</div></div>
+  </div>
+
+  <div class="card" style="overflow:hidden">
+    <div class="tabs slim" data-tabs>
+      <button class="on" data-tab="all">ทั้งหมด (5)</button>
+      <button data-tab="sale">ขาย (3)</button>
+      <button data-tab="short">สต็อกไม่พอ (1)</button>
+      <button data-tab="off">ปิดการขาย (1)</button>
+    </div>
+    <div class="table-toolbar">
+      <input class="input" style="max-width:320px" placeholder="ค้นหาชื่อเซต">
+      <div class="row"><select class="select" style="width:170px"><option>ทุกขนาด/ประเภท</option><option>มาตรฐาน</option><option>กำหนดเอง</option></select><span class="muted small">แสดง 1–5 จาก 5</span></div>
+    </div>
+    <div class="table-wrap">
+      <table class="table kt">
+        <thead><tr>
+          <th>ชื่อเซต</th><th>ขนาด / ประเภท</th><th>จำนวนรายการ</th>
+          <th class="num" style="white-space:normal">ราคารวม<br>ต่ำสุด–สูงสุด<span class="pin">3</span></th><th class="num">ส่วนลดชุด</th>
+          <th>สต็อกสินค้าบังคับ<span class="pin">4</span></th><th>สถานะ</th><th class="num">สั่งแล้ว</th><th>การดำเนินการ<span class="pin">5</span></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="nm"><b>เซตร้านยาเปิดใหม่ ขนาด M</b><span class="small muted">ยาสามัญประจำบ้านครบ + เวชภัณฑ์พื้นฐาน</span></td>
+            <td><span class="chip soft-info">มาตรฐาน M</span></td>
+            <td class="cnt"><span class="chip soft-primary">บังคับ 8</span> <span class="chip outline">ทางเลือก 6</span></td>
+            <td class="num nowrap">฿23,000–29,750<div class="small muted">ค่าเริ่มต้น ฿26,500</div></td>
+            <td class="num">−฿2,000</td>
+            <td><div class="health"><span class="chip soft-success" style="width:fit-content">พอขาย 7 เซต</span><span class="line">จุดคอขวด: หน้ากากอนามัย 175 กล่อง</span><span class="line" style="color:#B26A00">ทางเลือก: ผ้าอ้อมเด็ก (แพ็ค) หมด — ปิดอัตโนมัติ</span></div></td>
+            <td><span class="chip success">ขาย</span></td>
+            <td class="num"><b>31</b></td>
+            <td><div class="acts"><a class="btn text sm" href="02-admin-editor.html">แก้ไข</a><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ปิดการขาย</button><a class="btn text sm" href="03-admin-order-behalf.html">สั่งแทนลูกค้า</a></div></td>
+          </tr>
+          <tr>
+            <td class="nm"><b>เซตร้านยาเปิดใหม่ ขนาด S</b><span class="small muted">สำหรับร้านขนาดเล็ก / ร้านในชุมชน</span></td>
+            <td><span class="chip soft-info">มาตรฐาน S</span></td>
+            <td class="cnt"><span class="chip soft-primary">บังคับ 6</span> <span class="chip outline">ทางเลือก 4</span></td>
+            <td class="num nowrap">฿12,400–16,900<div class="small muted">ค่าเริ่มต้น ฿14,200</div></td>
+            <td class="num">−฿1,000</td>
+            <td><div class="health"><span class="chip soft-warning" style="width:fit-content">ใกล้หมด · พอขาย 4 เซต</span><span class="line">จุดคอขวด: สำลีก้อน 100 กรัม 160 ห่อ (ต้อง 40/เซต)</span></div></td>
+            <td><span class="chip success">ขาย</span></td>
+            <td class="num"><b>14</b></td>
+            <td><div class="acts"><a class="btn text sm" href="02-admin-editor.html">แก้ไข</a><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ปิดการขาย</button><a class="btn text sm" href="03-admin-order-behalf.html">สั่งแทนลูกค้า</a></div></td>
+          </tr>
+          <tr style="background:var(--error-lighter)">
+            <td class="nm"><b>เซตร้านยาเปิดใหม่ ขนาด L</b><span class="small muted">ร้านยาเต็มรูปแบบ มีเภสัชกรประจำ</span></td>
+            <td><span class="chip soft-info">มาตรฐาน L</span></td>
+            <td class="cnt"><span class="chip soft-primary">บังคับ 12</span> <span class="chip outline">ทางเลือก 8</span></td>
+            <td class="num nowrap">฿38,300–47,500<div class="small muted">ค่าเริ่มต้น ฿42,100</div></td>
+            <td class="num">−฿3,500</td>
+            <td><div class="health"><span class="chip error" style="width:fit-content">สินค้าบังคับไม่พอ</span><span class="line"><b>ปรอทวัดไข้ดิจิทัล (อัน)</b> เหลือ 12 / ต้อง 20 — คาดว่าเติมสต็อก 18 ต.ค. 69</span></div></td>
+            <td><span class="chip error">สต็อกไม่พอ</span></td>
+            <td class="num"><b>9</b></td>
+            <td><div class="acts"><a class="btn text sm" href="02-admin-editor.html">แก้ไข</a><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ปิดการขาย</button><a class="btn text sm disabled" href="#" style="opacity:.4;pointer-events:none">สั่งแทนลูกค้า</a></div></td>
+          </tr>
+          <tr>
+            <td class="nm"><b>เซตร้านยาแม่และเด็ก</b><span class="small muted">นมผง ผ้าอ้อม วิตามิน + ยาสามัญสำหรับเด็ก</span></td>
+            <td><span class="chip soft-primary">กำหนดเอง</span></td>
+            <td class="cnt"><span class="chip soft-primary">บังคับ 7</span> <span class="chip outline">ทางเลือก 5</span></td>
+            <td class="num nowrap">฿17,100–23,750<div class="small muted">ค่าเริ่มต้น ฿19,950</div></td>
+            <td class="num">−5%</td>
+            <td><div class="health"><span class="chip soft-success" style="width:fit-content">พอขาย 17 เซต</span><span class="line">จุดคอขวด: นมผงสูตร 3 (กระป๋อง) 420</span></div></td>
+            <td><span class="chip success">ขาย</span></td>
+            <td class="num"><b>6</b></td>
+            <td><div class="acts"><a class="btn text sm" href="02-admin-editor.html">แก้ไข</a><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ปิดการขาย</button><a class="btn text sm" href="03-admin-order-behalf.html">สั่งแทนลูกค้า</a></div></td>
+          </tr>
+          <tr style="opacity:.8">
+            <td class="nm"><b>เซตร้านยา 24 ชม. (เวอร์ชันเก่า)</b><span class="small muted">ปิดการขาย 30 ก.ย. 2569</span></td>
+            <td><span class="chip soft-primary">กำหนดเอง</span></td>
+            <td class="cnt"><span class="chip soft-primary">บังคับ 5</span> <span class="chip outline">ทางเลือก 3</span></td>
+            <td class="num nowrap">฿9,800–12,300</td>
+            <td class="num">−฿500</td>
+            <td><span class="muted small">ไม่ได้ตรวจ (ปิดขาย)</span></td>
+            <td><span class="chip">ปิด</span></td>
+            <td class="num">3</td>
+            <td><div class="acts"><a class="btn text sm" href="02-admin-editor.html">แก้ไข</a><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm">เปิดขาย</button><span></span></div></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pager"><span>แถวต่อหน้า 100</span><span>1–5 จาก 5</span></div>
+  </div>
+
+  <div class="grid g2 mt16">
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">วิธีอ่านคอลัมน์ "สต็อกสินค้าบังคับ" <span class="pin">4</span></h6>
+      <p class="small muted">"พอขาย N เซต" = ค่าต่ำสุดของ (สต็อกคงเหลือ ÷ จำนวนขั้นต่ำต่อเซต) ของสินค้าบังคับทุกตัว · ใกล้หมดเมื่อ ≤ 5 เซต · ถ้าตัวใดต่ำกว่าขั้นต่ำสำหรับ 1 เซต ระบบเปลี่ยนสถานะเป็น "สต็อกไม่พอ" และบล็อกการสั่งทันที</p>
+    </div></div>
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">ปิดการขาย กับ สต็อกไม่พอ ต่างกันอย่างไร <span class="pin">6</span></h6>
+      <p class="small muted">"ปิดการขาย" แอดมินตั้งเอง — เซตหายจากหน้าลูกค้า · "สต็อกไม่พอ" ระบบตั้งให้ — ลูกค้ายังเห็นเซต แต่สั่งไม่ได้ และเปิดกลับเองเมื่อเติมสต็อกครบขั้นต่ำ</p>
+    </div></div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ข้อความคุมสิทธิ์: ไม่มีตัวเลือก "ผู้สั่งได้" ให้ตั้งในรายการ — B2B เท่านั้นเป็นค่าตายตัวของโมดูลนี้</span></li>
+    <li><span class="pin">2</span><span>ตัวเลขสีแดงกดแล้วกรองแท็บ "สต็อกไม่พอ" — ไว้ให้แอดมินเห็นปัญหาก่อนลูกค้าชน</span></li>
+    <li><span class="pin">3</span><span>ราคาต่ำสุด = เฉพาะสินค้าบังคับ − ส่วนลด · สูงสุด = บังคับ + ทางเลือกทั้งหมด − ส่วนลด · ใต้ตัวเลขคือราคาที่ลูกค้าเห็นเป็นค่าเริ่มต้น (ทางเลือกที่แอดมินตั้งเปิดไว้) · ส่วนลดแบบ % แสดงเป็น −5%</span></li>
+    <li><span class="pin">4</span><span>คอลัมน์สุขภาพสต็อก: ชื่อสินค้าที่เป็นคอขวด + จำนวนเซตที่ขายได้ · แถวสีแดงอ่อน = ถูกบล็อก · มีบรรทัดแยกถ้าสินค้าทางเลือกหมด (ไม่บล็อกเซต)</span></li>
+    <li><span class="pin">5</span><span>การดำเนินการ: แก้ไข → 02 · ทำซ้ำ = คัดลอกเซตเป็นร่างใหม่ (ปิดขาย) · ปิดการขาย → ยืนยันก่อน · สั่งแทนลูกค้า → 03 (ล็อกกับเซตนั้น) · เซตสต็อกไม่พอสั่งแทนไม่ได้เช่นกัน</span></li>
+    <li><span class="pin">6</span><span>ปุ่ม "ปิดการขาย" ไม่กระทบออเดอร์เดิม และตะกร้าที่มีเซตนี้อยู่จะแสดง "เซตนี้ปิดการขายแล้ว" ตอนเปิดตะกร้า</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะที่เป็นไปได้: <b>ขาย</b> · <b>ปิด</b> · <b>สต็อกไม่พอ</b> (อัตโนมัติ — ถ้าแอดมินปิดขายอยู่ จะแสดง "ปิด" เป็นหลัก)</li>
+    <li>ยอดสั่งแล้ว นับจำนวนเซตในออเดอร์ที่ไม่ถูกยกเลิก รวมที่เซลล์สั่งแทน</li>
+    <li>ไม่มีรายการ: แสดง "ยังไม่มีเซต — สร้างเซตแรกของคุณ" พร้อมปุ่ม ＋ สร้างเซต</li>
+    <li>ทำซ้ำ: คัดลอกรายการสินค้า จำนวน ส่วนลด แต่ตั้งชื่อต่อท้าย "(สำเนา)" และสถานะ "ปิด" เสมอ</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>เกณฑ์ "ใกล้หมด" (เสนอ ≤ 5 เซต) และต้องแจ้งเตือนแอดมินทางอีเมล/LINE เมื่อใกล้หมดหรือไม่</li>
+    <li>เซตขนาดมาตรฐาน S/M/L: มีเพียง 3 ขนาดตายตัว หรือแอดมินเพิ่มขนาดเองได้ (เสนอ: ขนาดมาตรฐาน 3 ขนาด + "กำหนดเอง" ตั้งชื่อได้อิสระ)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

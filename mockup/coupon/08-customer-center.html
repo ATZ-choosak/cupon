@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ศูนย์คูปอง + กระเป๋าคูปอง</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.tbl-c th,.tbl-c td{padding:10px 12px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ck.y{background:var(--success)}.ck.n{background:var(--error)}.ck.w{background:var(--warning)}
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.hl td{background:var(--primary-lighter)!important}
+.dim{opacity:.55}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.lbl-sm{font-size:11.5px;color:var(--text2)}
+.err-box{border:1.5px solid var(--error);background:var(--error-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#5F2120}
+.ok-box{border:1.5px solid var(--success);background:var(--success-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1E4620}
+.warn-box{border:1.5px solid var(--warning);background:var(--warning-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#663C00}
+.input.bad{border-color:var(--error);background:var(--error-lighter)}
+.input.good{border-color:var(--success)}
+.input.amber{border-color:var(--warning)}
+label.switch{white-space:nowrap}
+details.faq{border:1px solid var(--g300);border-radius:10px;background:#fff;padding:0}
+details.faq+details.faq{margin-top:8px}
+details.faq>summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq>summary::after{content:"＋";color:var(--primary);font-weight:800}
+details.faq[open]>summary::after{content:"−"}
+details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
+
+.crumbs a{color:var(--text2)}
+.tk-sub{font-size:12px;color:var(--text2)}
+.month-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.mc{border:1.5px solid var(--g300);border-radius:10px;padding:8px;text-align:center;font-size:12px;background:#fff}
+.mc b{display:block;font-size:13px}
+.mc.use{background:var(--g100);color:var(--g600)}
+.mc.now{border-color:var(--success);background:var(--success-lighter)}
+.mc.wait{border-style:dashed}
+.ticket.wait .t-val{font-size:14px;color:var(--warning-dark)}
+.ticket.gone .t-val{color:var(--g500)}
+.sec-h{display:flex;align-items:center;gap:10px;margin:24px 0 12px}
+.step-c{display:grid;grid-template-columns:36px 1fr;gap:12px;align-items:flex-start}
+.step-c .no{width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+</style>
+</head>
+<body data-shell="customer" data-nav="coupon" data-cust-nav="coupon">
+<main id="screen">
+
+<div class="crumbs">หน้าแรก / <b>คูปอง</b></div>
+<h4>คูปองของฉัน</h4>
+<p class="muted mb16">เก็บคูปอง ดูกระเป๋า และตรวจสอบคูปองกระดาษ · ร้านยา ทดสอบ จำกัด</p>
+
+<div class="card"><div class="card-b" id="cpTabs">
+  <div class="tabs relative" data-tabs>
+    <span class="pin">1</span>
+    <button class="on" data-tab="center">ศูนย์คูปอง <span class="chip primary" style="margin-left:6px">4</span></button>
+    <button data-tab="wallet">กระเป๋าของฉัน <span class="chip" style="margin-left:6px">4</span></button>
+    <button data-tab="paper">คูปองกระดาษ</button>
+  </div>
+
+  <!-- ===== ศูนย์คูปอง ===== -->
+  <div data-panel="center" class="on">
+    <p class="muted mb16">คูปองที่เปิดให้กดเก็บเอง — เก็บแล้วเข้ากระเป๋าทันที ใช้ได้ 1 ครั้ง</p>
+    <div class="grid g2">
+      <div class="relative"><span class="pin abs">2</span><div class="ticket "><div class="t-main"><b>ลด ฿100 เมื่อซื้อครบ ฿1,500</b><div class="tk-sub">ยกเว้นนมผงสูตร 3 · เก็บได้ถึง 31 ต.ค.</div><div class="progress mt8" style="margin-top:8px"><i style="width:76%"></i></div><div class="small" style="margin-top:4px"><b>เหลือ 120 / 500 สิทธิ์</b></div></div><div class="t-stub"><span class="t-val">฿100</span><button class="btn contained sm">เก็บ</button></div></div></div>
+      <div><div class="ticket ship"><div class="t-main"><b>ส่งฟรี เมื่อซื้อครบ ฿800</b><div class="tk-sub">ใช้ได้ 14 วันหลังเก็บ · คนละ 1 ใบ</div><div class="progress mt8" style="margin-top:8px"><i style="width:80%"></i></div><div class="small" style="margin-top:4px"><b>เหลือ 40 / 200 สิทธิ์ · ใกล้หมด</b></div></div><div class="t-stub"><span class="t-val">ส่งฟรี</span><button class="btn contained sm">เก็บ</button></div></div></div>
+      <div><div class="ticket "><div class="t-main"><b>ลด 10% สูงสุด ฿150 เมื่อซื้อครบ ฿2,000</b><div class="tk-sub">ใช้ได้ถึง 30 พ.ย. 69</div><div class="small mt8" style="margin-top:8px;color:var(--success-darker)">✔ อยู่ในกระเป๋าของคุณแล้ว</div></div><div class="t-stub"><span class="t-val">10%</span><button class="btn outlined sm" disabled>เก็บแล้ว</button></div></div></div>
+      <div><div class="ticket used"><div class="t-main"><b>ลด ฿50 เมื่อซื้อครบ ฿500</b><div class="tk-sub">สิทธิ์ครบแล้ว</div><div class="progress mt8" style="margin-top:8px"><i style="width:100%"></i></div><div class="small" style="margin-top:4px"><b>0 / 300 สิทธิ์</b></div></div><div class="t-stub"><span class="t-val">฿50</span><button class="btn outlined sm" disabled>สิทธิ์หมดแล้ว</button></div></div></div>
+      <div><div class="ticket wait"><div class="t-main"><b>ส่วนลด ฿200 เมื่อซื้อครบ ฿3,000</b><div class="tk-sub">เริ่มเก็บ 15 ต.ค. 69</div></div><div class="t-stub"><span class="t-val">เร็วๆ นี้</span><button class="btn outlined sm" disabled>ยังไม่เปิด</button></div></div></div>
+    </div>
+    <div class="card flat mt24 dim" style="border:1px dashed var(--g400)"><div class="empty">
+      <b>สถานะว่าง:</b> ตอนนี้ยังไม่มีคูปองให้เก็บเพิ่ม<div class="small">ลองกลับมาดูใหม่ หรือดูคูปองในกระเป๋าของคุณ</div>
+    </div></div>
+  </div>
+
+  <!-- ===== กระเป๋า ===== -->
+  <div data-panel="wallet">
+    <div class="row between mb16" style="flex-wrap:wrap">
+      <div class="pill-row relative"><span class="pin">3</span><a class="chip lg primary" href="#w-ready">พร้อมใช้ 3</a><a class="chip lg outline" href="#w-used">ใช้แล้ว 2</a><a class="chip lg outline" href="#w-exp">หมดอายุ 1</a></div>
+      <a class="btn outlined sm" href="09-customer-cart-coupon.html">ไปใช้ที่ตะกร้า →</a>
+    </div>
+
+    <div id="w-ready" class="sec-h"><h6>พร้อมใช้</h6></div>
+    <div class="grid g2">
+      <div><div class="ticket "><div class="t-main"><b>ลด ฿100 เมื่อซื้อครบ ฿1,500</b><div class="tk-sub">เก็บเอง · ใช้ได้ถึง 30 พ.ย. 69 · ใช้ร่วมโปรได้</div></div><div class="t-stub"><span class="t-val">฿100</span><a class="btn contained sm" href="09-customer-cart-coupon.html">ใช้</a></div></div></div>
+      <div class="relative"><span class="pin abs">4</span><div class="ticket ship"><div class="t-main"><b>ส่งฟรีประจำเดือน ต.ค.</b><div class="tk-sub">ออกให้อัตโนมัติ · ซื้อครบ ฿1,000 · หมดอายุ 31 ต.ค.</div></div><div class="t-stub"><span class="t-val">ส่งฟรี</span><a class="btn contained sm" href="09-customer-cart-coupon.html">ใช้</a></div></div></div>
+      <div><div class="ticket wait"><div class="t-main"><b>ส่งฟรีประจำเดือน พ.ย.</b><div class="tk-sub">ออกให้อัตโนมัติ · ซื้อครบ ฿1,000</div></div><div class="t-stub"><span class="t-val">รอวันที่ 1 พ.ย.</span><button class="btn outlined sm" disabled>ยังไม่ออก</button></div></div></div>
+      <div class="card flat" style="border:1px solid var(--g200)"><div class="card-b tight" style="padding:12px 16px">
+        <div class="small muted mb8">แถบรายเดือน (ส่งฟรีประจำเดือน)</div>
+        <div class="month-strip"><div class="mc use"><b>ก.ย.</b>ใช้แล้ว</div><div class="mc now"><b>ต.ค.</b>พร้อมใช้</div><div class="mc wait"><b>พ.ย.</b>รอวันที่ 1</div></div>
+      </div></div>
+    </div>
+
+    <div id="w-used" class="sec-h"><h6>ใช้แล้ว</h6></div>
+    <div class="grid g2">
+      <div><div class="ticket used ship"><div class="t-main"><b>ส่งฟรีประจำเดือน ก.ย.</b><div class="tk-sub">ใช้แล้ว 12 ก.ย. 69 · ออเดอร์ #A-1402</div></div><div class="t-stub"><span class="t-val">ส่งฟรี</span><span class="chip">ใช้แล้ว</span></div></div></div>
+      <div><div class="ticket used"><div class="t-main"><b>ลด ฿50 เมื่อซื้อครบ ฿500</b><div class="tk-sub">ใช้แล้ว 3 ต.ค. 69 · ออเดอร์ #A-1488</div></div><div class="t-stub"><span class="t-val">฿50</span><span class="chip">ใช้แล้ว</span></div></div></div>
+    </div>
+
+    <div id="w-exp" class="sec-h"><h6>หมดอายุ</h6></div>
+    <div class="grid g2">
+      <div><div class="ticket used"><div class="t-main"><b>ลด 5% สิ้นเดือน ก.ย.</b><div class="tk-sub">หมดอายุ 30 ก.ย. 69 · ไม่ได้ใช้</div></div><div class="t-stub"><span class="t-val">5%</span><span class="chip error">หมดอายุ</span></div></div></div>
+    </div>
+    <div class="card flat mt24 dim" style="border:1px dashed var(--g400)"><div class="empty"><b>สถานะว่าง (บัญชีที่ยังไม่เก็บคูปอง):</b> ยังไม่มีคูปองในกระเป๋า<div class="small">ไปที่ "ศูนย์คูปอง" เพื่อเก็บคูปอง</div></div></div>
+  </div>
+
+  <!-- ===== คูปองกระดาษ ===== -->
+  <div data-panel="paper">
+    <div class="grid g2" style="gap:24px;align-items:start">
+      <div>
+        <h6 class="mb8">คูปองกระดาษใช้ที่ร้าน <span class="pin">5</span></h6>
+        <p class="muted mb16">คูปองกระดาษแจกหน้างาน/บูท ไม่ผูกกับบัญชีและไม่ต้องเก็บในเว็บ — ยื่นให้ร้านที่ร่วมรายการเพื่อรับส่วนลดที่หน้าร้าน</p>
+        <div class="stack s12">
+          <div class="step-c"><span class="no">1</span><div><b>เช็กว่าร้านนั้นร่วมรายการ</b><div class="small muted">ดูรายชื่อร้าน/สาขาที่หลังคูปอง หรือค้นหาด้วยรหัสชุดบนหน้าตรวจสอบ</div></div></div>
+          <div class="step-c"><span class="no">2</span><div><b>ซื้อสินค้าให้ถึงขั้นต่ำ</b><div class="small muted">ยื่นคูปองที่แคชเชียร์ ร้านจะหักส่วนลดและฉีกก้นคูปองเก็บไว้</div></div></div>
+          <div class="step-c"><span class="no">3</span><div><b>ใช้ได้ที่หน้าร้านเท่านั้น</b><div class="small muted">ไม่สามารถกรอกรหัสบนเว็บได้ (เว้นแต่ชุดนั้นประกาศไว้)</div></div></div>
+        </div>
+        <a class="btn contained mt16" href="10-customer-paper-info.html">ตรวจสอบคูปองกระดาษ / ดูร้านที่ใช้ได้ →</a>
+      </div>
+      <div class="soft">
+        <div class="label mb8">มีรหัสคูปองกระดาษ?</div>
+        <div class="row"><input class="input mono" placeholder="เช่น OCT50"><a class="btn outlined primary" href="10-customer-paper-info.html">ตรวจสอบ</a></div>
+        <div class="small muted mt8">ระบบแสดงมูลค่า เงื่อนไข ช่องทาง และร้านที่ใช้ได้ — ไม่ได้ใช้ส่วนลดให้ในตะกร้า</div>
+        <div class="empty" style="padding:16px 8px"><span class="small">คูปองกระดาษไม่มีรายการในบัญชีของคุณ</span></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>สามแท็บ: ศูนย์คูปอง (เก็บเอง) / กระเป๋าของฉัน / คูปองกระดาษ — ตัวเลขข้างชื่อแท็บ = จำนวนที่เก็บได้ / พร้อมใช้</span></li>
+    <li><span class="pin">2</span><span>การ์ดในศูนย์คูปอง: แถบความคืบหน้า "เหลือ n / ทั้งหมด" · ปุ่มเปลี่ยนตามสถานะ: เก็บ / เก็บแล้ว / สิทธิ์หมดแล้ว / ยังไม่เปิด (ใช้ปุ่มเทาเมื่อกดไม่ได้)</span></li>
+    <li><span class="pin">3</span><span>กระเป๋าแยกชิปสถานะ พร้อมใช้ / ใช้แล้ว / หมดอายุ พร้อมจำนวน — เรียงใบที่ใกล้หมดอายุก่อน</span></li>
+    <li><span class="pin">4</span><span>สิทธิ์รายเดือนที่ระบบออกให้: ใบเดือนปัจจุบันกดใช้ได้ ใบเดือนหน้าแสดง "รอวันที่ 1 พ.ย." กดไม่ได้ + แถบรายเดือน ก.ย./ต.ค./พ.ย.</span></li>
+    <li><span class="pin">5</span><span>คูปองกระดาษไม่อยู่ในกระเป๋า — แท็บนี้อธิบายวิธีใช้ที่ร้านและลิงก์ไปหน้าตรวจสอบรหัส/ร้านที่ใช้ได้</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ปุ่ม "ใช้" พาไปตะกร้า/เช็คเอาต์และเลือกคูปองนั้นไว้ล่วงหน้า — ถ้าตะกร้าว่างจะพาไปเลือกสินค้าก่อน</li>
+    <li>ใบที่ใช้แล้ว/หมดอายุ แสดงเป็นสีจาง กดไม่ได้ และแสดงเลขออเดอร์ที่ใช้ (กรณีใช้แล้ว)</li>
+    <li>เก็บซ้ำเกิน "ต่อคน" ไม่ได้ — ปุ่มเป็น "เก็บแล้ว"; โควตารวมหมด = "สิทธิ์หมดแล้ว" (ใครเก็บไปก่อนหน้ายังใช้ได้)</li>
+    <li>สถานะว่าง: ศูนย์คูปองที่ไม่มีใบให้เก็บ และกระเป๋าที่ว่าง แสดงข้อความนำทางไปอีกแท็บ</li>
+    <li>ไม่มีการแจ้งเตือนนอกเว็บ — ลูกค้าต้องเข้ามาดูเองว่าคูปองใกล้หมดอายุ</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>จะแสดงคูปองรายเดือนของเดือนหน้าที่ "ยังไม่ออก" ในกระเป๋าหรือไม่ (ข้อเสนอ: แสดงเพื่อให้ลูกค้ารู้ล่วงหน้า)</li>
+    <li>ลูกค้าต้องการให้ผูกคูปองกระดาษเข้าบัญชี (กรอกรหัสเก็บไว้) หรือไม่ — ค่าเริ่มต้นไม่ผูก เพราะรหัสเหมือนกันทั้งชุด</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

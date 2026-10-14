@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รายการกิจกรรมสุ่มรางวัล</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .ph{display:inline-block;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;margin-left:4px;vertical-align:middle;white-space:nowrap}
+  .ph.p1{background:#E3F2FD;color:#0D47A1}.ph.p2{background:#EDE7F6;color:#4527A0}.ph.p3{background:#FFF3E0;color:#BF360C}
+  .mode{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;border-radius:7px;font-weight:800;font-size:12px}
+  .mode.a{background:var(--info-lighter);color:var(--info-dark)}.mode.b{background:#F3E5F5;color:#6A1B9A}
+  .budget{min-width:190px}.budget .progress{margin-top:5px}
+  .ev-id{font-size:11px;color:var(--text2)}
+</style>
+</head>
+<body data-shell="admin" data-nav="raffle" data-crumb="โปรโมชั่นและสิทธิพิเศษ / สุ่มรางวัล">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>สุ่มรางวัล (ลุ้นโชค)</h4>
+      <p class="muted">กิจกรรมสุ่มรางวัลที่ใช้ "สิทธิ์ลุ้น" หน่วยเดียว — โหมด A ลุ้นทันที · โหมด B จับตามรอบ</p>
+    </div>
+    <div class="row">
+      <a class="btn outlined" href="05-admin-audit.html">บันทึกการลุ้นทั้งหมด</a>
+      <a class="btn contained" href="02-admin-editor.html">＋ สร้างกิจกรรม</a>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <div class="alert warning relative"><span class="pin abs">1</span><div>
+      <div class="a-title">มี 1 กิจกรรมที่ยังไม่ผ่านเช็คลิสต์ก่อนเปิด</div>
+      "ลุ้นโชคต้อนรับปีใหม่ 2570" (EV-0014) ผ่าน 2 จาก 4 ข้อ — ขาด "ตรวจกฎหมาย/ภาษี" และ "ข้อความเงื่อนไข" ปุ่มเปิดกิจกรรมจึงถูกล็อก
+      <a href="02-admin-editor.html#step5" class="semi"> ไปตรวจเช็คลิสต์ →</a>
+    </div></div>
+    <div class="alert info"><div><div class="a-title">วันนี้ 20:00 น. ถึงเวลาจับรางวัล</div>
+      "ลุ้นทองคำประจำเดือน ก.ย. 69" (EV-0011) ประกาศกองสิทธิ์ 3,102 ใบไว้แล้ว <a href="04-admin-draw-run.html" class="semi">ไปหน้าจับรางวัล →</a></div></div>
+
+    <div class="grid g4 relative"><span class="pin abs">2</span>
+      <div class="stat"><div class="l">กิจกรรมที่เปิดอยู่</div><div class="v">2</div><div class="small muted">1 โหมด A+B · 1 โหมด A</div></div>
+      <div class="stat"><div class="l">สิทธิ์ที่ออกเดือนนี้</div><div class="v num">5,598</div><div class="small muted">ใช้แล้ว 4,032 ใบ (72%)</div></div>
+      <div class="stat"><div class="l">จ่ายจริงเดือนนี้ <span class="ph p2">ระยะ 2</span></div><div class="v num">฿66,950</div><div class="small muted">จากงบที่ตั้ง ฿350,000 (19%)</div></div>
+      <div class="stat"><div class="l">รอจับรางวัล</div><div class="v">1</div><div class="small muted">EV-0011 · วันนี้ 20:00 น.</div></div>
+    </div>
+
+    <div class="card" style="overflow:hidden">
+      <div class="table-toolbar">
+        <div class="row">
+          <input class="input" style="max-width:280px" placeholder="ค้นหาชื่อ/รหัสกิจกรรม">
+          <select class="select" style="width:170px"><option>สถานะ: ทั้งหมด</option><option>ร่าง</option><option>เปิด</option><option>ปิดรับ</option><option>จับแล้ว</option></select>
+          <select class="select" style="width:150px"><option>โหมด: ทั้งหมด</option><option>มีโหมด A</option><option>มีโหมด B</option></select>
+        </div>
+        <span class="small muted relative"><span class="pin abs" style="left:-26px;top:-4px">3</span><span class="mode a">A</span> ลุ้นทันที<span class="ph p1">ระยะ 1</span> &nbsp; <span class="mode b">B</span> จับตามรอบ<span class="ph p3">ระยะ 3</span></span>
+      </div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr>
+          <th>กิจกรรม</th><th>โหมด</th><th>ช่วงเวลา</th><th class="num">สิทธิ์ ออก / ใช้แล้ว</th>
+          <th class="relative">งบ จ่ายจริง เทียบงบตั้ง<span class="pin" style="margin-left:6px">4</span></th>
+          <th>สถานะ</th><th class="relative">การดำเนินการ<span class="pin" style="margin-left:6px">5</span></th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><b>ลุ้นโชคปลายปี 2569</b><div class="ev-id">EV-0013 · ทางเข้า: พอยท์ · ยอดซื้อ · สินค้าร่วม · โค้ดกล่อง</div></td>
+            <td><span class="mode a">A</span> <span class="mode b">B</span></td>
+            <td class="nowrap">1 ต.ค. – 15 ธ.ค. 69<div class="small muted">จับโหมด B 20 ธ.ค. 69 20:00</div></td>
+            <td class="num">4,386 / 3,127</td>
+            <td class="budget"><div class="row between small"><b>฿52,640</b><span class="muted">/ ฿320,000</span></div><div class="progress green"><i style="width:16%"></i></div><div class="small muted">จองโหมด B ฿138,000</div></td>
+            <td><span class="chip success">เปิด</span></td>
+            <td class="nowrap"><a class="btn text sm" href="02-admin-editor.html">แก้ไข</a><a class="btn text sm" href="03-admin-prizes-budget.html">รางวัล/งบ</a><a class="btn text sm grey" href="05-admin-audit.html">บันทึก</a></td>
+          </tr>
+          <tr>
+            <td><b>ลุ้นของแถมสินค้าใหม่ Blackmores</b><div class="ev-id">EV-0012 · ทางเข้า: สินค้าร่วมรายการ</div></td>
+            <td><span class="mode a">A</span></td>
+            <td class="nowrap">1 – 31 ต.ค. 69</td>
+            <td class="num">1,212 / 905</td>
+            <td class="budget"><div class="row between small"><b>฿14,310</b><span class="muted">/ ฿30,000</span></div><div class="progress green"><i style="width:48%"></i></div></td>
+            <td><span class="chip success">เปิด</span></td>
+            <td class="nowrap"><a class="btn text sm" href="02-admin-editor.html">แก้ไข</a><a class="btn text sm" href="03-admin-prizes-budget.html">รางวัล/งบ</a><a class="btn text sm grey" href="05-admin-audit.html">บันทึก</a></td>
+          </tr>
+          <tr>
+            <td><b>ลุ้นทองคำประจำเดือน ก.ย. 69</b><div class="ev-id">EV-0011 · ทางเข้า: แลกพอยท์ · ยอดซื้อ</div></td>
+            <td><span class="mode b">B</span></td>
+            <td class="nowrap">1 – 30 ก.ย. 69<div class="small muted">จับวันนี้ 20:00</div></td>
+            <td class="num">3,102 / 3,102<div class="small muted">เข้ากองแล้ว</div></td>
+            <td class="budget"><div class="row between small"><b>฿0</b><span class="muted">/ ฿40,000</span></div><div class="progress"><i style="width:0%"></i></div><div class="small muted">จองไว้ ฿38,500 (จ่ายหลังจับ)</div></td>
+            <td><span class="chip warning">ปิดรับ</span></td>
+            <td class="nowrap"><a class="btn contained sm" href="04-admin-draw-run.html">จับรางวัล</a><a class="btn text sm grey" href="05-admin-audit.html">บันทึก</a></td>
+          </tr>
+          <tr>
+            <td><b>วงล้อโชคดี ก.ย. 69</b><div class="ev-id">EV-0010 · ทางเข้า: แลกพอยท์</div></td>
+            <td><span class="mode a">A</span></td>
+            <td class="nowrap">1 – 30 ก.ย. 69</td>
+            <td class="num">5,200 / 4,880<div class="small muted">หมดอายุ 320 ใบ</div></td>
+            <td class="budget"><div class="row between small"><b>฿36,150</b><span class="muted">/ ฿40,000</span></div><div class="progress warn"><i style="width:90%"></i></div></td>
+            <td><span class="chip warning">ปิดรับ</span></td>
+            <td class="nowrap"><a class="btn text sm" href="02-admin-editor.html">ดู</a><a class="btn text sm grey" href="05-admin-audit.html">บันทึก</a></td>
+          </tr>
+          <tr>
+            <td><b>ลุ้นทองคำประจำเดือน ส.ค. 69</b><div class="ev-id">EV-0009 · ทางเข้า: แลกพอยท์ · ยอดซื้อ</div></td>
+            <td><span class="mode b">B</span></td>
+            <td class="nowrap">1 – 31 ส.ค. 69<div class="small muted">จับแล้ว 5 ก.ย. 69</div></td>
+            <td class="num">2,764 / 2,764</td>
+            <td class="budget"><div class="row between small"><b>฿38,500</b><span class="muted">/ ฿40,000</span></div><div class="progress warn"><i style="width:96%"></i></div></td>
+            <td><span class="chip info">จับแล้ว</span></td>
+            <td class="nowrap"><a class="btn text sm" href="04-admin-draw-run.html">ดูผล</a><a class="btn text sm grey" href="05-admin-audit.html">บันทึก</a></td>
+          </tr>
+          <tr>
+            <td><b>ลุ้นโชคต้อนรับปีใหม่ 2570</b><div class="ev-id">EV-0014 · ทางเข้า: พอยท์ · ยอดซื้อ · สินค้าร่วม · โค้ดกล่อง</div></td>
+            <td><span class="mode a">A</span> <span class="mode b">B</span></td>
+            <td class="nowrap">1 ธ.ค. 69 – 31 ม.ค. 70<div class="small muted">จับโหมด B 5 ก.พ. 70</div></td>
+            <td class="num">—</td>
+            <td class="budget"><div class="row between small"><b>—</b><span class="muted">/ ฿150,000</span></div><div class="progress"><i style="width:0%"></i></div></td>
+            <td><span class="chip">ร่าง</span><div class="small" style="color:var(--error-dark);margin-top:3px">เช็คลิสต์ 2/4</div></td>
+            <td class="nowrap"><a class="btn outlined primary sm" href="02-admin-editor.html#step5">ตรวจเช็คลิสต์</a><a class="btn text sm" href="02-admin-editor.html">แก้ไข</a></td>
+          </tr>
+        </tbody>
+      </table></div>
+      <div class="pager"><span>แถวต่อหน้า 25</span><span>1–6 จาก 6</span></div>
+    </div>
+
+    <div class="card relative"><span class="pin abs">6</span><div class="card-b row between">
+      <div><b>ยังไม่มีกิจกรรม? (สถานะว่าง)</b><div class="small muted">เมื่อยังไม่เคยสร้างกิจกรรม หน้านี้แสดงปุ่ม "สร้างกิจกรรมแรก" พร้อมลิงก์ไปคู่มือ 3 ขั้น: ตั้งทางเข้าสิทธิ์ → ตั้งรางวัล/น้ำหนัก → ตรวจเช็คลิสต์</div></div>
+      <a class="btn outlined" href="02-admin-editor.html">สร้างกิจกรรมแรก</a>
+    </div></div>
+
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>แจ้งเตือนอยู่บนสุดของหน้าเมื่อมีกิจกรรมสถานะ "ร่าง" ที่เช็คลิสต์ไม่ครบ ระบุว่าขาดข้อไหนและลิงก์ไปที่ขั้นตอน 5 ของตัวแก้ไขโดยตรง (หายไปเองเมื่อครบ)</span></li>
+    <li><span class="pin">2</span><span>สถิติบนสุดนับเฉพาะเดือนปัจจุบัน; "จ่ายจริง" = มูลค่ารางวัลที่ส่งออกไปแล้วตามมูลค่า/ชิ้นที่ตั้งไว้ ไม่รวมงบที่จองสำหรับโหมด B ที่ยังไม่จับ</span></li>
+    <li><span class="pin">3</span><span>ชิป A/B ต่อกิจกรรมแสดงว่ามีรางวัลโหมดใดบ้าง (กิจกรรมเดียวผสมได้ เพราะโหมดตั้งต่อรางวัล) พร้อมแท็กระยะพัฒนาของแต่ละโหมด</span></li>
+    <li><span class="pin">4</span><span>แถบงบ: ตัวเลขหนา = จ่ายจริง, จางกว่า = งบที่ตั้ง; แถบเป็นสีเขียวตามปกติ สีส้มเมื่อ ≥ 90% ของงบ และสีแดง + chip "เกินงบ" เมื่อเกิน 100%; โหมด B แสดงยอดที่จองไว้ใต้แถบ</span></li>
+    <li><span class="pin">5</span><span>ปุ่มหลักต่อแถวเปลี่ยนตามสถานะ: ร่าง = ตรวจเช็คลิสต์, เปิด = แก้ไข/รางวัลงบ, ปิดรับที่มีโหมด B = จับรางวัล, จับแล้ว = ดูผล; ทุกสถานะมีลิงก์ไป "บันทึก" ที่กรองกิจกรรมนั้น</span></li>
+    <li><span class="pin">6</span><span>สถานะว่างของหน้ารายการ — ยังไม่มีกิจกรรมจึงมีเพียงปุ่มสร้าง ไม่แสดงตารางเปล่า</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะ: ร่าง (แก้ไขได้ทุกอย่าง) → เปิด (แก้ได้เฉพาะข้อความ/วันสิ้นสุด และเพิ่มจำนวนรางวัล) → ปิดรับ (หยุดออกสิทธิ์/ใช้สิทธิ์) → จับแล้ว (เฉพาะกิจกรรมที่มีโหมด B)</li>
+    <li>กิจกรรมที่เปิดแล้ว "ลบ" ไม่ได้ ปิดรับได้อย่างเดียว เพื่อคงบันทึกการลุ้นไว้ตรวจสอบ</li>
+    <li>ปุ่ม "จับรางวัล" ปรากฏเฉพาะกิจกรรมที่มีรางวัลโหมด B และถึงสถานะ "ปิดรับ" เท่านั้น</li>
+    <li>สิทธิ์ "ใช้แล้ว" ของโหมด B หมายถึงสิทธิ์ที่เข้ากองแล้ว (ยังไม่มีผล) จนกว่าจะจับ</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ใครมีสิทธิ์สร้าง/เปิดกิจกรรม และใครอนุมัติงบ — เสนอ: สร้างได้โดยฝ่ายการตลาด, "เปิด" ต้องมีผู้อนุมัติงบจากฝ่ายบัญชี (ตรงกับข้อ "งบอนุมัติ" ในเช็คลิสต์)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

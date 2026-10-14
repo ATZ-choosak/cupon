@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ภาพรวม Flow สุ่มรางวัล</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  /* page-local: swimlane แบบหลายแถวในเลนเดียว + แท็กระยะพัฒนา */
+  .swim .lane-b{flex-direction:column;gap:16px;overflow:visible;padding:18px 16px}
+  .frow{display:flex;align-items:stretch}
+  .swim .node{width:132px;font-size:11.5px;line-height:1.45;padding:9px 10px}
+  .swim .node b{font-size:12.5px}
+  .swim .gap{width:18px;font-size:15px}
+  .swim .lane-h{position:relative}
+  .sp1{width:156px}.sp2{width:312px}.sp3{width:468px}.sp4{width:624px}
+  .ph{display:inline-block;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;margin-left:4px;vertical-align:middle;white-space:nowrap}
+  .ph.p1{background:#E3F2FD;color:#0D47A1}.ph.p2{background:#EDE7F6;color:#4527A0}.ph.p3{background:#FFF3E0;color:#BF360C}
+  .mtag{display:inline-block;font-size:10px;font-weight:800;padding:1px 6px;border-radius:5px;margin-bottom:3px}
+  .mtag.a{background:var(--info-lighter);color:var(--info-dark)}.mtag.b{background:#F3E5F5;color:#6A1B9A}
+  .rowtag{font-size:11px;font-weight:700;color:var(--text2);margin:-4px 0 -8px}
+  .phase-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .phase-strip>div{border:1.5px solid var(--g300);border-radius:12px;padding:12px 14px;background:#fff;font-size:12.5px}
+  .phase-strip b{display:block;margin-bottom:4px}
+  .st-list{display:grid;grid-template-columns:auto 1fr;gap:10px 12px;align-items:center;font-size:13px}
+  .rule-list{margin:0;padding-left:18px;display:grid;gap:7px;font-size:13px}
+</style>
+</head>
+<body data-shell="bare">
+<main id="screen" style="max-width:1440px;margin:0 auto;padding:24px">
+
+  <div class="page-head">
+    <div>
+      <h4>ภาพรวม Flow สุ่มรางวัล (ลุ้นโชค)</h4>
+      <p class="muted">สิทธิ์ลุ้น = หน่วยกลางหน่วยเดียว ได้จากหลายทาง แล้วไปลุ้นได้ 2 โหมด — ทุกผลถูกตัดสินที่เซิร์ฟเวอร์ และตรวจสอบย้อนหลังได้</p>
+    </div>
+    <div class="row">
+      <a class="btn outlined" href="01-admin-list.html">เริ่มดูฝั่งแอดมิน</a>
+      <a class="btn contained" href="06-customer-tickets.html">เริ่มดูฝั่งลูกค้า</a>
+    </div>
+  </div>
+
+  <div class="swim-x" style="overflow-x:auto">
+  <div class="swim" style="min-width:1340px">
+
+    <!-- แอดมิน -->
+    <div class="lane"><div class="lane-h"><span>แอดมิน</span><span class="pin">1</span></div><div class="lane-b">
+      <div class="frow">
+        <a class="node adm" href="02-admin-editor.html"><span class="pin no">A1</span><b>ตั้งกิจกรรม</b>ชื่อ ช่วงเวลา ทางเข้าสิทธิ์ อายุสิทธิ์ เพดานต่อคน<span class="ph p1">ระยะ 1</span></a><div class="gap">→</div>
+        <a class="node adm" href="03-admin-prizes-budget.html"><span class="pin no">A2</span><b>ตั้งรางวัล น้ำหนัก งบ</b>เห็นต้นทุนเฉลี่ย/หมุนสด + จำลอง 10,000 ครั้ง<span class="ph p1">ระยะ 1</span></a><div class="gap">→</div>
+        <a class="node warn" href="02-admin-editor.html#step5"><span class="pin no">A3</span><b>ตรวจเช็คลิสต์ → เปิด</b>งบอนุมัติ · กฎหมาย/ภาษี · รางวัลพอ · ข้อความเงื่อนไข</a>
+        <div class="gap sp" style="width:300px"></div>
+        <a class="node adm" href="04-admin-draw-run.html"><span class="pin no">A4</span><span class="mtag b">โหมด B</span><b>ปิดรับ + ประกาศกองสิทธิ์</b>จำนวนสิทธิ์ + รหัสยืนยัน (hash)<span class="ph p3">ระยะ 3</span></a><div class="gap">→</div>
+        <a class="node adm" href="04-admin-draw-run.html"><span class="pin no">A5</span><span class="mtag b">โหมด B</span><b>จับรางวัล</b>ยืนยันแล้วย้อนกลับไม่ได้ → เปิดเผย seed + รายชื่อ<span class="ph p3">ระยะ 3</span></a><div class="gap">→</div>
+        <a class="node adm" href="04-admin-draw-run.html"><span class="pin no">A6</span><span class="mtag b">โหมด B</span><b>ประกาศผล + แจ้งผู้ชนะ</b>ติดตามคิวจัดส่ง · เพิ่มรางวัลชดเชยได้ (แยกรายการ)</a>
+      </div>
+      <div class="frow">
+        <div class="gap sp" style="width:750px"></div>
+        <a class="node adm" href="05-admin-audit.html"><span class="pin no">A7</span><b>ตรวจสอบย้อนหลัง</b>ทุกใบที่ใช้ · ถึงเพดาน · ผิดปกติ · ส่งออก<span class="ph p2">ระยะ 2</span></a>
+      </div>
+    </div></div>
+
+    <!-- ลูกค้า -->
+    <div class="lane"><div class="lane-h"><span>ลูกค้า</span><span class="pin">2</span></div><div class="lane-b">
+      <div class="frow">
+        <div class="gap sp" style="width:450px"></div>
+        <a class="node cust" href="06-customer-tickets.html"><span class="pin no">C1</span><b>ได้สิทธิ์จากหลายทาง</b>แลกพอยท์ · ซื้อครบ · สินค้าร่วมรายการ · ขั้นแคมเปญ · โค้ดในกล่อง</a><div class="gap">→</div>
+        <a class="node cust" href="06-customer-tickets.html"><span class="pin no">C2</span><b>ดูสิทธิ์ของฉัน</b>แยกตามกิจกรรมและทางที่ได้ · ใกล้หมดอายุ</a><div class="gap">→</div>
+        <a class="node cust" href="07-customer-instant-draw.html"><span class="pin no">C3</span><span class="mtag a">โหมด A</span><b>กดลุ้น</b>ใช้ 1 สิทธิ์ต่อ 1 ครั้ง<span class="ph p1">ระยะ 1</span></a><div class="gap">→</div>
+        <a class="node cust" href="07-customer-instant-draw.html"><span class="pin no">C4</span><span class="mtag a">โหมด A</span><b>เห็นผลทันที</b>ถูก → เข้ากระเป๋า/พอยท์/คิวรับของ · ไม่ถูก → สะสมการันตี</a><div class="gap">→</div>
+        <a class="node cust" href="09-customer-history.html"><span class="pin no">C5</span><b>รางวัลของฉัน + ประวัติ</b>ไล่ย้อนถึงสิทธิ์ที่ใช้ได้ทุกแถว<span class="ph p2">ระยะ 2</span></a>
+      </div>
+      <div class="frow">
+        <div class="gap sp" style="width:600px"></div>
+        <a class="node cust" href="08-customer-scheduled.html"><span class="pin no">C6</span><span class="mtag b">โหมด B</span><b>สิทธิ์เข้ากองรอจับ</b>เลือกลงกองกับรางวัลใหญ่ — ล็อกจนกว่าจะจับ<span class="ph p3">ระยะ 3</span></a><div class="gap">→</div>
+        <a class="node cust" href="08-customer-scheduled.html"><span class="pin no">C7</span><span class="mtag b">โหมด B</span><b>ดูกอง + รหัสยืนยัน</b>เห็นจำนวนสิทธิ์รวมและเวลาจับก่อนวันจริง</a><div class="gap">→</div>
+        <a class="node cust" href="08-customer-scheduled.html"><span class="pin no">C8</span><span class="mtag b">โหมด B</span><b>ตรวจสอบผล</b>เทียบ seed ที่เปิดเผยกับรหัสที่ประกาศไว้</a><div class="gap">→</div>
+        <a class="node cust" href="08-customer-scheduled.html"><span class="pin no">C9</span><span class="mtag b">โหมด B</span><b>กรอกข้อมูลรับของ</b>ผู้ชนะกรอกที่อยู่/ผู้รับ → เข้าคิวคำขอรับของ</a>
+      </div>
+    </div></div>
+
+    <!-- ระบบ -->
+    <div class="lane"><div class="lane-h"><span>ระบบ</span><span class="pin">3</span></div><div class="lane-b">
+      <div class="frow">
+        <div class="gap sp" style="width:450px"></div>
+        <div class="node sys"><span class="pin no">S1</span><b>สร้างสิทธิ์ลุ้น (ticket)</b>บันทึกทางที่ได้ · วันหมดอายุ · เจ้าของ</div><div class="gap">→</div>
+        <div class="node sys"><span class="pin no">S2</span><b>ตรวจเพดานสิทธิ์/คน</b>ถึงเพดาน → ไม่ออกเพิ่ม + แจ้งลูกค้า</div><div class="gap">→</div>
+        <div class="node sys"><span class="pin no">S3</span><span class="mtag a">โหมด A</span><b>ตัดสินผลที่เซิร์ฟเวอร์</b>ตามน้ำหนัก + สต็อก ก่อนแสดงภาพวงล้อ</div><div class="gap">→</div>
+        <div class="node sys"><span class="pin no">S4</span><span class="mtag a">โหมด A</span><b>ตัดงบ / จำนวนคงเหลือ</b>ของหมด → เกลี่ยน้ำหนัก · เพดานงบ/วัน · เพดานต่อคน</div><div class="gap">→</div>
+        <div class="node end"><span class="pin no">S5</span><b>ส่งรางวัลเข้าช่องทางเดิม</b>กระเป๋าคูปอง · ยอดพอยท์ · คิวขอรับของ + บันทึก audit</div>
+      </div>
+      <div class="frow">
+        <div class="gap sp" style="width:600px"></div>
+        <div class="node sys"><span class="pin no">S6</span><span class="mtag b">โหมด B</span><b>ล็อกกอง + สร้าง hash</b>รหัสยืนยันของกองสิทธิ์ ก่อนจับ</div><div class="gap">→</div>
+        <div class="node sys"><span class="pin no">S7</span><span class="mtag b">โหมด B</span><b>จับด้วย seed บนเซิร์ฟเวอร์</b>บันทึกผล แก้ไขไม่ได้ · เปิดเผย seed</div><div class="gap">→</div>
+        <div class="node end"><span class="pin no">S8</span><b>ส่งรางวัล + audit</b>ผู้ชนะเข้าคิวรับของ / กระเป๋า / พอยท์</div>
+      </div>
+    </div></div>
+
+  </div>
+  </div>
+  <div class="flow-legend">
+    <span><i style="background:#fff"></i>ลูกค้า</span><span><i style="background:var(--primary-lighter)"></i>แอดมิน</span><span><i style="background:var(--info-lighter)"></i>ระบบ</span><span><i style="background:var(--success-lighter)"></i>ผลลัพธ์</span><span><i style="background:var(--warning-lighter)"></i>จุดที่ถูกบล็อกได้</span>
+    <span><span class="mtag a">โหมด A</span> ลุ้นทันที</span><span><span class="mtag b">โหมด B</span> จับตามรอบ</span>
+    <span><span class="ph p1">ระยะ 1</span><span class="ph p2">ระยะ 2</span><span class="ph p3">ระยะ 3</span> ลำดับการพัฒนา (สเปก 6.8)</span>
+  </div>
+
+  <div class="grid g2 mt16">
+    <div class="card relative"><span class="pin abs">4</span><div class="card-h"><h6>กติกาหลัก</h6></div><div class="card-b">
+      <ul class="rule-list">
+        <li><b>สิทธิ์ลุ้นเป็นหน่วยเดียว</b> — ทุกทางที่ได้ (แลกพอยท์ ยอดซื้อ สินค้าร่วมรายการ ขั้นแคมเปญ โค้ดในกล่อง) กลายเป็น ticket ชนิดเดียว เปิด/ปิดและตั้งอัตราแยกรายทาง</li>
+        <li><b>สิทธิ์มีอายุ นับต่อคน ตรวจย้อนหลังได้ทุกใบ</b> และแลกกลับเป็นพอยท์/เงินไม่ได้</li>
+        <li><b>ตั้งน้ำหนัก ไม่ตั้งเปอร์เซ็นต์</b> — ระบบคิดโอกาส ต้นทุนเฉลี่ย/หมุน และงบรวมให้ ของหมดแล้วเกลี่ยสัดส่วนเอง</li>
+        <li><b>ของเล็ก = โหมด A, ของใหญ่ = โหมด B</b> — ระบบเตือนเมื่อวางของมูลค่าสูงในโหมด A</li>
+        <li><b>ผลถูกตัดสินที่เซิร์ฟเวอร์ก่อนแสดง</b> — วงล้อ/กล่อง/บัตรขูดเป็นภาพเคลื่อนไหวเท่านั้น</li>
+        <li><b>โหมด B ประกาศกองสิทธิ์ + รหัสยืนยันก่อนจับ</b> แล้วเปิดเผย seed หลังจับ ให้ผู้ร่วมตรวจเองได้</li>
+        <li><b>แก้ผลย้อนหลังไม่ได้</b> — เพิ่มได้เฉพาะรางวัลชดเชยเป็นรายการแยก ระบุผู้อนุมัติ</li>
+      </ul>
+    </div></div>
+
+    <div class="card relative"><span class="pin abs">5</span><div class="card-h"><h6>สถานะของสิ่งที่ลูกค้าได้รับ</h6></div><div class="card-b">
+      <div class="st-list">
+        <span class="chip soft-success">พร้อมใช้</span><span>สิทธิ์ลุ้นที่ยังไม่หมดอายุและยังไม่ถูกใช้</span>
+        <span class="chip soft-warning">ใกล้หมดอายุ</span><span>เหลือ ≤ 14 วัน — แสดงในหน้าสิทธิ์ของฉันและแจ้งเตือน</span>
+        <span class="chip soft-info">เข้ากองรอจับ</span><span>สิทธิ์ที่ลงกองโหมด B แล้ว ถอนคืนไม่ได้จนกว่าจะประกาศผล</span>
+        <span class="chip">ใช้แล้ว / หมดอายุ</span><span>เก็บในประวัติ ไม่คืนเป็นพอยท์หรือเงิน</span>
+        <span class="chip success">เข้ากระเป๋าแล้ว</span><span>คูปอง / ส่งฟรี อยู่ในกระเป๋าคูปอง ใช้กับบิลถัดไปได้</span>
+        <span class="chip success">ได้พอยท์แล้ว</span><span>บวกเข้ายอดพอยท์ทันที</span>
+        <span class="chip warning">รอจัดส่ง</span><span>สินค้า/ของใหญ่ รอกรอกข้อมูลจัดส่งหรือรอแอดมินส่ง</span>
+        <span class="chip info">จัดส่งแล้ว</span><span>มีเลขพัสดุ / บันทึกการรับของ</span>
+        <span class="chip outline">ไม่ถูกรางวัล</span><span>บันทึกไว้ทุกใบ ดูในประวัติการลุ้น</span>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="grid g2 mt16">
+    <div class="card relative"><span class="pin abs">6</span><div class="card-h"><h6>เชื่อมกับโมดูลอื่นอย่างไร</h6></div><div class="card-b">
+      <ul class="rule-list">
+        <li><b>พอยท์</b> — ทางเข้า "แลกด้วยพอยท์" ต่อยอดหน้าแลกของรางวัล <a href="../points/05-customer-redeem.html">แลกของรางวัลด้วยพอยท์</a>; รางวัลพอยท์บวกเข้ายอดผ่านสมุดพอยท์ <a href="../points/03-admin-ledger.html">สมุดพอยท์</a></li>
+        <li><b>คูปอง</b> — รางวัลคูปอง/ส่งฟรีเข้า <a href="../coupon/08-customer-center.html">กระเป๋าคูปอง</a>; "โค้ดในกล่องสินค้า" ใช้โครงเดียวกับ <a href="../coupon/03-admin-paper-editor.html">ชุดคูปองกระดาษ</a></li>
+        <li><b>แคมเปญ</b> — "ขั้นแคมเปญ" ให้สิทธิ์เมื่อถึงขั้น <a href="../campaign/03-admin-ladder-editor.html">แคมเปญสะสมยอด</a>; รางวัลสินค้าเข้า <a href="../campaign/04-admin-claims.html">คิวคำขอรับรางวัล</a> เดียวกัน</li>
+        <li><b>โปรโมชั่น</b> — "สินค้าร่วมรายการ" เป็นผลตอบแทนแบบใหม่ของ <a href="../promotion/02-admin-editor.html">โปรโมชั่น</a> (ให้สิทธิ์ลุ้นแทนส่วนลด)</li>
+      </ul>
+    </div></div>
+
+    <div class="stack">
+      <div class="card relative"><span class="pin abs">7</span><div class="card-h"><h6>ลำดับการพัฒนา (สเปก 6.8)</h6></div><div class="card-b">
+        <div class="phase-strip">
+          <div><span class="ph p1" style="margin:0 0 6px">ระยะที่ 1</span><b>โหมด A + แลกพอยท์</b>ลุ้นทันที · แลกพอยท์เป็นสิทธิ์ · หน้าตั้งน้ำหนักเห็นงบสด</div>
+          <div><span class="ph p2" style="margin:0 0 6px">ระยะที่ 2</span><b>ยอดซื้อ + ประวัติ</b>ทางเข้ายอดซื้อ/สินค้าร่วมรายการ · ประวัติการลุ้น · รายงานงบจ่ายจริง</div>
+          <div><span class="ph p3" style="margin:0 0 6px">ระยะที่ 3</span><b>โหมด B</b>จับตามรอบของใหญ่ · ประกาศกองสิทธิ์ + รหัสยืนยัน</div>
+        </div>
+      </div></div>
+      <div class="alert warning relative"><span class="pin abs">8</span><div><div class="a-title">ต้องตรวจกฎหมายและภาษีก่อนเปิดจริง</div>การจัดชิงโชค/จับรางวัลมีข้อกำหนดการขออนุญาตและภาระภาษีของมูลค่ารางวัล ต้องให้ฝ่ายกฎหมายและฝ่ายบัญชียืนยัน — ระบบมีเช็คลิสต์บล็อกการเปิดกิจกรรม แต่ไม่ได้ให้คำตอบทางกฎหมาย (สเปก 6.7)</div></div>
+    </div>
+  </div>
+
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>เลนแอดมิน: ขั้น A3 ถูกบล็อกจนกว่าเช็คลิสต์ก่อนเปิดจะครบ 4 ข้อ (งบ กฎหมาย/ภาษี รางวัลพอ ข้อความเงื่อนไข) — ไม่มีทางข้ามจากหน้าเดียวกัน; A4–A6 มีเฉพาะกิจกรรมที่มีรางวัลโหมด B</span></li>
+    <li><span class="pin">2</span><span>เลนลูกค้า: สองแถวคือ "โหมด A" (กดแล้วรู้ผล) กับ "โหมด B" (ลงกองรอประกาศ) — กิจกรรมเดียวผสมได้ ตัวอย่างคือ EV-0013 ที่ของเล็กเป็น A ทริป/ตั๋วเป็น B</span></li>
+    <li><span class="pin">3</span><span>เลนระบบ: S3 ต้องเสร็จก่อนภาพเคลื่อนไหวเริ่ม (ผลมาจากเซิร์ฟเวอร์) และ S5/S8 ใช้ช่องทางเดิมทั้งหมด — ไม่มีท่อจ่ายรางวัลใหม่ให้พัฒนา</span></li>
+    <li><span class="pin">4</span><span>กติกาหลักสรุปจากสเปกหัวข้อ 6.2–6.6 เป็นกติกาเดียวกับที่ทุกหน้าถัดไปอ้างถึง</span></li>
+    <li><span class="pin">5</span><span>ตัวเลือกสถานะนี้คือชุดเดียวกับที่ใช้ในหน้า "รางวัลของฉัน" และคิวคำขอรับของฝั่งแอดมิน — ไม่คิดชื่อสถานะใหม่ต่างจากแคมเปญ</span></li>
+    <li><span class="pin">6</span><span>ลิงก์ในการ์ดนำไปยังหน้าของโมดูลที่เกี่ยวข้องโดยตรง ให้ไล่ดูว่าข้อมูลไหลไปทางไหน</span></li>
+    <li><span class="pin">7</span><span>แท็ก "ระยะ 1/2/3" ปรากฏบนฟีเจอร์ทุกหน้า เพื่อให้ลูกค้าเห็นว่าอะไรออกก่อน</span></li>
+    <li><span class="pin">8</span><span>คำเตือนกฎหมายแสดงถาวรบนหน้าแอดมินที่เกี่ยวข้อง ไม่ใช่ pop-up ครั้งเดียว</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สิทธิ์ที่ลงกองโหมด B แล้วถอนคืน/โอนให้คนอื่นไม่ได้ และสิทธิ์ทุกชนิดแลกกลับเป็นพอยท์หรือเงินไม่ได้</li>
+    <li>ยกเลิก/คืนสินค้าบิลที่ให้สิทธิ์ → ยกเลิกสิทธิ์ที่ยังไม่ใช้ของบิลนั้น ส่วนสิทธิ์ที่ใช้ไปแล้วไม่ย้อนผล แต่แสดงในรายการผิดปกติให้แอดมินตรวจ</li>
+    <li>แอดมินไม่มีปุ่มแก้/ลบผลการลุ้นหรือผลจับ — ทำได้เพียง "เพิ่มรางวัลชดเชย" พร้อมผู้อนุมัติ</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ทางเข้า "ขั้นแคมเปญ" และ "โค้ดในกล่อง" สเปกไม่ได้ระบุระยะพัฒนา — เสนอให้อยู่ระยะที่ 2 ร่วมกับยอดซื้อ (โค้ดในกล่องใช้โครงคูปองกระดาษเดิม) ขอให้ยืนยัน</li>
+    <li>การคุมงบเมื่อชนเพดานงบโหมด A: เสนอให้ระบบเปลี่ยนเป็นออกผล "ไม่ถูก/ของปลอบใจ" ต่อ (ไม่หยุดให้ลูกค้ากดไม่ได้) — ยืนยันกับฝ่ายการตลาด</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

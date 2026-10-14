@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รางวัล น้ำหนัก งบประมาณ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .ph{display:inline-block;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+  .ph.p1{background:#E3F2FD;color:#0D47A1}.ph.p2{background:#EDE7F6;color:#4527A0}.ph.p3{background:#FFF3E0;color:#BF360C}
+  .mode{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;border-radius:7px;font-weight:800;font-size:12px}
+  .mode.a{background:var(--info-lighter);color:var(--info-dark)}.mode.b{background:#F3E5F5;color:#6A1B9A}
+  .w-in{width:84px;text-align:right;padding:6px 10px;min-height:34px}
+  .odds{font-weight:800;color:var(--primary-dark);font-variant-numeric:tabular-nums}
+  tr.draft td{background:#FFF8E1!important}
+  tr.none td{background:var(--g50)}
+  tfoot td{font-weight:700;background:var(--g50);border-top:2px solid var(--g300)}
+  .big-stat{background:#fff;border:1px solid var(--g200);border-radius:12px;padding:16px}
+  .big-stat .l{font-size:12px;color:var(--text2)}.big-stat .v{font-size:26px;font-weight:800;margin:2px 0}
+  .big-stat.bad{border-color:var(--error);background:var(--error-lighter)}.big-stat.bad .v{color:var(--error-dark)}
+  .big-stat.good{border-color:#A5D6A7;background:var(--success-lighter)}
+  .sim-row{display:grid;grid-template-columns:190px 1fr 150px;gap:12px;align-items:center;padding:6px 0;font-size:12.5px}
+  .sim-row .bar{height:14px;background:var(--g200);border-radius:7px;position:relative;overflow:hidden}
+  .sim-row .bar i{display:block;height:100%;background:var(--primary);border-radius:7px}
+  .sim-row .bar i.none{background:var(--g400)}.sim-row .bar i.big{background:var(--warning-dark)}
+  .sim-row .bar s{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--g900);text-decoration:none}
+  .input-adorn>.adorn{white-space:nowrap}
+</style>
+</head>
+<body data-shell="admin" data-nav="raffle" data-crumb="โปรโมชั่นและสิทธิพิเศษ / สุ่มรางวัล / รางวัลและงบ">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>รางวัล น้ำหนัก และงบประมาณ <span class="chip success">เปิด</span> <span class="chip soft-warning">มีการแก้ไขที่ยังไม่บันทึก 1 รายการ</span></h4>
+      <p class="muted">ลุ้นโชคปลายปี 2569 (EV-0013) · กรอก "น้ำหนัก" แล้วระบบคิดโอกาส ต้นทุนเฉลี่ย และงบรวมให้สด</p>
+    </div>
+    <div class="row">
+      <a class="btn text grey" href="02-admin-editor.html">← ตั้งค่ากิจกรรม</a>
+      <button class="btn outlined">ยกเลิกการแก้ไข</button>
+      <button class="btn contained">บันทึกรางวัล</button>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <!-- live numbers -->
+    <div class="grid g4 relative"><span class="pin abs">1</span>
+      <div class="big-stat"><div class="l">ต้นทุนเฉลี่ยต่อการหมุน (โหมด A)</div><div class="v num">฿32.45</div><div class="small muted">ก่อนเพิ่มทองคำ ฿22.45 (+฿10.00)</div></div>
+      <div class="big-stat"><div class="l">สิทธิ์ที่คาดว่าจะถูกใช้ทั้งรอบ</div><div class="row"><input class="input num" style="width:120px;font-weight:800;font-size:18px" value="8,000"><span class="small muted">ใบ</span></div><div class="small muted">ประมาณจากรอบก่อน 7,150 ใบ</div></div>
+      <div class="big-stat bad"><div class="l">งบรวมโหมด A เมื่อสิทธิ์ถูกใช้หมด</div><div class="v num">฿259,600</div><div class="small">฿32.45 × 8,000 ใบ</div></div>
+      <div class="big-stat bad"><div class="l">เทียบเพดานงบโหมด A ฿180,000</div><div class="v num">เกิน ฿79,600</div><div class="small">+44% — งบโหมด B ฿138,000 คงที่</div></div>
+    </div>
+
+    <div class="alert error relative"><span class="pin abs">2</span><div>
+      <div class="a-title">งบโหมด A เกินเพดานที่ตั้งไว้ ฿79,600</div>
+      ต้นทุนเฉลี่ย ฿32.45/หมุน × 8,000 สิทธิ์ = ฿259,600 สูงกว่าเพดาน ฿180,000 — บันทึกได้ต่อเมื่อลดน้ำหนัก/จำนวนรางวัลมูลค่าสูง ย้ายรางวัลใหญ่ไปโหมด B หรือยืนยันขยายงบกับผู้อนุมัติ
+    </div></div>
+    <div class="alert warning relative"><span class="pin abs">3</span><div>
+      <div class="a-title">"ทองคำแท่ง 1 สลึง" (฿10,000/ชิ้น) อยู่ในโหมด A — แนะนำให้ย้ายไปโหมด B</div>
+      ของรางวัลใหญ่ในโหมด A ผลจริงเหวี่ยงได้สองทาง คือไม่มีใครถูกเลย หรือถูกพร้อมกันหลายคนในวันเดียว (ที่น้ำหนัก 1/1,000 ถ้าลุ้น 8,000 ครั้ง คาดถูก ~8 ใบ เกินจำนวนจำกัด 3 ชิ้น) — โหมด B แจกตามจำนวนที่ประกาศ งบแน่นอน
+      <div class="mt8"><button class="btn contained sm">ย้ายไปโหมด B</button> <button class="btn text sm grey">คงไว้ในโหมด A (ต้องมีผู้อนุมัติ)</button></div>
+    </div></div>
+
+    <!-- A table -->
+    <div class="card" style="overflow:hidden">
+      <div class="card-h" style="padding-bottom:12px"><h6><span class="mode a">A</span> รางวัลโหมดลุ้นทันที<span class="ph p1">ระยะ 1</span></h6>
+        <div class="row"><button class="btn outlined primary sm">＋ เพิ่มรางวัล</button></div></div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr>
+          <th>รางวัล</th><th>ประเภท</th><th>โหมด</th>
+          <th class="num relative">น้ำหนัก<span class="pin">4</span></th>
+          <th class="num">โอกาส</th><th class="num">จำนวนจำกัด</th><th class="num">คงเหลือ</th><th class="num">มูลค่า/ชิ้น</th><th class="num">ต้นทุน/หมุน</th><th></th>
+        </tr></thead>
+        <tbody>
+          <tr><td><b>คูปองลดทันที ฿50</b></td><td>คูปอง</td><td><span class="mode a">A</span></td><td class="num"><input class="input w-in num" value="150"></td><td class="num odds">15.0%</td><td class="num">1,200</td><td class="num">862</td><td class="num">฿50</td><td class="num">฿7.50</td><td><button class="btn text sm grey">แก้</button></td></tr>
+          <tr><td><b>คูปองส่งฟรี 1 ครั้ง</b></td><td>ส่งฟรี</td><td><span class="mode a">A</span></td><td class="num"><input class="input w-in num" value="120"></td><td class="num odds">12.0%</td><td class="num">1,000</td><td class="num">731</td><td class="num">฿45</td><td class="num">฿5.40</td><td><button class="btn text sm grey">แก้</button></td></tr>
+          <tr><td><b>พอยท์ 100 พอยท์</b></td><td>พอยท์</td><td><span class="mode a">A</span></td><td class="num"><input class="input w-in num" value="200"></td><td class="num odds">20.0%</td><td class="num">ไม่จำกัด</td><td class="num">—</td><td class="num">฿10</td><td class="num">฿2.00</td><td><button class="btn text sm grey">แก้</button></td></tr>
+          <tr><td><b>ขวดนม PP</b> <span class="promo-tag gift">ของแถม</span></td><td>สินค้า</td><td><span class="mode a">A</span></td><td class="num"><input class="input w-in num" value="40"></td><td class="num odds">4.0%</td><td class="num">300</td><td class="num">212</td><td class="num">฿60</td><td class="num">฿2.40</td><td><button class="btn text sm grey">แก้</button></td></tr>
+          <tr><td><b>เจลแอลกอฮอล์ 1 ขวด</b> <span class="promo-tag gift">ของแถม</span></td><td>สินค้า</td><td><span class="mode a">A</span></td><td class="num"><input class="input w-in num" value="50"></td><td class="num odds">5.0%</td><td class="num">400</td><td class="num">296</td><td class="num">฿55</td><td class="num">฿2.75</td><td><button class="btn text sm grey">แก้</button></td></tr>
+          <tr><td><b>ถุงมือยาง 1 กล่อง</b> <span class="promo-tag gift">ของแถม</span></td><td>สินค้า</td><td><span class="mode a">A</span></td><td class="num"><input class="input w-in num" value="20"></td><td class="num odds">2.0%</td><td class="num">150</td><td class="num">109</td><td class="num">฿120</td><td class="num">฿2.40</td><td><button class="btn text sm grey">แก้</button></td></tr>
+          <tr class="draft"><td><b>ทองคำแท่ง 1 สลึง</b> <span class="chip soft-warning">ใหม่ · ยังไม่บันทึก</span><div class="small" style="color:var(--error-dark)">ของมูลค่าสูงในโหมด A</div></td><td>ของใหญ่</td>
+            <td><select class="select" style="width:90px;min-height:34px;padding:5px 8px"><option>A ⚠</option><option>B</option></select></td>
+            <td class="num"><input class="input w-in num" value="1"></td><td class="num odds">0.1%</td><td class="num">3</td><td class="num">3</td><td class="num">฿10,000</td><td class="num"><b style="color:var(--error-dark)">฿10.00</b></td><td><button class="btn text sm grey">ลบ</button></td></tr>
+          <tr class="none"><td><b>ไม่ถูกรางวัล</b><div class="small muted">ช่องที่ทำให้เปอร์เซ็นต์รวมครบเสมอ</div></td><td>—</td><td>—</td><td class="num"><input class="input w-in num" value="419"></td><td class="num odds">41.9%</td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">฿0.00</td><td></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="3">รวม</td><td class="num">1,000</td><td class="num">100%</td><td colspan="4"></td><td class="num">฿32.45</td><td></td></tr></tfoot>
+      </table></div>
+      <div class="card-b" style="padding-top:12px">
+        <div class="small muted relative"><span class="pin abs" style="left:-6px;top:-6px">5</span>
+          <div style="padding-left:20px"><b>เมื่อรางวัลหมด ระบบเกลี่ยให้เอง</b> — ตัวอย่าง: ถ้า "ถุงมือยาง" หมด น้ำหนักรวมเหลือ 980 → คูปอง ฿50 เพิ่มจาก 15.0% เป็น 15.3%, ไม่ถูกรางวัล 41.9% → 42.8% โดยไม่ต้องแก้น้ำหนักสักช่อง</div></div>
+      </div>
+    </div>
+
+    <!-- B table -->
+    <div class="card" style="overflow:hidden">
+      <div class="card-h" style="padding-bottom:12px"><h6><span class="mode b">B</span> รางวัลโหมดจับตามรอบ — จับพร้อมกัน 20 ธ.ค. 2569 20:00 น.<span class="ph p3">ระยะ 3</span></h6>
+        <div class="row"><button class="btn outlined primary sm">＋ เพิ่มรางวัล</button></div></div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>รางวัล</th><th>ประเภท</th><th>โหมด</th><th class="num relative">น้ำหนัก<span class="pin">6</span></th><th class="num">จำนวนผู้ได้รับ</th><th class="num">มูลค่า/ชิ้น</th><th class="num">งบรวมที่จอง</th><th></th></tr></thead>
+        <tbody>
+          <tr><td><b>ทริปญี่ปุ่น 2 ท่าน (5 วัน 4 คืน)</b></td><td>ของใหญ่</td><td><span class="mode b">B</span></td><td class="num muted">— ทุกสิทธิ์เท่ากัน</td><td class="num"><b>2</b> ราย</td><td class="num">฿60,000</td><td class="num">฿120,000</td><td><button class="btn text sm grey">แก้</button></td></tr>
+          <tr><td><b>ตั๋วเครื่องบินภายในประเทศ ไป-กลับ</b></td><td>ของใหญ่</td><td><span class="mode b">B</span></td><td class="num muted">— ทุกสิทธิ์เท่ากัน</td><td class="num"><b>4</b> ราย</td><td class="num">฿4,500</td><td class="num">฿18,000</td><td><button class="btn text sm grey">แก้</button></td></tr>
+        </tbody>
+        <tfoot><tr><td colspan="4">รวมโหมด B (แน่นอน ไม่ผันผวน)</td><td class="num">6 ราย</td><td></td><td class="num">฿138,000</td><td></td></tr></tfoot>
+      </table></div>
+    </div>
+
+    <div class="grid g2">
+      <!-- controls -->
+      <div class="card relative" id="controls"><span class="pin abs">7</span>
+        <div class="card-h"><h6>ตัวคุมงบ</h6><span class="small muted">ขั้นที่ 4 ของตัวแก้ไข</span></div>
+        <div class="card-b">
+          <div class="form-grid">
+            <div class="field"><label>เพดานงบโหมด A ต่อรอบ</label><div class="input-adorn"><span class="adorn">฿</span><input class="input num" value="180,000"></div></div>
+            <div class="field"><label>เพดานงบโหมด A ต่อวัน</label><div class="input-adorn"><span class="adorn">฿</span><input class="input num" value="12,000"></div></div>
+            <div class="field"><label>ถูกรางวัลมูลค่า ≥ ฿50 ได้ไม่เกิน / คน / รอบ</label><div class="input-adorn"><input class="input num" value="3"><span class="adorn">ครั้ง</span></div></div>
+            <div class="field"><label>รางวัลใหญ่ (≥ ฿1,000) / คน / รอบ</label><div class="input-adorn"><input class="input num" value="1"><span class="adorn">ครั้ง</span></div></div>
+            <div class="field"><label>เพดานสิทธิ์สะสม / คน</label><div class="row"><div class="input-adorn grow"><input class="input num" value="20"><span class="adorn">/ รอบ</span></div><div class="input-adorn grow"><input class="input num" value="10"><span class="adorn">/ วัน</span></div></div></div>
+            <div class="field"><label>เมื่อชนเพดานงบ</label><select class="select"><option>ออกผล "ไม่ถูก/ของปลอบใจ" ต่อ (เสนอ)</option><option>หยุดรับการลุ้นชั่วคราว</option></select></div>
+          </div>
+          <hr class="divider">
+          <div class="relative"><span class="pin abs" style="top:-8px;left:-12px">8</span>
+          <label class="switch"><input type="checkbox" checked> การันตีของปลอบใจเมื่อพลาดติดกัน</label>
+          <div class="row mt8"><span>พลาดติดกัน</span><input class="input num" style="width:70px" value="5"><span>ครั้ง → ได้</span><select class="select" style="width:180px"><option>พอยท์ 20 พอยท์ (฿2)</option><option>คูปองลด ฿10</option></select></div>
+          <div class="small muted mt8">ต้นทุนการันตีนับรวมในต้นทุนเฉลี่ยและเพดานงบ; ตัวนับพลาดติดกันรีเซ็ตเมื่อถูกรางวัลใดๆ หรือจบรอบ</div></div>
+          <hr class="divider">
+          <label class="switch"><input type="checkbox" checked> แสดงโอกาสถูกรางวัล (%) ให้ลูกค้าเห็นในหน้าลุ้น</label>
+        </div>
+      </div>
+
+      <!-- simulation -->
+      <div class="card relative"><span class="pin abs">9</span>
+        <div class="card-h"><h6>จำลอง 10,000 ครั้ง (โหมด A, ตามน้ำหนักที่กรอก)</h6><button class="btn outlined sm">จำลองซ้ำ</button></div>
+        <div class="card-b">
+          <div class="small muted mb8">แท่ง = จำนวนครั้งที่คาดว่าจะถูก · เส้นดำ = จำนวนคงเหลือตอนนี้ (ถ้าแท่งเกินเส้น ของจะหมดก่อนครบ)</div>
+          <div class="sim-row"><span>คูปองลด ฿50</span><div class="bar"><i style="width:36%"></i><s style="left:20.6%"></s></div><span class="num">1,500 · คงเหลือ 862</span></div>
+          <div class="sim-row"><span>คูปองส่งฟรี</span><div class="bar"><i style="width:29%"></i><s style="left:17.4%"></s></div><span class="num">1,200 · คงเหลือ 731</span></div>
+          <div class="sim-row"><span>พอยท์ 100 พอยท์</span><div class="bar"><i style="width:48%"></i></div><span class="num">2,000 · ไม่จำกัด</span></div>
+          <div class="sim-row"><span>ขวดนม PP</span><div class="bar"><i style="width:9.5%"></i><s style="left:5%"></s></div><span class="num">400 · คงเหลือ 212</span></div>
+          <div class="sim-row"><span>เจลแอลกอฮอล์</span><div class="bar"><i style="width:12%"></i><s style="left:7%"></s></div><span class="num">500 · คงเหลือ 296</span></div>
+          <div class="sim-row"><span>ถุงมือยาง</span><div class="bar"><i style="width:4.8%"></i><s style="left:2.6%"></s></div><span class="num">200 · คงเหลือ 109</span></div>
+          <div class="sim-row"><span><b>ทองคำแท่ง 1 สลึง</b></span><div class="bar"><i class="big" style="width:1%"></i><s style="left:0.1%"></s></div><span class="num" style="color:var(--error-dark)"><b>10 · คงเหลือ 3</b></span></div>
+          <div class="sim-row"><span>ไม่ถูกรางวัล</span><div class="bar"><i class="none" style="width:100%"></i></div><span class="num">4,190</span></div>
+          <hr class="divider">
+          <div class="row between"><span>ต้นทุนรวมที่คาด (ถ้าไม่มีจำนวนจำกัด)</span><b class="num">฿324,500</b></div>
+          <div class="row between small muted"><span>ชนเพดานงบรอบ ฿180,000 ที่ประมาณครั้งที่</span><span class="num">5,547</span></div>
+          <div class="row between small muted"><span>รางวัลที่คาดว่าสต็อกหมดก่อนครบ 10,000 ครั้ง</span><span>6 จาก 6 รายการที่จำกัดจำนวน</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ตัวเลข 4 ใบคำนวณสดทุกครั้งที่แก้น้ำหนัก/จำนวน/มูลค่า: ต้นทุนเฉลี่ย = Σ(น้ำหนัก × มูลค่า) ÷ น้ำหนักรวม; งบรวม = ต้นทุนเฉลี่ย × สิทธิ์ที่คาดไว้ (กรอกเองได้ ค่าเริ่มต้นจากรอบก่อน); ใบสุดท้ายเทียบกับเพดานงบ — แดงเมื่อเกิน เขียวเมื่ออยู่ในงบ</span></li>
+    <li><span class="pin">2</span><span>เกินงบ = เตือนระดับ error: ปุ่ม "บันทึกรางวัล" ยังกดได้แต่ต้องมีผู้อนุมัติงบยืนยัน (กล่องยืนยันบันทึกชื่อผู้อนุมัติ) — ไม่ปล่อยให้บันทึกเงียบๆ</span></li>
+    <li><span class="pin">3</span><span>เตือนรางวัลใหญ่ในโหมด A ตามสเปก 6.3 (เกณฑ์ ≥ ฿1,000/ชิ้น ปรับได้) พร้อมปุ่มย้ายไปโหมด B ในคลิกเดียว; ถ้าเลือก "คงไว้" ต้องระบุผู้อนุมัติ</span></li>
+    <li><span class="pin">4</span><span>กรอก "น้ำหนัก" เป็นจำนวนเต็ม ≥ 0 เท่านั้น ไม่มีช่องเปอร์เซ็นต์ — "โอกาส" เป็นผลลัพธ์อ่านอย่างเดียว คำนวณจากน้ำหนักเฉพาะรางวัลที่ยังมีของ จึงรวมครบ 100% เสมอ</span></li>
+    <li><span class="pin">5</span><span>รางวัลที่คงเหลือ = 0 ถูกตัดออกจากกองสุ่มทันที (แสดงชิป "หมด") และสัดส่วนที่เหลือเกลี่ยใหม่อัตโนมัติ; ตัวเลขโอกาสที่ลูกค้าเห็นเปลี่ยนตาม; ทุกการเกลี่ยบันทึกใน audit</span></li>
+    <li><span class="pin">6</span><span>รางวัลโหมด B ไม่ใช้น้ำหนัก — ทุกสิทธิ์ในกองมีโอกาสเท่ากัน กรอก "จำนวนผู้ได้รับ" ซึ่งต้องประกาศก่อนเปิดกิจกรรมและเปลี่ยนลดลงไม่ได้หลังเปิด; งบ B จองทั้งก้อนล่วงหน้า</span></li>
+    <li><span class="pin">7</span><span>ตัวคุมงบ: เพดานต่อรอบ/ต่อวัน, เพดานการถูกรางวัลต่อคน (แยกของทั่วไปกับรางวัลใหญ่), เพดานสิทธิ์สะสมต่อคน — ค่า "เมื่อชนเพดานงบ" ต้องเลือกให้ชัดเพราะกระทบประสบการณ์ลูกค้า</span></li>
+    <li><span class="pin">8</span><span>การันตีของปลอบใจ: นับพลาดติดกันต่อคนต่อกิจกรรม ถึง N ครั้งการลุ้นครั้งถัดไปได้ของปลอบใจแน่นอน; ลูกค้าเห็นตัวนับในหน้าลุ้น (หน้า 07)</span></li>
+    <li><span class="pin">9</span><span>จำลอง 10,000 ครั้งเป็นค่าคาดหวัง (น้ำหนัก × 10,000) ไม่ใช่การสุ่มจริง — ใช้ดูว่ารางวัลไหนจะหมดก่อน และเส้นเพดานงบจะชนที่ครั้งที่เท่าไร; "จำลองซ้ำ" สุ่มด้วยเมล็ดใหม่เพื่อดูความแกว่ง</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>แก้น้ำหนัก/จำนวนระหว่างเปิดกิจกรรม: มีผลกับการลุ้นครั้งถัดไปเท่านั้น และทุกการแก้บันทึกเป็นเวอร์ชันพร้อมผู้แก้ (นำไปแสดงใน snapshot ของหน้าบันทึกการลุ้น)</li>
+    <li>รางวัลที่มีคนถูกไปแล้วลบไม่ได้ — ตั้งจำนวนคงเหลือเป็น 0 ได้อย่างเดียว</li>
+    <li>มูลค่า/ชิ้นของรางวัลพอยท์คิดตามมูลค่าพอยท์ที่ตั้งไว้ (ที่นี่ 10 พอยท์ = ฿1)</li>
+    <li>การันตีของปลอบใจเป็นรางวัลมีต้นทุนจึงต้องมีมูลค่า &gt; 0 หรือเลือกชนิดที่ไม่มีต้นทุน เช่น คูปองหมดอายุเร็ว</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>เมื่อชนเพดานงบโหมด A ให้ "ออกผลไม่ถูกต่อ" (เสนอ) หรือ "หยุดรับการลุ้น" — เสนอแบบแรกเพื่อไม่ให้ลูกค้ากดแล้วใช้ไม่ได้ แต่ฝ่ายกฎหมายควรเห็นชอบว่าไม่เข้าข่ายหลอกลวง</li>
+    <li>เปิดเผยโอกาส % ให้ลูกค้าเห็นหรือไม่ (เสนอ: เปิด — โปร่งใสตามสเปก 6.6) และแสดงเป็นเปอร์เซ็นต์จริงหรือเป็นช่วง</li>
+    <li>เกณฑ์ "รางวัลใหญ่" ที่ระบบเตือน/แนะนำโหมด B (เสนอ ≥ ฿1,000/ชิ้น)</li>
+    <li>ต้นทุนของปลอบใจที่การันตีนับรวมในงบรอบหรือแยกงบต่างหาก (เสนอ: นับรวม)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

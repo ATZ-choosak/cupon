@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>บันทึกการลุ้นและตรวจสอบย้อนหลัง</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .ph{display:inline-block;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+  .ph.p1{background:#E3F2FD;color:#0D47A1}.ph.p2{background:#EDE7F6;color:#4527A0}.ph.p3{background:#FFF3E0;color:#BF360C}
+  .mode{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;border-radius:7px;font-weight:800;font-size:12px}
+  .mode.a{background:var(--info-lighter);color:var(--info-dark)}.mode.b{background:#F3E5F5;color:#6A1B9A}
+  .filters{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;padding:16px;background:#fff;border-bottom:1px solid var(--g200)}
+  tr.flag td{background:#FFF8E1!important}
+  tr.expand td{background:var(--g50)!important;padding:14px 16px}
+  .snap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 24px;font-size:12.5px}
+  .snap b{display:block;font-size:11.5px;color:var(--text2);font-weight:600}
+  .anom{border:1.5px solid var(--g300);border-radius:12px;padding:12px 14px;background:#fff}
+  .anom.warn{border-color:#FFD180;background:var(--warning-lighter)}
+  .anom.bad{border-color:#EF9A9A;background:var(--error-lighter)}
+</style>
+</head>
+<body data-shell="admin" data-nav="raffle" data-crumb="โปรโมชั่นและสิทธิพิเศษ / สุ่มรางวัล / บันทึกการลุ้น">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>บันทึกการลุ้น / ตรวจสอบย้อนหลัง <span class="ph p2">ระยะ 2</span></h4>
+      <p class="muted">ทุกสิทธิ์ที่ถูกใช้ถูกบันทึกไว้ — ใคร เมื่อไหร่ ทางไหน ได้อะไร และน้ำหนัก/ของคงเหลือตอนนั้น · อ่านอย่างเดียว แก้ไขไม่ได้</p>
+    </div>
+    <div class="row">
+      <a class="btn text grey" href="01-admin-list.html">← กลับรายการ</a>
+      <button class="btn outlined">ส่งออก CSV</button>
+      <button class="btn outlined">ส่งออกสำหรับผู้ตรวจสอบ (PDF)</button>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <div class="grid g4">
+      <div class="stat"><div class="l">สิทธิ์ที่ใช้แล้ว (EV-0013)</div><div class="v num">3,127</div><div class="small muted">โหมด A 2,481 · เข้ากอง B 646</div></div>
+      <div class="stat"><div class="l">ถูกรางวัล (โหมด A)</div><div class="v num">1,445 <span class="small muted" style="font-weight:500">58.2%</span></div><div class="small muted">คาดตามน้ำหนัก 58.1% · ต่างกัน 0.1 จุด</div></div>
+      <div class="stat"><div class="l">จ่ายจริง (โหมด A)</div><div class="v num">฿52,640</div><div class="small muted">คาดตามต้นทุนเฉลี่ย ฿55,710 (−5.5%)</div></div>
+      <div class="stat"><div class="l">ชนเพดานต่อคน</div><div class="v num">3 ราย</div><div class="small muted">ดูรายชื่อด้านล่าง</div></div>
+    </div>
+
+    <div class="card relative"><span class="pin abs">1</span>
+      <div class="filters">
+        <div class="field"><label>กิจกรรม</label><select class="select"><option>EV-0013 ลุ้นโชคปลายปี 2569</option><option>EV-0012</option><option>EV-0011</option></select></div>
+        <div class="field"><label>ช่วงเวลา</label><input class="input" value="11–12 ต.ค. 2569"></div>
+        <div class="field"><label>ทางที่ได้สิทธิ์</label><select class="select"><option>ทุกทาง</option><option>แลกด้วยพอยท์</option><option>ยอดซื้อ</option><option>สินค้าร่วมรายการ</option><option>ขั้นแคมเปญ</option><option>โค้ดในกล่อง</option></select></div>
+        <div class="field"><label>โหมด</label><select class="select"><option>A และ B</option><option>A</option><option>B</option></select></div>
+        <div class="field"><label>ผลลัพธ์</label><select class="select"><option>ทั้งหมด</option><option>ถูกรางวัล</option><option>ไม่ถูก</option><option>ชดเชย</option></select></div>
+        <div class="field"><label>ลูกค้า / อ้างอิง</label><input class="input" placeholder="ชื่อ รหัสลูกค้า หมายเลขสิทธิ์"></div>
+      </div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr>
+          <th>เวลา</th><th>ลูกค้า</th><th>ทางที่ได้สิทธิ์</th><th>โหมด</th><th>ผล</th>
+          <th class="relative">น้ำหนัก / คงเหลือ ตอนนั้น<span class="pin" style="margin-left:6px">2</span></th><th>อ้างอิง</th>
+        </tr></thead>
+        <tbody>
+          <tr><td class="nowrap">12 ต.ค. 69 14:32:08</td><td><b>ร้านยา ทดสอบ จำกัด</b><div class="small muted">C-00482</div></td><td>แลกด้วยพอยท์ <span class="small muted">(300 พอยท์)</span></td><td><span class="mode a">A</span></td><td><span class="chip success">ถูก</span> คูปองส่งฟรี 1 ครั้ง</td><td class="num">120/1,000 · คงเหลือ 731 → 730</td><td class="mono small">TK-13-004821<br>CP-88231</td></tr>
+          <tr><td class="nowrap">12 ต.ค. 69 14:29:51</td><td><b>ร้านยาสุขใจ สาขาลาดพร้าว</b><div class="small muted">C-00317</div></td><td>ยอดซื้อ <span class="small muted">(บิล SO-69-10231)</span></td><td><span class="mode a">A</span></td><td><span class="chip">ไม่ถูก</span></td><td class="num">419/1,000 · ไม่จำกัด</td><td class="mono small">TK-13-004807</td></tr>
+          <tr><td class="nowrap">12 ต.ค. 69 14:11:20</td><td><b>ร้านยาเภสัชกรเมือง</b><div class="small muted">C-00205</div></td><td>โค้ดในกล่อง <span class="small muted">(BX-7QK2-91)</span></td><td><span class="mode a">A</span></td><td><span class="chip success">ถูก</span> พอยท์ 100</td><td class="num">200/1,000 · ไม่จำกัด</td><td class="mono small">TK-13-004790<br>PT-55120</td></tr>
+          <tr><td class="nowrap">12 ต.ค. 69 13:58:44</td><td><b>ร้านยาชุมชนคลองหลวง</b><div class="small muted">C-00561</div></td><td>สินค้าร่วมรายการ <span class="small muted">(Blackmores)</span></td><td><span class="mode a">A</span></td><td><span class="chip success">ถูก</span> ถุงมือยาง 1 กล่อง</td><td class="num">20/1,000 · คงเหลือ 110 → 109</td><td class="mono small">TK-13-004776<br>CLM-0312</td></tr>
+          <tr class="expand"><td colspan="7">
+            <div class="row between mb8"><b>รายละเอียด TK-13-004776 (แถวด้านบน) — snapshot ตอนลุ้น</b><span class="chip soft-primary">อ่านอย่างเดียว</span></div>
+            <div class="snap">
+              <div><b>ผลจากเซิร์ฟเวอร์ตัดสินเมื่อ</b>12 ต.ค. 69 13:58:44.318 (ก่อนแสดงภาพ 1.2 วินาที)</div>
+              <div><b>น้ำหนักรวมของกองตอนนั้น</b>999 (ไม่มีทองคำ) · ถุงมือยางน้ำหนัก 20</div>
+              <div><b>สต็อกก่อน → หลัง</b>110 → 109</div>
+              <div><b>เวอร์ชันการตั้งค่ารางวัล</b>v7 (แก้โดย staff1 · 9 ต.ค. 69 10:12)</div>
+              <div><b>ที่มาของสิทธิ์</b>Blackmores Vitamin C 500 mg × 1 · บิล SO-69-10188 · ออกสิทธิ์ 10 ต.ค. 69</div>
+              <div><b>ส่งรางวัลไปที่</b>คิวคำขอรับของ CLM-0312 · สถานะ รอข้อมูลจัดส่ง</div>
+            </div>
+          </td></tr>
+          <tr class="flag"><td class="nowrap">12 ต.ค. 69 13:40:03</td><td><b>ร้านยาสุขใจ สาขาบางนา</b><div class="small muted">C-00342</div></td><td>ยอดซื้อ <span class="small muted">(บิล SO-69-10198)</span></td><td><span class="mode a">A</span></td><td><span class="chip success">ถูก</span> คูปองลด ฿50</td><td class="num">150/1,000 · คงเหลือ 865 → 864</td><td class="mono small">TK-13-004741<br>CP-88197</td></tr>
+          <tr class="flag"><td class="nowrap">12 ต.ค. 69 13:40:01</td><td><b>ร้านยาสุขใจ สาขาบางนา</b><div class="small muted">C-00342</div></td><td>ยอดซื้อ <span class="small muted">(บิล SO-69-10198)</span></td><td><span class="mode a">A</span></td><td><span class="chip success">ถูก</span> คูปองลด ฿50</td><td class="num">150/1,000 · คงเหลือ 866 → 865</td><td class="mono small">TK-13-004740<br>CP-88196</td></tr>
+          <tr><td class="nowrap">11 ต.ค. 69 20:15:30</td><td><b>ร้านยา ก้าวหน้า</b><div class="small muted">C-00419</div></td><td>แลกด้วยพอยท์ <span class="small muted">(300 พอยท์)</span></td><td><span class="mode a">A</span></td><td><span class="chip">ไม่ถูก</span> <span class="small muted">พลาดติดกัน 4/5</span></td><td class="num">419/1,000 · ไม่จำกัด</td><td class="mono small">TK-13-004602</td></tr>
+          <tr><td class="nowrap">11 ต.ค. 69 19:02:11</td><td><b>ร้านยาสุขใจ สาขาลาดพร้าว</b><div class="small muted">C-00317</div></td><td>ยอดซื้อ <span class="small muted">(บิล SO-69-10102)</span></td><td><span class="mode b">B</span></td><td><span class="chip soft-info">เข้ากองรอจับ</span> จับ 20 ธ.ค. 69</td><td class="num">— (โหมด B ไม่ใช้น้ำหนัก)</td><td class="mono small">TK-13-B-000214</td></tr>
+        </tbody>
+      </table></div>
+      <div class="pager"><span>แถวต่อหน้า 50</span><span>1–8 จาก 3,127</span></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card relative"><span class="pin abs">3</span>
+        <div class="card-h" style="padding-bottom:12px"><h6>ลูกค้าที่ชนเพดานต่อคน</h6><span class="small muted">EV-0013</span></div>
+        <div class="table-wrap"><table class="table">
+          <thead><tr><th>ลูกค้า</th><th>เพดานที่ชน</th><th>เมื่อ</th><th>ระบบทำอะไร</th></tr></thead>
+          <tbody>
+            <tr><td><b>ร้านยาสุขใจ สาขาบางนา</b></td><td>สิทธิ์สะสม 20/20 ต่อรอบ</td><td class="small">12 ต.ค. 13:42</td><td class="small">ไม่ออกสิทธิ์เพิ่ม · แจ้งลูกค้า</td></tr>
+            <tr><td><b>ร้านยา ก้าวหน้า</b></td><td>ถูกรางวัลมีมูลค่า 3/3 ต่อรอบ</td><td class="small">11 ต.ค. 17:05</td><td class="small">ลุ้นต่อได้ ผลมีมูลค่าถูกแทนด้วย "ไม่ถูก/ของปลอบใจ"</td></tr>
+            <tr><td><b>ร้านยาชุมชนคลองหลวง</b></td><td>แลกพอยท์ 5/5 ต่อวัน</td><td class="small">12 ต.ค. 09:12</td><td class="small">ปิดปุ่มแลกถึงเที่ยงคืน</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="card relative"><span class="pin abs">4</span>
+        <div class="card-h"><h6>ความผิดปกติที่ระบบตรวจพบ</h6><span class="chip warning">รอตรวจ 2</span></div>
+        <div class="card-b stack s12">
+          <div class="anom bad">
+            <div class="row between"><b>ใช้สิทธิ์ถี่ผิดปกติ</b><span class="chip error">รอตรวจ</span></div>
+            <div class="small mt8">ร้านยาสุขใจ สาขาบางนา ใช้ 12 สิทธิ์ใน 40 วินาที (เฉลี่ย 3.3 วินาที/ใบ) ผ่าน API ตัวเดียวกัน — เร็วเกินกว่ากดมือ</div>
+            <div class="row mt8"><button class="btn outlined sm">ดูรายการ 12 ใบ</button><button class="btn outlined sm">ระงับการลุ้นชั่วคราว</button><button class="btn text sm grey">ไม่พบความผิดปกติ</button></div>
+          </div>
+          <div class="anom warn">
+            <div class="row between"><b>ถูกรางวัลมีมูลค่าซ้ำ</b><span class="chip warning">รอตรวจ</span></div>
+            <div class="small mt8">ร้านยา ก้าวหน้า ถูกคูปอง/ของแถมมูลค่า ≥ ฿50 ติดกัน 3 ครั้งใน 24 ชั่วโมง — โอกาสทางทฤษฎีประมาณ 1.8%</div>
+            <div class="row mt8"><button class="btn outlined sm">ดูรายการ</button><button class="btn text sm grey">ไม่พบความผิดปกติ</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ตัวกรอง: กิจกรรม, ช่วงเวลา, ทางที่ได้, โหมด, ผล, ค้นหาชื่อ/รหัสลูกค้า/หมายเลขสิทธิ์ — ส่งออก CSV ตามตัวกรองที่เลือก; ตารางไม่มีปุ่มแก้ไข/ลบใดๆ</span></li>
+    <li><span class="pin">2</span><span>คอลัมน์ "น้ำหนัก/คงเหลือตอนนั้น" คือ snapshot ที่บันทึกพร้อมผลลุ้น (สเปก 6.6 ข้อ 2) ไม่ใช่ค่าปัจจุบัน; คลิกแถวเพื่อกางรายละเอียด (เวอร์ชันการตั้งค่า, น้ำหนักรวมของกอง, ที่มาของสิทธิ์, ปลายทางรางวัล); แถวสีเหลือง = ติดธงในรายการผิดปกติ</span></li>
+    <li><span class="pin">3</span><span>รายชื่อลูกค้าที่ชนเพดาน (สิทธิ์สะสม/ถูกรางวัลต่อคน/แลกต่อวัน) พร้อมสิ่งที่ระบบทำ — ใช้ตอบข้อร้องเรียน "ทำไมแลกไม่ได้/ทำไมไม่ถูก"</span></li>
+    <li><span class="pin">4</span><span>ความผิดปกติตรวจจากกฎ: ถูกรางวัลมูลค่าซ้ำเกินเกณฑ์เทียบโอกาสทางทฤษฎี และใช้สิทธิ์ถี่เกินเกณฑ์ต่อนาที; แอดมินทำได้ 3 อย่าง ดูรายการ / ระงับการลุ้นของลูกค้านั้นชั่วคราว / ปิดเรื่องว่าไม่ผิดปกติ (ต้องใส่หมายเหตุ) — ไม่มีการแก้ผล</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>รายการที่ระงับลูกค้าชั่วคราวไม่ยกเลิกผลที่ออกไปแล้ว — เพียงหยุดการลุ้นครั้งต่อไปจนกว่าจะตรวจเสร็จ</li>
+    <li>รางวัลชดเชย (จากหน้าจับรางวัล) แสดงเป็นแถวแยกป้าย "ชดเชย" พร้อมผู้อนุมัติ ไม่แทนที่แถวเดิม</li>
+    <li>โหมด B แสดงเป็น "เข้ากองรอจับ" จนกว่าจะจับ แล้วจึงมีแถวผลต่อสิทธิ์</li>
+    <li>ข้อมูลบันทึกเก็บตลอดอายุกิจกรรมอย่างน้อยตามระยะเวลาที่ฝ่ายบัญชี/กฎหมายกำหนด และสิทธิ์เข้าดูเฉพาะบทบาทที่ได้รับอนุญาต</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ระยะพัฒนา: การ "บันทึก" ทุกใบควรเริ่มตั้งแต่ระยะ 1 (ไม่เช่นนั้นย้อนหลังไม่ได้) แต่หน้านี้และการส่งออกอยู่ระยะ 2 ตามสเปก 6.8 — ขอให้ยืนยัน</li>
+    <li>เกณฑ์ความผิดปกติ (กี่ครั้ง/กี่วินาที/โอกาสต่ำกว่าเท่าไร) และระยะเวลาเก็บบันทึก</li>
+    <li>การระงับลูกค้าชั่วคราวโดยแอดมินคนเดียว หรือต้องมีผู้อนุมัติร่วม</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

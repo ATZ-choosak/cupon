@@ -1,0 +1,309 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สร้าง/แก้ไขโปรโมชั่น</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .dialog.xl{max-width:1080px}
+  .ed-grid{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:24px;align-items:start}
+  .sec-h{display:flex;justify-content:space-between;align-items:center;margin:0 0 12px}
+  .sec-h h6{font-size:15px;display:flex;align-items:center;gap:8px}
+  .itemcard{border:1px solid var(--g300);border-radius:10px;padding:14px;background:#fff;margin-bottom:12px}
+  .itemcard.err{border-color:var(--error)}
+  .itemcard-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .itemcard-h .t{display:flex;align-items:center;gap:6px;font-weight:700}
+  .handle{color:var(--g500);cursor:grab;letter-spacing:-2px;font-size:16px}
+  .choice{border:1px solid var(--g200);border-radius:8px;background:var(--g50);padding:10px 12px;margin-bottom:8px}
+  .choice-h{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text2);margin-bottom:6px}
+  .or-line{display:flex;align-items:center;gap:8px;color:var(--text2);font-size:11px;font-weight:700;margin:2px 0 8px}
+  .or-line::before,.or-line::after{content:"";flex:1;height:1px;background:var(--g300)}
+  .input.is-err{border:2px solid var(--error);padding:8px 11px}
+  .tip{background:var(--g800);color:#fff;font-size:12px;border-radius:8px;padding:10px 12px;white-space:pre-line;position:relative;margin-top:6px;line-height:1.55}
+  .tip::before{content:"";position:absolute;top:-5px;left:24px;width:10px;height:10px;background:var(--g800);transform:rotate(45deg)}
+  .x-btn{width:28px;height:28px;border:0;border-radius:6px;background:var(--error-lighter);color:var(--error-dark);font-weight:700;cursor:pointer}
+  .stack-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--g200)}
+  .stack-row:last-child{border-bottom:0}
+  .stack-row .d{font-size:11.5px;color:var(--text2)}
+  .side-card{border:1px solid var(--g300);border-radius:12px;background:#fff;padding:14px;margin-bottom:14px}
+  .side-card h6{font-size:13.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+  .var-grid{display:grid;gap:8px;font-size:12px}
+  .var-grid .v{background:var(--g50);border:1px solid var(--g200);border-radius:8px;padding:8px 10px}
+  .var-grid .v b{display:block;font-size:12px;margin-bottom:2px}
+  .mini-ul{margin:0;padding-left:16px;font-size:12px;display:grid;gap:3px}
+  .prev-card{border:1px solid var(--g200);border-radius:12px;padding:14px;background:#fff;box-shadow:var(--z1)}
+  .lock{opacity:.55}
+  .chip.sq{height:20px;font-size:10.5px;padding:0 7px}
+</style>
+</head>
+<body data-shell="admin" data-nav="promotion" data-crumb="โปรโมชั่นและสิทธิพิเศษ / โปรโมชั่น / แก้ไข">
+<main id="screen">
+
+  <div class="page-head" style="margin-bottom:16px">
+    <div>
+      <div class="crumbs" style="margin-bottom:6px"><a href="01-admin-list.html">← รายการโปรโมชั่น</a> / #5 ซื้อ Blackmores Vitamin C ครบ 3 ขวด ลด 10%</div>
+      <h4>โปรโมชั่น</h4>
+      <p class="muted">หน้านี้แสดง dialog "แก้ไขโปรโมชั่น" ตอนเปิดอยู่ (ถ้ากด "สร้างโปรโมชั่น" ชื่อ dialog เป็น "สร้างโปรโมชั่น" และฟอร์มว่างตามค่าเริ่มต้น)</p>
+    </div>
+    <div class="row"><a class="btn outlined" href="03-admin-tier-group.html">ดูตัวอย่างกลุ่มขั้นบันได →</a><a class="btn outlined primary" href="05-admin-simulator.html">ทดสอบในจำลองตะกร้า →</a></div>
+  </div>
+
+  <div class="backdrop"><div class="dialog xl">
+    <div class="dialog-h">แก้ไขโปรโมชั่น<button class="x">✕</button></div>
+    <div class="dialog-b">
+
+      <div class="alert info mb16" style="font-size:12.5px"><div>โปรนี้ถูกใช้สิทธิ์ไปแล้ว <b>27 ครั้ง</b> — การแก้ไขมีผลกับตะกร้าและออเดอร์ใหม่เท่านั้น ประวัติเดิมไม่เปลี่ยน</div></div>
+
+      <div class="ed-grid">
+        <!-- ================= FORM ================= -->
+        <div class="stack s24">
+
+          <!-- 1 basic -->
+          <div class="form-sec">
+            <div class="sec-h"><h6>ข้อมูลพื้นฐาน</h6></div>
+            <div class="stack">
+              <div class="field"><label>ชื่อ * <span class="pin">1</span></label><input class="input" value="ซื้อ Blackmores Vitamin C ครบ 3 ขวด ลด 10%"></div>
+              <div class="field"><label>คำอธิบาย</label><textarea class="textarea" rows="2">วิตามินซีเสริมภูมิคุ้มกัน ช่วงเปลี่ยนฤดู ซื้อครบรับส่วนลดทันที</textarea></div>
+              <div class="field"><label>เงื่อนไข *</label><textarea class="textarea" rows="2">ซื้อ Blackmores Vitamin C 500 mg (ขวดหรือกล่อง) รวมกันครบ 3 ขวด รับส่วนลด 10% สูงสุดไม่เกิน ฿150 ต่อบิล</textarea><span class="help">อธิบายเงื่อนไขสำหรับโปรโมชั่นนี้ — ข้อความนี้แสดงบนการ์ดของลูกค้า</span></div>
+              <div class="form-grid">
+                <div class="field"><label>โควต้าต่อลูกค้า</label><input class="input is-err" value="0"><span class="err">ต้องไม่น้อยกว่า 1 — เว้นว่างไว้หากไม่ต้องการจำกัดโควต้า</span></div>
+                <div class="field"><label>ลำดับความสำคัญ</label><input class="input readonly" value="#5 (ปรับด้วยการลากในหน้ารายการ)" readonly><span class="help">เว้นการตั้งตัวเลขเอง เหมือน Bundle เดิม</span></div>
+                <div class="field"><label>วันที่เริ่มต้น *</label><input class="input" value="1 ต.ค. 2569"></div>
+                <div class="field"><label>วันที่สิ้นสุด *</label><input class="input" value="31 ธ.ค. 2569"></div>
+              </div>
+              <label class="switch"><input type="checkbox" checked> ใช้งาน</label>
+              <div class="alert warning" style="font-size:12.5px"><div>ไม่สามารถบันทึกโปรโมชั่นนี้เป็นใช้งานอยู่ได้หากไม่มีรายการที่ต้องมีและผลตอบแทนอย่างน้อย 1 รายการ</div></div>
+              <div>
+                <label class="switch"><input type="checkbox"> ตรวจสอบหน่วยสินค้าอย่างเข้มงวด <span style="color:var(--g600)">ⓘ</span></label>
+                <div class="tip">เมื่อเปิดใช้งาน: เฉพาะหน่วยสินค้าที่ตรงกันเท่านั้นที่ถือว่าตรงเงื่อนไข
+เมื่อปิดใช้งาน: หน่วยสินค้าที่แตกต่างกันของสินค้าเดียวกันสามารถตรงเงื่อนไขได้หากจำนวนเทียบเท่ากัน</div>
+              </div>
+            </div>
+          </div>
+          <hr class="divider" style="margin:0">
+
+          <!-- 2 scope + required items -->
+          <div class="form-sec">
+            <div class="sec-h"><h6>เงื่อนไขและสินค้าที่ต้องมี <span class="chip soft-primary sq">ใหม่: ขอบเขต</span></h6></div>
+            <div class="form-grid mb16">
+              <div class="field"><label>ประเภทเงื่อนไข</label>
+                <select class="select" name="ctype"><option value="qty" selected>ตามจำนวน</option><option value="amt">ตามจำนวนเงินรวม</option></select>
+              </div>
+              <div class="field" data-reveal="ctype=amt"><label>จำนวนเงินรวม *</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="1,000"></div><span class="help">จำนวนเงินขั้นต่ำที่ต้องการสำหรับโปรโมชั่นนี้</span></div>
+            </div>
+
+            <div class="label mb8" style="display:flex;align-items:center;gap:6px">ขอบเขตสินค้าที่นับเข้าเงื่อนไข <span class="chip soft-primary sq">ใหม่</span> <span class="pin">2</span></div>
+            <div class="radio-cards c3">
+              <label class="radio-card"><input type="radio" name="scope" value="items" checked><span><span class="rc-t">เลือกรายสินค้า/หน่วย</span><span class="rc-d" style="display:block">แบบ Bundle เดิม · เลือกทีละหน่วย</span></span></label>
+              <label class="radio-card"><input type="radio" name="scope" value="brand"><span><span class="rc-t">ทั้งแบรนด์</span><span class="rc-d" style="display:block">เช่น Blackmores ทุกสินค้า</span></span></label>
+              <label class="radio-card"><input type="radio" name="scope" value="cat"><span><span class="rc-t">ทั้งหมวดหมู่</span><span class="rc-d" style="display:block">เช่น หมวดเวชภัณฑ์</span></span></label>
+            </div>
+
+            <!-- scope = items -->
+            <div data-reveal="scope=items" class="mt16">
+              <div class="sec-h"><h6 style="font-size:14px">สินค้าที่ต้องมี</h6><button class="btn outlined sm">＋ เพิ่มสินค้าที่ต้องมี</button></div>
+
+              <div class="itemcard">
+                <div class="itemcard-h"><span class="t"><span class="handle">⋮⋮</span>สินค้าที่ต้องมี #1</span><button class="x-btn">−</button></div>
+                <div class="stack">
+                  <div class="field" data-reveal="ctype=qty"><label>จำนวนที่ต้องการ</label><input class="input" value="3"><span class="help">จำนวนสินค้าที่ต้องเลือกจากตัวเลือก — รวมทุกตัวเลือกให้ครบ</span></div>
+                  <div data-reveal="ctype=amt">
+                    <label class="switch"><input type="checkbox"> <span><b>ตรงกับสินค้าใดก็ได้</b><br><span class="muted small">เมื่อเปิดใช้งาน หน่วยสินค้าใดๆ ในตะกร้าสามารถตอบสนองเงื่อนไขนี้ได้ (ตัวเลือกจะถูกละเว้น)</span></span></label>
+                  </div>
+                  <div class="soft small" data-reveal="ctype=qty">ช่อง "ตรงกับสินค้าใดก็ได้" แสดงเฉพาะประเภท <b>ตามจำนวนเงินรวม</b> (สลับประเภทด้านบนเพื่อดู) — เปิดแล้วสินค้าใดก็ได้ในตะกร้านับเข้าเงื่อนไข และซ่อนรายการตัวเลือก พร้อมข้อความ "รายการนี้จะตรงกับหน่วยสินค้าใดๆก็ตาม ในตะกร้าของลูกค้า"</div>
+                  <div>
+                    <div class="row between mb8"><span class="semi" style="font-size:13px">ตัวเลือกสินค้า <span class="muted small">(หลายตัวเลือก = เงื่อนไข OR) <span class="pin">3</span></span></span><button class="btn outlined sm">＋ เพิ่มตัวเลือก</button></div>
+                    <div class="choice">
+                      <div class="choice-h"><span><span class="handle">⋮⋮</span> ตัวเลือก #1</span><button class="x-btn" style="width:24px;height:24px">−</button></div>
+                      <div class="field"><label>หน่วยสินค้า</label><input class="input" value="BM-VC500 Blackmores Vitamin C 500 mg - ขวด"></div>
+                    </div>
+                    <div class="or-line">หรือ</div>
+                    <div class="choice">
+                      <div class="choice-h"><span><span class="handle">⋮⋮</span> ตัวเลือก #2</span><button class="x-btn" style="width:24px;height:24px">−</button></div>
+                      <div class="field"><label>หน่วยสินค้า</label><input class="input" value="BM-VC500 Blackmores Vitamin C 500 mg - กล่อง (6 ขวด)"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="itemcard err">
+                <div class="itemcard-h"><span class="t"><span class="handle">⋮⋮</span>สินค้าที่ต้องมี #2 <span class="chip soft-error sq">ยังไม่ครบ</span></span><button class="x-btn">−</button></div>
+                <div class="stack">
+                  <div class="field" data-reveal="ctype=qty"><label>จำนวนที่ต้องการ</label><input class="input" value="1"></div>
+                  <div class="row between"><span class="semi" style="font-size:13px">ตัวเลือกสินค้า <span class="muted small">(หลายตัวเลือก = เงื่อนไข OR)</span></span><button class="btn outlined sm">＋ เพิ่มตัวเลือก</button></div>
+                  <div class="alert error" style="font-size:12.5px"><div>รายการที่ต้องมีนี้ต้องมีตัวเลือกอย่างน้อย 1 ตัวเลือกเพื่อบันทึก</div></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- scope = brand -->
+            <div data-reveal="scope=brand" class="mt16">
+              <div class="form-grid">
+                <div class="field"><label>แบรนด์ *</label><select class="select"><option>Blackmores</option><option>Dumex</option><option>Pampers</option></select></div>
+                <div class="field"><label>นับจาก</label><select class="select"><option>จำนวนชิ้นรวม</option><option>ยอดเงินรวม</option></select></div>
+                <div class="field span2"><label>ยกเว้นรายสินค้า</label><div class="row wrap"><span class="chip outline">Blackmores Pregnancy Gold ✕</span><span class="chip outline">Blackmores Bio C 1000 mg ✕</span><button class="btn outlined sm">＋ เพิ่มรายการยกเว้น</button></div><span class="help">สินค้าที่ยกเว้นไม่ถูกนับเข้าเงื่อนไขและไม่ได้รับส่วนลด/ของแถม</span></div>
+              </div>
+            </div>
+            <!-- scope = category -->
+            <div data-reveal="scope=cat" class="mt16">
+              <div class="form-grid">
+                <div class="field"><label>หมวดหมู่ *</label><select class="select"><option>เวชภัณฑ์</option><option>ยาสามัญประจำบ้าน</option><option>วิตามิน/อาหารเสริม</option></select></div>
+                <div class="field"><label>นับจาก</label><select class="select"><option>ยอดเงินรวม</option><option>จำนวนชิ้นรวม</option></select></div>
+                <div class="field span2"><label>ยกเว้นรายสินค้า</label><div class="row wrap"><span class="chip outline">เข็มฉีดยา (กล่อง) ✕</span><button class="btn outlined sm">＋ เพิ่มรายการยกเว้น</button></div></div>
+              </div>
+            </div>
+          </div>
+          <hr class="divider" style="margin:0">
+
+          <!-- 3 reward -->
+          <div class="form-sec">
+            <div class="sec-h"><h6>ผลตอบแทน <span class="chip soft-primary sq">ใหม่</span> <span class="pin">4</span></h6></div>
+            <div class="radio-cards c3">
+              <label class="radio-card"><input type="radio" name="rw" value="gift"><span><span class="rc-t">ของแถม</span><span class="rc-d" style="display:block">ซื้อครบแล้วรับสินค้าฟรี</span></span></label>
+              <label class="radio-card"><input type="radio" name="rw" value="disc" checked><span><span class="rc-t">ส่วนลด</span><span class="rc-d" style="display:block">ลดเป็นบาทหรือ %</span></span></label>
+              <label class="radio-card"><input type="radio" name="rw" value="ship"><span><span class="rc-t">ฟรีค่าจัดส่ง</span><span class="rc-d" style="display:block">ไม่เสียค่าส่ง</span></span></label>
+            </div>
+
+            <div data-reveal="rw=disc" class="mt16 stack">
+              <div class="row wrap">
+                <label class="check"><input type="radio" name="dtype" value="baht"> ลดเป็นบาท (฿)</label>
+                <label class="check"><input type="radio" name="dtype" value="pct" checked> ลดเป็นเปอร์เซ็นต์ (%)</label>
+              </div>
+              <div class="form-grid">
+                <div class="field"><label data-reveal="dtype=pct">ส่วนลด (%) *</label><label data-reveal="dtype=baht" class="hidden">ส่วนลด (บาท) *</label><div class="input-adorn"><input class="input" value="10"><span class="adorn">%</span></div></div>
+                <div class="field" data-reveal="dtype=pct"><label>ลดสูงสุดไม่เกิน</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="150"></div><span class="help">เว้นว่าง = ไม่จำกัดเพดาน</span></div>
+              </div>
+              <div class="alert info" style="font-size:12.5px"><div>ส่วนลดคิดเฉพาะสินค้าที่เข้าเงื่อนไขของโปรนี้ (ในที่นี้ Vitamin C ที่นับครบ 3 ขวด) — ไม่ใช่ทั้งบิล · ราคาฐานคือราคาหลัง Flash Sale (ถ้ามี)</div></div>
+            </div>
+
+            <div data-reveal="rw=gift" class="mt16 stack">
+              <div class="sec-h" style="margin:0"><h6 style="font-size:14px">สินค้าฟรี</h6><button class="btn outlined sm">＋ เพิ่มสินค้าฟรี</button></div>
+              <div class="itemcard" style="margin:0">
+                <div class="itemcard-h"><span class="t"><span class="handle">⋮⋮</span>สินค้าฟรี #1</span><button class="x-btn">−</button></div>
+                <div class="stack">
+                  <div class="field"><label>จำนวน</label><input class="input" value="1"></div>
+                  <div class="field"><label>หน่วยสินค้า</label><input class="input" value="BT-PP01 ขวดนม PP - ชิ้น"></div>
+                  <span class="help">สต็อกคงเหลือ 0 ชิ้น — ระบบจะปิดโปรชั่วคราวและแจ้งเตือนเมื่อสต็อกของแถมหมด</span>
+                </div>
+              </div>
+            </div>
+
+            <div data-reveal="rw=ship" class="mt16">
+              <div class="alert info" style="font-size:12.5px"><div>ฟรีค่าจัดส่งเฉพาะส่วนของสินค้าที่เข้าเงื่อนไขของโปรนี้ (ไม่ใช่ทั้งบิล) — ไม่มีฟิลด์เพิ่มเติม</div></div>
+            </div>
+          </div>
+          <hr class="divider" style="margin:0">
+
+          <!-- 4 multiplier -->
+          <div class="form-sec">
+            <div class="sec-h"><h6>การทวีคูณ <span class="chip soft-primary sq">ใหม่</span> <span class="pin">5</span></h6></div>
+            <div data-reveal="dtype=pct">
+              <div class="radio-cards c2 lock">
+                <label class="radio-card"><input type="radio" name="mult_a" disabled><span><span class="rc-t">ทวีคูณตามจำนวนที่ซื้อ</span><span class="rc-d" style="display:block">ซื้อ 2 เท่า ได้ 2 ชุด</span></span></label>
+                <label class="radio-card"><input type="radio" name="mult_a" checked disabled><span><span class="rc-t">จำกัด 1 ชุดต่อบิล</span><span class="rc-d" style="display:block">ได้ผลตอบแทนครั้งเดียวต่อบิล</span></span></label>
+              </div>
+              <div class="help mt8">ล็อกเป็น "จำกัด 1 ชุดต่อบิล" — ส่วนลด % คิดจากยอดสินค้าที่เข้าเงื่อนไขอยู่แล้ว ซื้อมากขึ้นลดมากขึ้นอยู่แล้ว จึงไม่ต้องทวีคูณ</div>
+            </div>
+            <div data-reveal="dtype=baht" class="hidden">
+              <div class="radio-cards c2">
+                <label class="radio-card"><input type="radio" name="mult_b" value="m"><span><span class="rc-t">ทวีคูณตามจำนวนที่ซื้อ</span><span class="rc-d" style="display:block">ซื้อ 2 เท่า ได้ 2 ชุด</span></span></label>
+                <label class="radio-card"><input type="radio" name="mult_b" value="o" checked><span><span class="rc-t">จำกัด 1 ชุดต่อบิล</span><span class="rc-d" style="display:block">ได้ผลตอบแทนครั้งเดียวต่อบิล</span></span></label>
+              </div>
+              <div class="field mt8" style="max-width:260px"><label>เพดานจำนวนชุดต่อบิล</label><input class="input" value="5"><span class="help">ใช้เมื่อเลือกทวีคูณ · เว้นว่าง = ไม่จำกัด</span></div>
+            </div>
+          </div>
+          <hr class="divider" style="margin:0">
+
+          <!-- 5 stack -->
+          <div class="form-sec">
+            <div class="sec-h"><h6>ใช้ร่วมกับสิทธิ์อื่น <span class="chip soft-primary sq">ใหม่</span> <span class="pin">6</span></h6></div>
+            <div class="card flat" style="border:1px solid var(--g200)"><div class="card-b" style="padding:4px 16px">
+              <div class="stack-row"><div><b>ใช้ร่วมกับคูปองได้</b><div class="d">นโยบายร่วม: อนุญาต · ปิดได้เฉพาะโปรนี้ = คูปองไม่ลดซ้ำกับสินค้าที่โปรนี้จับคู่แล้ว</div></div><div class="seg"><button class="on">ได้</button><button>ไม่ได้</button></div></div>
+              <div class="stack-row"><div><b>ใช้ร่วมกับโปรโมชั่นอื่นได้</b><div class="d">นโยบายร่วม: อนุญาต · โปรอื่นที่ใช้สินค้าคนละรายการยังได้ตามปกติ</div></div><div class="seg"><button class="on">ได้</button><button>ไม่ได้</button></div></div>
+              <div class="stack-row lock"><div><b>ใช้ร่วมกับการชำระด้วยพอยท์ได้</b><div class="d" style="color:var(--error-dark)">นโยบายร่วมปิดอยู่ — เปิดเฉพาะโปรนี้ไม่ได้ (แก้ที่ตั้งค่านโยบายร่วม)</div></div><div class="seg"><button>ได้</button><button class="on">ไม่ได้</button></div></div>
+            </div></div>
+          </div>
+        </div>
+
+        <!-- ================= SIDE ================= -->
+        <aside style="position:sticky;top:12px">
+          <div class="side-card relative">
+            <span class="pin abs">7</span>
+            <h6>ตัวอย่างที่ลูกค้าเห็น <span class="chip soft-success sq">สด</span></h6>
+            <div class="prev-card">
+              <div class="row between top"><b style="font-size:14px;line-height:1.35">ซื้อ Blackmores Vitamin C ครบ 3 ขวด ลด 10%</b><span class="chip success sq">ใช้งาน</span></div>
+              <p class="small muted mt8">วิตามินซีเสริมภูมิคุ้มกัน ช่วงเปลี่ยนฤดู ซื้อครบรับส่วนลดทันที</p>
+              <p class="small muted mt8">ซื้อ Blackmores Vitamin C 500 mg รวมกันครบ 3 ขวด รับส่วนลด 10% สูงสุดไม่เกิน ฿150 ต่อบิล</p>
+              <div class="small mt8" style="display:grid;gap:3px"><div><b>ประเภทเงื่อนไข:</b> ตามจำนวน</div><div><b>ระยะเวลา:</b> 1 ต.ค. 2569 - 31 ธ.ค. 2569</div></div>
+              <div class="soft mt8"><div class="semi small">โควต้าต่อลูกค้า</div><div class="row between small"><span class="muted">ใช้แล้ว: 0</span><span style="color:var(--success-dark)">โควต้าที่เหลือ: 2</span></div></div>
+              <div class="small mt8"><b>ส่วนลด:</b> 10% (สูงสุด ฿150)</div>
+              <button class="btn contained block mt8 sm">ดูรายละเอียด</button>
+            </div>
+            <div class="mt8 small muted">แท็กบนการ์ดสินค้า:</div>
+            <div class="mt8"><span class="promo-tag">ลด 10%</span> <span class="promo-tag">ซื้อครบ 3 ขวด</span></div>
+          </div>
+
+          <div class="side-card relative">
+            <span class="pin abs">8</span>
+            <h6>ถ้าเลือกแบบอื่น จะเห็นฟิลด์อะไร</h6>
+            <div class="var-grid">
+              <div class="v"><b>ผลตอบแทน = ของแถม</b>รายการสินค้าฟรี (หน่วยสินค้า + จำนวน เพิ่ม/ลบ/ลากเรียงได้) · แสดงสต็อกคงเหลือ · ซ่อนฟิลด์ส่วนลด · ทวีคูณเลือกได้</div>
+              <div class="v"><b>ผลตอบแทน = ฟรีค่าจัดส่ง</b>ไม่มีฟิลด์เพิ่ม — ข้อความอธิบายว่าฟรีเฉพาะรายการที่เข้าเงื่อนไข · ทวีคูณไม่เกี่ยวข้อง (ล็อก 1 ชุด)</div>
+              <div class="v"><b>ขอบเขต = ทั้งแบรนด์ / ทั้งหมวด</b>เลือกแบรนด์/หมวด + นับจาก (จำนวนชิ้น/ยอดเงิน) + ยกเว้นรายสินค้า · ซ่อนรายการ "สินค้าที่ต้องมี"</div>
+              <div class="v"><b>ประเภทเงื่อนไข = ตามจำนวนเงินรวม</b>ช่อง "จำนวนเงินรวม" โผล่ · แต่ละรายการมีสวิตช์ "ตรงกับสินค้าใดก็ได้" แทนช่องจำนวน</div>
+            </div>
+            <div class="small muted mt8">ลองกดตัวเลือกในฟอร์มด้านซ้ายเพื่อดูสลับสด</div>
+          </div>
+
+          <div class="side-card">
+            <h6>ข้อความตรวจสอบก่อนบันทึก</h6>
+            <ul class="mini-ul">
+              <li>ต้องกรอก ชื่อ เงื่อนไข วันที่เริ่ม–สิ้นสุด</li>
+              <li>"รายการที่ต้องมีทั้งหมดต้องมีตัวเลือกที่ถูกต้องอย่างน้อย 1 ตัวเลือก" (ยกเว้นเปิด "ตรงกับสินค้าใดก็ได้")</li>
+              <li>"ต้องมีสินค้าฟรีอย่างน้อย 1 รายการ" เมื่อผลตอบแทนเป็นของแถมและตั้งเป็นใช้งาน</li>
+              <li>วันที่สิ้นสุดต้องไม่ก่อนวันที่เริ่ม</li>
+              <li>ส่วนลด % ต้องอยู่ระหว่าง 1–100 · ส่วนลดบาทต้องมากกว่า 0</li>
+            </ul>
+          </div>
+
+          <div class="alert warning relative" style="font-size:12.5px">
+            <span class="pin abs">9</span>
+            <div><div class="a-title">สินค้าทับซ้อนกับโปรอื่น</div>Blackmores Vitamin C อยู่ในขอบเขตของ <b>#1 ซื้อ Blackmores ครบ ฿1,000</b> ซึ่งมี priority สูงกว่า ถ้าตะกร้าเข้าทั้งสองโปร ระบบใช้ #1 โปรนี้จะไม่ถูกใช้ <a href="05-admin-simulator.html">ลองในจำลองตะกร้า →</a></div>
+          </div>
+        </aside>
+      </div>
+    </div>
+    <div class="dialog-f">
+      <a class="btn text grey" href="01-admin-list.html">ยกเลิก</a>
+      <a class="btn contained" href="01-admin-list.html">บันทึก</a>
+    </div>
+  </div></div>
+
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ข้อมูลพื้นฐาน</b> ใช้ฟิลด์เดิมของเซตของแถมทุกตัว (ชื่อ คำอธิบาย เงื่อนไข โควต้า วันที่ ใช้งาน ตรวจหน่วยอย่างเข้มงวด) · ตรวจแบบ inline ใต้ช่อง (ตัวอย่างโควต้า = 0 ขึ้นขอบแดง) · กด Enter ในฟอร์มเท่ากับบันทึก (หน่วงกันกดซ้ำ 0.5 วินาที) · ลำดับความสำคัญเป็นแบบอ่านอย่างเดียว ปรับที่หน้ารายการ</span></li>
+    <li><span class="pin">2</span><span><b>ขอบเขตสินค้า</b> <span class="chip soft-primary sq">ใหม่</span> ค่าเริ่มต้น = "เลือกรายสินค้า/หน่วย" (พฤติกรรมเดิมทั้งหมด) · เลือกแบรนด์/หมวดแล้วช่อง "สินค้าที่ต้องมี" ถูกแทนที่ด้วยตัวเลือกแบรนด์/หมวด + ยกเว้นรายสินค้า · เปลี่ยนขอบเขตหลังกรอกแล้ว ระบบถามยืนยันก่อนล้างรายการเดิม</span></li>
+    <li><span class="pin">3</span><span><b>ตัวเลือก (OR)</b> หลายตัวเลือกในรายการเดียว = ลูกค้าเลือกตัวใดก็ได้ รวมกันให้ครบ "จำนวนที่ต้องการ" · เพิ่มตัวเลือกใหม่ไม่ได้ถ้ามีตัวเลือกที่ยังว่างอยู่ (toast "กรุณาเติมข้อมูลตัวเลือกให้ครบถ้วน…") · ลากเรียงลำดับตัวเลือกได้</span></li>
+    <li><span class="pin">4</span><span><b>ผลตอบแทน</b> <span class="chip soft-primary sq">ใหม่</span> เลือกได้ 1 อย่างต่อโปร · สลับแล้วข้อมูลของแบบเดิมถูกเก็บไว้ในฟอร์มจนกว่าจะบันทึก (กลับมาเลือกได้ไม่หาย) · ส่วนลด % ตั้งเพดานบาทได้</span></li>
+    <li><span class="pin">5</span><span><b>การทวีคูณ</b> <span class="chip soft-primary sq">ใหม่</span> "ทวีคูณ" = ซื้อ 2 เท่าของเงื่อนไข ได้ 2 ชุด (ตั้งเพดานชุดต่อบิลได้) · "จำกัด 1 ชุดต่อบิล" = ไม่ว่าซื้อกี่เท่าได้ครั้งเดียว · ส่วนลด % ถูกล็อกเป็น 1 ชุดพร้อมคำอธิบาย</span></li>
+    <li><span class="pin">6</span><span><b>ใช้ร่วมกับสิทธิ์อื่น</b> <span class="chip soft-primary sq">ใหม่</span> ค่าเริ่มต้นตามนโยบายร่วมของระบบ โปรนี้ "ปิด" ให้เข้มกว่าได้ แต่ "เปิด" เกินนโยบายร่วมไม่ได้ (แถวสีจางพร้อมเหตุผล)</span></li>
+    <li><span class="pin">7</span><span><b>ตัวอย่างที่ลูกค้าเห็น</b> เปลี่ยนตามฟอร์มทันที (ชื่อ เงื่อนไข ช่วงวันที่ ผลตอบแทน แท็กบนการ์ดสินค้า) ใช้ component เดียวกับหน้า 06 — เห็นสถานะ "ยังไม่เริ่มต้น/ใช้งาน" ตามวันที่กรอก</span></li>
+    <li><span class="pin">8</span><span><b>ฟิลด์ที่เปลี่ยนตามตัวเลือก</b> แผงสรุปให้ทีมพัฒนาและลูกค้าเห็นภาพรวมว่าแต่ละตัวเลือกเปิดฟิลด์อะไร โดยไม่ต้องคลิกทดลองทีละแบบ</span></li>
+    <li><span class="pin">9</span><span><b>เตือนสินค้าทับซ้อน</b> ตรวจตอนเปิดฟอร์มและเมื่อเปลี่ยนขอบเขต: ถ้าสินค้าอยู่ในขอบเขตของโปรที่ priority สูงกว่า จะแสดงชื่อโปรนั้นและลิงก์ไปจำลองตะกร้า — เป็นคำเตือน ไม่บล็อกการบันทึก</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>บันทึกเป็นใช้งานได้เมื่อมี "สินค้าที่ต้องมี"/ขอบเขต และผลตอบแทนครบ (ของแถมต้องมีสินค้าฟรีอย่างน้อย 1 รายการ) — บันทึกเป็นไม่ใช้งานได้เสมอ</li>
+    <li>ปุ่ม "บันทึก" แสดง toast สำเร็จ แล้วกลับหน้ารายการ · เกิดข้อผิดพลาดจากเซิร์ฟเวอร์ = dialog ไม่ปิด แสดง toast แดง</li>
+    <li>แก้โปรที่ใช้ไปแล้ว: ประวัติการใช้สิทธิ์เก็บ snapshot เงื่อนไข/ผลตอบแทนตอนใช้ ไม่เปลี่ยนตาม</li>
+    <li>โปรเดิม (Bundle) เปิดแล้วเห็นขอบเขต = เลือกรายสินค้า, ผลตอบแทน = ของแถม, ทวีคูณ = จำกัด 1 ชุด/บิล, ใช้ร่วม = ตามนโยบายร่วม</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ส่วนลด % ทวีคูณไม่ได้ (ล็อกไว้) — ลูกค้าเห็นด้วยหรือต้องการ "ลด % ต่อชุด" ที่ทวีคูณได้</li>
+    <li>โปร "เลือกรายสินค้า" ที่สินค้าซ้ำกับโปรแบบแบรนด์/หมวดที่ priority สูงกว่า ให้แพ้ทั้งโปร (ค่าเริ่มต้น) หรือแพ้เฉพาะสินค้าที่ชนกัน</li>
+    <li>ของแถมได้พอยท์หรือไม่ (ค่าเริ่มต้น = 0 พอยท์ เพราะราคา ฿0)</li>
+    <li>ส่วนลด ฿ ที่ซื้อครบหลายเท่าแล้วเพดานชุดเต็ม: ปัดลงเป็นเพดานชุด (ค่าเริ่มต้น)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

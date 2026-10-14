@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ปรับเซตร้านยาเปิดใหม่ ขนาด M</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .bld{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+  .sticky{position:sticky;top:16px}
+  .lk{display:inline-block;width:18px;height:18px;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23B32026' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='11' width='14' height='10' rx='2'/%3E%3Cpath d='M8 11V7a4 4 0 0 1 8 0v4'/%3E%3C/svg%3E") center/contain no-repeat;flex:none}
+  .krow{display:grid;grid-template-columns:44px 48px minmax(0,1fr) 78px 128px 92px;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--g200)}
+  .krow:last-child{border-bottom:0}
+  .krow .thumb{width:48px;height:48px;border-radius:8px;background:linear-gradient(135deg,var(--g100),var(--g300))}
+  .krow .ctl{display:flex;align-items:center;justify-content:center}
+  .krow .nm{display:grid;gap:3px;justify-items:start}
+  .krow .nm b{font-size:13.5px}
+  .krow .pr{text-align:right;font-size:12.5px}
+  .krow .sub{text-align:right;font-weight:700;font-variant-numeric:tabular-nums}
+  .krow.locked{background:var(--g50)}
+  .krow.off .thumb,.krow.off .nm{opacity:.55}
+  .krow.off .sub{color:var(--g500)}
+  .krow.oos{background:var(--g50)}
+  .krow .k-err{display:none;grid-column:3/-1;color:var(--error-dark);font-size:12px;font-weight:600}
+  .krow.invalid{background:var(--error-lighter)}
+  .krow.invalid .k-err{display:block}
+  .krow.invalid .qty{border-color:var(--error)}
+  .qty input{width:44px;border:0;text-align:center;font-weight:600;background:#fff;min-height:32px;font-size:13px;padding:0;outline:0}
+  .qty button:disabled{opacity:.3;cursor:not-allowed}
+  .qty.dis{opacity:.45;pointer-events:none}
+  .sec-h{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 16px 12px}
+  .net{font-size:28px;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums}
+  .delta{border:1px dashed var(--warning);background:var(--warning-lighter);border-radius:8px;padding:8px 12px;font-size:12.5px;margin:8px 0}
+  .delta.flash{animation:flash 1.4s ease-out}
+  @keyframes flash{from{background:#FFE082}to{background:var(--warning-lighter)}}
+  .save{background:var(--success-lighter);color:#1E4620;border-radius:8px;padding:10px 12px;font-size:12.5px;margin-top:8px}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="starterkit">
+<main id="screen">
+  <div class="crumbs"><a href="04-customer-catalog.html">เซตร้านยาเปิดใหม่</a> / เซตร้านยาเปิดใหม่ ขนาด M</div>
+  <div class="page-head">
+    <div><h4>เซตร้านยาเปิดใหม่ ขนาด M</h4><p class="muted">ยาสามัญประจำบ้านและเวชภัณฑ์พื้นฐานครบ 8 รายการ เลือกอาหารเสริมและเวชสำอางเพิ่มได้ตามร้านของคุณ</p></div>
+    <span class="chip soft-success lg">บัญชีร้านค้า (B2B) · ร้านยา ทดสอบ จำกัด · สั่งเซตนี้ได้</span>
+  </div>
+
+  <div class="bld" data-kit data-discount="2000">
+    <div class="stack s24">
+
+      <div class="card" style="overflow:hidden">
+        <div class="sec-h"><div><h6>สินค้าบังคับ <span class="chip soft-primary">8 รายการ</span> <span class="pin">1</span></h6><div class="small muted mt8">ถอดออกไม่ได้ · เพิ่มจำนวนได้ ลดต่ำกว่าขั้นต่ำไม่ได้ <span class="pin">2</span></div></div></div>
+        <div class="krow locked" data-type="req" data-price="45" data-min="100">
+          <div class="ctl"><i class="lk" title="บังคับ ถอดออกไม่ได้"></i></div><span class="thumb"></span>
+          <div class="nm"><b>พาราเซตามอล 500 มก.</b><span class="small muted">หน่วย: กล่อง · ขั้นต่ำ 100 กล่อง</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿45</b><div class="xs muted">/กล่อง</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="100" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿4,500</div>
+          <div class="k-err">จำนวนต้องไม่ต่ำกว่าขั้นต่ำ 100 กล่อง — ระบบคำนวณด้วยจำนวนขั้นต่ำให้ก่อน</div>
+        </div>
+        <div class="krow locked" data-type="req" data-price="85" data-min="60">
+          <div class="ctl"><i class="lk" title="บังคับ ถอดออกไม่ได้"></i></div><span class="thumb"></span>
+          <div class="nm"><b>ยาน้ำแก้ไอ</b><span class="small muted">หน่วย: ขวด · ขั้นต่ำ 60 ขวด</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿85</b><div class="xs muted">/ขวด</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="60" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿5,100</div>
+          <div class="k-err">จำนวนต้องไม่ต่ำกว่าขั้นต่ำ 60 ขวด — ระบบคำนวณด้วยจำนวนขั้นต่ำให้ก่อน</div>
+        </div>
+        <div class="krow locked" data-type="req" data-price="55" data-min="60">
+          <div class="ctl"><i class="lk" title="บังคับ ถอดออกไม่ได้"></i></div><span class="thumb"></span>
+          <div class="nm"><b>เจลแอลกอฮอล์</b><span class="small muted">หน่วย: ขวด · ขั้นต่ำ 60 ขวด</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿55</b><div class="xs muted">/ขวด</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="60" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿3,300</div>
+          <div class="k-err">จำนวนต้องไม่ต่ำกว่าขั้นต่ำ 60 ขวด — ระบบคำนวณด้วยจำนวนขั้นต่ำให้ก่อน</div>
+        </div>
+        <div class="krow locked" data-type="req" data-price="120" data-min="20">
+          <div class="ctl"><i class="lk" title="บังคับ ถอดออกไม่ได้"></i></div><span class="thumb"></span>
+          <div class="nm"><b>ถุงมือยาง</b><span class="small muted">หน่วย: กล่อง · ขั้นต่ำ 20 กล่อง</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿120</b><div class="xs muted">/กล่อง</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="20" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿2,400</div>
+          <div class="k-err">จำนวนต้องไม่ต่ำกว่าขั้นต่ำ 20 กล่อง — ระบบคำนวณด้วยจำนวนขั้นต่ำให้ก่อน</div>
+        </div>
+        <div class="krow locked" data-type="req" data-price="90" data-min="30">
+          <div class="ctl"><i class="lk" title="บังคับ ถอดออกไม่ได้"></i></div><span class="thumb"></span>
+          <div class="nm"><b>ผงเกลือแร่ ORS</b><span class="small muted">หน่วย: กล่อง · ขั้นต่ำ 30 กล่อง</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿90</b><div class="xs muted">/กล่อง</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="30" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿2,700</div>
+          <div class="k-err">จำนวนต้องไม่ต่ำกว่าขั้นต่ำ 30 กล่อง — ระบบคำนวณด้วยจำนวนขั้นต่ำให้ก่อน</div>
+        </div>
+        <div class="krow locked" data-type="req" data-price="65" data-min="40">
+          <div class="ctl"><i class="lk" title="บังคับ ถอดออกไม่ได้"></i></div><span class="thumb"></span>
+          <div class="nm"><b>เบตาดีน 15 มล.</b><span class="small muted">หน่วย: ขวด · ขั้นต่ำ 40 ขวด</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿65</b><div class="xs muted">/ขวด</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="40" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿2,600</div>
+          <div class="k-err">จำนวนต้องไม่ต่ำกว่าขั้นต่ำ 40 ขวด — ระบบคำนวณด้วยจำนวนขั้นต่ำให้ก่อน</div>
+        </div>
+        <div class="krow locked" data-type="req" data-price="60" data-min="40">
+          <div class="ctl"><i class="lk" title="บังคับ ถอดออกไม่ได้"></i></div><span class="thumb"></span>
+          <div class="nm"><b>ยาแก้แพ้ คลอร์เฟนิรามีน 4 มก.</b><span class="small muted">หน่วย: กล่อง · ขั้นต่ำ 40 กล่อง</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿60</b><div class="xs muted">/กล่อง</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="40" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿2,400</div>
+          <div class="k-err">จำนวนต้องไม่ต่ำกว่าขั้นต่ำ 40 กล่อง — ระบบคำนวณด้วยจำนวนขั้นต่ำให้ก่อน</div>
+        </div>
+        <div class="krow locked" data-type="req" data-price="80" data-min="25">
+          <div class="ctl"><i class="lk" title="บังคับ ถอดออกไม่ได้"></i></div><span class="thumb"></span>
+          <div class="nm"><b>หน้ากากอนามัย 50 ชิ้น</b><span class="small muted">หน่วย: กล่อง · ขั้นต่ำ 25 กล่อง</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿80</b><div class="xs muted">/กล่อง</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="25" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿2,000</div>
+          <div class="k-err">จำนวนต้องไม่ต่ำกว่าขั้นต่ำ 25 กล่อง — ระบบคำนวณด้วยจำนวนขั้นต่ำให้ก่อน</div>
+        </div>
+      </div>
+
+      <div class="card" style="overflow:hidden">
+        <div class="sec-h"><div><h6>สินค้าทางเลือก <span class="chip outline">6 รายการ</span> <span class="pin">3</span></h6><div class="small muted mt8">เปิดเพื่อเพิ่มในเซต · ปิดแล้วไม่นับราคา <span class="pin">4</span></div></div></div>
+        <div class="krow" data-type="opt" data-price="380" data-min="1" data-def="5">
+          <div class="ctl"><label class="switch"><input type="checkbox" class="k-sw" checked></label></div><span class="thumb"></span>
+          <div class="nm"><b>Blackmores Vitamin C 500 mg</b><span class="small muted">หน่วย: ขวด · แนะนำ 5 ขวด</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿380</b><div class="xs muted">/ขวด</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="5" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿1,900</div>
+          <div class="k-err">เลือกแล้วต้องมีอย่างน้อย 1 ขวด — ปิดสวิตช์ถ้าไม่ต้องการ</div>
+        </div>
+        <div class="krow" data-type="opt" data-price="200" data-min="1" data-def="5">
+          <div class="ctl"><label class="switch"><input type="checkbox" class="k-sw" checked></label></div><span class="thumb"></span>
+          <div class="nm"><b>เวชสำอาง ครีมบำรุงผิวแพ้ง่าย</b><span class="small muted">หน่วย: หลอด · แนะนำ 5 หลอด</span><span class="chip soft-warning" style="width:fit-content">เหลือน้อย 38 หลอด</span></div>
+          <div class="pr"><b>฿200</b><div class="xs muted">/หลอด</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="5" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿1,000</div>
+          <div class="k-err">เลือกแล้วต้องมีอย่างน้อย 1 หลอด — ปิดสวิตช์ถ้าไม่ต้องการ</div>
+        </div>
+        <div class="krow" data-type="opt" data-price="60" data-min="1" data-def="10">
+          <div class="ctl"><label class="switch"><input type="checkbox" class="k-sw" checked></label></div><span class="thumb"></span>
+          <div class="nm"><b>ขวดนม PP</b><span class="small muted">หน่วย: ชิ้น · แนะนำ 10 ชิ้น</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿60</b><div class="xs muted">/ชิ้น</div></div>
+          <div class="qty"><button data-d="-1">−</button><input class="qv" value="10" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">฿600</div>
+          <div class="k-err">เลือกแล้วต้องมีอย่างน้อย 1 ชิ้น — ปิดสวิตช์ถ้าไม่ต้องการ</div>
+        </div>
+        <div class="krow off" data-type="opt" data-price="240" data-min="1" data-def="3">
+          <div class="ctl"><label class="switch"><input type="checkbox" class="k-sw"></label></div><span class="thumb"></span>
+          <div class="nm"><b>นมผงสูตร 3</b><span class="small muted">หน่วย: กระป๋อง · แนะนำ 3 กระป๋อง</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿240</b><div class="xs muted">/กระป๋อง</div></div>
+          <div class="qty dis"><button data-d="-1">−</button><input class="qv" value="3" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">—</div>
+          <div class="k-err">เลือกแล้วต้องมีอย่างน้อย 1 กระป๋อง — ปิดสวิตช์ถ้าไม่ต้องการ</div>
+        </div>
+        <div class="krow off oos" data-type="opt" data-price="540" data-min="1" data-def="2" data-oos="1">
+          <div class="ctl"><label class="switch"><input type="checkbox" class="k-sw" disabled></label></div><span class="thumb"></span>
+          <div class="nm"><b>ผ้าอ้อมเด็ก</b><span class="small muted">หน่วย: แพ็ค · แนะนำ 2 แพ็ค</span><span class="chip soft-error" style="width:fit-content">หมดสต็อก</span><span class="small" style="color:#B26A00">ปิดให้อัตโนมัติ — สินค้าหมด คาดว่ามีของ 20 ต.ค. 2569</span></div>
+          <div class="pr"><b>฿540</b><div class="xs muted">/แพ็ค</div></div>
+          <div class="qty dis"><button data-d="-1">−</button><input class="qv" value="2" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">—</div>
+          <div class="k-err">เลือกแล้วต้องมีอย่างน้อย 1 แพ็ค — ปิดสวิตช์ถ้าไม่ต้องการ</div>
+        </div>
+        <div class="krow off" data-type="opt" data-price="1450" data-min="1" data-def="1">
+          <div class="ctl"><label class="switch"><input type="checkbox" class="k-sw"></label></div><span class="thumb"></span>
+          <div class="nm"><b>เครื่องวัดความดันดิจิทัล</b><span class="small muted">หน่วย: เครื่อง · แนะนำ 1 เครื่อง</span><span class="chip soft-success" style="width:fit-content">พร้อมส่ง</span></div>
+          <div class="pr"><b>฿1,450</b><div class="xs muted">/เครื่อง</div></div>
+          <div class="qty dis"><button data-d="-1">−</button><input class="qv" value="1" inputmode="numeric"><button data-d="1">+</button></div>
+          <div class="sub k-sub">—</div>
+          <div class="k-err">เลือกแล้วต้องมีอย่างน้อย 1 เครื่อง — ปิดสวิตช์ถ้าไม่ต้องการ</div>
+        </div>
+      </div>
+
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">9</span>
+        <h6 class="mb8">ตัวอย่างเมื่อกรอกจำนวนต่ำกว่าขั้นต่ำ (สถานะนี้แสดงเฉพาะตอนที่ผิด)</h6>
+        <div class="krow invalid" style="border:1px solid var(--error);border-radius:8px">
+          <div class="ctl"><i class="lk"></i></div><span class="thumb"></span>
+          <div class="nm"><b>เจลแอลกอฮอล์</b><span class="small muted">หน่วย: ขวด · ขั้นต่ำ 60 ขวด</span></div>
+          <div class="pr"><b>฿55</b><div class="xs muted">/ขวด</div></div>
+          <div class="qty"><button disabled>−</button><input class="qv" value="40"><button>+</button></div>
+          <div class="sub">฿3,300</div>
+          <div class="k-err" style="display:block">จำนวนต้องไม่ต่ำกว่าขั้นต่ำ 60 ขวด — ระบบคำนวณด้วยจำนวนขั้นต่ำให้ก่อน และปุ่มใส่ตะกร้าจะกดไม่ได้จนกว่าจะแก้</div>
+        </div>
+      </div></div>
+    </div>
+
+    <aside class="sticky">
+      <div class="card primary-top relative"><span class="pin abs">5</span><div class="card-b">
+        <h6 class="mb8">สรุปราคาเซต</h6>
+        <div class="sum-row"><span>สินค้าบังคับ<small>8 รายการ</small></span><span data-out="mand">฿25,000</span></div>
+        <div class="sum-row"><span>สินค้าทางเลือกที่เลือก<small data-out="optn">3 จาก 5 รายการที่สั่งได้</small></span><span data-out="opt">฿3,500</span></div>
+        <div class="sum-row disc"><span>ส่วนลดชุดเซต</span><span>−฿2,000</span></div>
+        <div class="sum-row total"><span>ราคาสุทธิ</span><span class="net" data-out="net">฿26,500</span></div>
+
+        <div class="delta flash relative" data-box="delta"><span class="pin abs" style="left:auto;right:-8px">6</span>
+          <b>ราคาเปลี่ยนเมื่อกี้</b> <s class="muted" data-out="prev">฿25,900</s> → <b data-out="net2">฿26,500</b>
+          <span class="chip soft-success" data-out="dlt">▲ +฿600</span>
+          <div class="xs muted" data-out="why">เปิด "ขวดนม PP" × 10</div>
+        </div>
+
+        <div class="save relative"><span class="pin abs" style="left:auto;right:-8px">7</span>ซื้อแยกรายชิ้น <s data-out="gross">฿28,500</s> → ซื้อเป็นเซต <b data-out="net3">฿26,500</b><br><b>ประหยัด ฿2,000</b> (ส่วนลดชุดเซต)</div>
+
+        <a class="btn contained lg block mt16 relative" data-cta href="06-customer-blocked.html#s4"><span class="pin abs" style="left:auto;right:-8px">8</span>ใส่ตะกร้า · <span data-out="net4">฿26,500</span></a>
+        <div class="small mt8" data-out-msg style="display:none;color:var(--error-dark)">มี 1 รายการที่จำนวนต่ำกว่าขั้นต่ำ — แก้ก่อนใส่ตะกร้า</div>
+        <div class="legal mt16">ราคานี้คำนวณตามสินค้าที่เลือกและตรวจสต็อกอีกครั้งตอนเช็คเอาต์ · ออเดอร์เดียวทั้งเซต</div>
+      </div></div>
+      <div class="small mt16 center"><a href="06-customer-blocked.html#s1">ดูตัวอย่างเมื่อสินค้าบังคับหมด →</a></div>
+    </aside>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>สินค้าบังคับ: ไอคอนกุญแจแทนสวิตช์ ไม่มีปุ่มลบ · พื้นหลังเทาอ่อนบอกว่าล็อก · ลำดับเรียงตามที่แอดมินจัด</span></li>
+    <li><span class="pin">2</span><span>ตัวปรับจำนวน: ปุ่ม − ปิดใช้งานที่จำนวนขั้นต่ำ · พิมพ์ตัวเลขเองได้ · ไม่เกินสต็อกคงเหลือ (ถ้าเกิน ปรับเป็นสต็อกที่มีและแจ้ง)</span></li>
+    <li><span class="pin">3</span><span>สวิตช์สินค้าทางเลือก: เปิดครั้งแรกใช้ "จำนวนแนะนำ" ของแอดมิน · ปิดแล้วยอดแถวเป็น "—" แต่จำจำนวนที่ปรับไว้ ถ้าเปิดใหม่ได้จำนวนเดิม</span></li>
+    <li><span class="pin">4</span><span>ป้ายสต็อก: "พร้อมส่ง" / "เหลือน้อย N" (น้อยกว่า 2 เท่าของจำนวนที่เลือก) / "หมดสต็อก" (แถวเทา สวิตช์ล็อก พร้อมวันที่คาดว่ามีของ)</span></li>
+    <li><span class="pin">5</span><span>แผงราคาติดขอบขวา (sticky): บังคับ + ทางเลือกที่เลือก − ส่วนลดชุด = ราคาสุทธิ คำนวณสดทุกครั้งที่สลับ/ปรับจำนวน ไม่ต้องกด "คำนวณ" · ลองกดสวิตช์และ +/− ในหน้านี้ได้จริง</span></li>
+    <li><span class="pin">6</span><span>กล่อง "ราคาเปลี่ยนเมื่อกี้": ราคาเดิม → ใหม่ + ส่วนต่าง + สาเหตุ กะพริบเหลืองสั้น ๆ ให้ลูกค้ามั่นใจว่าราคาเปลี่ยนจริง ไม่เด้งเงียบ ๆ</span></li>
+    <li><span class="pin">7</span><span>"ประหยัด" = ส่วนลดชุดเซต เทียบกับซื้อสินค้าเดียวกันแยกชิ้นที่ราคาปัจจุบัน · ถ้าส่วนลดเป็น % จะเปลี่ยนตามที่เลือก</span></li>
+    <li><span class="pin">8</span><span>ปุ่มใส่ตะกร้า: ไม่ใช่ B2B → กดไม่ได้ + ป้ายขออัปเกรด · สินค้าบังคับหมด → กดไม่ได้ (06) · ใส่แล้วเซตเป็นกลุ่มเดียวในตะกร้า กดแก้เพื่อกลับมาหน้านี้</span></li>
+    <li><span class="pin">9</span><span>ข้อความจำนวนต่ำกว่าขั้นต่ำ: ขึ้นสีแดงใต้แถวที่ผิดทันทีที่พิมพ์ · ราคารวมใช้ค่าขั้นต่ำก่อน ไม่ให้ราคาต่ำผิดจริง · ปุ่มใส่ตะกร้ากดไม่ได้จนแก้</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ราคาในหน้านี้คำนวณฝั่งหน้าจอ — เซิร์ฟเวอร์คำนวณซ้ำตอนใส่ตะกร้า/เช็คเอาต์ ถ้าไม่ตรงใช้ค่าของเซิร์ฟเวอร์และแจ้งลูกค้า</li>
+    <li>ปิดทางเลือกทั้งหมดได้ — ซื้อเฉพาะสินค้าบังคับ ราคาต่ำสุด ฿23,000 ในเซต M</li>
+    <li>สินค้าทางเลือกที่หมดสต็อก: สวิตช์ปิดและกดไม่ได้ ไม่นับราคา (กรณีที่ลูกค้าเลือกไว้ก่อนหมดดูที่ 06)</li>
+    <li>เซตล็อกหน่วยสินค้าตามที่แอดมินตั้ง ลูกค้าเปลี่ยนหน่วยไม่ได้</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ลูกค้าเพิ่มสินค้าอื่นนอกเซตเข้าเซตได้หรือไม่ (เสนอ: ไม่ได้ ให้ใส่ตะกร้าแยก)</li>
+    <li>ปรับจำนวนสินค้าทางเลือกเกินจำนวนแนะนำได้หรือไม่ (เสนอ: ได้ ไม่เกินสต็อก)</li>
+    <li>ส่วนลดแบบบาทยังได้เต็มเมื่อซื้อเฉพาะสินค้าบังคับหรือไม่ (เสนอ: ได้เต็ม)</li>
+  </ul></div>
+</section>
+
+
+<script src="../assets/mockup.js"></script>
+<script>
+function init(){
+  var kit=document.querySelector('[data-kit]'); if(!kit) return;
+  var DISC=+kit.getAttribute('data-discount')||0, lastNet=null;
+  function money(n){return '฿'+Math.round(n).toLocaleString('en-US');}
+  function out(k,v){var l=document.querySelectorAll('[data-out="'+k+'"]');for(var i=0;i<l.length;i++)l[i].textContent=v;}
+  function calc(why){
+    var m=0,o=0,on=0,avail=0,bad=0;
+    var rows=kit.querySelectorAll('.krow[data-type]');
+    for(var i=0;i<rows.length;i++){
+      var r=rows[i],type=r.getAttribute('data-type'),price=+r.getAttribute('data-price'),min=+r.getAttribute('data-min')||0;
+      var inp=r.querySelector('.qv'),sw=r.querySelector('.k-sw');
+      var q=parseInt(inp.value,10); if(isNaN(q)) q=0;
+      var active=(type==='req')||(sw&&sw.checked&&!sw.disabled);
+      if(type==='opt'&&!r.getAttribute('data-oos')) avail++;
+      var invalid=active&&q<min;
+      r.classList.toggle('invalid',!!invalid); r.classList.toggle('off',!active);
+      var dec=r.querySelector('.qty button[data-d="-1"]'); if(dec) dec.disabled=(!active||q<=min);
+      r.querySelector('.qty').classList.toggle('dis',!active);
+      if(invalid) bad++;
+      var sub=(active?Math.max(q,min):0)*price;
+      r.querySelector('.k-sub').textContent=active?money(sub):'—';
+      if(type==='req') m+=sub; else if(active){o+=sub;on++;}
+    }
+    var gross=m+o, net=gross-DISC;
+    out('mand',money(m)); out('opt',money(o)); out('optn',on+' จาก '+avail+' รายการที่สั่งได้');
+    out('net',money(net)); out('net2',money(net)); out('net3',money(net)); out('net4',money(net)); out('gross',money(gross));
+    var cta=kit.querySelector('[data-cta]'); if(cta) cta.classList.toggle('disabled',bad>0);
+    var msg=kit.querySelector('[data-out-msg]'); if(msg) msg.style.display=bad>0?'block':'none';
+    if(lastNet!==null&&net!==lastNet&&why){
+      var d=net-lastNet, box=kit.querySelector('[data-box="delta"]');
+      out('prev',money(lastNet)); out('dlt',(d>0?'▲ +':'▼ −')+money(Math.abs(d))); out('why',why);
+      if(box){box.classList.remove('flash'); void box.offsetWidth; box.classList.add('flash');}
+    }
+    lastNet=net;
+  }
+  function nm(r){return r.querySelector('.nm b').textContent;}
+  kit.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('.qty button'); if(!b||b.disabled) return;
+    var r=b.closest('.krow'); if(!r||!r.getAttribute('data-type')) return;
+    var i=r.querySelector('.qv'), q=parseInt(i.value,10)||0;
+    i.value=Math.max(0,q+(+b.getAttribute('data-d')));
+    calc('ปรับ "'+nm(r)+'" เป็น '+i.value);
+  });
+  kit.addEventListener('input',function(e){
+    var r=e.target.closest&&e.target.closest('.krow');
+    if(e.target.classList.contains('qv')&&r&&r.getAttribute('data-type')) calc('ปรับ "'+nm(r)+'" เป็น '+(e.target.value||0));
+  });
+  kit.addEventListener('change',function(e){
+    var t=e.target; if(!t.classList.contains('k-sw')) return;
+    var r=t.closest('.krow'), i=r.querySelector('.qv');
+    if(t.checked&&(parseInt(i.value,10)||0)<1) i.value=r.getAttribute('data-def')||1;
+    calc((t.checked?'เปิด':'ปิด')+' "'+nm(r)+'"'+(t.checked?' × '+i.value:''));
+  });
+  calc(null);
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init); else init();
+</script>
+</body>
+</html>

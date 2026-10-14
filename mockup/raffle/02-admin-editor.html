@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตั้งค่ากิจกรรมสุ่มรางวัล</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .ph{display:inline-block;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+  .ph.p1{background:#E3F2FD;color:#0D47A1}.ph.p2{background:#EDE7F6;color:#4527A0}.ph.p3{background:#FFF3E0;color:#BF360C}
+  .mode{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;border-radius:7px;font-weight:800;font-size:12px}
+  .mode.a{background:var(--info-lighter);color:var(--info-dark)}.mode.b{background:#F3E5F5;color:#6A1B9A}
+  .src-off td{opacity:.55}
+  .src-table td{vertical-align:top}
+  .rate{display:flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap}
+  .rate .input{width:92px;padding:7px 10px;min-height:36px}
+  .check-item{display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--g200)}
+  .check-item:last-child{border-bottom:0}
+  .ci-ic{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:14px}
+  .ci-ic.ok{background:var(--success)}.ci-ic.no{background:var(--error)}
+  .calc{background:var(--g50);border:1px dashed var(--g400);border-radius:10px;padding:12px 16px;font-size:13px}
+  .calc table{border-collapse:collapse;width:100%}.calc td{padding:3px 0}.calc td:last-child{text-align:right;font-weight:700}
+  .stepper .st a{color:inherit}
+  .input-adorn>.adorn{white-space:nowrap}
+</style>
+</head>
+<body data-shell="admin" data-nav="raffle" data-crumb="โปรโมชั่นและสิทธิพิเศษ / สุ่มรางวัล / ตั้งค่ากิจกรรม">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>ตั้งค่ากิจกรรม: ลุ้นโชคต้อนรับปีใหม่ 2570 <span class="chip">ร่าง</span></h4>
+      <p class="muted">EV-0014 · ตั้งค่า 5 ขั้นตอน — ต้องผ่านเช็คลิสต์ขั้นที่ 5 ก่อนจึงเปิดกิจกรรมได้</p>
+    </div>
+    <div class="row">
+      <a class="btn text grey" href="01-admin-list.html">← กลับรายการ</a>
+      <button class="btn outlined">บันทึกร่าง</button>
+      <a class="btn contained" href="03-admin-prizes-budget.html">ถัดไป: รางวัลและงบ →</a>
+    </div>
+  </div>
+
+  <div class="stack">
+
+    <div class="card relative"><span class="pin abs">1</span><div class="card-b" style="padding-bottom:4px">
+      <div class="stepper">
+        <div class="st done"><span class="n">✓</span>ข้อมูลกิจกรรม</div>
+        <div class="st on"><span class="n">2</span>ทางเข้าสิทธิ์</div>
+        <div class="st"><span class="n">3</span><a href="03-admin-prizes-budget.html">รางวัลและงบ</a></div>
+        <div class="st"><span class="n">4</span><a href="03-admin-prizes-budget.html#controls">ตัวคุม</a></div>
+        <div class="st"><span class="n" style="background:var(--error)">5</span><a href="#step5">ตรวจก่อนเปิด</a></div>
+      </div>
+    </div></div>
+
+    <!-- ขั้น 1 -->
+    <div class="card" id="step1">
+      <div class="card-h"><h6>ขั้นที่ 1 · ข้อมูลกิจกรรม</h6><span class="chip success">ครบแล้ว</span></div>
+      <div class="card-b">
+        <div class="form-grid">
+          <div class="field"><label>ชื่อกิจกรรม (ภายใน) *</label><input class="input" value="ลุ้นโชคต้อนรับปีใหม่ 2570"></div>
+          <div class="field"><label>ชื่อที่ลูกค้าเห็น *</label><input class="input" value="ลุ้นโชคต้อนรับปีใหม่ — ลุ้นทริปญี่ปุ่นและของรางวัลทุกวัน"><span class="help">แสดงบนหน้า "ลุ้นรางวัล" และหัวการ์ดสิทธิ์</span></div>
+          <div class="field"><label>ช่วงรับสิทธิ์ / เล่น *</label>
+            <div class="row"><input class="input" type="date" value="2026-12-01"><span>–</span><input class="input" type="date" value="2027-01-31"></div>
+            <span class="help">1 ธ.ค. 2569 – 31 ม.ค. 2570 (ค.ศ. 2026–2027 ในช่องวันที่)</span></div>
+          <div class="field"><label>วัน-เวลาประกาศผล (โหมด B)</label><input class="input" type="datetime-local" value="2027-02-05T20:00"><span class="help">5 ก.พ. 2570 20:00 น. — ต้องหลังวันสิ้นสุดรับสิทธิ์อย่างน้อย 3 วัน</span></div>
+          <div class="field relative"><span class="pin abs" style="left:-14px">3</span><label>อายุสิทธิ์ลุ้น *</label>
+            <select class="select"><option>สิ้นสุดพร้อมกิจกรรม หรือ 60 วันหลังได้รับ (แล้วแต่ถึงก่อน)</option><option>สิ้นสุดพร้อมกิจกรรมเท่านั้น</option><option>กำหนดจำนวนวันหลังได้รับ…</option></select>
+            <span class="help">สิทธิ์ที่หมดอายุแล้วใช้/ต่ออายุไม่ได้ และแลกกลับเป็นพอยท์ไม่ได้</span></div>
+          <div class="field relative"><span class="pin abs" style="left:-14px">4</span><label>เพดานสิทธิ์สะสมต่อคน (สิทธิ์)</label>
+            <div class="row"><div class="input-adorn grow"><input class="input" value="20"><span class="adorn">/ รอบ</span></div><div class="input-adorn grow"><input class="input" value="10"><span class="adorn">/ วัน</span></div></div>
+            <span class="help">กันลูกค้ารายเดียวกว้านสิทธิ์ทั้งหมด — นับรวมทุกทางเข้า; ถึงเพดานแล้วระบบไม่ออกสิทธิ์เพิ่ม</span></div>
+        </div>
+
+        <hr class="divider">
+        <div class="relative"><span class="pin abs" style="top:-4px">2</span>
+          <div class="label mb8" style="padding-left:16px">โหมดการจับ — ตั้งต่อรางวัล ไม่ได้ตั้งทั้งกิจกรรม</div>
+          <div class="radio-cards c3">
+            <label class="radio-card"><input type="radio" name="dm" checked><span><span class="rc-t"><span class="mode a">A</span> ลุ้นทันที<span class="ph p1">ระยะ 1</span></span><span class="rc-d" style="display:block">ค่าเริ่มต้นเมื่อเพิ่มรางวัลใหม่ · เหมาะกับของเล็ก (คูปอง ส่งฟรี พอยท์ ของแถม)</span></span></label>
+            <label class="radio-card"><input type="radio" name="dm"><span><span class="rc-t"><span class="mode b">B</span> จับตามรอบ<span class="ph p3">ระยะ 3</span></span><span class="rc-d" style="display:block">ค่าเริ่มต้นเมื่อเพิ่มรางวัลใหม่ · ของใหญ่ (ทริป ทอง ตั๋วเครื่องบิน)</span></span></label>
+            <div class="soft"><b class="small">ในกิจกรรมนี้ตอนนี้</b>
+              <div class="small mt8"><span class="mode a">A</span> 4 รางวัล · งบ ฿60,000</div>
+              <div class="small mt8"><span class="mode b">B</span> 2 รางวัล (3 ผู้ได้รับ) · งบ ฿90,000</div>
+              <div class="small mt8"><a href="03-admin-prizes-budget.html">เปลี่ยนโหมดรายรางวัล →</a></div></div>
+          </div>
+          <div class="help small mt8" style="color:var(--text2)">ระบบแนะนำโหมด B อัตโนมัติเมื่อมูลค่ารางวัลต่อชิ้น ≥ ฿1,000 (ปรับเกณฑ์ได้ในขั้นที่ 4) — ตามสเปก 6.3</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ขั้น 2 -->
+    <div class="card relative" id="step2"><span class="pin abs">5</span>
+      <div class="card-h"><h6>ขั้นที่ 2 · ทางเข้าสิทธิ์ลุ้น</h6><span class="small muted">เปิด/ปิดได้ทีละทาง — แต่ละทางตั้งอัตราของตัวเอง</span></div>
+      <div class="card-b" style="padding-top:12px">
+        <div class="table-wrap"><table class="table src-table">
+          <thead><tr><th style="width:70px">เปิด</th><th>ทางเข้า</th><th>อัตรา → 1 สิทธิ์</th><th>ขอบเขต / เงื่อนไข</th><th>ตัวอย่างฝั่งลูกค้า</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><label class="switch"><input type="checkbox" checked></label></td>
+              <td><b>แลกด้วยพอยท์</b><span class="ph p1">ระยะ 1</span><div class="small muted">ต่อยอดหน้าแลกของรางวัลเดิม</div></td>
+              <td><div class="rate"><input class="input num" value="300"> พอยท์ / สิทธิ์</div></td>
+              <td class="small">ลูกค้าทุกราย · แลกได้ไม่เกิน 5 สิทธิ์/วัน<div class="muted">พอยท์ที่ใช้แลกหักทันที ยกเลิกคืนไม่ได้</div></td>
+              <td class="small">มี 1,240 พอยท์ → แลกได้ 4 สิทธิ์</td>
+            </tr>
+            <tr>
+              <td><label class="switch"><input type="checkbox" checked></label></td>
+              <td><b>ยอดซื้อ</b><span class="ph p2">ระยะ 2</span><div class="small muted">ให้อัตโนมัติ ลูกค้าไม่ต้องกด</div></td>
+              <td><div class="rate">ทุก ฿<input class="input num" value="2,000"> ในบิล</div></td>
+              <td class="small">นับหลังหักส่วนลด · ออกสิทธิ์เมื่อบิลชำระแล้ว · ปัดเศษลง<div class="muted">สูงสุด 10 สิทธิ์ต่อบิล</div></td>
+              <td class="small"><b>ซื้อ ฿5,000 ได้ 2 สิทธิ์</b><div class="muted">(฿5,000 ÷ ฿2,000 = 2.5 → 2)</div></td>
+            </tr>
+            <tr>
+              <td><label class="switch"><input type="checkbox" checked></label></td>
+              <td><b>สินค้าร่วมรายการ</b><span class="ph p2">ระยะ 2</span><div class="small muted">แทนส่วนลดของสินค้าบางรายการ</div></td>
+              <td><div class="rate"><input class="input num" value="1"> สิทธิ์ / หน่วย</div></td>
+              <td class="small">Blackmores Vitamin C 500 mg (ขวด) · Pampers ผ้าอ้อมเด็ก (แพ็ค)<div class="muted">ตั้งค่าที่โปรโมชั่น "ผลตอบแทน = สิทธิ์ลุ้น" <a href="../promotion/02-admin-editor.html">ไปหน้าโปรโมชั่น</a></div></td>
+              <td class="small">ซื้อ Blackmores 3 ขวด ได้ 3 สิทธิ์</td>
+            </tr>
+            <tr class="src-off">
+              <td><label class="switch"><input type="checkbox"></label></td>
+              <td><b>ขั้นแคมเปญ</b><span class="ph p2">ระยะ 2*</span><div class="small muted">ถึงยอดสะสมขั้นนั้น = ได้สิทธิ์</div></td>
+              <td><div class="rate"><input class="input readonly num" value="3" disabled> สิทธิ์ / ขั้น</div></td>
+              <td class="small">ผูกกับ <a href="../campaign/03-admin-ladder-editor.html">แคมเปญสะสมยอดรายปี</a> — เลือกขั้นที่ให้สิทธิ์</td>
+              <td class="small">ถึงขั้น 2 ได้ 3 สิทธิ์ (ปิดอยู่ในกิจกรรมนี้)</td>
+            </tr>
+            <tr>
+              <td><label class="switch"><input type="checkbox" checked></label></td>
+              <td><b>โค้ดในกล่องสินค้า</b><span class="ph p2">ระยะ 2*</span><div class="small muted">ใช้โครงคูปองกระดาษเดิม</div></td>
+              <td><div class="rate"><input class="input num" value="1"> สิทธิ์ / โค้ด</div></td>
+              <td class="small">ชุดโค้ด "BOX-NY70" (5,000 รหัส) · 1 โค้ดใช้ได้ครั้งเดียว · ใส่ได้ไม่เกิน 3 โค้ด/วัน/คน<div class="muted"><a href="../coupon/03-admin-paper-editor.html">จัดการชุดโค้ด</a></div></td>
+              <td class="small">กรอกโค้ด BX-7QK2-91 ได้ 1 สิทธิ์</td>
+            </tr>
+          </tbody>
+        </table></div>
+        <div class="calc mt16 relative"><span class="pin abs">6</span>
+          <b>ลูกค้า 1 ราย ตัวอย่างรวมหลายทาง (ตรวจเพดาน)</b>
+          <table class="mt8">
+            <tr><td>ซื้อบิล ฿5,000 (ยอดซื้อ)</td><td>+2 สิทธิ์</td></tr>
+            <tr><td>ซื้อ Blackmores Vitamin C 2 ขวด (สินค้าร่วมรายการ)</td><td>+2 สิทธิ์</td></tr>
+            <tr><td>แลก 900 พอยท์</td><td>+3 สิทธิ์</td></tr>
+            <tr><td>กรอกโค้ดในกล่อง 1 รหัส</td><td>+1 สิทธิ์</td></tr>
+            <tr style="border-top:1px solid var(--g300)"><td><b>รวมวันนี้</b> (เพดานรวม 10/วัน · แลกพอยท์ ≤ 5/วัน)</td><td>8 สิทธิ์ · อยู่ในเพดาน ✓</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ขั้น 3-4 summary -->
+    <div class="grid g2">
+      <div class="card"><div class="card-h"><h6>ขั้นที่ 3 · รางวัลและงบ</h6><a class="btn outlined primary sm" href="03-admin-prizes-budget.html">ตั้งรางวัลและน้ำหนัก →</a></div>
+        <div class="card-b"><dl class="kv"><dt>โหมด A</dt><dd>4 รางวัล · ต้นทุนเฉลี่ย ฿19.70/หมุน</dd><dt>โหมด B</dt><dd>2 รางวัล · แจก 3 ราย (ทริปญี่ปุ่น ×1, ทองคำ 1 สลึง ×2)</dd><dt>งบรวมที่ตั้ง</dt><dd><b>฿150,000</b> (A ฿60,000 + B ฿90,000)</dd></dl></div></div>
+      <div class="card" id="step4"><div class="card-h"><h6>ขั้นที่ 4 · ตัวคุม</h6><a class="btn outlined primary sm" href="03-admin-prizes-budget.html#controls">ตั้งตัวคุม →</a></div>
+        <div class="card-b"><dl class="kv"><dt>เพดานงบ/วัน</dt><dd>฿3,000</dd><dt>ถูกรางวัล/คน/รอบ</dt><dd>ไม่เกิน 3 ครั้ง (ของใหญ่ 1 ครั้ง)</dd><dt>การันตีปลอบใจ</dt><dd>พลาดติดกัน 5 ครั้ง → 20 พอยท์</dd></dl></div></div>
+    </div>
+
+    <!-- ขั้น 5 -->
+    <div class="card primary-top relative" id="step5"><span class="pin abs">7</span>
+      <div class="card-h"><h6>ขั้นที่ 5 · ตรวจก่อนเปิดกิจกรรม</h6><span class="chip error">ผ่าน 2 จาก 4 — เปิดไม่ได้</span></div>
+      <div class="card-b">
+        <div class="alert warning mb16"><div><div class="a-title">การจัดชิงโชค/จับรางวัลมีข้อกำหนดการขออนุญาตและภาษีมูลค่ารางวัล</div>ระบบไม่ให้คำตอบทางกฎหมาย — ต้องให้ฝ่ายกฎหมายและฝ่ายบัญชียืนยันก่อน และบันทึกผู้ยืนยันไว้เป็นหลักฐาน (สเปก 6.7)</div></div>
+
+        <div class="check-item"><span class="ci-ic ok">✓</span>
+          <div><b>งบประมาณได้รับอนุมัติ</b><div class="small muted">฿150,000 · อนุมัติโดย คุณวราภรณ์ (ฝ่ายบัญชี) · 8 ต.ค. 2569 14:20</div></div><span class="chip success">ผ่าน</span></div>
+
+        <div class="check-item"><span class="ci-ic no">✕</span>
+          <div><b>ตรวจกฎหมาย / ภาษี ผ่านแล้ว</b><div class="small muted">ยังไม่มีผู้ยืนยัน — ต้องกรอกชื่อผู้ยืนยัน เลขที่อ้างอิง/ใบอนุญาต และแนบเอกสาร (ถ้ามี)</div>
+            <div class="form-grid mt8" style="max-width:760px">
+              <div class="field"><label>ผู้ยืนยัน *</label><select class="select"><option>— เลือกผู้ใช้งานฝ่ายกฎหมาย/บัญชี —</option></select></div>
+              <div class="field"><label>เลขที่อ้างอิงใบอนุญาต / บันทึกข้อความ *</label><input class="input" placeholder="เช่น เลขที่หนังสืออนุญาต"></div>
+            </div></div><span class="chip error">ยังไม่ผ่าน · บล็อก</span></div>
+
+        <div class="check-item"><span class="ci-ic ok">✓</span>
+          <div><b>รางวัลพอสำหรับกิจกรรม</b><div class="small muted">รางวัลทุกรายการมีจำนวนจำกัดและมูลค่า · โหมด B จำนวนผู้ได้รับระบุครบ · งบโหมด A (฿60,000) ≥ ต้นทุนเฉลี่ย × สิทธิ์ที่คาดไว้ 3,000 ใบ (฿59,100)</div></div><span class="chip success">ผ่าน</span></div>
+
+        <div class="check-item"><span class="ci-ic no">✕</span>
+          <div><b>ข้อความเงื่อนไขกิจกรรม</b><div class="small muted">ข้อความที่แสดงบนหน้าลูกค้าและใต้ปุ่มลุ้น (เงื่อนไข การรับของรางวัล สิทธิ์ของบริษัท) — ยังว่างอยู่</div>
+            <textarea class="textarea mt8" style="max-width:760px" placeholder="เช่น สิทธิ์ลุ้น 1 ใบ ใช้ลุ้นได้ 1 ครั้ง ไม่สามารถแลกกลับเป็นพอยท์หรือเงินสดได้ …"></textarea></div><span class="chip error">ยังไม่ผ่าน · บล็อก</span></div>
+
+        <hr class="divider">
+        <div class="row between">
+          <div class="small muted relative"><span class="pin abs" style="left:-22px;top:-2px">8</span>เมื่อครบ 4/4 ปุ่มเปิดจะใช้ได้ — ระบบเปิดอัตโนมัติ 1 ธ.ค. 2569 00:00 น. ตามช่วงเวลาที่ตั้งไว้</div>
+          <div class="row"><button class="btn outlined">ขอให้ฝ่ายกฎหมายตรวจ</button><button class="btn contained" disabled>เปิดกิจกรรม</button></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>Stepper 5 ขั้น (ขั้น 3–4 ลิงก์ไปหน้ารางวัล/งบ) — ขั้นสุดท้ายมีจุดสีแดงจนกว่าเช็คลิสต์จะครบ ขั้นที่ผ่านแล้วเป็นเขียว; กดข้ามไปมาได้ ไม่ต้องบังคับลำดับ</span></li>
+    <li><span class="pin">2</span><span>โหมดไม่ได้ตั้งทั้งกิจกรรม แต่ตั้งต่อรางวัลในขั้น 3 — ช่องนี้เป็นเพียงค่าเริ่มต้นเมื่อเพิ่มรางวัลใหม่ และสรุปจำนวนรางวัลต่อโหมด; ของมูลค่า ≥ เกณฑ์ที่ตั้ง ระบบแนะนำโหมด B</span></li>
+    <li><span class="pin">3</span><span>อายุสิทธิ์: ค่าเริ่มต้น "ถึงสิ้นกิจกรรมหรือ 60 วันหลังได้รับ แล้วแต่ถึงก่อน" — สิทธิ์ที่ใกล้หมด (≤ 14 วัน) ขึ้นเตือนในหน้าสิทธิ์ของลูกค้า; หมดอายุแล้วคืน/ต่อไม่ได้</span></li>
+    <li><span class="pin">4</span><span>เพดานสิทธิ์สะสมต่อคน (ต่อรอบ + ต่อวัน) นับรวมทุกทางเข้า — ถึงเพดานแล้วหน้าลูกค้าขึ้นสถานะ "ครบเพดาน" และปุ่มแลกพอยท์/กรอกโค้ดปิด; ค่า 0 = ไม่จำกัด (ต้องมีคำเตือนยืนยัน)</span></li>
+    <li><span class="pin">5</span><span>ตารางทางเข้า: สวิตช์ปิด = ช่องอัตราจาง/แก้ไม่ได้ และทางนั้นไม่ออกสิทธิ์ใหม่ (สิทธิ์ที่ออกไปแล้วยังใช้ได้); อัตราต้องเป็นจำนวนเต็ม &gt; 0; ปรับอัตราระหว่างเปิดกิจกรรมมีผลกับบิล/การแลกครั้งถัดไปเท่านั้น</span></li>
+    <li><span class="pin">6</span><span>ตัวอย่างรวมหลายทางช่วยแอดมินตรวจว่าลูกค้า 1 ราย ได้สิทธิ์มากสุดเท่าไรต่อวัน ก่อนตั้งเพดาน — คำนวณสดจากอัตราที่กรอก</span></li>
+    <li><span class="pin">7</span><span>เช็คลิสต์ 4 ข้อ: งบอนุมัติ (ดึงจากผู้อนุมัติงบ), กฎหมาย/ภาษี (บันทึกผู้ยืนยัน + เลขที่อ้างอิง — ระบบไม่ตัดสินให้), รางวัลพอ (ตรวจอัตโนมัติ), ข้อความเงื่อนไข (ต้องไม่ว่าง)</span></li>
+    <li><span class="pin">8</span><span>ปุ่ม "เปิดกิจกรรม" ปิดใช้งานจนครบ 4/4 และแสดงข้อที่ขาดข้างปุ่ม; เมื่อครบ ระบบเปิดตามเวลาเริ่มอัตโนมัติ หรือกดเปิดก่อนกำหนดได้ (มีกล่องยืนยัน)</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>กิจกรรมที่เปิดแล้ว ห้ามเปลี่ยนโหมดของรางวัลที่มีคนใช้สิทธิ์แล้ว และห้ามลดจำนวนรางวัลต่ำกว่ายอดที่แจกไปแล้ว</li>
+    <li>ปิดทางเข้า "ยอดซื้อ" ระหว่างเปิด: บิลที่ชำระก่อนเวลาปิดยังได้สิทธิ์ครบ</li>
+    <li>ถ้าบิลที่ให้สิทธิ์ถูกยกเลิก/คืนสินค้า → ยกเลิกสิทธิ์ที่ยังไม่ใช้; ถ้าใช้ไปแล้ว บันทึกเป็นรายการผิดปกติให้แอดมินตรวจ ไม่ย้อนผลลุ้น</li>
+    <li>แสดงปีเป็น พ.ศ. ในข้อความ; ช่องวันที่ใช้ค.ศ.ตามตัวเลือกวันที่ของเบราว์เซอร์ พร้อมข้อความช่วยด้านล่าง</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>อัตราและเพดานเริ่มต้น (300 พอยท์/สิทธิ์, ฿2,000/สิทธิ์, 20 สิทธิ์/คน/รอบ, 10/วัน, แลกพอยท์ 5/วัน, อายุ 60 วัน) — เป็นค่าตัวอย่างจากสเปก/ค่าเสนอ ขอให้ฝ่ายการตลาดยืนยัน</li>
+    <li>ใครเป็น "ผู้ยืนยันกฎหมาย/ภาษี" ในระบบ — บทบาทเฉพาะ หรือใช้แอดมินระดับสูงสุด</li>
+    <li>"ขั้นแคมเปญ" และ "โค้ดในกล่อง" ให้อยู่ระยะที่ 2 หรือ 3 (สเปก 6.8 ไม่ได้ระบุ)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

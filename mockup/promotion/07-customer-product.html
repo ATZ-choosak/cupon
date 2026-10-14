@@ -1,0 +1,166 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>การ์ดสินค้า + หน้าสินค้าที่มีโปร</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .chip.sq{height:20px;font-size:10.5px;padding:0 7px}
+  .part{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:12px;font-weight:700;color:var(--text2)}
+  .part .no{background:var(--g800);color:#fff;border-radius:6px;padding:2px 10px;font-size:12px}
+  .fbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--g200);border-radius:12px;padding:12px 14px;margin-bottom:16px}
+  .fbar .input,.fbar .select{min-height:36px;padding:6px 10px}
+  .product-card .img{height:120px}
+  .product-card .tags{flex-direction:row;flex-wrap:wrap;right:8px}
+  .product-card .nm{font-weight:700;font-size:13.5px;line-height:1.4}
+  .product-card .hint{font-size:11.5px;color:var(--success-darker);background:var(--success-lighter);border-radius:6px;padding:3px 8px}
+  .product-card .hint.ship{color:var(--info-dark);background:var(--info-lighter)}
+  .product-card .hint.flash{color:#B26A00;background:var(--warning-lighter)}
+  .product-card .hint.disc{color:var(--primary-dark);background:var(--primary-lighter)}
+  .price s{display:inline}
+  .pd{display:grid;grid-template-columns:380px minmax(0,1fr);gap:28px;align-items:start}
+  .pd .big{height:340px;border-radius:14px;background:linear-gradient(135deg,var(--g100),var(--g200));display:flex;align-items:center;justify-content:center;color:var(--g500);position:relative}
+  .pd .big .tags{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap}
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{border:1px solid var(--g300);background:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--g700)}
+  .pill.on{background:var(--primary);border-color:var(--primary);color:#fff}
+  .promo-item{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;border:1.5px solid var(--g300);border-radius:12px;padding:14px 16px;background:#fff}
+  .promo-item+.promo-item{margin-top:12px}
+  .promo-item.near{border-color:var(--primary);background:var(--primary-lighter)}
+  .promo-item.dim{opacity:.7;background:var(--g50)}
+  .promo-item .t{font-weight:700;font-size:14px}
+  .promo-item .prog{font-size:12.5px;margin-top:6px}
+  .promo-item .progress{height:8px;margin-top:6px}
+  .steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+  .steps .st{font-size:11.5px;padding:3px 9px;border-radius:8px;border:1px solid var(--g300);background:#fff}
+  .steps .st.done{background:var(--success-lighter);border-color:var(--success);color:var(--success-darker);font-weight:700}
+  .steps .st.now{background:#fff;border-color:var(--primary);color:var(--primary-dark);font-weight:700}
+  .fake-tabs{display:flex;gap:4px;border-bottom:1px solid var(--g300);margin-top:24px;color:var(--text2)}
+  .fake-tabs span{padding:10px 16px;font-size:13px}
+  .fake-tabs .on{color:var(--primary);font-weight:700;border-bottom:3px solid var(--primary);margin-bottom:-1px}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="products">
+<main id="screen">
+
+  <div class="part"><span class="no">ก</span> หน้ารายการสินค้า — การ์ดสินค้ามีแท็กโปร + ตัวกรอง</div>
+  <div class="crumbs">หน้าแรก / สินค้า</div>
+  <h4 class="mb16">สินค้าทั้งหมด</h4>
+
+  <div class="fbar relative">
+    <span class="pin abs">2</span>
+    <input class="input" style="max-width:260px" placeholder="ค้นหาสินค้า ชื่อยา แบรนด์…">
+    <label class="switch"><input type="checkbox" checked> เฉพาะสินค้าที่มีโปรโมชั่น</label>
+    <select class="select" style="max-width:190px"><option>ประเภทโปร: ทั้งหมด</option><option>ซื้อครบรับฟรี</option><option>ลด % / ลดบาท</option><option>ส่งฟรี</option><option>Flash Sale</option></select>
+    <span class="grow"></span>
+    <span class="muted small">พบ 8 รายการ</span>
+    <select class="select" style="max-width:210px"><option>เรียงตาม: โปรโมชั่นมาก่อน</option><option>ราคา ต่ำ → สูง</option><option>ราคา สูง → ต่ำ</option><option>ขายดี</option></select>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card relative"><span class="pin abs">1</span>
+      <div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag gift">ซื้อครบรับฟรี</span></div></div>
+      <div class="pc-b"><div class="nm">นมผงสูตร 3</div><div class="muted xs">Dumex · ลัง</div><div class="price">฿1,200</div><div class="hint">ซื้อ 1 ลัง รับของแถม · ยิ่งซื้อยิ่งแถม</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+    <div class="product-card">
+      <div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag flash">Flash −20%</span><span class="promo-tag">ลด ฿100</span></div></div>
+      <div class="pc-b"><div class="nm">Blackmores Vitamin C 500 mg</div><div class="muted xs">Blackmores · ขวด</div><div class="price">฿304<s>฿380</s></div><div class="hint flash">เหลือ 13 ชิ้นในราคา Flash · จบใน 08:42:17</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+    <div class="product-card">
+      <div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag flash">Flash −30%</span></div></div>
+      <div class="pc-b"><div class="nm">พาราเซตามอล 500 มก.</div><div class="muted xs">กล่อง</div><div class="price">฿32<s>฿45</s></div><div class="hint flash">ลดตามวันพิเศษ ถึง 12 ต.ค. 23:59</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+    <div class="product-card">
+      <div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag ship">ส่งฟรี</span></div></div>
+      <div class="pc-b"><div class="nm">ถุงมือยาง</div><div class="muted xs">กล่อง</div><div class="price">฿120</div><div class="hint ship">ซื้อเวชภัณฑ์ครบ ฿2,000 ส่งฟรี</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+
+    <div class="product-card">
+      <div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag gift">ซื้อครบรับฟรี</span></div></div>
+      <div class="pc-b"><div class="nm">ผ้าอ้อมเด็ก</div><div class="muted xs">Pampers · แพ็ค</div><div class="price">฿540</div><div class="hint">ซื้อ 3 แพ็ค แถมเจลแอลกอฮอล์ 2 ขวด (เริ่ม 1 พ.ย.)</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+    <div class="product-card">
+      <div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag flash">Flash −30%</span></div></div>
+      <div class="pc-b"><div class="nm">ยาน้ำแก้ไอ</div><div class="muted xs">ขวด</div><div class="price">฿60<s>฿85</s></div><div class="hint flash">ลดตามวันพิเศษ ถึง 12 ต.ค. 23:59</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+    <div class="product-card">
+      <div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag gift">ของแถม</span></div></div>
+      <div class="pc-b"><div class="nm">เจลแอลกอฮอล์</div><div class="muted xs">ขวด</div><div class="price">฿55</div><div class="hint ship">เป็นของแถมในโปรนมผงสูตร 3</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+    <div class="product-card">
+      <div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag gift">ของแถม</span></div></div>
+      <div class="pc-b"><div class="nm">ขวดนม PP</div><div class="muted xs">ชิ้น</div><div class="price">฿60</div><div class="hint">ซื้อคู่นมผงสูตร 3 รับเจลแอลกอฮอล์</div><button class="btn outlined sm block">เพิ่มในตะกร้า</button></div></div>
+  </div>
+
+  <hr class="divider" style="margin:36px 0 20px">
+
+  <div class="part"><span class="no">ข</span> หน้าสินค้า — เงื่อนไขโปรอยู่ในส่วนหลัก ไม่ซ่อนในแท็บ</div>
+  <div class="crumbs">หน้าแรก / สินค้า / นมผงสูตร 3</div>
+
+  <div class="card"><div class="card-b">
+    <div class="pd">
+      <div class="big">ภาพสินค้า<div class="tags"><span class="promo-tag gift">ซื้อครบรับฟรี</span></div></div>
+      <div class="stack">
+        <div><h4 style="font-size:24px">นมผงสูตร 3</h4><div class="muted">Dumex · รหัส DX-NM3 · มีสต็อก</div></div>
+        <div class="price" style="font-size:28px">฿1,200 <span class="muted small" style="font-weight:400">/ ลัง (฿240 / กระป๋อง)</span></div>
+        <div><div class="label mb8">หน่วยสินค้า</div><div class="pills"><span class="pill on">ลัง</span><span class="pill">กระป๋อง</span></div></div>
+        <div class="row"><div class="qty"><button>−</button><span>1</span><button>+</button></div><span class="small muted">ในตะกร้ามี 4 ลัง</span></div>
+        <div class="row wrap relative"><span class="pin abs" style="top:-14px">5</span>
+          <button class="btn contained lg">เพิ่มในตะกร้า</button>
+          <a class="btn outlined lg" href="06-customer-list.html">ดูโปรทั้งหมด</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt24 relative">
+      <span class="pin abs" style="top:-14px;left:-10px">3</span>
+      <div class="row between mb8"><h5>โปรโมชั่นที่ใช้กับสินค้านี้ <span class="chip soft-primary sq">ใหม่</span></h5><span class="muted small">3 รายการ · เรียงตามที่ใกล้ได้รับมากที่สุด</span></div>
+
+      <div class="promo-item near">
+        <div>
+          <div class="row"><span class="promo-tag gift">ซื้อครบรับฟรี</span><span class="t">นมผงสูตร 3 ซื้อเยอะ แถมเยอะ</span></div>
+          <div class="prog relative"><span class="pin" style="margin-left:0">4</span><b>ในตะกร้ามี 4 ลัง</b> · เพิ่มอีก <b style="color:var(--primary)">1 ลัง</b> รับขั้น 2: ผ้าอ้อมเด็ก 1 แพ็ค
+            <div class="progress"><i style="width:80%"></i></div></div>
+          <div class="steps"><span class="st done">✓ 1 ลัง · เจลแอลกอฮอล์ 1 ขวด</span><span class="st now">5 ลัง · ผ้าอ้อมเด็ก 1 แพ็ค</span><span class="st">10 ลัง · Vitamin C 2 ขวด</span></div>
+        </div>
+        <div class="stack s8" style="align-items:flex-end"><button class="btn contained sm">เพิ่ม 1 ลัง</button><a class="small" href="08-customer-detail.html">ดูรายละเอียดโปร →</a></div>
+      </div>
+
+      <div class="promo-item">
+        <div>
+          <div class="row"><span class="promo-tag gift">ของแถม</span><span class="t">ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์</span></div>
+          <div class="prog">เงื่อนไขครบแล้ว (นมผงสูตร 3 ≥ 5 ชิ้น · ขวดนม PP 2 ชิ้น) — แต่ตะกร้านี้จะใช้โปร "นมผงสูตร 3 ซื้อเยอะ แถมเยอะ" แทน เพราะมีลำดับสูงกว่า</div>
+          <div class="small muted mt8">โควต้าต่อลูกค้า: ใช้แล้ว 2 · เหลือ 1</div>
+        </div>
+        <div class="stack s8" style="align-items:flex-end"><span class="chip soft-warning">ไม่ถูกใช้ในตะกร้านี้</span><a class="small" href="08-customer-detail.html">ดูรายละเอียดโปร →</a></div>
+      </div>
+
+      <div class="promo-item dim">
+        <div>
+          <div class="row"><span class="promo-tag gift">ของแถม</span><span class="t">ซื้อ Dumex ครบ 10 กระป๋อง แถมถุงมือยาง 1 กล่อง</span></div>
+          <div class="prog">ซื้อนมผง Dumex ครบ 10 กระป๋อง ในบิลเดียว</div>
+          <div class="small bad mt8" style="color:var(--error-dark)">โควต้าเต็มแล้ว · ใช้แล้ว 1 / 1 ครั้ง</div>
+        </div>
+        <div class="stack s8" style="align-items:flex-end"><span class="chip error">โควต้าเต็มแล้ว</span></div>
+      </div>
+    </div>
+
+    <div class="fake-tabs"><span class="on">รายละเอียดสินค้า</span><span>ส่วนประกอบ / วิธีใช้</span><span>รีวิว (24)</span></div>
+    <div class="small muted mt16">นมผงสูตร 3 สำหรับเด็กอายุ 1–3 ปี … (รายละเอียดสินค้าตามปกติ — เงื่อนไขโปรไม่ซ่อนอยู่ในแท็บเหล่านี้)</div>
+  </div></div>
+
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>แท็กบนการ์ดสินค้า</b> <span class="chip soft-primary sq">ใหม่</span> ซื้อครบรับฟรี (แดง) / ของแถม (เขียว) / ส่งฟรี (น้ำเงิน) / ลด % หรือ ลด ฿ (แดง) / Flash (ส้ม) · สูงสุด 2 แท็กต่อการ์ด (เกินเป็น "+1") เรียงตามความสำคัญ · ข้อความบรรทัดล่างสรุปโปรที่ใกล้ที่สุด สั้นไม่เกิน 1 บรรทัด</span></li>
+    <li><span class="pin">2</span><span><b>ตัวกรองและการเรียง</b> <span class="chip soft-primary sq">ใหม่</span> "เฉพาะสินค้าที่มีโปรโมชั่น" + ประเภทโปร + "เรียงตาม: โปรโมชั่นมาก่อน" (ดันสินค้าที่มีโปรขึ้นก่อน แล้วค่อยเรียงตามเดิม) · ตัวกรองคงอยู่ใน URL</span></li>
+    <li><span class="pin">3</span><span><b>โปรโมชั่นที่ใช้กับสินค้านี้</b> <span class="chip soft-primary sq">ใหม่</span> อยู่ในส่วนหลักของหน้าสินค้า เหนือแท็บรายละเอียด (ตาม spec 3.5 ไม่ซ่อนในแท็บย่อย) · แสดงทุกโปรที่สินค้านี้เข้าร่วม ทั้งที่ลูกค้าได้ ใกล้ได้ ไม่ถูกใช้ และโควต้าเต็ม</span></li>
+    <li><span class="pin">4</span><span><b>ความคืบหน้าจากตะกร้าจริง</b> "ในตะกร้ามี 4 ลัง · เพิ่มอีก 1 ลัง รับขั้น 2" ใช้ข้อมูลตะกร้าปัจจุบันของลูกค้า · ปุ่ม "เพิ่ม 1 ลัง" เพิ่มจำนวนที่ขาดให้ทันที · ผู้เยี่ยมชมที่ยังไม่ล็อกอินเห็นเงื่อนไขแต่ไม่มีแถบความคืบหน้า</span></li>
+    <li><span class="pin">5</span><span><b>CTA</b> "เพิ่มในตะกร้า" ตามปกติ · "ดูโปรทั้งหมด" ไปหน้า 06 · ลิงก์ "ดูรายละเอียดโปร" ในแต่ละแถวไปหน้า 08</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ราคาบนการ์ด/หน้าสินค้า: ขีดฆ่าราคาปกติเมื่อมี Flash เท่านั้น — ส่วนลดจากโปรเงื่อนไขแสดงในตะกร้า ไม่ปรับราคาบนการ์ด เพราะขึ้นกับตะกร้าทั้งใบ</li>
+    <li>โปรที่ยังไม่เริ่มต้นแสดงเป็นแถวเทา "เริ่ม 1 พ.ย. 2569" (ไม่มีปุ่ม) · โปรหมดอายุ/ปิดชั่วคราวไม่แสดง</li>
+    <li>แสดงสูงสุด 5 โปรต่อสินค้า เกินนั้นมีลิงก์ "ดูโปรทั้งหมด"</li>
+    <li>สินค้าที่เป็น "ของแถม" ของโปรใด แสดงข้อความ "เป็นของแถมในโปร …" แต่ไม่ลดราคาเมื่อซื้อเอง</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>จำนวนแท็กสูงสุดต่อการ์ด (เสนอ 2) และลำดับความสำคัญของแท็ก (Flash &gt; ซื้อครบรับฟรี &gt; ส่งฟรี)</li>
+    <li>ต้องการแท็ก "ใกล้ได้รับโปร" บนการ์ดสินค้าในหน้ารายการด้วยหรือไม่ (ตอนนี้แสดงเฉพาะหน้าสินค้า/ตะกร้า)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

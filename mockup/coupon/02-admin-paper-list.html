@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คูปองกระดาษ: รายการชุด</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.tbl-c th,.tbl-c td{padding:10px 12px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ck.y{background:var(--success)}.ck.n{background:var(--error)}.ck.w{background:var(--warning)}
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.hl td{background:var(--primary-lighter)!important}
+.dim{opacity:.55}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.lbl-sm{font-size:11.5px;color:var(--text2)}
+.err-box{border:1.5px solid var(--error);background:var(--error-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#5F2120}
+.ok-box{border:1.5px solid var(--success);background:var(--success-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1E4620}
+.warn-box{border:1.5px solid var(--warning);background:var(--warning-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#663C00}
+.input.bad{border-color:var(--error);background:var(--error-lighter)}
+.input.good{border-color:var(--success)}
+.input.amber{border-color:var(--warning)}
+label.switch{white-space:nowrap}
+details.faq{border:1px solid var(--g300);border-radius:10px;background:#fff;padding:0}
+details.faq+details.faq{margin-top:8px}
+details.faq>summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq>summary::after{content:"＋";color:var(--primary);font-weight:800}
+details.faq[open]>summary::after{content:"−"}
+details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
+</style>
+</head>
+<body data-shell="admin" data-nav="coupon" data-crumb="โปรโมชั่นและสิทธิพิเศษ / คูปอง / คูปองกระดาษ">
+<main id="screen">
+
+<div class="page-head">
+  <div><h4>คูปองกระดาษ — รายการชุด</h4><p class="muted">ตั้งค่าชุดคูปอง เลือกร้านที่ร่วมรายการ และติดตามก้นคูปองที่ได้รับคืน · ทีมการตลาดพิมพ์และแจกเอง</p></div>
+  <div class="row"><a class="btn outlined" href="05-admin-paper-claims.html">คิวเบิกเงินร้าน/สาขา</a><a class="btn contained" href="03-admin-paper-editor.html">＋ สร้างชุดคูปอง</a></div>
+</div>
+<div class="alert info mb16 relative"><span class="pin">1</span><div><div class="a-title">ระบบไม่ได้สั่งพิมพ์คูปองให้</div>แอดมินตั้งค่าชุด ดูตัวอย่างหน้า-หลัง แล้วส่งให้ทีมการตลาดพิมพ์และแจกเอง — ในรายการนี้จึงไม่มีปุ่มสั่งพิมพ์</div></div>
+
+<div class="card" style="overflow:hidden">
+  <div class="table-toolbar" style="flex-wrap:wrap">
+    <input class="input" style="max-width:280px" placeholder="ค้นหารหัสชุด / ชื่อ / ที่มา">
+    <div class="seg relative"><span class="pin">2</span><button class="on">ทั้งหมด 6</button><button>ใช้งาน 3</button><button>ร่าง 1</button><button>หมดอายุ 1</button><button>ปิด 1</button></div>
+    <span class="muted small">เรียงตามอัปเดตล่าสุด</span>
+  </div>
+  <div class="table-wrap"><table class="table tbl-c" style="font-size:12.5px">
+    <thead><tr><th>รหัสชุด</th><th>ชื่อ/ที่มา</th><th class="num">มูลค่า/ใบ</th><th class="num">ขั้นต่ำ</th><th class="num">จำนวนที่ออก</th><th>ก้นที่ได้รับคืน <span class="pin">3</span></th><th>ร้าน/สาขา <span class="pin">4</span></th><th>ช่องทาง <span class="pin">5</span></th><th>ใช้ได้ถึง</th><th>สถานะ</th><th>จัดการ <span class="pin">6</span></th></tr></thead>
+    <tbody><tr><td><b class="mono">OCT50</b></td><td><b>บูทสัมมนาเภสัช ต.ค. 69</b></td><td class="num">฿50</td><td class="num">฿300</td><td class="num">2,000</td><td><div style="min-width:120px"><div class="progress "><i style="width:62%"></i></div><div class="small muted mt8" style="margin-top:4px">1,240 / 2,000 (62%)</div></div></td><td>5 แห่ง</td><td><span class="chip soft-success">หน้าร้าน</span></td><td class="nowrap">31 ธ.ค. 69</td><td><span class="chip success">ใช้งาน</span></td><td><div class="small nowrap" style="line-height:2"><a href="04-admin-paper-preview.html">ดูหน้า-หลัง</a> · <a href="03-admin-paper-editor.html">แก้ไข</a><br><a href="#">ทำซ้ำชุด</a> · <a href="#" style="color:var(--error-dark)">ปิดชุด</a></div></td></tr><tr><td><b class="mono">ABC100</b></td><td><b>แจกลูกค้าพันธมิตร ปลายปี</b></td><td class="num">฿100</td><td class="num">฿800</td><td class="num">1,000</td><td><div style="min-width:120px"><div class="progress "><i style="width:31%"></i></div><div class="small muted mt8" style="margin-top:4px">312 / 1,000 (31%)</div></div></td><td>ทุกร้าน (12)</td><td><span class="chip soft-success">หน้าร้าน</span></td><td class="nowrap">28 ก.พ. 70</td><td><span class="chip success">ใช้งาน</span></td><td><div class="small nowrap" style="line-height:2"><a href="04-admin-paper-preview.html">ดูหน้า-หลัง</a> · <a href="03-admin-paper-editor.html">แก้ไข</a><br><a href="#">ทำซ้ำชุด</a> · <a href="#" style="color:var(--error-dark)">ปิดชุด</a></div></td></tr><tr><td><b class="mono">KLONG25</b></td><td><b>โปรร้านชุมชน คลองหลวง–ปทุมธานี</b></td><td class="num">฿25</td><td class="num">฿150</td><td class="num">500</td><td><div style="min-width:120px"><div class="progress "><i style="width:19%"></i></div><div class="small muted mt8" style="margin-top:4px">96 / 500 (19%)</div></div></td><td>3 แห่ง</td><td><span class="chip soft-success">หน้าร้าน</span> <span class="chip soft-warning">ออนไลน์ (ทดลอง)</span></td><td class="nowrap">30 พ.ย. 69</td><td><span class="chip success">ใช้งาน</span></td><td><div class="small nowrap" style="line-height:2"><a href="04-admin-paper-preview.html">ดูหน้า-หลัง</a> · <a href="03-admin-paper-editor.html">แก้ไข</a><br><a href="#">ทำซ้ำชุด</a> · <a href="#" style="color:var(--error-dark)">ปิดชุด</a></div></td></tr><tr><td><b class="mono">NOV80</b></td><td><b>บูทสัมมนาเภสัช พ.ย. 69</b></td><td class="num">฿80</td><td class="num">฿600</td><td class="num">1,500</td><td><span class="muted small">ยังไม่เผยแพร่</span></td><td>5 แห่ง</td><td><span class="chip soft-success">หน้าร้าน</span></td><td class="nowrap">31 ม.ค. 70</td><td><span class="chip warning">ร่าง</span></td><td><div class="small nowrap" style="line-height:2"><a href="04-admin-paper-preview.html">ดูหน้า-หลัง</a> · <a href="03-admin-paper-editor.html">แก้ไข</a><br><a href="#">ทำซ้ำชุด</a></div></td></tr><tr><td><b class="mono">SEP40</b></td><td><b>งานแสดงสินค้า ก.ย. 69</b></td><td class="num">฿40</td><td class="num">฿250</td><td class="num">1,500</td><td><div style="min-width:120px"><div class="progress warn"><i style="width:68%"></i></div><div class="small muted mt8" style="margin-top:4px">1,022 / 1,500 (68%)</div></div></td><td>7 แห่ง</td><td><span class="chip soft-success">หน้าร้าน</span></td><td class="nowrap">30 ก.ย. 69</td><td><span class="chip error">หมดอายุ</span></td><td><div class="small nowrap" style="line-height:2"><a href="04-admin-paper-preview.html">ดูหน้า-หลัง</a> · <a href="03-admin-paper-editor.html">แก้ไข</a><br><a href="#">ทำซ้ำชุด</a></div></td></tr><tr><td><b class="mono">JUL30</b></td><td><b>โปรกลางปี (ปิดก่อนกำหนด)</b></td><td class="num">฿30</td><td class="num">฿200</td><td class="num">800</td><td><div style="min-width:120px"><div class="progress "><i style="width:51%"></i></div><div class="small muted mt8" style="margin-top:4px">410 / 800 (51%)</div></div></td><td>4 แห่ง</td><td><span class="chip soft-success">หน้าร้าน</span></td><td class="nowrap">31 ส.ค. 69</td><td><span class="chip">ปิดชุด</span></td><td><div class="small nowrap" style="line-height:2"><a href="04-admin-paper-preview.html">ดูหน้า-หลัง</a> · <a href="03-admin-paper-editor.html">แก้ไข</a><br><a href="#">ทำซ้ำชุด</a></div></td></tr></tbody>
+  </table></div>
+  <div class="pager"><span>แถวต่อหน้า 25</span><span>1–6 จาก 6</span></div>
+</div>
+
+<div class="grid g2 mt24">
+  <div class="card"><div class="card-b">
+    <h6 class="mb8">สถานะว่าง (ยังไม่มีชุด)</h6>
+    <div class="empty" style="padding:20px"><b>ยังไม่มีชุดคูปองกระดาษ</b><div class="small mt8">สร้างชุดแรกเพื่อกำหนดมูลค่า ร้านที่ร่วมรายการ และเงื่อนไขที่จะพิมพ์ด้านหลัง</div><a class="btn contained mt16" href="03-admin-paper-editor.html">＋ สร้างชุดคูปอง</a></div>
+  </div></div>
+  <div class="card"><div class="card-b">
+    <h6 class="mb8">ยืนยันก่อน "ปิดชุด" <span class="pin">7</span></h6>
+    <div class="stack s8">
+      <div class="warn-box"><b>ปิดชุด OCT50?</b><br>ร้านจะใช้คูปองชุดนี้ที่หน้าร้านไม่ได้ทันที · ก้นที่ร้านถืออยู่ยังส่งเบิกได้ภายในกำหนดเดิม (ถึง 30 วันหลังวันใช้)</div>
+      <div class="row end"><button class="btn text grey">ยกเลิก</button><button class="btn error">ปิดชุด</button></div>
+    </div>
+  </div></div>
+</div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ข้อความย้ำว่าระบบไม่ได้สั่งพิมพ์ — ตารางนี้ไม่มีคอลัมน์หรือปุ่มสั่งพิมพ์/ดาวน์โหลดไฟล์พิมพ์</span></li>
+    <li><span class="pin">2</span><span>ตัวกรองสถานะพร้อมจำนวน (ร่าง / ใช้งาน / หมดอายุ / ปิด) + ค้นหาตามรหัสหรือชื่อที่มา</span></li>
+    <li><span class="pin">3</span><span>ก้นที่ได้รับคืน = ก้นที่ตรวจนับแล้วรวมทุกร้าน ÷ จำนวนที่ออก — ใช้ดูว่าชุดถูกใช้ไปเท่าไร (แถบเหลืองเมื่อเกิน 60%)</span></li>
+    <li><span class="pin">4</span><span>ร้าน/สาขา: "n แห่ง" = เลือกเฉพาะ, "ทุกร้าน (12)" = ทุกร้านที่ลงทะเบียน (ตัวเลขเปลี่ยนเมื่อมีร้านใหม่ลงทะเบียน)</span></li>
+    <li><span class="pin">5</span><span>ช่องทางแสดงเป็นชิป: หน้าร้านเสมอ · ออนไลน์ปรากฏเมื่อแอดมินเปิดเท่านั้น (ค่าเริ่มต้นไม่มี) พร้อมป้าย "ทดลอง" จนกว่าลูกค้ายืนยันนโยบาย</span></li>
+    <li><span class="pin">6</span><span>การจัดการ: ดูหน้า-หลัง / แก้ไข / ทำซ้ำชุด (สร้างร่างใหม่จากค่าเดิม ใช้รหัสใหม่) / ปิดชุด — ไม่มีปุ่มสั่งพิมพ์</span></li>
+    <li><span class="pin">7</span><span>ปิดชุดต้องยืนยัน: ปิดแล้วร้านใช้ที่หน้าร้านไม่ได้ แต่ก้นที่ค้างอยู่ยังเบิกได้ตามกำหนด</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะ ร่าง: ยังไม่มีผลกับร้าน · ใช้งาน: ร้านที่อยู่ในรายชื่อรับคูปองได้ · หมดอายุ: ระบบเปลี่ยนเองเมื่อพ้นวันสิ้นสุด (ยังเบิกก้นได้ภายในกำหนด) · ปิด: แอดมินสั่งปิดก่อนกำหนด</li>
+    <li>รหัสชุดไม่ซ้ำกันทั้งระบบ แม้ชุดที่หมดอายุ/ปิดแล้ว</li>
+    <li>ลบชุดไม่ได้ถ้ามีก้นที่ส่งเบิกแล้ว (ปิดชุดแทน)</li>
+    <li>ชุดที่ปิดหรือหมดอายุแล้วยัง "ทำซ้ำ" ได้เพื่อออกชุดใหม่</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>จะแสดงป้าย "ออนไลน์" ของคูปองกระดาษหรือไม่ ขึ้นกับการตัดสินใจเรื่องให้คูปองกระดาษใช้ออนไลน์ (ดูหน้าสร้างชุด)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

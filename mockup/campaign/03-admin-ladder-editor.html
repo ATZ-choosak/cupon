@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แคมเปญสะสมยอดรายปี — Pharmaplex Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .two-col{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+  .sticky{position:sticky;top:12px}
+  .scard{border:1.5px solid var(--g300);border-radius:14px;background:#fff;overflow:hidden}
+  .scard.open{border-color:var(--primary-light)}
+  .scard-h{display:grid;grid-template-columns:24px 40px 1fr auto;gap:12px;align-items:center;padding:12px 16px;background:var(--g50);border-bottom:1px solid var(--g200)}
+  .scard.collapsed .scard-h{border-bottom:0}
+  .scard-h .no{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center}
+  .scard-b{padding:16px 18px;display:grid;gap:14px}
+  .type-opts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+  .type-opts .radio-card{padding:10px 12px}
+  .type-opts .rc-d{font-size:11px}
+  .hint{font-size:12px;border-radius:8px;padding:8px 12px;background:var(--info-lighter);color:#0D3C61}
+  .hint.unl{background:var(--warning-lighter);color:#663C00}
+  .fb{border:1px dashed var(--g400);border-radius:10px;padding:10px;background:var(--g50)}
+  .fb-row{display:grid;grid-template-columns:20px 128px minmax(0,1fr) 84px 30px;gap:8px;align-items:center;padding:6px 0}
+  .fb-row .input,.fb-row .select{min-height:34px;padding:5px 8px;font-size:12.5px}
+  .fb-row .sub{grid-column:3 / 5;font-size:11.5px;color:var(--text2);margin-top:-2px}
+  .fb-row .drag{color:var(--g500);cursor:grab;letter-spacing:-2px;font-size:15px}
+  .tagx{display:inline-flex;align-items:center;gap:6px;background:var(--primary-lighter);color:var(--primary-dark);border-radius:8px;padding:3px 6px 3px 10px;font-size:12px;font-weight:600}
+  .tagx.ex{background:var(--g200);color:var(--g800)}
+  .tagx button{border:0;background:transparent;cursor:pointer;color:inherit;font-size:13px;line-height:1}
+  .alert-row{display:grid;grid-template-columns:44px 1fr 150px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--g200)}
+  .alert-row:last-of-type{border-bottom:0}
+  .chk-list{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:12.5px}
+  .chk-list li::before{content:"✓ ";color:var(--success-dark);font-weight:800}
+  .chk-list li.w::before{content:"! ";color:var(--warning-dark)}
+</style>
+</head>
+<body data-shell="admin" data-nav="campaign" data-crumb="โปรโมชั่นและสิทธิพิเศษ / แคมเปญ / แก้ไขแคมเปญสะสมยอดรายปี">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <div class="small muted mb8"><a href="01-admin-list.html">แคมเปญ</a> / แก้ไข</div>
+      <h4>สะสมยอดซื้อรายปี สัญญาปี 2569 <span class="chip success" style="vertical-align:middle;margin-left:8px">กำลังดำเนินการ</span></h4>
+      <p class="muted">แคมเปญสะสมยอดรายปี (ขั้นบันได) · สำหรับร้านค้า B2B ที่มีสัญญาสะสมยอดรายปี · 38 ร้านค้า</p>
+    </div>
+    <div class="row">
+      <a class="btn text grey" href="01-admin-list.html">ยกเลิก</a>
+      <a class="btn outlined" href="04-admin-claims.html">ดูคิวคำขอ (7)</a>
+      <a class="btn contained" href="01-admin-list.html">บันทึกการเปลี่ยนแปลง</a>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="stack">
+
+      <!-- สัญญา -->
+      <div class="card"><div class="card-b">
+        <h6 class="mb16">ปีสัญญาและช่วงเวลา</h6>
+        <div class="form-grid">
+          <div class="field span2"><label>ชื่อแคมเปญ *</label><input class="input" value="สะสมยอดซื้อรายปี สัญญาปี 2569"></div>
+          <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">1</span>
+            <label>ปีสัญญา (พ.ศ.) *</label>
+            <select class="select"><option>2569</option><option>2570</option></select>
+            <span class="help">ยอดสะสมแยกตามปีสัญญา และเริ่มที่ ฿0 ทุกปี</span></div>
+          <div class="field"><label>วันเริ่ม – วันสิ้นสุด *</label>
+            <div class="row"><input class="input readonly" type="date" value="2026-01-01" readonly><input class="input" type="date" value="2026-12-31"></div>
+            <span class="help">สิทธิ์ขอรับรางวัลใช้ได้ถึงวันสิ้นสุดนี้</span></div>
+        </div>
+      </div></div>
+
+      <!-- ขอบเขต -->
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">2</span>
+        <h6 class="mb16">ขอบเขตสินค้าที่นับยอด</h6>
+        <div class="radio-cards c4">
+          <label class="radio-card"><input type="radio" name="scope" value="all"><span><span class="rc-t">ทุกสินค้า</span></span></label>
+          <label class="radio-card"><input type="radio" name="scope" value="brand" checked><span><span class="rc-t">ตามแบรนด์</span></span></label>
+          <label class="radio-card"><input type="radio" name="scope" value="cat"><span><span class="rc-t">ตามหมวด</span></span></label>
+          <label class="radio-card"><input type="radio" name="scope" value="sku"><span><span class="rc-t">รายสินค้า</span></span></label>
+        </div>
+        <div class="field mt16"><label>แบรนด์ที่นับยอด</label>
+          <div class="row wrap"><span class="tagx">Blackmores <button>✕</button></span><span class="tagx">Dumex <button>✕</button></span><span class="tagx">Pampers <button>✕</button></span><button class="btn outlined sm">＋ เพิ่มแบรนด์</button></div></div>
+        <div class="field mt16"><label>ยกเว้นสินค้า (ไม่นับยอดแม้อยู่ในแบรนด์ข้างต้น)</label>
+          <div class="row wrap"><span class="tagx ex">นมผงสูตร 3 (ควบคุมราคา) <button>✕</button></span><span class="tagx ex">ยาน้ำแก้ไอ <button>✕</button></span><button class="btn outlined sm">＋ เพิ่มรายการยกเว้น</button></div></div>
+        <hr class="divider">
+        <div class="stack s8 relative">
+          <span class="pin abs" style="top:-18px">3</span>
+          <label class="check"><input type="checkbox" checked disabled> นับจากออเดอร์ที่<b>ชำระเงินสำเร็จแล้ว</b>เท่านั้น <span class="chip">ล็อก</span></label>
+          <label class="check"><input type="checkbox" checked disabled> <b>ไม่รวมค่าจัดส่ง</b> <span class="chip">ล็อก</span></label>
+          <label class="check"><input type="checkbox" checked> นับหลังหักส่วนลดโปรโมชั่นและคูปองแล้ว</label>
+          <label class="check"><input type="checkbox" checked> หักยอดคืนเมื่อออเดอร์ถูกยกเลิก / คืนสินค้า</label>
+        </div>
+      </div></div>
+
+      <!-- ขั้นรางวัล -->
+      <div>
+        <div class="row between mb8"><h6>ขั้นรางวัล (4 ขั้น) <span class="small muted" style="font-weight:400">· ระบบเรียงตามยอดเกณฑ์ให้อัตโนมัติ</span></h6><button class="btn outlined sm">＋ เพิ่มขั้นรางวัล</button></div>
+        <div class="stack s12">
+
+          <!-- step 1 -->
+          <div class="scard open">
+            <div class="scard-h"><span class="drag">⋮⋮</span><span class="no">1</span>
+              <div><b>เครื่องวัดความดันโลหิตดิจิทัล</b><div class="small muted">฿100,000 · สินค้าในเว็บ (POS) · 50 สิทธิ์</div></div>
+              <div class="row"><span class="chip soft-warning">มี 24 ร้านถึงขั้นนี้แล้ว</span><button class="btn text sm grey">ยุบ</button><button class="btn text sm grey" disabled>ลบ</button></div></div>
+            <div class="scard-b">
+              <div class="form-grid">
+                <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">4</span>
+                  <label>ยอดเกณฑ์สะสม *</label><div class="input-adorn"><span class="adorn">฿</span><input class="input readonly" value="100,000" readonly></div>
+                  <span class="help">แก้ไม่ได้เพราะมีลูกค้าถึงขั้นนี้แล้ว</span></div>
+                <div class="field"><label>ชื่อรางวัล *</label><input class="input" value="เครื่องวัดความดันโลหิตดิจิทัล"></div>
+              </div>
+              <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">5</span>
+                <label>ประเภทรางวัล *</label>
+                <div class="type-opts">
+                  <label class="radio-card"><input type="radio" name="t1" checked><span><span class="rc-t">สินค้าในเว็บ</span><span class="rc-d" style="display:block">สินค้าในคลัง POS</span></span></label>
+                  <label class="radio-card"><input type="radio" name="t1"><span><span class="rc-t">ของนอก POS</span><span class="rc-d" style="display:block">ตั๋ว / ทริป / เครื่องใช้ไฟฟ้า</span></span></label>
+                  <label class="radio-card"><input type="radio" name="t1"><span><span class="rc-t">คูปอง</span><span class="rc-d" style="display:block">ออกเข้ากระเป๋าคูปอง</span></span></label>
+                  <label class="radio-card"><input type="radio" name="t1"><span><span class="rc-t">พอยท์</span><span class="rc-d" style="display:block">เติมพอยท์โบนัส</span></span></label>
+                </div>
+              </div>
+              <div class="form-grid">
+                <div class="field"><label>เลือกสินค้าในเว็บ *</label><select class="select"><option>เครื่องวัดความดันโลหิตดิจิทัล (SKU BP-D01) · คงคลัง 120</option></select><span class="help">ตัดสต็อก POS ตอนอนุมัติคำขอ</span></div>
+                <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">6</span>
+                  <label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label>
+                  <input class="input" value="50" placeholder="ไม่จำกัด"><span class="help">ใช้ไปแล้ว 12 · ลดต่ำกว่า 12 ไม่ได้</span></div>
+              </div>
+              <div class="hint">ตั้งจำนวนน้อย = ใครถึงเกณฑ์แล้วกดขอก่อนได้ก่อน · ลูกค้าเห็น <b>"เหลือ 38/50 สิทธิ์"</b></div>
+              <div class="fb">
+                <div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์ (ลูกค้าทุกคนที่ปลดล็อกขั้นนี้เห็นฟอร์มเดียวกัน)</div>
+                <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>ข้อความ</option></select><input class="input" value="ที่อยู่จัดส่ง"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button></div>
+                <button class="btn text sm">＋ เพิ่มช่องข้อมูล</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- step 2 collapsed -->
+          <div class="scard collapsed">
+            <div class="scard-h"><span class="drag">⋮⋮</span><span class="no">2</span>
+              <div><b>เครื่องฟอกอากาศ</b><div class="small muted">฿250,000 · ของนอก POS (เครื่องใช้ไฟฟ้า) · 30 สิทธิ์ · ฟอร์ม 2 ช่อง</div></div>
+              <div class="row"><span class="chip soft-warning">มี 11 ร้านถึงขั้นนี้แล้ว</span><button class="btn text sm">แก้ไข</button><button class="btn text sm grey" disabled>ลบ</button></div></div>
+          </div>
+
+          <!-- step 3 -->
+          <div class="scard open">
+            <div class="scard-h"><span class="drag">⋮⋮</span><span class="no">3</span>
+              <div><b>ทริปสัมมนาเภสัชกรต่างประเทศ 3 วัน 2 คืน</b><div class="small muted">฿500,000 · ของนอก POS · 20 สิทธิ์ · ฟอร์ม 4 ช่อง</div></div>
+              <div class="row"><span class="chip soft-warning">มี 4 ร้านถึงขั้นนี้แล้ว</span><button class="btn text sm grey">ยุบ</button><button class="btn text sm grey" disabled>ลบ</button></div></div>
+            <div class="scard-b">
+              <div class="form-grid">
+                <div class="field"><label>ยอดเกณฑ์สะสม *</label><div class="input-adorn"><span class="adorn">฿</span><input class="input readonly" value="500,000" readonly></div></div>
+                <div class="field"><label>ชื่อรางวัล *</label><input class="input" value="ทริปสัมมนาเภสัชกรต่างประเทศ 3 วัน 2 คืน"></div>
+              </div>
+              <div class="field"><label>ประเภทรางวัล *</label>
+                <div class="type-opts">
+                  <label class="radio-card"><input type="radio" name="t3"><span><span class="rc-t">สินค้าในเว็บ</span><span class="rc-d" style="display:block">สินค้าในคลัง POS</span></span></label>
+                  <label class="radio-card"><input type="radio" name="t3" checked><span><span class="rc-t">ของนอก POS</span><span class="rc-d" style="display:block">ตั๋ว / ทริป / เครื่องใช้ไฟฟ้า</span></span></label>
+                  <label class="radio-card"><input type="radio" name="t3"><span><span class="rc-t">คูปอง</span><span class="rc-d" style="display:block">ออกเข้ากระเป๋าคูปอง</span></span></label>
+                  <label class="radio-card"><input type="radio" name="t3"><span><span class="rc-t">พอยท์</span><span class="rc-d" style="display:block">เติมพอยท์โบนัส</span></span></label>
+                </div>
+              </div>
+              <div class="form-grid">
+                <div class="field"><label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label><input class="input" value="20" placeholder="ไม่จำกัด"><span class="help">ใช้ไปแล้ว 3 · เหลือ 17</span></div>
+                <div class="field"><label>รายละเอียดของรางวัล (ลูกค้าเห็นบนการ์ด)</label><textarea class="textarea" style="min-height:70px">รวมตั๋วเครื่องบินไป-กลับ ที่พัก 2 คืน และค่าลงทะเบียนสัมมนา ผู้เข้าร่วมต้องมีพาสปอร์ตอายุเหลือ 6 เดือนขึ้นไป</textarea></div>
+              </div>
+              <div class="fb relative"><span class="pin abs">7</span>
+                <div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์ (ลูกค้าทุกคนที่ปลดล็อกขั้นนี้เห็นฟอร์มเดียวกัน)</div>
+                <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>ข้อความ</option><option>เบอร์โทร</option><option>ตัวเลือก</option><option>แนบไฟล์</option></select><input class="input" value="ชื่อผู้เดินทางตามพาสปอร์ต"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button>
+                  <div class="sub">ตัวอักษรอังกฤษเท่านั้น · ข้อความช่วยใต้ช่อง: "ตรงตามที่ปรากฏในพาสปอร์ต"</div></div>
+                <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>เบอร์โทร</option></select><input class="input" value="เบอร์ติดต่อ"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button>
+                  <div class="sub">ตรวจรูปแบบ 10 หลักขึ้นต้น 0</div></div>
+                <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>ตัวเลือก</option></select><input class="input" value="เลือกวันเดินทาง"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button>
+                  <div class="sub">ตัวเลือก: รอบที่ 1 · 14–16 ก.พ. 2570 / รอบที่ 2 · 21–23 ก.พ. 2570 &nbsp;<a href="#">แก้ตัวเลือก</a></div></div>
+                <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>แนบไฟล์</option></select><input class="input" value="แนบสำเนาพาสปอร์ต"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button>
+                  <div class="sub">รองรับ JPG / PNG / PDF ไม่เกิน 5 MB</div></div>
+                <div class="row between mt8"><button class="btn text sm">＋ เพิ่มช่องข้อมูล ▾ (ข้อความ / เบอร์โทร / ตัวเลือก / แนบไฟล์)</button>
+                  <span class="small muted">ท้ายฟอร์มมีช่องติ๊ก "ยืนยันว่าข้อมูลถูกต้อง" ให้เสมอ</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- step 4 -->
+          <div class="scard open">
+            <div class="scard-h"><span class="drag">⋮⋮</span><span class="no">4</span>
+              <div><b>ตั๋วเครื่องบินไป-กลับต่างประเทศ 1 ที่นั่ง</b><div class="small muted">฿1,000,000 · ของนอก POS · ไม่จำกัดสิทธิ์ · ฟอร์ม 2 ช่อง</div></div>
+              <div class="row"><span class="chip">ยังไม่มีใครถึง</span><button class="btn text sm grey">ยุบ</button><button class="btn text sm error" style="background:transparent;color:var(--error-dark)">ลบ</button></div></div>
+            <div class="scard-b">
+              <div class="form-grid">
+                <div class="field"><label>ยอดเกณฑ์สะสม *</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="1,000,000"></div></div>
+                <div class="field"><label>ชื่อรางวัล *</label><input class="input" value="ตั๋วเครื่องบินไป-กลับต่างประเทศ 1 ที่นั่ง"></div>
+              </div>
+              <div class="form-grid">
+                <div class="field"><label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label><input class="input" value="" placeholder="ไม่จำกัด"></div>
+                <div class="field"><label>ประเภทรางวัล *</label><select class="select"><option>ของนอก POS</option></select></div>
+              </div>
+              <div class="hint unl"><b>ไม่จำกัดสิทธิ์</b> — ทุกคนที่ถึงยอดกดขอได้เสมอ เหมาะกับรางวัลที่ทีมงานคัดเลือก/จับรางวัลกันเองนอกระบบ ลูกค้าจะเห็น "ไม่จำกัดสิทธิ์ — ทีมงานคัดเลือก" และควรอธิบายวิธีคัดเลือกในรายละเอียดด้านล่าง</div>
+              <div class="field"><label>รายละเอียดของรางวัล (แอดมินเขียนเอง) *</label><textarea class="textarea" style="min-height:70px">จำนวนจำกัด ทีมงานจะติดต่อคัดเลือกผู้โชคดีด้วยการจับรางวัลภายใน 30 วันหลังสิ้นสุดแคมเปญ และแจ้งรายละเอียดการเดินทางภายหลัง</textarea></div>
+              <div class="fb">
+                <div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์</div>
+                <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>ข้อความ</option></select><input class="input" value="ชื่อผู้เดินทางตามพาสปอร์ต"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button></div>
+                <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>เบอร์โทร</option></select><input class="input" value="เบอร์ติดต่อ"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="alert warning mt16 relative"><span class="pin abs">8</span><div><div class="a-title">กติกาตอนแก้ไขแคมเปญที่เปิดอยู่</div>
+          ขั้นที่มีลูกค้าถึงแล้ว: แก้ยอดเกณฑ์ไม่ได้ และลบไม่ได้ · เพิ่มจำนวนสิทธิ์ได้ ลดต่ำกว่าที่ถูกกดไปแล้วไม่ได้ · แก้ชื่อ/รายละเอียดได้ (มีผลกับคำขอใหม่) · <b>แก้ฟอร์ม</b>มีผลเฉพาะคำขอที่ยังไม่ส่ง คำขอเดิมเก็บคำตอบตามฟอร์มตอนส่ง</div></div>
+      </div>
+
+      <!-- แจ้งเตือน -->
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">9</span>
+        <h6 class="mb8">การแจ้งเตือนลูกค้า</h6>
+        <p class="muted small mb8">ส่งอัตโนมัติ ครั้งเดียวต่อเหตุการณ์ต่อขั้น · ดูประวัติและส่งซ้ำเองได้ที่ <a href="05-admin-progress.html">ความคืบหน้าลูกค้า</a></p>
+        <div class="alert-row"><label class="switch"><input type="checkbox" checked></label><div><b>ยอดถึง 80% ของขั้นถัดไป</b><div class="small muted">"ร้านของคุณสะสมครบ 80% ของขั้น {ชื่อรางวัล} อีก ฿{เหลือ}"</div></div><div class="input-adorn"><input class="input" value="80"><span class="adorn">%</span></div></div>
+        <div class="alert-row"><label class="switch"><input type="checkbox" checked></label><div><b>ยอดถึง 95% ของขั้นถัดไป</b><div class="small muted">"เกือบถึงแล้ว! อีกเพียง ฿{เหลือ} ปลดล็อก {ชื่อรางวัล}"</div></div><div class="input-adorn"><input class="input" value="95"><span class="adorn">%</span></div></div>
+        <div class="alert-row"><label class="switch"><input type="checkbox" checked></label><div><b>ก่อนสัญญาหมด</b><div class="small muted">"สัญญาสะสมยอดของคุณจะสิ้นสุดในอีก {N} วัน ยอดสะสมจะรีเซ็ตเป็น ฿0"</div></div><div class="input-adorn"><input class="input" value="30"><span class="adorn">วัน</span></div></div>
+        <div class="row wrap mt8"><span class="label">ช่องทางส่ง:</span>
+          <label class="check"><input type="checkbox" checked> LINE</label><label class="check"><input type="checkbox" checked> อีเมล</label><label class="check"><input type="checkbox" checked> แจ้งเตือนในเว็บ</label></div>
+      </div></div>
+    </div>
+
+    <!-- right -->
+    <div class="stack sticky">
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">10</span>
+        <h6 class="mb8">ตัวอย่างที่ลูกค้าเห็น</h6>
+        <div class="soft mb16"><div class="small muted">ยอดสะสมปีสัญญา 2569 (ตัวอย่าง)</div><div style="font-size:22px;font-weight:800">฿642,350</div>
+          <div class="progress mt8"><i style="width:64%"></i></div><div class="small mt8">อีก <b>฿357,650</b> ถึงขั้น 4</div></div>
+        <div class="ladder">
+          <div class="step done"><span class="no">✓</span><div><b>ขั้น 1</b> · เครื่องวัดความดันฯ<div class="small muted">฿100,000 · เหลือ 38/50</div></div></div>
+          <div class="step done"><span class="no">✓</span><div><b>ขั้น 2</b> · เครื่องฟอกอากาศ<div class="small muted">฿250,000 · เหลือ 19/30</div></div></div>
+          <div class="step now"><span class="no">3</span><div><b>ขั้น 3</b> · ทริปสัมมนาฯ<div class="small muted">฿500,000 · เหลือ 17/20</div></div></div>
+          <div class="step lock"><span class="no">4</span><div><b>ขั้น 4</b> · ตั๋วเครื่องบิน<div class="small muted">฿1,000,000 · ไม่จำกัดสิทธิ์</div></div></div>
+        </div>
+        <a class="small" href="06-customer-ladder.html">ดูหน้าลูกค้าจริง →</a>
+      </div></div>
+      <div class="card"><div class="card-b">
+        <h6 class="mb8">ตรวจความถูกต้องก่อนบันทึก</h6>
+        <ul class="chk-list">
+          <li>ยอดเกณฑ์ทุกขั้นไม่ซ้ำและเรียงต่อเนื่อง</li>
+          <li>ทุกขั้นมีชื่อรางวัลและประเภท</li>
+          <li>ทุกขั้นมีฟอร์มอย่างน้อย 1 ช่อง</li>
+          <li class="w">ขั้น 4 ไม่จำกัดสิทธิ์ — ตรวจว่ารายละเอียดบอกวิธีคัดเลือกแล้ว</li>
+          <li class="w">ขั้น 2 และ 3 เป็นของนอก POS — ยังไม่ได้ผูกผู้รับผิดชอบส่งมอบ</li>
+        </ul>
+      </div></div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ปีสัญญา + วันเริ่ม/สิ้นสุด</b> — เลือกปี (พ.ศ.) แล้วระบบเติมวันที่ 1 ม.ค. – 31 ธ.ค. ให้ แก้ได้ · ปีสัญญาเดียวกันสร้างแคมเปญซ้ำไม่ได้ · ยอดสะสมของแต่ละปีแยกกัน ไม่ยกข้ามปี</span></li>
+    <li><span class="pin">2</span><span><b>ขอบเขตสินค้า</b> — ทุกสินค้า / แบรนด์ / หมวด / รายสินค้า + รายการยกเว้น (เช่น สินค้าควบคุมราคา) · แก้ขอบเขตหลังเปิดมีผลกับออเดอร์ใหม่เท่านั้น ยอดเก่าไม่คำนวณย้อนหลัง</span></li>
+    <li><span class="pin">3</span><span><b>กติกาการนับ</b> — "ชำระแล้ว" และ "ไม่รวมค่าส่ง" ล็อกไว้ตามสเปก (แก้ไม่ได้) · ตัวเลือก "หลังหักส่วนลด" และ "หักเมื่อยกเลิก" เปลี่ยนได้ก่อนเปิดแคมเปญเท่านั้น</span></li>
+    <li><span class="pin">4</span><span><b>ยอดเกณฑ์สะสม</b> — เป็นยอดรวมสะสมทั้งปี (ไม่ใช่ส่วนต่างจากขั้นก่อน) ต้องไม่ซ้ำกัน · ขั้นที่มีคนถึงแล้วล็อกช่องนี้</span></li>
+    <li><span class="pin">5</span><span><b>ประเภทรางวัล</b> — สินค้าในเว็บ (POS, ตัดสต็อก) / ของนอก POS (ตั๋ว เครื่องใช้ไฟฟ้า ใส่รายละเอียดเอง) / คูปอง (ออกเข้ากระเป๋า) / พอยท์ (เติมเข้าบัญชีพอยท์) · เปลี่ยนประเภทแล้วช่องด้านล่างเปลี่ยนตาม</span></li>
+    <li><span class="pin">6</span><span><b>จำนวนสิทธิ์</b> — เว้นว่าง = ไม่จำกัด · ใส่น้อย = "คนแรกที่ถึง" · ใต้ช่องมีข้อความอธิบายผลต่อลูกค้าเปลี่ยนตามค่าที่กรอก · ลดต่ำกว่าที่ถูกกดไปแล้วไม่ได้</span></li>
+    <li><span class="pin">7</span><span><b>ตัวสร้างฟอร์ม</b> — เพิ่มช่องได้ 4 ชนิด (ข้อความ / เบอร์โทร / ตัวเลือก / แนบไฟล์) ตั้งจำเป็น/ไม่จำเป็น และลากเรียงลำดับได้ · ฟอร์มเดียวต่อขั้น ใช้กับทุกคนที่ปลดล็อก · สูงสุด 10 ช่อง</span></li>
+    <li><span class="pin">8</span><span><b>แก้แคมเปญที่เปิดอยู่</b> — จำกัดสิทธิ์แก้ไขเพื่อไม่ให้ลูกค้าที่ถึงเกณฑ์ไปแล้วเสียสิทธิ์ (ดูกล่องเตือน)</span></li>
+    <li><span class="pin">9</span><span><b>การแจ้งเตือน</b> — 80% / 95% ของยอดเกณฑ์ขั้นถัดไป และ N วันก่อนสัญญาหมด · เลือก LINE / อีเมล / ในเว็บ · ตัวแปรในข้อความใช้ {…} · ลูกค้าที่ปลดล็อกทุกขั้นแล้วไม่ได้รับ 80/95%</span></li>
+    <li><span class="pin">10</span><span><b>ตัวอย่างสด</b> — เปลี่ยนค่าทางซ้ายแล้วแผงนี้อัปเดตทันที ใช้ยอดตัวอย่าง ฿642,350 เพื่อให้เห็นทุกสถานะ (ผ่านแล้ว/ขั้นปัจจุบัน/ล็อก)</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ทุกขั้นเป็น "ขั้นบันได" รูปแบบเดียวกัน — ไม่มีโหมดพิเศษ "คนแรกที่ถึง" หรือ "จับรางวัล" แยก เป็นเพียงค่าจำนวนสิทธิ์ที่ตั้ง</li>
+    <li>ปีสัญญาใหม่: ยอดสะสมของปีก่อนถูกเก็บเป็นประวัติ ไม่รวมในปีใหม่ · คำขอที่ค้างจากปีก่อนยังดำเนินการต่อได้</li>
+    <li>ไม่มีวันหมดอายุรายรางวัล — ใช้สิทธิ์ได้จนถึงวันสิ้นสุดแคมเปญ</li>
+    <li>ลบขั้นที่ไม่มีใครถึงได้ (ยืนยันก่อนลบ) · ถ้าทุกขั้นถูกลบ ไม่สามารถเปิดแคมเปญได้</li>
+    <li>ลูกค้าต้องมีรายชื่อในแคมเปญ (มีสัญญา) จึงเห็นขั้นบันไดและยอดสะสม — จัดการรายชื่อที่หน้าความคืบหน้า</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ลูกค้าที่ปลดล็อกแล้วแต่ยังไม่กดขอ — ต้องการให้แจ้งเตือนซ้ำก่อนแคมเปญสิ้นสุดหรือไม่ (ค่าตั้งต้น: แจ้งอัตโนมัติ 30 วันและ 7 วันก่อนสิ้นสุด)</li>
+    <li>รางวัลประเภทคูปอง/พอยท์ในขั้นบันได — ออกให้ทันทีเมื่อกดขอ (ไม่ผ่านการตรวจ) หรือเข้าคิวให้แอดมินอนุมัติเหมือนรางวัลอื่น (ค่าตั้งต้น: ออกทันที)</li>
+    <li>กรณีคืนสินค้าทำให้ยอดต่ำกว่าเกณฑ์หลังขอรับสิทธิ์แล้ว — เรียกคืนรางวัลหรือไม่</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

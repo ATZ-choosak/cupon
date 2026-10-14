@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สิทธิ์ลุ้นของฉัน</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .ph{display:inline-block;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+  .ph.p1{background:#E3F2FD;color:#0D47A1}.ph.p2{background:#EDE7F6;color:#4527A0}.ph.p3{background:#FFF3E0;color:#BF360C}
+  .mode{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;border-radius:7px;font-weight:800;font-size:12px}
+  .mode.a{background:var(--info-lighter);color:var(--info-dark)}.mode.b{background:#F3E5F5;color:#6A1B9A}
+  .tk-big{font-size:44px;font-weight:800;line-height:1;color:var(--primary)}
+  .src-chips{display:flex;flex-wrap:wrap;gap:8px}
+  .src-chips span{background:var(--g100);border:1px solid var(--g200);border-radius:999px;padding:4px 12px;font-size:12.5px}
+  .src-chips b{color:var(--primary-dark)}
+  .ev-card{display:grid;grid-template-columns:160px 1fr auto;gap:20px;align-items:center}
+  .ev-card.capped{border:1.5px solid var(--warning)}
+  .how{display:grid;grid-template-columns:44px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--g200)}
+  .how:last-child{border-bottom:0}
+  .how .ic{width:40px;height:40px;border-radius:10px;background:var(--primary-lighter);color:var(--primary-dark);display:flex;align-items:center;justify-content:center;font-weight:800}
+  .how.off{opacity:.55}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="raffle">
+<main id="screen">
+
+  <div class="crumbs">หน้าแรก / ลุ้นรางวัล / สิทธิ์ลุ้นของฉัน</div>
+  <div class="row between mb16" style="align-items:flex-end">
+    <div><h4>สิทธิ์ลุ้นของฉัน</h4><p class="muted">ร้านยา ทดสอบ จำกัด · สิทธิ์ใช้ลุ้นรางวัลได้ในแต่ละกิจกรรม แลกกลับเป็นพอยท์หรือเงินไม่ได้</p></div>
+    <a class="btn outlined" href="09-customer-history.html">ประวัติการลุ้น + รางวัลของฉัน</a>
+  </div>
+
+  <div class="stack">
+
+    <div class="grid g3 relative"><span class="pin abs">1</span>
+      <div class="stat"><div class="l">สิทธิ์พร้อมใช้</div><div class="v num">8 ใบ</div><div class="small muted">EV-0013 6 ใบ · EV-0012 2 ใบ</div></div>
+      <div class="stat"><div class="l">เข้ากองรอจับ (โหมด B)</div><div class="v num">3 ใบ</div><div class="small muted">ประกาศผลวันนี้ 20:00 น.</div></div>
+      <div class="stat" style="border-color:var(--warning)"><div class="l">ใกล้หมดอายุ</div><div class="v num" style="color:var(--warning-dark)">2 ใบ</div><div class="small muted">ใบแรกหมดอายุ 19 ต.ค. 2569 (อีก 7 วัน)</div></div>
+    </div>
+
+    <div class="tabs" data-tabs>
+      <button class="on" data-tab="byevent">ตามกิจกรรม</button>
+      <button data-tab="all">รายการสิทธิ์ทุกใบ</button>
+    </div>
+
+    <div data-panel="byevent" class="on stack">
+
+      <!-- EV-0013 -->
+      <div class="card relative"><span class="pin abs">2</span><div class="card-b ev-card">
+        <div><div class="tk-big">6</div><div class="small muted">ใบพร้อมใช้</div></div>
+        <div>
+          <div class="row wrap"><b style="font-size:16px">ลุ้นโชคปลายปี 2569</b><span class="mode a">A ลุ้นทันที</span><span class="mode b">B จับตามรอบ</span></div>
+          <div class="small muted mt8">1 ต.ค. – 15 ธ.ค. 2569 · จับรางวัลใหญ่ 20 ธ.ค. 2569 20:00 น.</div>
+          <div class="src-chips mt8 relative"><span>จากพอยท์ <b>2</b></span><span>จากยอดซื้อ <b>3</b></span><span>จากโค้ดกล่อง <b>1</b></span></div>
+          <div class="small mt8" style="color:var(--warning-dark)">1 ใบ (จากโค้ดกล่อง) หมดอายุ 19 ต.ค. 2569</div>
+          <div class="small muted mt8">สะสมแล้ว 9/20 ใบต่อรอบ</div><div class="progress mt8" style="max-width:340px"><i style="width:45%"></i></div>
+        </div>
+        <div class="stack s8" style="min-width:170px">
+          <a class="btn contained" href="07-customer-instant-draw.html">ลุ้นเลย (โหมด A)</a>
+          <a class="btn outlined primary" href="08-customer-scheduled.html">ลงกองรางวัลใหญ่ (B)</a>
+        </div>
+      </div></div>
+
+      <!-- EV-0012 capped -->
+      <div class="card relative"><span class="pin abs">3</span><div class="card-b ev-card capped" style="border-radius:16px">
+        <div><div class="tk-big">2</div><div class="small muted">ใบพร้อมใช้</div></div>
+        <div>
+          <div class="row wrap"><b style="font-size:16px">ลุ้นของแถมสินค้าใหม่ Blackmores</b><span class="mode a">A ลุ้นทันที</span><span class="chip warning">ครบเพดานสิทธิ์แล้ว</span></div>
+          <div class="small muted mt8">1 – 31 ต.ค. 2569</div>
+          <div class="src-chips mt8"><span>จากสินค้าร่วมรายการ <b>2</b></span><span>ใช้ไปแล้ว <b>8</b></span></div>
+          <div class="alert warning mt8"><div>ได้รับสิทธิ์สะสมครบ <b>10/10 ใบ</b> ของกิจกรรมนี้แล้ว — ซื้อสินค้าเพิ่มจะไม่ได้สิทธิ์ใหม่ แต่ยังใช้สิทธิ์ที่เหลือลุ้นได้</div></div>
+          <div class="progress warn mt8" style="max-width:340px"><i style="width:100%"></i></div>
+        </div>
+        <div class="stack s8" style="min-width:170px"><a class="btn contained" href="07-customer-instant-draw.html">ลุ้นเลย</a></div>
+      </div></div>
+
+      <!-- EV-0011 -->
+      <div class="card relative"><span class="pin abs">4</span><div class="card-b ev-card">
+        <div><div class="tk-big" style="color:#6A1B9A">3</div><div class="small muted">ใบเข้ากองแล้ว</div></div>
+        <div>
+          <div class="row wrap"><b style="font-size:16px">ลุ้นทองคำประจำเดือน ก.ย. 69</b><span class="mode b">B จับตามรอบ</span><span class="chip soft-info">รอจับวันนี้ 20:00 น.</span></div>
+          <div class="small muted mt8">ปิดรับ 30 ก.ย. 2569 · กอง 3,102 ใบ · ถอนสิทธิ์คืนไม่ได้</div>
+          <div class="src-chips mt8"><span>จากพอยท์ <b>1</b></span><span>จากยอดซื้อ <b>2</b></span></div>
+        </div>
+        <div class="stack s8" style="min-width:170px"><a class="btn outlined primary" href="08-customer-scheduled.html">ดูกองสิทธิ์ + นับถอยหลัง</a></div>
+      </div></div>
+
+    </div>
+
+    <div data-panel="all" class="card" style="overflow:hidden">
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>หมายเลขสิทธิ์</th><th>กิจกรรม</th><th>ได้จากทาง</th><th>ได้เมื่อ</th><th>หมดอายุ</th><th>สถานะ</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">TK-13-004112</td><td>EV-0013</td><td>โค้ดกล่อง BX-7QK2-91</td><td>12 ส.ค. 69</td><td>19 ต.ค. 69</td><td><span class="chip soft-warning">ใกล้หมดอายุ</span></td></tr>
+          <tr><td class="mono">TK-13-004388</td><td>EV-0013</td><td>แลกพอยท์ 300</td><td>10 ต.ค. 69</td><td>24 ต.ค. 69</td><td><span class="chip soft-warning">ใกล้หมดอายุ</span></td></tr>
+          <tr><td class="mono">TK-13-004815</td><td>EV-0013</td><td>แลกพอยท์ 300</td><td>11 ต.ค. 69</td><td>9 ธ.ค. 69</td><td><span class="chip soft-success">พร้อมใช้</span></td></tr>
+          <tr><td class="mono">TK-13-004830 ถึง 004832</td><td>EV-0013</td><td>ยอดซื้อ บิล SO-69-10260 (฿6,400 → 3 ใบ)</td><td>12 ต.ค. 69</td><td>11 ธ.ค. 69</td><td><span class="chip soft-success">พร้อมใช้ ×3</span></td></tr>
+          <tr><td class="mono">TK-13-004821</td><td>EV-0013</td><td>แลกพอยท์ 300</td><td>12 ต.ค. 69</td><td>—</td><td><span class="chip">ใช้แล้ว → คูปองส่งฟรี</span></td></tr>
+          <tr><td class="mono">TK-11-000412 ถึง 000990</td><td>EV-0011</td><td>พอยท์ 1 + ยอดซื้อ 2</td><td>ก.ย. 69</td><td>—</td><td><span class="chip soft-info">เข้ากองรอจับ ×3</span></td></tr>
+          <tr><td class="mono">TK-10-001204</td><td>EV-0010</td><td>แลกพอยท์ 300</td><td>3 ก.ย. 69</td><td>30 ก.ย. 69</td><td><span class="chip">หมดอายุ</span></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card relative"><span class="pin abs">5</span>
+      <div class="card-h"><h6>รับสิทธิ์เพิ่มได้จากทางไหนบ้าง</h6><span class="small muted">กิจกรรม: ลุ้นโชคปลายปี 2569</span></div>
+      <div class="card-b" style="padding-top:8px">
+        <div class="how"><span class="ic">P</span><div><b>แลกด้วยพอยท์</b><span class="ph p1">ระยะ 1</span><div class="small muted">300 พอยท์ = 1 สิทธิ์ · คุณมี 1,240 พอยท์ → แลกได้ 4 สิทธิ์ · วันนี้แลกได้อีก 3 จาก 5</div></div><a class="btn contained sm" href="../points/05-customer-redeem.html">แลกพอยท์เป็นสิทธิ์</a></div>
+        <div class="how"><span class="ic">฿</span><div><b>ยอดซื้อ</b><span class="ph p2">ระยะ 2</span><div class="small muted">ทุก ฿2,000 ในบิลที่ชำระแล้ว = 1 สิทธิ์ อัตโนมัติ (ซื้อ ฿5,000 ได้ 2 สิทธิ์)</div></div><a class="btn outlined primary sm" href="../promotion/06-customer-list.html">เลือกซื้อสินค้า</a></div>
+        <div class="how"><span class="ic">★</span><div><b>สินค้าร่วมรายการ</b><span class="ph p2">ระยะ 2</span><div class="small muted">ซื้อ Blackmores Vitamin C 500 mg / ผ้าอ้อมเด็ก Pampers 1 หน่วย = 1 สิทธิ์</div></div><a class="btn outlined primary sm" href="../promotion/06-customer-list.html">ดูสินค้าร่วมรายการ</a></div>
+        <div class="how off"><span class="ic">▲</span><div><b>ขั้นแคมเปญ</b><span class="ph p2">ระยะ 2</span><div class="small muted">ไม่เปิดในกิจกรรมนี้</div></div><span class="chip">ไม่เปิดรับ</span></div>
+        <div class="how"><span class="ic">#</span><div><b>โค้ดในกล่องสินค้า</b><span class="ph p2">ระยะ 2</span><div class="small muted">กรอกโค้ดที่พิมพ์แจกในกล่อง = 1 สิทธิ์ · วันนี้ใส่ได้อีก 3 โค้ด</div>
+          <div class="row mt8"><input class="input" style="max-width:240px" placeholder="เช่น BX-7QK2-91"><button class="btn outlined sm">ใช้โค้ด</button></div></div><span></span></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>สรุป 3 ตัวเลข: พร้อมใช้ (รวมทุกกิจกรรมที่เปิด), เข้ากองรอจับ (ใช้แล้วแต่ยังไม่ประกาศ), ใกล้หมดอายุ (≤ 14 วัน) — กดตัวเลขเพื่อกรองรายการ</span></li>
+    <li><span class="pin">2</span><span>การ์ดต่อกิจกรรม: เลขใหญ่ = สิทธิ์พร้อมใช้, ชิป "จากพอยท์ 2 / จากยอดซื้อ 3 / จากโค้ดกล่อง 1" แยกตามทางที่ได้ (นับจากบันทึกจริง), แถบ "สะสมแล้ว x/เพดาน" บอกเพดานต่อรอบ; ปุ่มหลักเปลี่ยนตามโหมด (A = ลุ้นเลย, B = ลงกอง/ดูกอง)</span></li>
+    <li><span class="pin">3</span><span>สถานะ "ครบเพดาน": การ์ดมีกรอบสีส้ม + ข้อความบอกสาเหตุ; ปุ่มรับสิทธิ์เพิ่ม (แลกพอยท์/กรอกโค้ด) ปิดสำหรับกิจกรรมนี้ แต่ใช้สิทธิ์ที่ถืออยู่ได้ตามปกติ</span></li>
+    <li><span class="pin">4</span><span>สิทธิ์ที่เข้ากองโหมด B ถอนคืน/โอนไม่ได้ จึงแสดงเป็นสถานะแยกพร้อมลิงก์ไปหน้านับถอยหลังและกองสิทธิ์</span></li>
+    <li><span class="pin">5</span><span>"รับสิทธิ์เพิ่ม" แสดงครบ 5 ทาง ทางที่กิจกรรมนี้ปิดอยู่จะจางและระบุเหตุผล; ปุ่มแลกพอยท์พาไปหน้าแลกของรางวัลของโมดูลพอยท์ (เลือกรายการ "สิทธิ์ลุ้น") เพื่อไม่ทำหน้าแลกซ้ำ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะสิทธิ์: พร้อมใช้ · ใกล้หมดอายุ (≤ 14 วัน) · ใช้แล้ว · เข้ากองรอจับ · หมดอายุ — สิทธิ์ที่หมดอายุกู้คืนไม่ได้</li>
+    <li>ใช้สิทธิ์ที่ใกล้หมดอายุก่อนเสมอ (FIFO ตามวันหมดอายุ) เมื่อกดลุ้น</li>
+    <li>หน้าเปล่า (ยังไม่มีสิทธิ์): แสดงข้อความ "ยังไม่มีสิทธิ์ลุ้น" พร้อมปุ่มรับสิทธิ์ 5 ทางด้านล่างเหมือนเดิม</li>
+    <li>ถ้าบิลที่ให้สิทธิ์ถูกยกเลิก สิทธิ์ที่ยังไม่ใช้ถูกยกเลิก และแสดงข้อความในรายการ</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ลูกค้า B2B หนึ่งบัญชีมีหลายผู้ใช้/สาขา — นับสิทธิ์ต่อบัญชีร้านค้า (เสนอ) หรือต่อผู้ใช้</li>
+    <li>ลูกค้าเลือกเองได้หรือไม่ว่าจะใช้สิทธิ์โหมด A หรือลงกอง B (เสนอ: เลือกเอง ใช้ได้เฉพาะสิทธิ์ที่ถือ ไม่ปนกัน)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

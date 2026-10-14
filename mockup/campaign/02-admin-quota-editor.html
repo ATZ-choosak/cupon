@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>แคมเปญช่วงเวลา + โควตา — Pharmaplex Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .two-col{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+  .seg-meter{display:flex;height:16px;border-radius:999px;overflow:hidden;background:var(--g200)}
+  .seg-meter i{display:block;height:100%}
+  .legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+  .sku-table input.input{min-height:34px;padding:5px 8px;font-size:12.5px}
+  .sku-table td,.sku-table th{padding:10px 8px}
+  .sku-table .prod{display:flex;gap:10px;align-items:center}
+  .sku-table .thumb{width:36px;height:36px;border-radius:8px;background:var(--g200);flex:none}
+  .moment{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--g200);font-size:12.5px}
+  .moment:last-child{border-bottom:0}
+  .moment .n{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:12px}
+  .pcard{border:1px solid var(--g200);border-radius:12px;overflow:hidden;background:#fff}
+  .pcard .img{height:110px;background:linear-gradient(135deg,var(--g100),var(--g200));position:relative;display:flex;align-items:center;justify-content:center;color:var(--g500);font-size:12px}
+  .pcard .tags{position:absolute;top:8px;left:8px;display:flex;gap:4px;flex-wrap:wrap}
+  .pcard .b{padding:12px;display:grid;gap:6px}
+  .head-actions{display:flex;gap:8px;align-items:center}
+</style>
+</head>
+<body data-shell="admin" data-nav="campaign" data-crumb="โปรโมชั่นและสิทธิพิเศษ / แคมเปญ / แก้ไขแคมเปญช่วงเวลา + โควตา">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <div class="small muted mb8"><a href="01-admin-list.html">แคมเปญ</a> / แก้ไข</div>
+      <h4>Blackmores Vitamin C ราคาพิเศษ ต.ค. <span class="chip success" style="vertical-align:middle;margin-left:8px">กำลังดำเนินการ</span></h4>
+      <p class="muted">แคมเปญช่วงเวลา + โควตา · สร้างโดย staff1 เมื่อ 28 ก.ย. 2569</p>
+    </div>
+    <div class="head-actions">
+      <a class="btn text grey" href="01-admin-list.html">ยกเลิก</a>
+      <button class="btn outlined">บันทึกร่าง</button>
+      <a class="btn contained" href="01-admin-list.html">บันทึกการเปลี่ยนแปลง</a>
+    </div>
+  </div>
+
+  <div class="alert warning mb16"><div><div class="a-title">แคมเปญนี้เปิดอยู่ — บางช่องแก้ไม่ได้</div>
+    ขายไปแล้ว 3,722 ชิ้น และกำลังพักโควตา 38 ชิ้น: โควตารวมตั้งต่ำกว่า <b>3,760</b> ไม่ได้ · ราคาแคมเปญที่ขายไปแล้วไม่ถูกย้อนแก้ · วันเริ่มแก้ไม่ได้ (เลยเวลาแล้ว)</div></div>
+
+  <div class="two-col">
+    <div class="stack">
+
+      <!-- ข้อมูลทั่วไป -->
+      <div class="card"><div class="card-b">
+        <h6 class="mb16">ข้อมูลทั่วไปและช่วงเวลา</h6>
+        <div class="form-grid">
+          <div class="field span2"><label>ชื่อแคมเปญ (ภายใน) *</label><input class="input" value="Blackmores Vitamin C ราคาพิเศษ ต.ค."></div>
+          <div class="field"><label>ข้อความป้ายบนสินค้า (ลูกค้าเห็น)</label><input class="input" value="ราคาพิเศษ จำนวนจำกัด"><span class="help">ไม่เกิน 24 ตัวอักษร แสดงเป็นป้ายบนการ์ดสินค้า</span></div>
+          <div class="field"><label>สถานะ</label>
+            <select class="select"><option>เปิดใช้ตามช่วงเวลา (อัตโนมัติ)</option><option>ร่าง (ปิดไว้ก่อน)</option></select>
+            <span class="help">แสดงผลจริง: <span class="chip success">กำลังดำเนินการ</span></span></div>
+          <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">1</span>
+            <label>เริ่ม *</label><input class="input readonly" type="datetime-local" value="2026-10-05T09:00" readonly><span class="help">เริ่มไปแล้ว — แก้ไม่ได้</span></div>
+          <div class="field"><label>สิ้นสุด *</label><input class="input" type="datetime-local" value="2026-10-31T23:59"><span class="help">ต้องหลังเวลาปัจจุบัน · ขยายได้ ร่นไม่ต่ำกว่าเวลาปัจจุบัน</span></div>
+        </div>
+        <div class="field mt16"><label>กลุ่มลูกค้าที่ร่วมแคมเปญได้ *</label>
+          <div class="row wrap">
+            <label class="check"><input type="checkbox" checked> B2B — ร้านยามีสัญญา</label>
+            <label class="check"><input type="checkbox" checked> B2B — ร้านยาทั่วไป</label>
+            <label class="check"><input type="checkbox"> ลูกค้าทั่วไป (B2C)</label>
+          </div>
+          <span class="help">ลูกค้านอกกลุ่มจะเห็นราคาปกติ และไม่เห็นป้ายแคมเปญ</span></div>
+      </div></div>
+
+      <!-- SKU -->
+      <div class="card" style="overflow:hidden">
+        <div class="card-h"><h6>สินค้าที่ร่วมรายการ (ผูกเฉพาะ SKU)</h6><button class="btn outlined sm">＋ เพิ่ม SKU</button></div>
+        <div class="card-b" style="padding-top:12px">
+          <div class="table-wrap"><table class="table sku-table">
+            <thead><tr><th>สินค้า / SKU</th><th class="num">ราคาปกติ</th><th style="width:130px">ราคาแคมเปญ <span class="pin">2</span></th><th style="width:96px">ตัวคูณพอยท์ <span class="pin">3</span></th><th style="width:110px">โควตาต่อ SKU <span class="pin">4</span></th><th style="width:48px"></th></tr></thead>
+            <tbody>
+              <tr>
+                <td><div class="prod"><span class="thumb"></span><div><b>Blackmores Vitamin C 500 mg</b><div class="small muted">ขวด · SKU BM-VC500</div></div></div></td>
+                <td class="num">฿380</td>
+                <td><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="329"></div><div class="xs muted">ลด 13.4%</div></td>
+                <td><div class="input-adorn"><input class="input" value="2"><span class="adorn">×</span></div></td>
+                <td><input class="input" value="3,000" placeholder="ไม่ระบุ"></td>
+                <td><button class="iconbtn" title="เอาออก">✕</button></td>
+              </tr>
+              <tr>
+                <td><div class="prod"><span class="thumb"></span><div><b>เจลแอลกอฮอล์</b><div class="small muted">ขวด · SKU GEL-250</div></div></div></td>
+                <td class="num">฿55</td>
+                <td><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="45"></div><div class="xs muted">ลด 18.2%</div></td>
+                <td><div class="input-adorn"><input class="input" value="1.5"><span class="adorn">×</span></div></td>
+                <td><input class="input" value="2,000" placeholder="ไม่ระบุ"></td>
+                <td><button class="iconbtn" title="เอาออก">✕</button></td>
+              </tr>
+            </tbody>
+          </table></div>
+          <div class="small muted mt8">ผลรวมโควตาต่อ SKU = <b>5,000</b> เท่ากับโควตารวม ✓ · ตัวคูณ ×1 = ไม่คูณ, ×0 = ไม่ให้พอยท์ในช่วงแคมเปญ</div>
+        </div>
+      </div>
+
+      <!-- โควตา -->
+      <div class="card"><div class="card-b">
+        <h6 class="mb16">โควตาและการพักโควตา</h6>
+        <div class="form-grid">
+          <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">5</span>
+            <label>โควตารวมทั้งระบบ *</label>
+            <div class="input-adorn"><input class="input" value="5,000"><span class="adorn">ชิ้น</span></div>
+            <span class="help">ไม่ต่ำกว่า 3,760 (ขายแล้ว + พักอยู่)</span></div>
+          <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">6</span>
+            <label>โควตาต่อร้านค้า *</label>
+            <div class="input-adorn"><input class="input" value="50"><span class="adorn">ชิ้น / ร้าน</span></div>
+            <span class="help">รวมทุก SKU ในแคมเปญ · นับจากออเดอร์ที่ชำระแล้ว + ที่กำลังพัก</span></div>
+          <div class="field span2 relative"><span class="pin abs" style="left:-14px;top:-14px">7</span>
+            <label>พักโควตาระหว่างชำระเงิน *</label>
+            <div class="row">
+              <div class="input-adorn" style="width:200px"><input class="input" value="15"><span class="adorn">นาที</span></div>
+              <span class="muted small">ช่วงที่ตั้งได้ 5 – 60 นาที · ค่าตั้งต้น 15 นาที</span>
+            </div>
+            <div class="alert info mt8"><div><div class="a-title">เมื่อหมดเวลาโดยยังไม่ชำระเงิน</div>
+              ระบบคืนโควตาที่พักเข้าส่วน "เหลือ" ทันที · ตะกร้าของลูกค้ายังอยู่ครบ แต่ราคากลับไปคำนวณใหม่ตามโควตาที่เหลือ ณ ขณะนั้น · ลูกค้าเห็นข้อความ "หมดเวลาพักโควตา" และกดไปชำระเงินใหม่ได้ (พักใหม่อีกครั้ง ถ้าโควตายังพอ)</div></div>
+          </div>
+        </div>
+        <hr class="divider">
+        <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">8</span>
+          <label>เมื่อโควตารวมหมด</label>
+          <div class="radio-cards c2">
+            <label class="radio-card"><input type="radio" name="soldout" value="normal" checked><span><span class="rc-t">กลับราคาปกติ</span><span class="rc-d" style="display:block">สินค้ายังซื้อได้ในราคาปกติ ป้ายแคมเปญเปลี่ยนเป็น "โควตาหมดแล้ว"</span></span></label>
+            <label class="radio-card"><input type="radio" name="soldout" value="hide"><span><span class="rc-t">ปิดสินค้าแคมเปญ</span><span class="rc-d" style="display:block">ซ่อนปุ่มหยิบใส่ตะกร้าของ SKU ในแคมเปญ จนกว่าแคมเปญสิ้นสุด</span></span></label>
+          </div>
+        </div>
+      </div></div>
+
+      <div class="row between">
+        <a class="btn text grey" href="01-admin-list.html">← กลับรายการแคมเปญ</a>
+        <div class="row"><button class="btn outlined">ทำสำเนา</button><button class="btn error">ปิดแคมเปญก่อนกำหนด</button></div>
+      </div>
+    </div>
+
+    <!-- right -->
+    <div class="stack">
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">9</span>
+        <div class="row between mb8"><h6>โควตาตอนนี้ (สด)</h6><span class="chip soft-success">อัปเดตทุก 10 วิ</span></div>
+        <div class="row between mb8"><div><span style="font-size:26px;font-weight:800">1,240</span> <span class="muted">/ 5,000 ชิ้นคงเหลือ</span></div></div>
+        <div class="seg-meter">
+          <i style="width:74.44%;background:var(--primary)"></i>
+          <i style="width:.76%;background:var(--warning)"></i>
+        </div>
+        <div class="small mt8 stack s8" style="gap:4px">
+          <div class="row between"><span><span class="legend-dot" style="background:var(--primary)"></span>ขายแล้ว (ชำระสำเร็จ)</span><b>3,722</b></div>
+          <div class="row between"><span><span class="legend-dot" style="background:var(--warning)"></span>กำลังพักโควตา</span><b>38</b></div>
+          <div class="row between"><span><span class="legend-dot" style="background:var(--g200)"></span>เหลือให้ลูกค้ารายอื่น</span><b>1,240</b></div>
+        </div>
+        <hr class="divider">
+        <div class="small muted">รายร้านที่ใช้สิทธิ์ครบ 50 ชิ้นแล้ว: 7 ร้าน · ร้านที่ซื้ออย่างน้อย 1 ชิ้น: 214 ร้าน</div>
+      </div></div>
+
+      <div class="card"><div class="card-b">
+        <h6 class="mb8">ตัวอย่างที่ลูกค้าเห็น</h6>
+        <div class="pcard">
+          <div class="img">รูปสินค้า<div class="tags"><span class="promo-tag flash">ราคาพิเศษ จำนวนจำกัด</span><span class="promo-tag gift">พอยท์ ×2</span></div></div>
+          <div class="b">
+            <b>Blackmores Vitamin C 500 mg (ขวด)</b>
+            <div class="price" style="color:var(--primary)">฿329 <s>฿380</s></div>
+            <div><div class="progress warn"><i style="width:75%"></i></div><div class="small mt8"><b>เหลือ 1,240 / 5,000 ชิ้น</b> · ร้านคุณซื้อได้อีก 20</div></div>
+            <div class="small muted">ถึง 31 ต.ค. 2569 23:59 น.</div>
+          </div>
+        </div>
+        <a class="small" href="08-customer-quota-product.html">ดูหน้าสินค้าจริงฝั่งลูกค้า →</a>
+      </div></div>
+
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">10</span>
+        <h6 class="mb8">เกิดอะไรขึ้นใน 3 จังหวะ</h6>
+        <div class="moment"><span class="n" style="background:var(--success)">1</span><div><b>เริ่ม</b> (5 ต.ค. 09:00)<br>ราคาแคมเปญและป้ายปรากฏเฉพาะ 2 SKU ที่ผูก กับลูกค้ากลุ่มที่เลือก · เริ่มนับโควตา</div></div>
+        <div class="moment"><span class="n" style="background:var(--warning-dark)">2</span><div><b>โควตารวมหมด</b><br>ตามที่เลือก: กลับราคาปกติ · พักโควตาที่ค้างอยู่ยังชำระได้จนครบเวลา แล้วคืนโควตาถ้าไม่ชำระ</div></div>
+        <div class="moment"><span class="n" style="background:var(--g600)">3</span><div><b>สิ้นสุด</b> (31 ต.ค. 23:59)<br>ราคากลับปกติทุก SKU · ตะกร้าที่ยังมีสินค้าแคมเปญคำนวณใหม่ · ออเดอร์ที่ชำระไปแล้วไม่ถูกแก้</div></div>
+      </div></div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ช่วงเวลา</b> — เลือกวัน+เวลา (ไม่ใช่แค่วัน) เพราะสินค้าโควตามักเปิดตอนเช้า · แคมเปญที่เริ่มแล้วแก้วันเริ่มไม่ได้ · สถานะแสดงผลคำนวณจากเวลา ไม่ต้องกดเปิด/ปิด</span></li>
+    <li><span class="pin">2</span><span><b>ราคาแคมเปญ</b> — ต่ำกว่าราคาปกติเสมอ (ถ้าสูงกว่า/เท่ากันขึ้น error ใต้ช่อง) · โชว์ % ส่วนลดคำนวณสดใต้ช่อง</span></li>
+    <li><span class="pin">3</span><span><b>ตัวคูณพอยท์</b> — คูณกับพอยท์ต่อหน่วยของสินค้านั้น เฉพาะการซื้อในแคมเปญนี้ · ถ้ามีหลายแคมเปญเปิดพร้อมกันตัวคูณ<b>บวกกัน</b> (×1.5 + ×2 = ×3.5) ตามสเปกพอยท์</span></li>
+    <li><span class="pin">4</span><span><b>โควตาต่อ SKU</b> — ไม่บังคับ ถ้ากรอกผลรวมต้องไม่เกินโควตารวม · เว้นว่าง = ใช้ร่วมกันในโควตารวม</span></li>
+    <li><span class="pin">5</span><span><b>โควตารวม</b> — ทั้งระบบ นับ "ขายแล้ว + กำลังพัก" · ลดต่ำกว่าที่ใช้ไปแล้วไม่ได้ (error: "ต้องไม่ต่ำกว่า 3,760")</span></li>
+    <li><span class="pin">6</span><span><b>โควตาต่อร้านค้า</b> — ต่อบัญชีลูกค้า รวมทุก SKU ในแคมเปญ · ตัวนับเห็นผลทันทีในหน้าสินค้า (ร้านคุณซื้อได้อีก X)</span></li>
+    <li><span class="pin">7</span><span><b>พักโควตา</b> — เริ่มจับเวลาตอนลูกค้ากดไปชำระเงิน (ไม่ใช่ตอนใส่ตะกร้า) · แก้นาทีได้ 5–60 และมีผลกับการพักครั้งใหม่เท่านั้น</span></li>
+    <li><span class="pin">8</span><span><b>เมื่อโควตาหมด</b> — 2 ทางเลือก (กลับราคาปกติ / ปิดสินค้าแคมเปญ) ค่าตั้งต้น "กลับราคาปกติ" เพื่อไม่เสียยอดขาย</span></li>
+    <li><span class="pin">9</span><span><b>มิเตอร์สด</b> — แยก "ขายแล้ว" กับ "พักอยู่" เพื่อให้แอดมินเข้าใจว่าทำไมโควตา "เหลือ" ลดลงทั้งที่ยังไม่มีออเดอร์สำเร็จ</span></li>
+    <li><span class="pin">10</span><span><b>3 จังหวะ</b> — สรุปผลต่อระบบที่เกิดอัตโนมัติ ไม่ต้องมีคนกด</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ลูกค้าอยู่ในช่วงพักโควตา เมื่อชำระสำเร็จภายหลังแอดมินปิดแคมเปญก่อนกำหนด → ยังได้ราคาแคมเปญตามที่พักไว้</li>
+    <li>ตะกร้าที่ใส่สินค้าเกินสิทธิ์ร้านหรือเกินโควตาเหลือ: ปุ่มชำระเงินแสดงจำนวนที่ซื้อได้จริงและขอให้ปรับก่อน (ดู 08)</li>
+    <li>SKU เดียวกันอยู่ในแคมเปญช่วงเวลาทับกันไม่ได้ — บันทึกไม่ผ่านพร้อมชื่อแคมเปญที่ชน</li>
+    <li>ปิดก่อนกำหนด: ต้องยืนยัน 2 ชั้น, ออเดอร์ที่พักอยู่ยังดำเนินต่อได้, บันทึกใน audit log ด้วยชื่อผู้ทำ</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ราคาแคมเปญซ้อนกับโปรโมชั่น/คูปองได้หรือไม่ (ค่าตั้งต้น: ราคาแคมเปญเป็นราคาฐาน แล้วโปรโมชั่นแบบเงื่อนไขซ้อนได้ แต่ส่วนลด % ของโปรโมชั่นไม่คิดซ้ำบน SKU แคมเปญ)</li>
+    <li>ถ้าลูกค้าใส่เกินสิทธิ์ร้าน — บล็อกทั้งรายการ (ค่าตั้งต้น) หรือแยกบรรทัด ส่วนที่ได้สิทธิ์ราคาแคมเปญ + ส่วนเกินราคาปกติ?</li>
+    <li>โควตาต่อร้านนับ "ต่อบัญชีลูกค้า" หรือ "ต่อสาขา" สำหรับลูกค้าที่มีหลายสาขา (เช่น ร้านยาสุขใจ ลาดพร้าว/บางนา)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

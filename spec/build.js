@@ -158,11 +158,10 @@ function docxImage(block) {
   const file = path.join(ROOT, block.src);
   const buf = fs.readFileSync(file);
   const { w, h } = pngSize(buf);
-  const scale = Math.min(IMG_MAX_W / w, 740 / h, 1);
+  const scale = Math.min(IMG_MAX_W / w, 760 / h, 1);
   return [
     new Paragraph({
       alignment: AlignmentType.CENTER,
-      keepNext: true,
       spacing: { before: 120, after: 60 },
       children: [new ImageRun({
         type: 'png', data: buf,
@@ -240,6 +239,7 @@ function toDocx(blocks) {
     } else if (b.t === 'p') {
       children.push(new Paragraph({
         alignment: AlignmentType.JUSTIFIED,
+        pageBreakBefore: b.text.indexOf('คำอธิบายแต่ละส่วนในหน้าจอ') >= 0,
         spacing: { after: 120, line: 400 },
         children: runsFor(b.text),
       }));
@@ -339,7 +339,7 @@ function toHtml(blocks) {
         out.push(`<h${b.level}>${esc(b.text)}</h${b.level}>`);
       }
     } else if (b.t === 'p') {
-      out.push(`<p>${inlineHtml(b.text)}</p>`);
+      out.push(b.text.indexOf('คำอธิบายแต่ละส่วนในหน้าจอ') >= 0 ? `<p style="break-before:page">${inlineHtml(b.text)}</p>` : `<p>${inlineHtml(b.text)}</p>`);
     } else if (b.t === 'li' || b.t === 'ol') {
       if (inList !== 'ul' && b.t === 'li') { closeList(); out.push('<ul>'); inList = 'ul'; }
       if (inList !== 'ol' && b.t === 'ol') { closeList(); out.push('<ol>'); inList = 'ol'; }
@@ -389,7 +389,7 @@ pre { background: #f3f3f3; border-radius: 4px; padding: 10px 12px; font-family: 
 code { font-family: Consolas, "Courier New", monospace; font-size: 15px; background: #f3f3f3; padding: 0 3px; border-radius: 3px; }
 blockquote { margin: 10px 0 14px; background: #fff4e5; border-left: 5px solid #e0a030; padding: 8px 12px; border-radius: 3px; text-align: justify; }
 figure { margin: 12px 0 4px; text-align: center; break-inside: avoid; }
-img { max-width: 100%; max-height: 640px; border: 1px solid var(--line); border-radius: 4px; }
+img { max-width: 100%; max-height: 760px; width: auto; border: 1px solid var(--line); border-radius: 4px; }
 figure + p { text-align: center; }
 figure + p em { color: var(--muted); font-size: 19px; }
 .cover { min-height: 250mm; display: flex; flex-direction: column; justify-content: center; break-after: page; border-top: 10px solid var(--red); padding: 0 6mm; }

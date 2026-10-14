@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ใช้คูปองในตะกร้า/เช็คเอาต์</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.tbl-c th,.tbl-c td{padding:10px 12px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ck.y{background:var(--success)}.ck.n{background:var(--error)}.ck.w{background:var(--warning)}
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.hl td{background:var(--primary-lighter)!important}
+.dim{opacity:.55}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.lbl-sm{font-size:11.5px;color:var(--text2)}
+.err-box{border:1.5px solid var(--error);background:var(--error-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#5F2120}
+.ok-box{border:1.5px solid var(--success);background:var(--success-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1E4620}
+.warn-box{border:1.5px solid var(--warning);background:var(--warning-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#663C00}
+.input.bad{border-color:var(--error);background:var(--error-lighter)}
+.input.good{border-color:var(--success)}
+.input.amber{border-color:var(--warning)}
+label.switch{white-space:nowrap}
+details.faq{border:1px solid var(--g300);border-radius:10px;background:#fff;padding:0}
+details.faq+details.faq{margin-top:8px}
+details.faq>summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq>summary::after{content:"＋";color:var(--primary);font-weight:800}
+details.faq[open]>summary::after{content:"−"}
+details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
+
+.crumbs a{color:var(--text2)}
+.cart-grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start}
+.applied{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1.5px solid var(--success);background:var(--success-lighter);border-radius:10px;padding:10px 12px;margin-bottom:8px}
+.applied .rm{border:0;background:#fff;border-radius:6px;padding:3px 8px;cursor:pointer;color:var(--error-dark);font-weight:600;font-size:12px}
+.st-ex{border:1px solid var(--g200);border-radius:10px;padding:12px;background:#fff}
+.st-ex .ctx{font-size:11px;font-weight:700;color:var(--text2);margin-bottom:6px;text-transform:none}
+.msg{font-size:12.5px;margin-top:6px;display:flex;gap:6px;align-items:flex-start}
+.msg.ok{color:var(--success-darker)}.msg.err{color:var(--error-dark)}.msg.amb{color:#8a5300}
+.wl{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border:1px solid var(--g300);border-radius:10px;padding:12px 14px;background:#fff}
+.wl+.wl{margin-top:8px}
+.wl.off{background:var(--g50)}
+.wl .rs{font-size:12px;margin-top:4px}
+</style>
+</head>
+<body data-shell="customer" data-nav="coupon" data-cust-nav="coupon">
+<main id="screen">
+
+<div class="crumbs"><a href="#">ตะกร้า</a> / <b>ชำระเงิน</b></div>
+<h4>ตะกร้าสินค้า</h4>
+<p class="muted mb16">ตรวจรายการ เลือกคูปอง แล้วไปชำระเงิน</p>
+
+<div class="cart-grid mb24">
+  <div class="card"><div class="card-b">
+    <div class="cart-line"><span class="thumb"></span><div><b>นมผงสูตร 3 (ลัง)</b> <span class="chip soft-warning">ไม่เข้าร่วมคูปอง</span><div class="small muted">฿1,200 × 1</div></div><b>฿1,200</b></div>
+    <div class="cart-line"><span class="thumb"></span><div><b>Blackmores Vitamin C 500 mg (ขวด)</b><div class="small muted">฿380 × 3</div></div><b>฿1,140</b></div>
+    <div class="cart-line"><span class="thumb"></span><div><b>ถุงมือยาง (กล่อง)</b><div class="small muted">฿120 × 4</div></div><b>฿480</b></div>
+    <div class="cart-line"><span class="thumb"></span><div><b>ยาน้ำแก้ไอ (ขวด)</b><div class="small muted">฿85 × 2</div></div><b>฿170</b></div>
+    <div class="legal mt16">นมผงสูตร 3 อยู่ในรายการยกเว้นของคูปอง "ลด ฿100" และ "ส่งฟรีประจำเดือน" — ยอดที่ใช้คิดขั้นต่ำของคูปองจึงเป็น ฿1,790 (ไม่นับ ฿1,200)</div>
+  </div></div>
+
+  <div class="card"><div class="card-b">
+    <h6 class="mb8">สรุปคำสั่งซื้อ</h6>
+    <div class="sum-row"><span>ยอดสินค้า</span><span>฿2,990</span></div>
+    <div class="sum-row"><span>ส่วนลดโปรโมชั่น</span><span>—</span></div>
+    <div class="sep" style="margin:8px 0"></div>
+    <div class="row between mb8 relative"><b>คูปอง</b><span class="small muted">ใช้แล้ว 2 / 2 ใบ <span class="pin">1</span></span></div>
+    <div class="applied"><div><b>ลด ฿100 เมื่อซื้อครบ ฿1,500</b><div class="small muted">เก็บเอง · คิดจากยอด ฿1,790</div></div><button class="rm">✕ เอาออก</button></div>
+    <div class="applied"><div><b>ส่งฟรีประจำเดือน ต.ค.</b><div class="small muted">ซื้อครบ ฿1,000 · ฟรีค่าจัดส่ง</div></div><button class="rm">✕ เอาออก</button></div>
+    <a class="btn outlined primary block mt8 relative" href="#addcoupon">＋ เพิ่มคูปอง <span class="pin">2</span></a>
+    <div class="sep"></div>
+    <div class="sum-row disc"><span>คูปอง ลด ฿100</span><span>−฿100</span></div>
+    <div class="sum-row"><span>ค่าจัดส่ง</span><span>฿45</span></div>
+    <div class="sum-row disc"><span>คูปอง ส่งฟรี</span><span>−฿45</span></div>
+    <div class="sum-row total"><span>ยอดสุทธิ</span><span>฿2,890</span></div>
+    <div class="legal mt8">ยอดที่ชำระจริงคำนวณที่ระบบตอนยืนยันคำสั่งซื้อ · ราคารวม VAT แล้ว</div>
+    <button class="btn contained lg block mt16">ไปชำระเงิน</button>
+    <a class="btn text block mt8" href="08-customer-center.html">ดูกระเป๋าคูปอง</a>
+  </div></div>
+</div>
+
+<h6 class="mb8" id="addcoupon">หน้าต่าง "เพิ่มคูปอง" (เปิดจากปุ่มด้านบน)</h6>
+<div class="backdrop mb24">
+  <div class="dialog md">
+    <div class="dialog-h">เพิ่มคูปอง <button class="x">✕</button></div>
+    <div class="dialog-b">
+      <div class="label mb8">มีโค้ดคูปอง? <span class="pin">3</span></div>
+      <div class="row mb8"><input class="input mono good" value="SAVE100" style="max-width:260px"><button class="btn contained">ใช้โค้ด</button></div>
+      <div class="grid g3 mb16">
+        <div class="st-ex"><div class="ctx">สถานะ ก · ผ่าน (ตะกร้า ฿2,990)</div><input class="input good mono" value="SAVE100"><div class="msg ok">✔ ใช้โค้ดได้ — ลด ฿100 (คิดจากยอด ฿1,790)</div></div>
+        <div class="st-ex"><div class="ctx">สถานะ ข · ผิดเงื่อนไข</div><input class="input bad mono" value="SAVE100"><div class="msg err">✕ โค้ดนี้ใช้ครบโควตาต่อคนแล้ว</div></div>
+        <div class="st-ex"><div class="ctx">สถานะ ค · ยังไม่ถึงขั้นต่ำ (ตะกร้า ฿380)</div><input class="input amber mono" value="FB10"><div class="msg amb">! ยอดซื้อยังไม่ถึง ฿500 อีก ฿120</div></div>
+      </div>
+
+      <div class="label mb8">คูปองในกระเป๋าของฉัน <span class="pin">4</span></div>
+      <div class="wl"><div><b>ลด ฿100 เมื่อซื้อครบ ฿1,500</b><div class="rs" style="color:var(--success-darker)">✔ ใช้อยู่ในบิลนี้ · คิดจากยอด ฿1,790</div></div><button class="btn outlined sm">เอาออก</button></div>
+      <div class="wl"><div><b>ส่งฟรีประจำเดือน ต.ค.</b><div class="rs" style="color:var(--success-darker)">✔ ใช้อยู่ในบิลนี้ · ฟรีค่าจัดส่ง ฿45</div></div><button class="btn outlined sm">เอาออก</button></div>
+      <div class="wl off"><div><b>ลด 10% สูงสุด ฿150 เมื่อซื้อครบ ฿2,000</b><div class="rs" style="color:#8a5300">! ใช้ไม่ได้: ยอดที่ใช้คูปองนี้ได้ ฿1,790 ยังไม่ถึง ฿2,000 (อีก ฿210) — ไม่นับนมผงสูตร 3</div></div><button class="btn outlined sm" disabled>ใช้</button></div>
+      <div class="wl off"><div><b>ลดเพิ่ม ฿30 (ใช้ใบเดียวต่อบิล)</b><div class="rs" style="color:var(--error-dark)">✕ ใช้ร่วมกับคูปองอื่นไม่ได้ — เอาคูปองที่ใช้อยู่ออกก่อน</div></div><button class="btn outlined sm" disabled>ใช้</button></div>
+      <div class="wl off"><div><b>ลด ฿50 เมื่อซื้อครบ ฿500</b><div class="rs">ใช้แล้วเมื่อ 3 ต.ค. 69 (ออเดอร์ #A-1488)</div></div><span class="chip">ใช้แล้ว</span></div>
+
+      <div class="alert info mt16 relative"><span class="pin">5</span><div><div class="a-title">ใช้ได้สูงสุด 2 ใบ/บิล: ส่วนลด 1 + ส่งฟรี 1</div>
+        ส่วนลดที่เป็นเงิน/% ใช้ได้ 1 ใบ และส่งฟรีอีก 1 ใบ · คูปองบางใบตั้งว่า "ใช้ร่วมกับคูปองอื่นไม่ได้" หรือ "ใช้ร่วมโปรไม่ได้" ระบบจะบอกเหตุผลที่ข้างใบคูปอง</div></div>
+    </div>
+    <div class="dialog-f"><button class="btn text grey">ปิด</button><button class="btn contained">เสร็จสิ้น</button></div>
+  </div>
+</div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>สรุปคูปองในตะกร้า: จำนวนที่ใช้/สูงสุดต่อบิล · แต่ละใบแสดงสีเขียวพร้อมปุ่มเอาออก — ยอดสุทธิคำนวณใหม่ทันที</span></li>
+    <li><span class="pin">2</span><span>ปุ่ม "เพิ่มคูปอง" เปิดหน้าต่างเดียวสำหรับกรอกโค้ดและเลือกจากกระเป๋า (หน้าต่างแสดงเปิดอยู่ด้านล่างเพื่อให้ดูทั้งหมดในภาพเดียว)</span></li>
+    <li><span class="pin">3</span><span>ช่องกรอกโค้ด 3 สถานะ: ผ่าน (เขียว) / ผิดเงื่อนไข (แดง บอกเหตุผล เช่น ใช้ครบโควตาต่อคน) / ยังไม่เข้าเงื่อนไข (เหลือง บอกว่าขาดอีกเท่าไร)</span></li>
+    <li><span class="pin">4</span><span>กระเป๋า: ทุกใบมี "เหตุผลที่ใช้ไม่ได้" ใต้ชื่อ (ขั้นต่ำ ยกเว้นสินค้า ใช้ร่วมไม่ได้ ใช้แล้ว) — ปุ่ม "ใช้" ถูกปิดเมื่อใช้ไม่ได้</span></li>
+    <li><span class="pin">5</span><span>คำอธิบายกติกาซ้อนใบ: ส่วนลด 1 + ส่งฟรี 1 ต่อบิล (ตามค่ากลางในหน้าแอดมิน) แสดงในหน้าต่างเสมอ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ยอดขั้นต่ำเทียบกับ "ยอดที่คูปองใบนั้นครอบคลุม" หลังหักโปรโมชั่น (ไม่นับสินค้ายกเว้น และไม่นับรายการที่จับคู่โปรถ้าคูปองตั้งใช้ร่วมโปรไม่ได้) — ลำดับการใส่คูปองไม่มีผลกับขั้นต่ำ</li>
+    <li>ส่วนลดใบถัดไปคิดจากยอดคงเหลือหลังใบก่อนหน้า ไม่มีทางหักเกินมูลค่ารายการ/ติดลบ</li>
+    <li>คูปองส่งฟรีฟรีเฉพาะรายการที่เข้าเงื่อนไข — ถ้ามีรายการที่ยกเว้น ยังคิดค่าส่งส่วนนั้น</li>
+    <li>โควตาของโค้ด/คูปองตัดเมื่อชำระสำเร็จ — ถ้ายกเลิกก่อนชำระ สิทธิ์ยังอยู่</li>
+    <li>ถ้าตะกร้าเปลี่ยนจนคูปองที่ใช้อยู่ไม่เข้าเงื่อนไข ระบบถอดคูปองให้และแจ้งเหตุผลที่หน้าสรุป</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>จำนวนคูปองสูงสุดต่อบิล (เสนอ 2: ส่วนลด 1 + ส่งฟรี 1) และกรณีมีคูปอง % + คูปองบาท ให้ใช้ได้ทั้งคู่หรือไม่</li>
+    <li>ลูกค้ายังไม่ล็อกอินเปิดหน้าต่างนี้ได้หรือไม่ (เสนอ: ต้องล็อกอินก่อนเลือกคูปอง)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

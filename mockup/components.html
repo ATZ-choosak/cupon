@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Component reference — mockup kit</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/mockup.css">
+<script src="assets/registry.js"></script>
+</head>
+<body data-shell="bare">
+<!--
+  PAGE TEMPLATE (copy for every screen, file lives in mockup/<slug>/NN-name.html)
+
+  <!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>…</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script></head>
+  <body data-shell="admin" data-nav="promotion" data-crumb="โปรโมชั่นและสิทธิพิเศษ / โปรโมชั่น">   (customer pages: data-shell="customer" data-cust-nav="promotion")
+  <main id="screen"> …only the page content… </main>
+  <section class="ux-notes"> …numbered notes… </section>
+  <script src="../assets/mockup.js"></script></body></html>
+-->
+<main id="screen" style="max-width:1240px;margin:0 auto;padding:24px">
+
+  <h2 class="mb16">Mockup kit — component reference</h2>
+  <p class="muted mb24">ใช้คลาสจาก <code>assets/mockup.css</code> เท่านั้น (เขียน CSS เพิ่มเฉพาะหน้าได้ใน &lt;style&gt; ท้าย head ถ้าจำเป็นจริงๆ) · ดูตัวอย่างโครงหน้าแอดมิน = page-head + alert + card/table, หน้าลูกค้า = crumbs + หัวข้อ + การ์ด</p>
+
+  <div class="stack s24">
+
+    <!-- page head + buttons -->
+    <div class="card"><div class="card-b">
+      <div class="page-head" style="margin-bottom:0">
+        <div><h4>ชื่อหน้า</h4><p class="muted">คำอธิบายหน้า 1 บรรทัด</p></div>
+        <div class="row"><button class="btn outlined">ส่งออก</button><button class="btn contained">＋ สร้างโปรโมชั่น</button></div>
+      </div>
+      <hr class="divider">
+      <div class="row wrap">
+        <button class="btn contained">Contained</button><button class="btn outlined">Outlined</button><button class="btn outlined primary">Outlined primary</button>
+        <button class="btn text">Text</button><button class="btn success">Success</button><button class="btn error">Error</button><button class="btn contained sm">Small</button><button class="btn contained" disabled>Disabled</button>
+      </div>
+      <div class="row wrap mt16">
+        <span class="chip success">ใช้งาน</span><span class="chip warning">ยังไม่เริ่มต้น</span><span class="chip error">หมดอายุ</span><span class="chip">ไม่ใช้งาน</span>
+        <span class="chip soft-info">soft-info</span><span class="chip soft-success">soft-success</span><span class="chip soft-primary">soft-primary</span><span class="chip outline">outline</span>
+        <span class="promo-tag">ซื้อครบรับฟรี</span><span class="promo-tag gift">ของแถม</span><span class="promo-tag ship">ส่งฟรี</span><span class="promo-tag flash">Flash</span>
+      </div>
+    </div></div>
+
+    <!-- alerts -->
+    <div class="grid g2">
+      <div class="alert info"><div><div class="a-title">หมายเหตุ (info)</div>หากมีหลายโปรที่ตรงเงื่อนไข ระบบใช้ลำดับ priority สูงสุดก่อน</div></div>
+      <div class="alert warning"><div><div class="a-title">ต้องตัดสินใจ (warning)</div>ข้อที่ยังไม่ยืนยันกับลูกค้า</div></div>
+    </div>
+
+    <!-- form -->
+    <div class="card"><div class="card-b">
+      <div class="form-grid">
+        <div class="field"><label>ชื่อโปรโมชั่น *</label><input class="input" value="ซื้อครบ 5 ลัง แถมของแถม"><span class="help">แสดงให้ลูกค้าเห็นบนการ์ด</span></div>
+        <div class="field"><label>ประเภทเงื่อนไข</label><select class="select"><option>ตามจำนวน</option><option>ตามจำนวนเงินรวม</option></select></div>
+        <div class="field"><label>ยอดขั้นต่ำ</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="1,000"></div></div>
+        <div class="field"><label>วันที่เริ่ม – สิ้นสุด</label><div class="row"><input class="input" type="date" value="2026-11-01"><input class="input" type="date" value="2026-12-31"></div></div>
+        <label class="switch"><input type="checkbox" checked> ใช้งาน</label>
+        <label class="check"><input type="checkbox"> ตรวจหน่วยสินค้าอย่างเข้มงวด</label>
+      </div>
+      <div class="radio-cards c3 mt16">
+        <label class="radio-card"><input type="radio" name="rw" value="gift" checked><span><span class="rc-t">ของแถม</span><span class="rc-d" style="display:block">ซื้อครบแล้วรับสินค้าฟรี</span></span></label>
+        <label class="radio-card"><input type="radio" name="rw" value="disc"><span><span class="rc-t">ส่วนลด</span><span class="rc-d" style="display:block">ลดเป็นบาทหรือ %</span></span></label>
+        <label class="radio-card"><input type="radio" name="rw" value="ship"><span><span class="rc-t">ฟรีค่าจัดส่ง</span><span class="rc-d" style="display:block">ไม่เสียค่าส่ง</span></span></label>
+      </div>
+      <div class="field mt16" data-reveal="rw=disc"><label>มูลค่าส่วนลด (แสดงเมื่อเลือก "ส่วนลด")</label><input class="input" value="100"></div>
+    </div></div>
+
+    <!-- table -->
+    <div class="card" style="overflow:hidden">
+      <div class="table-toolbar"><input class="input" style="max-width:320px" placeholder="ค้นหา"><span class="muted small">แสดง 1–3 จาก 3</span></div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th style="width:40px"></th><th>ลำดับ</th><th>ชื่อ</th><th>สถานะ</th><th class="num">โควตา/คน</th><th>การดำเนินการ</th></tr></thead>
+        <tbody>
+          <tr><td class="drag">⋮⋮</td><td><b>#1</b></td><td><b>ซื้อ 5 ลัง แถม B</b></td><td><span class="chip success">ใช้งาน</span></td><td class="num">ไม่จำกัด</td><td><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ลบ</button></td></tr>
+          <tr><td class="drag">⋮⋮</td><td><b>#2</b></td><td><b>ซื้อ Blackmores ครบ 1,000 ลด 100</b></td><td><span class="chip warning">ยังไม่เริ่มต้น</span></td><td class="num">1</td><td><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ลบ</button></td></tr>
+        </tbody>
+      </table></div>
+      <div class="pager"><span>แถวต่อหน้า 100</span><span>1–2 จาก 2</span></div>
+    </div>
+
+    <!-- tabs + stepper + progress -->
+    <div class="card"><div class="card-b" id="tabdemo">
+      <div class="tabs" data-tabs><button class="on" data-tab="a">แท็บ A</button><button data-tab="b">แท็บ B</button></div>
+      <div data-panel="a" class="on">เนื้อหาแท็บ A</div><div data-panel="b">เนื้อหาแท็บ B</div>
+      <hr class="divider">
+      <div class="stepper"><div class="st done"><span class="n">1</span>ข้อมูลกิจกรรม</div><div class="st on"><span class="n">2</span>ทางเข้าสิทธิ์</div><div class="st"><span class="n">3</span>รางวัล</div></div>
+      <div class="progress"><i style="width:62%"></i></div>
+    </div></div>
+
+    <!-- dialog rendered open -->
+    <div class="backdrop"><div class="dialog md">
+      <div class="dialog-h">สร้างโปรโมชั่น<button class="x">✕</button></div>
+      <div class="dialog-b">เนื้อหาฟอร์ม … ใช้ .form-sec แต่ละหัวข้อคั่นด้วย &lt;hr class="divider"&gt;</div>
+      <div class="dialog-f"><button class="btn text grey">ยกเลิก</button><button class="btn contained">บันทึก</button></div>
+    </div></div>
+
+    <!-- swimlane flow -->
+    <div class="swim">
+      <div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b">
+        <a class="node cust" href="#"><span class="pin no">1</span><b>เลือกสินค้า</b>ใส่ตะกร้า</a><div class="gap">→</div>
+        <a class="node cust" href="#"><span class="pin no">2</span><b>เช็คเอาต์</b>ชำระเงิน</a>
+      </div></div>
+      <div class="lane"><div class="lane-h">ระบบ</div><div class="lane-b">
+        <div class="gap sp" style="width:212px"></div>
+        <div class="node sys"><span class="pin no">A</span><b>คำนวณโปร</b>ตาม priority</div><div class="gap">→</div>
+        <div class="node end"><b>เสร็จสิ้น</b>ได้พอยท์</div>
+      </div></div>
+      <div class="lane"><div class="lane-h">แอดมิน</div><div class="lane-b"><a class="node adm" href="#"><span class="pin no">B</span><b>ตั้งค่าโปร</b>แอดมินสร้าง</a></div></div>
+    </div>
+    <div class="flow-legend"><span><i style="background:#fff"></i>ลูกค้า</span><span><i style="background:var(--primary-lighter)"></i>แอดมิน</span><span><i style="background:var(--info-lighter)"></i>ระบบ</span><span><i style="background:var(--success-lighter)"></i>ผลลัพธ์</span></div>
+
+    <!-- domain pieces -->
+    <div class="grid g2">
+      <div class="card"><div class="card-b">
+        <div class="cart-line"><span class="thumb"></span><div><b>นมผงสูตร 3 (ลัง)</b><div class="small muted">฿1,200 × 5</div></div><div class="qty"><button>−</button><span>5</span><button>+</button></div></div>
+        <div class="cart-line gift"><span class="thumb"></span><div><b>ขวดนม PP</b> <span class="promo-tag gift">ของแถม</span><div class="small muted">ได้รับจากโปรโมชั่น "ซื้อ 5 ลัง แถม B"</div></div><b>ฟรี</b></div>
+        <div class="sum-row"><span>ยอดสินค้า</span><span>฿6,000</span></div>
+        <div class="sum-row disc"><span>ส่วนลดโปรโมชั่น<small>ซื้อ Blackmores ครบ 1,000</small></span><span>−฿100</span></div>
+        <div class="sum-row total"><span>ยอดสุทธิ</span><span>฿5,900</span></div>
+      </div></div>
+      <div class="stack">
+        <div class="ticket"><div class="t-main"><b>คูปองต้อนรับลูกค้าใหม่</b><div class="small muted">ซื้อครบ ฿5,000 · ใช้ได้ถึง 31 ธ.ค. 69</div></div><div class="t-stub"><span class="t-val">฿300</span><button class="btn contained sm">ใช้</button></div></div>
+        <div class="ladder">
+          <div class="step done"><span class="no">✓</span><div><b>ขั้น 1 · กระเป๋าพรีเมียม</b><div class="small muted">ยอดสะสม ฿500,000</div></div><span class="chip success">รับแล้ว</span></div>
+          <div class="step now"><span class="no">2</span><div><b>ขั้น 2 · เครื่องฟอกอากาศ</b><div class="small muted">อีก ฿120,000</div></div><span class="chip primary">ใกล้ถึง</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- paper coupon faces -->
+    <div class="paper-faces">
+      <div class="pface front"><span class="cap">หน้า</span><div class="big">฿50</div><div>ลดทันทีเมื่อซื้อครบ ฿500</div><div class="stub"><div class="qrbox"></div><div class="mono xs">PRINT50</div></div></div>
+      <div class="pface"><span class="cap">หลัง</span><div class="semi">ใช้ได้ที่…</div><div class="small muted">รายชื่อสาขา เงื่อนไข ช่องทางที่ใช้ได้</div></div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX (รูปแบบการเขียนบล็อกนี้ทุกหน้า)</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ตัวเลขเหลืองในจอ = ชี้องค์ประกอบ แล้วอธิบายพฤติกรรมในรายการนี้ — วาง <code>&lt;span class="pin"&gt;1&lt;/span&gt;</code> ใกล้องค์ประกอบ หรือใช้ <code>.relative</code> + <code>.pin.abs</code> วางทับมุมการ์ด</span></li>
+    <li><span class="pin">2</span><span>ท้ายบล็อกมี <code>.rules</code>: กติกา/ข้อยกเว้น/สถานะ error และ "ข้อที่ต้องตัดสินใจกับลูกค้า"</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น</b><ul><li>ตัวอย่างกติกา</li></ul></div>
+</section>
+<script src="assets/mockup.js"></script>
+</body>
+</html>

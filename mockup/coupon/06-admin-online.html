@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>คูปองออนไลน์ + ประวัติการใช้</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.tbl-c th,.tbl-c td{padding:10px 12px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ck.y{background:var(--success)}.ck.n{background:var(--error)}.ck.w{background:var(--warning)}
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.hl td{background:var(--primary-lighter)!important}
+.dim{opacity:.55}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.lbl-sm{font-size:11.5px;color:var(--text2)}
+.err-box{border:1.5px solid var(--error);background:var(--error-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#5F2120}
+.ok-box{border:1.5px solid var(--success);background:var(--success-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1E4620}
+.warn-box{border:1.5px solid var(--warning);background:var(--warning-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#663C00}
+.input.bad{border-color:var(--error);background:var(--error-lighter)}
+.input.good{border-color:var(--success)}
+.input.amber{border-color:var(--warning)}
+label.switch{white-space:nowrap}
+details.faq{border:1px solid var(--g300);border-radius:10px;background:#fff;padding:0}
+details.faq+details.faq{margin-top:8px}
+details.faq>summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq>summary::after{content:"＋";color:var(--primary);font-weight:800}
+details.faq[open]>summary::after{content:"−"}
+details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
+</style>
+</head>
+<body data-shell="admin" data-nav="coupon" data-crumb="โปรโมชั่นและสิทธิพิเศษ / คูปอง / คูปองออนไลน์">
+<main id="screen">
+
+<div class="page-head">
+  <div><h4>คูปองออนไลน์ (โค้ดแชร์ได้)</h4><p class="muted">โค้ดเดียวแจกได้ทุกคน — ไม่พึ่งความไม่ซ้ำของโค้ด แต่ตรวจประวัติการใช้ของบัญชีทุกครั้งก่อนอนุมัติ</p></div>
+  <div class="row"><a class="btn contained" href="#dlg">＋ เพิ่มโค้ดออนไลน์</a></div>
+</div>
+<div class="alert info mb16 relative"><span class="pin">1</span><div><div class="a-title">แนวคิด</div>โค้ดออนไลน์ใช้ "โค้ดเดียวรวม" ได้เหมือนกระดาษ แต่ไม่มีตัวกระดาษกันซ้ำ ระบบจึงบันทึก "ประวัติการใช้" ทุกครั้งและตรวจจากประวัตินั้น — เกินโควตาต่อคน/รวม ระบบบล็อกและบอกเหตุผลให้ลูกค้าเห็น</div></div>
+
+<div class="card mb24" style="overflow:hidden">
+  <div class="table-toolbar"><input class="input" style="max-width:280px" placeholder="ค้นหาโค้ด"><span class="muted small">3 โค้ด · ใช้งาน 1</span></div>
+  <div class="table-wrap"><table class="table tbl-c" style="font-size:12.5px">
+    <thead><tr><th>โค้ด</th><th>ส่วนลด</th><th class="num">ขั้นต่ำ</th><th>โควตารวม (ใช้แล้ว) <span class="pin">2</span></th><th>ต่อคน</th><th>ช่วงเวลา</th><th>ร่วมโปร</th><th>ร่วมคูปองอื่น</th><th>สถานะ</th><th></th></tr></thead>
+    <tbody><tr><td><b class="mono">SAVE100</b></td><td>ลด ฿100</td><td class="num">฿1,000</td><td><div style="min-width:110px"><div class="progress "><i style="width:92%"></i></div><div class="small muted" style="margin-top:4px">462 / 500 (92%)</div></div></td><td>1 / คน</td><td class="nowrap">1 ต.ค. – 31 ต.ค. 69</td><td><span class="chip soft-success">ได้</span></td><td><span class="chip soft-success">ได้</span></td><td><span class="chip success">ใช้งาน</span></td><td><a href="#dlg">แก้ไข</a></td></tr><tr><td><b class="mono">FB10</b></td><td>ลด 10% สูงสุด ฿150</td><td class="num">฿500</td><td><div style="min-width:110px"><div class="progress green"><i style="width:0%"></i></div><div class="small muted" style="margin-top:4px">0 / 1000 (0%)</div></div></td><td>2 / คน</td><td class="nowrap">15 ต.ค. – 15 พ.ย. 69</td><td><span class="chip soft-error">ไม่ได้</span></td><td><span class="chip soft-success">ได้</span></td><td><span class="chip warning">ยังไม่เริ่ม</span></td><td><a href="#dlg">แก้ไข</a></td></tr><tr><td><b class="mono">INFLU50</b></td><td>ลด ฿50</td><td class="num">฿300</td><td><div class="small"><b>97</b> / ไม่จำกัด</div></td><td>1 / คน</td><td class="nowrap">1 ก.ย. – 30 ก.ย. 69</td><td><span class="chip soft-success">ได้</span></td><td><span class="chip soft-success">ได้</span></td><td><span class="chip error">หมดอายุ</span></td><td><a href="#dlg">แก้ไข</a></td></tr></tbody>
+  </table></div>
+</div>
+
+<div id="dlg" class="backdrop mb24">
+  <div class="dialog md">
+    <div class="dialog-h">แก้ไขโค้ดออนไลน์ · SAVE100 <button class="x">✕</button></div>
+    <div class="dialog-b">
+      <div class="form-sec">
+        <h6>รหัสและส่วนลด</h6>
+        <div class="form-grid">
+          <div class="field"><label>โค้ด * <span class="pin">3</span></label><input class="input mono" value="SAVE100"><span class="help">พิมพ์เองได้ ตัวพิมพ์ใหญ่ A–Z/0–9 · ไม่บังคับ unique (ใช้ซ้ำกับโค้ดที่หมดอายุแล้วได้)</span></div>
+          <div class="field"><label>ประเภทส่วนลด</label><div class="seg"><button class="on">บาท (฿)</button><button>เปอร์เซ็นต์ (%)</button></div></div>
+          <div class="field"><label>มูลค่าส่วนลด</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="100"></div></div>
+          <div class="field"><label>ลดสูงสุดไม่เกิน (เมื่อเป็น %)</label><div class="input-adorn"><span class="adorn">฿</span><input class="input readonly" value="" placeholder="ใช้เมื่อเลือก %" readonly></div></div>
+          <div class="field"><label>ยอดซื้อขั้นต่ำ</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="1,000"></div></div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="form-sec">
+        <h6>โควตาและช่วงเวลา <span class="pin">4</span></h6>
+        <div class="form-grid">
+          <div class="field"><label>จำนวนครั้งใช้ทั้งหมด (ว่าง = ไม่จำกัด)</label><input class="input" value="500"><span class="help">ใช้แล้ว 462 ครั้ง — เหลือ 38</span></div>
+          <div class="field"><label>จำกัดต่อคน (บัญชี)</label><input class="input" value="1"></div>
+          <div class="field"><label>เริ่มใช้ได้</label><input class="input" type="date" value="2026-10-01"></div>
+          <div class="field"><label>ใช้ได้ถึง</label><input class="input" type="date" value="2026-10-31"></div>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="form-sec">
+        <h6>ข้อยกเว้นและการใช้ร่วม</h6>
+        <div class="field"><label>ยกเว้นสินค้า / หมวด</label>
+          <div class="row wrap"><span class="chip outline">นมผงสูตร 3 ✕</span><span class="chip outline">หมวด: ยาควบคุมพิเศษ ✕</span><select class="select" style="max-width:240px"><option>＋ เพิ่มสินค้า/หมวด…</option></select></div>
+        </div>
+        <div class="grid g2 mt16">
+          <div class="field"><label>เงื่อนไขการใช้ร่วม <span class="pin">5</span></label>
+            <label class="switch"><input type="checkbox" checked> ใช้ร่วมกับโปรโมชั่นได้</label>
+            <label class="switch"><input type="checkbox" checked> ใช้ร่วมกับคูปองอื่นได้</label>
+          </div>
+          <div class="field"><label>กลุ่มลูกค้า</label><div class="seg"><button class="on">ลูกค้าทุกคน</button><button>เฉพาะบางราย</button></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="dialog-f"><button class="btn text grey">ยกเลิก</button><button class="btn contained">บันทึกโค้ด</button></div>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;align-items:start">
+  <div class="card" style="overflow:hidden">
+    <div class="table-toolbar"><h6>ประวัติการใช้โค้ด <span class="pin">6</span></h6><div class="seg"><button class="on">ทั้งหมด</button><button>อนุมัติ</button><button>ถูกบล็อก</button></div></div>
+    <div class="table-wrap"><table class="table tbl-c" style="font-size:12.5px">
+      <thead><tr><th>เวลา</th><th>ลูกค้า</th><th>โค้ด</th><th>ออเดอร์</th><th>ผล</th></tr></thead>
+      <tbody><tr style="background:var(--error-lighter)"><td class="nowrap">12 ต.ค. 11:20</td><td>ร้านยาสุขใจ สาขาลาดพร้าว</td><td class="mono-b">FB10</td><td class="mono">—</td><td><span class="chip error">ถูกบล็อก</span><div class="small " style="margin-top:2px;color:var(--error-dark)">โค้ดยังไม่เริ่มใช้งาน (เริ่ม 15 ต.ค. 69)</div></td></tr><tr><td class="nowrap">12 ต.ค. 11:05</td><td>ร้านยาเภสัชกรเมือง</td><td class="mono-b">SAVE100</td><td class="mono">#A-1510</td><td><span class="chip success">อนุมัติ</span><div class="small muted" style="margin-top:2px;">ใช้ครั้งที่ 1 / 1 · ลด ฿100</div></td></tr><tr style="background:var(--error-lighter)"><td class="nowrap">12 ต.ค. 10:51</td><td>ร้านยา ทดสอบ จำกัด</td><td class="mono-b">SAVE100</td><td class="mono">#A-1509</td><td><span class="chip error">ถูกบล็อก</span><div class="small " style="margin-top:2px;color:var(--error-dark)">ใช้ครบโควตาต่อคนแล้ว (1 / 1)</div></td></tr><tr><td class="nowrap">12 ต.ค. 10:42</td><td>ร้านยา ทดสอบ จำกัด</td><td class="mono-b">SAVE100</td><td class="mono">#A-1508</td><td><span class="chip success">อนุมัติ</span><div class="small muted" style="margin-top:2px;">ใช้ครั้งที่ 1 / 1 · ลด ฿100</div></td></tr><tr style="background:var(--error-lighter)"><td class="nowrap">12 ต.ค. 09:58</td><td>ร้านยาชุมชนคลองหลวง</td><td class="mono-b">INFLU50</td><td class="mono">—</td><td><span class="chip error">ถูกบล็อก</span><div class="small " style="margin-top:2px;color:var(--error-dark)">โค้ดหมดอายุแล้ว (30 ก.ย. 69)</div></td></tr><tr style="background:var(--error-lighter)"><td class="nowrap">11 ต.ค. 17:12</td><td>ร้านยาสุขภาพดี สาขา 2</td><td class="mono-b">SAVE100</td><td class="mono">—</td><td><span class="chip error">ถูกบล็อก</span><div class="small " style="margin-top:2px;color:var(--error-dark)">ยอดซื้อยังไม่ถึง ฿1,000 (ขาดอีก ฿220)</div></td></tr></tbody>
+    </table></div>
+    <div class="pager"><span>วันนี้: อนุมัติ 2 · ถูกบล็อก 3</span><span>1–6 จาก 148</span></div>
+  </div>
+
+  <div class="card"><div class="card-b">
+    <h6 class="mb8">ทดลองใช้โค้ด — เช็กสิทธิ์สด <span class="pin">7</span></h6>
+    <div class="stack s12">
+      <div class="field"><label>ลูกค้า</label><select class="select"><option>ร้านยา ทดสอบ จำกัด</option></select></div>
+      <div class="field"><label>โค้ด</label><input class="input mono" value="SAVE100"></div>
+      <div class="field"><label>ยอดตะกร้าจำลอง</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="2,140"></div></div>
+      <button class="btn contained">ทดลองใช้โค้ด</button>
+      <div class="err-box"><b>ถูกบล็อก</b> — ใช้ครบโควตาต่อคนแล้ว (1 / 1)
+        <div class="small" style="margin-top:6px;line-height:1.7">ลำดับที่ตรวจ: ✓ พบโค้ด · ✓ อยู่ในช่วงเวลา · ✓ ยอดถึงขั้นต่ำ · ✓ โควตารวม (462/500) · <b>✕ โควตาต่อคน (1/1)</b></div>
+      </div>
+      <div class="lbl-sm">การทดลองไม่บันทึกประวัติ และไม่ตัดโควตา</div>
+    </div>
+  </div></div>
+</div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ย้ำแนวคิด: โค้ดไม่ต้อง unique — ความถูกต้องมาจากการตรวจประวัติการใช้ของบัญชีทุกครั้ง ไม่ใช่จากตัวโค้ด</span></li>
+    <li><span class="pin">2</span><span>โควตารวมแสดงเป็นแถบ (แดงเมื่อใช้เกิน 90%) พร้อมตัวเลขใช้แล้ว/ทั้งหมด — "ไม่จำกัด" แสดงเฉพาะจำนวนที่ใช้</span></li>
+    <li><span class="pin">3</span><span>โค้ดพิมพ์เองได้ ระบบแปลงเป็นตัวพิมพ์ใหญ่และตัดช่องว่าง — ชนกับโค้ดที่ยังใช้งาน/ยังไม่เริ่มอยู่เตือน แต่ไม่บังคับ unique กับโค้ดที่หมดอายุ</span></li>
+    <li><span class="pin">4</span><span>ต่อคน = ต่อบัญชีลูกค้า (นับจากประวัติ "อนุมัติ" เท่านั้น — ครั้งที่ถูกบล็อกหรือยกเลิกออเดอร์ก่อนชำระไม่นับ)</span></li>
+    <li><span class="pin">5</span><span>เงื่อนไขการใช้ร่วม: ร่วมโปรโมชั่นไม่ได้ = ไม่คิดคูปองกับรายการที่จับคู่โปรแล้ว · ร่วมคูปองอื่นไม่ได้ = ต้องเป็นใบเดียวในบิล</span></li>
+    <li><span class="pin">6</span><span>ประวัติการใช้: อนุมัติ = เขียว / ถูกบล็อก = แดงพร้อมเหตุผลที่ตรงกับข้อความที่ลูกค้าเห็นตอนเช็คเอาต์</span></li>
+    <li><span class="pin">7</span><span>ทดลองใช้โค้ด จำลองลูกค้า+ยอดตะกร้า แล้วแสดงลำดับการตรวจพร้อมจุดที่ติด — ไม่บันทึกประวัติจริง</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ลำดับตรวจเมื่อลูกค้ากรอกโค้ด: พบโค้ด → อยู่ในช่วงเวลา → กลุ่มลูกค้าตรง → ยอดถึงขั้นต่ำ (นับเฉพาะสินค้าที่ไม่ถูกยกเว้น) → โควตารวม → โควตาต่อคน → เงื่อนไขใช้ร่วม</li>
+    <li>โควตารวมตัดเมื่อ "ชำระสำเร็จ" ไม่ใช่ตอนใส่โค้ด · ถ้ายกเลิกก่อนชำระ โควตาไม่ถูกตัด</li>
+    <li>หมดอายุ/ยังไม่เริ่ม: โค้ดยังเห็นในรายการ แต่ลูกค้ากรอกแล้วขึ้นข้อความเหตุผลตรง ๆ</li>
+    <li>แก้ไขโค้ดที่มีประวัติแล้ว: แก้โควตา/วันที่/ขั้นต่ำได้ มีผลกับการใช้ครั้งต่อไปเท่านั้น (ไม่ย้อนหลัง)</li>
+    <li>ยกเลิก/คืนสินค้าหลังใช้โค้ดแล้ว ไม่คืนสิทธิ์ ถือว่าใช้แล้ว</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ถ้าลูกค้า "ยังไม่ได้ล็อกอิน" แล้วกรอกโค้ด จะให้ตรวจสิทธิ์ได้หรือไม่ (ข้อเสนอ: ต้องล็อกอินก่อนจึงตรวจสิทธิ์ เพื่อนับต่อบัญชีได้)</li>
+    <li>มีโค้ดที่ผูกกับกลุ่มลูกค้าเฉพาะราย (audience) ต้องใช้จริงหรือไม่ — ถ้าไม่ใช้ ตัดช่องนี้ออกเพื่อลดความซับซ้อน</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

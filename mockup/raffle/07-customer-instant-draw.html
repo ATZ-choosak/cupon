@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ลุ้นทันที</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .ph{display:inline-block;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+  .ph.p1{background:#E3F2FD;color:#0D47A1}
+  .stage{display:flex;flex-direction:column;align-items:center;gap:14px;padding:8px 0 4px}
+  .wheel-wrap{position:relative;width:300px;height:300px}
+  .wheel{width:300px;height:300px;border-radius:50%;position:relative;border:8px solid #fff;box-shadow:0 0 0 3px var(--primary),var(--z8);
+    background:conic-gradient(#B32026 0 45deg,#F5E8E8 0 90deg,#8A2622 0 135deg,#FFF8E1 0 180deg,#B32026 0 225deg,#F5E8E8 0 270deg,#8A2622 0 315deg,#E0E0E0 0 360deg)}
+  .wheel .lb{position:absolute;inset:0;display:flex;justify-content:center;pointer-events:none}
+  .wheel .lb span{margin-top:26px;font-size:12px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.35);white-space:nowrap}
+  .wheel .lb.dk span{color:var(--g900);text-shadow:none}
+  .hub{position:absolute;top:50%;left:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:#fff;border:4px solid var(--primary);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary);font-size:12px;box-shadow:var(--z4)}
+  .pointer{position:absolute;top:-14px;left:50%;margin-left:-14px;width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:30px solid var(--g900);z-index:3}
+  .server-note{display:flex;gap:10px;align-items:flex-start;background:var(--success-lighter);border:1px solid #A5D6A7;border-radius:10px;padding:10px 14px;font-size:12.5px;color:#1E4620;max-width:520px}
+  .odds-row{display:grid;grid-template-columns:1fr 70px 84px;gap:8px;padding:8px 0;border-bottom:1px solid var(--g200);font-size:13px;align-items:center}
+  .odds-row:last-child{border-bottom:0}
+  .odds-row .o{font-weight:800;color:var(--primary-dark);text-align:right}
+  .tk-chip{display:inline-flex;align-items:center;gap:6px;background:var(--primary-lighter);color:var(--primary-dark);font-weight:800;border-radius:999px;padding:6px 16px;font-size:15px}
+  .res-win{background:linear-gradient(135deg,var(--success-lighter),#fff)}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="raffle">
+<main id="screen">
+
+  <div class="crumbs">หน้าแรก / ลุ้นรางวัล / <a href="06-customer-tickets.html">สิทธิ์ลุ้นของฉัน</a> / ลุ้นทันที</div>
+  <div class="row between mb16" style="align-items:flex-end">
+    <div><h4>ลุ้นโชคปลายปี 2569 — ลุ้นทันที <span class="ph p1">ระยะ 1</span></h4><p class="muted">ใช้ 1 สิทธิ์ต่อ 1 ครั้ง รู้ผลทันที · ถ้าถูก รางวัลเข้าช่องทางของคุณให้อัตโนมัติ</p></div>
+    <div class="row"><span class="tk-chip relative"><span class="pin abs" style="left:-12px;top:-10px">1</span>สิทธิ์ของฉัน 6 ใบ</span><a class="btn outlined" href="06-customer-tickets.html">หาสิทธิ์เพิ่ม</a></div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);align-items:start">
+
+    <div class="stack">
+      <!-- stage -->
+      <div class="card relative"><span class="pin abs">2</span><div class="card-b">
+        <div class="stage">
+          <div class="seg"><button class="on">วงล้อ</button><button>กล่องของขวัญ</button><button>บัตรขูด</button></div>
+          <div class="wheel-wrap">
+            <div class="pointer"></div>
+            <div class="wheel">
+              <div class="lb" style="transform:rotate(22.5deg)"><span>฿50</span></div>
+              <div class="lb dk" style="transform:rotate(67.5deg)"><span>ส่งฟรี</span></div>
+              <div class="lb" style="transform:rotate(112.5deg)"><span>100 พอยท์</span></div>
+              <div class="lb dk" style="transform:rotate(157.5deg)"><span>ขวดนม</span></div>
+              <div class="lb" style="transform:rotate(202.5deg)"><span>เจลแอลฯ</span></div>
+              <div class="lb dk" style="transform:rotate(247.5deg)"><span>ถุงมือ</span></div>
+              <div class="lb" style="transform:rotate(292.5deg)"><span>พอยท์</span></div>
+              <div class="lb dk" style="transform:rotate(337.5deg)"><span>เสียดาย</span></div>
+              <div class="hub">หมุน</div>
+            </div>
+          </div>
+          <button class="btn contained lg" style="min-width:300px">ใช้ 1 สิทธิ์ ลุ้นเลย</button>
+          <div class="small muted">เหลือ 6 ใบ → หลังกด เหลือ 5 ใบ · สิทธิ์ใกล้หมดอายุถูกใช้ก่อน</div>
+          <div class="server-note relative"><span class="pin abs" style="left:-12px;top:-10px">3</span><span class="chip success">✓</span><span><b>ผลถูกตัดสินแล้วที่เซิร์ฟเวอร์</b> ก่อนวงล้อเริ่มหมุน — วงล้อ/กล่อง/บัตรขูดเป็นเพียงภาพเปิดเผยผล · รหัสอ้างอิง DR-13-004899 ตรวจสอบได้ในประวัติการลุ้น</span></div>
+        </div>
+      </div></div>
+
+      <!-- result modal rendered open -->
+      <div class="backdrop relative"><span class="pin abs" style="left:14px;top:14px">4</span>
+        <div class="dialog sm">
+          <div class="dialog-h">ยินดีด้วย!<button class="x">✕</button></div>
+          <div class="dialog-b res-win">
+            <div class="center" style="padding:6px 0 14px">
+              <div class="small muted">คุณถูกรางวัล</div>
+              <div style="font-size:22px;font-weight:800;margin:4px 0">คูปองส่งฟรี 1 ครั้ง</div>
+              <div class="ticket ship" style="text-align:left;margin:12px auto 0;max-width:380px"><div class="t-main"><b>คูปองส่งฟรี</b><div class="small muted">ใช้ได้ถึง 10 พ.ย. 2569 · ใช้กับบิลถัดไป</div></div><div class="t-stub"><span class="t-val">ฟรี</span><span class="chip success">อยู่ในกระเป๋าแล้ว</span></div></div>
+            </div>
+            <div class="small muted center">สิทธิ์ที่ใช้ TK-13-004821 · เหลือสิทธิ์ 5 ใบ</div>
+          </div>
+          <div class="dialog-f" style="justify-content:space-between">
+            <a class="btn text" href="09-customer-history.html">ดูรางวัลของฉัน</a>
+            <div class="row"><a class="btn outlined primary" href="../coupon/08-customer-center.html">ไปที่กระเป๋าคูปอง</a><button class="btn contained">ลุ้นต่อ (5 ใบ)</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stack">
+      <!-- odds -->
+      <div class="card relative"><span class="pin abs">5</span>
+        <div class="card-h"><h6>รางวัลและโอกาสถูก</h6><span class="small muted">อัปเดตตามของคงเหลือ</span></div>
+        <div class="card-b" style="padding-top:8px">
+          <div class="odds-row small muted"><span>รางวัล</span><span style="text-align:right">โอกาส</span><span style="text-align:right">คงเหลือ</span></div>
+          <div class="odds-row"><span><b>คูปองลดทันที ฿50</b></span><span class="o">15.0%</span><span class="muted" style="text-align:right">862</span></div>
+          <div class="odds-row"><span><b>คูปองส่งฟรี 1 ครั้ง</b></span><span class="o">12.0%</span><span class="muted" style="text-align:right">731</span></div>
+          <div class="odds-row"><span><b>พอยท์ 100 พอยท์</b></span><span class="o">20.0%</span><span class="muted" style="text-align:right">ไม่จำกัด</span></div>
+          <div class="odds-row"><span><b>ขวดนม PP</b> <span class="promo-tag gift">ของแถม</span></span><span class="o">4.0%</span><span class="muted" style="text-align:right">212</span></div>
+          <div class="odds-row"><span><b>เจลแอลกอฮอล์ 1 ขวด</b> <span class="promo-tag gift">ของแถม</span></span><span class="o">5.0%</span><span class="muted" style="text-align:right">296</span></div>
+          <div class="odds-row"><span><b>ถุงมือยาง 1 กล่อง</b> <span class="promo-tag gift">ของแถม</span></span><span class="o">2.0%</span><span class="muted" style="text-align:right">109</span></div>
+          <div class="odds-row"><span>ไม่ถูกรางวัล</span><span class="o" style="color:var(--g600)">41.9%</span><span class="muted" style="text-align:right">—</span></div>
+          <div class="legal mt16">โอกาสเป็นค่าตามน้ำหนักปัจจุบัน และปรับเองเมื่อรางวัลใดหมด · ของใหญ่ (ทริป ตั๋วเครื่องบิน) ไม่อยู่ในวงล้อนี้ ลุ้นแบบ <a href="08-customer-scheduled.html">จับตามรอบ</a></div>
+        </div>
+      </div>
+
+      <!-- no win -->
+      <div class="card relative"><span class="pin abs">6</span>
+        <div class="card-h"><h6>สถานะ: ไม่ถูกรางวัล</h6><span class="chip">ตัวอย่าง</span></div>
+        <div class="card-b">
+          <div class="row top"><span class="avatar" style="width:48px;height:48px;background:var(--g400);font-size:22px">!</span>
+            <div class="grow"><b>เสียดาย ครั้งนี้ยังไม่ถูกรางวัล</b>
+              <div class="small muted">บันทึกการลุ้นไว้ในประวัติแล้ว (DR-13-004900)</div>
+              <div class="mt16"><div class="row between small"><span>พลาดติดกัน <b>3 / 5</b> ครั้ง</span><span class="muted">อีก 2 ครั้ง รับของปลอบใจแน่นอน</span></div>
+                <div class="progress mt8"><i style="width:60%"></i></div>
+                <div class="small muted mt8">ของปลอบใจ: <b>พอยท์ 20 พอยท์</b> ให้ในการลุ้นครั้งที่ 5 ที่พลาดติดกัน</div></div>
+            </div></div>
+        </div>
+      </div>
+
+      <div class="grid g2">
+        <div class="card relative"><span class="pin abs">7</span><div class="card-b">
+          <b>ไม่มีสิทธิ์เหลือ</b>
+          <div class="small muted mt8">ปุ่มลุ้นจะเทา แสดง "สิทธิ์ 0 ใบ" และปุ่ม <a href="../points/05-customer-redeem.html">แลกพอยท์เป็นสิทธิ์</a></div>
+          <button class="btn contained mt16 block" disabled>ใช้ 1 สิทธิ์ ลุ้นเลย</button>
+        </div></div>
+        <div class="card"><div class="card-b">
+          <b>ถึงเพดานของวัน/ของรอบ</b>
+          <div class="small muted mt8">แสดงข้อความ "ลุ้นรางวัลมีมูลค่าครบ 3 ครั้งของรอบนี้แล้ว — ยังลุ้นต่อได้ แต่จะได้เฉพาะของปลอบใจ" ก่อนกดทุกครั้ง</div>
+        </div></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>จำนวนสิทธิ์คงเหลือแสดงบนสุดตลอด และอัปเดตทันทีหลังกดลุ้น (หักเมื่อเซิร์ฟเวอร์ตอบ ไม่ใช่เมื่อภาพจบ); สิทธิ์ที่ใกล้หมดอายุถูกใช้ก่อน</span></li>
+    <li><span class="pin">2</span><span>เวที: วงล้อ/กล่อง/บัตรขูด เลือกสไตล์ภาพได้ (ผลเหมือนกันทุกแบบ) — ภาพนี้เป็นเฟรมนิ่ง; ปุ่มปิดทันทีเมื่อกด กันกดซ้ำ และเซิร์ฟเวอร์ใช้คีย์กันการยิงซ้ำ</span></li>
+    <li><span class="pin">3</span><span>ข้อความ "ผลถูกตัดสินแล้วที่เซิร์ฟเวอร์" + รหัสอ้างอิงการลุ้น (DR-…) แสดงถาวรใต้ปุ่ม เพื่อสื่อสารว่าภาพเป็นแค่การเปิดเผยผล (สเปก 6.6 ข้อ 1)</span></li>
+    <li><span class="pin">4</span><span>กล่องผลลัพธ์ถูกรางวัล: ระบุรางวัล + ปลายทางทันที ("คูปองส่งฟรี → อยู่ในกระเป๋าแล้ว") และ CTA ไปกระเป๋าคูปอง/ลุ้นต่อ; พอยท์ = "บวกเข้ายอดแล้ว"; สินค้า = "รอกรอกข้อมูลจัดส่ง" พร้อมปุ่มกรอก</span></li>
+    <li><span class="pin">5</span><span>ตารางโอกาสแสดงตามที่แอดมินเปิดเผย (สวิตช์ "แสดงโอกาส" ที่หน้า 03) — ตัวเลขเป็นผลจากน้ำหนักปัจจุบัน และเปลี่ยนเมื่อรางวัลหมด; ของที่หมดจะหายจากตาราง</span></li>
+    <li><span class="pin">6</span><span>สถานะไม่ถูก: บอกตัวนับ "พลาดติดกัน 3/5" และของปลอบใจที่จะได้ ไม่ใช้ข้อความที่ทำให้เข้าใจว่าใกล้ถูกรางวัลใหญ่ (กันการนำเสนอที่ชวนเข้าใจผิด)</span></li>
+    <li><span class="pin">7</span><span>สถานะไม่มีสิทธิ์: ปุ่มลุ้นเทา พร้อมทางไปรับสิทธิ์เพิ่ม; สถานะถึงเพดาน/ของหมดทั้งกอง แสดงข้อความอธิบายก่อนกดเสมอ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>เครือข่ายขาดหลังกด: สิทธิ์ถูกหักแล้วถ้าเซิร์ฟเวอร์ตอบ — เมื่อกลับมา หน้าแสดงผลล่าสุดจากประวัติ (ไม่หมุนใหม่)</li>
+    <li>รางวัลที่คงเหลือหมดระหว่างกำลังลุ้น: ระบบตัดสินผลจากกองปัจจุบัน ณ เวลาเซิร์ฟเวอร์ ไม่ใช่ตามที่เห็นในหน้า</li>
+    <li>เพดานงบต่อวันชน → ผลเป็น "ไม่ถูก/ของปลอบใจ" ตามที่ตั้งไว้ (ดูข้อตัดสินใจหน้า 03) และต้องไม่แสดงรางวัลมูลค่าเป็นผลที่ถูก</li>
+    <li>ปุ่มลุ้นหลายครั้ง (x5, x10) ยังไม่มีในระยะ 1 — ทีละครั้งเพื่อให้เห็นผลและตัวนับชัดเจน</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>เปิดเผยโอกาส % ตรงๆ ให้ลูกค้าเห็นหรือไม่ (เสนอ: เปิด เพื่อความโปร่งใส ตามสเปก 6.6)</li>
+    <li>รูปแบบภาพ (วงล้อ/กล่อง/บัตรขูด) เลือกกี่แบบในระยะ 1 และความยาวภาพเคลื่อนไหว (เสนอ ≤ 3 วินาที มีปุ่มข้าม)</li>
+    <li>ปลายทางของรางวัลที่เป็นสินค้า: กรอกข้อมูลจัดส่งทันทีในกล่องผลลัพธ์ หรือไปกรอกทีหลังในหน้ารางวัลของฉัน</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

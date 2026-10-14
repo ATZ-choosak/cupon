@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รายการแคมเปญ — Pharmaplex Admin</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .top-grid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:16px;align-items:start}
+  a.opt{display:grid;grid-template-columns:40px 1fr;gap:12px;padding:12px;border-radius:10px;color:var(--text);text-decoration:none}
+  a.opt:hover{background:var(--primary-lighter);text-decoration:none}
+  a.opt .ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff}
+  .stat-link{display:block;color:inherit;text-decoration:none}
+  .stat-link:hover{text-decoration:none;border-color:var(--primary)}
+  .stat .sub{font-size:11.5px;color:var(--text2);margin-top:2px}
+  .mini-steps{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+  .mini-steps span{font-size:11px;background:var(--g100);border-radius:6px;padding:1px 7px;color:var(--g700)}
+  .mini-steps span.hi{background:var(--primary-lighter);color:var(--primary-dark);font-weight:600}
+  td .sub{font-size:11.5px;color:var(--text2)}
+  .prog-cell{min-width:200px}
+  .table th,.table td{padding:11px 10px;font-size:12.5px}
+  .acts{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+  .acts .btn{min-height:28px;padding:3px 8px}
+  .prog-cell .progress{height:6px;margin:6px 0 4px}
+</style>
+</head>
+<body data-shell="admin" data-nav="campaign" data-crumb="โปรโมชั่นและสิทธิพิเศษ / แคมเปญ">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>แคมเปญ</h4>
+      <p class="muted">แคมเปญช่วงเวลา + โควตา และแคมเปญสะสมยอดรายปี (ขั้นบันได) ในรายการเดียวกัน</p>
+    </div>
+    <div class="row">
+      <button class="btn outlined">ส่งออกรายการ</button>
+      <button class="btn contained">＋ สร้างแคมเปญ ▾</button>
+    </div>
+  </div>
+
+  <div class="top-grid mb16">
+    <div class="grid g2">
+      <a class="stat stat-link relative" href="04-admin-claims.html"><span class="pin abs">2</span><div class="l">คำขอรอตรวจ</div><div class="v" style="color:var(--primary)">7</div><div class="sub">เก่าสุดรอมา 2 วัน · ไปที่คิวคำขอ →</div></a>
+      <a class="stat stat-link" href="05-admin-progress.html"><div class="l">ลูกค้าใกล้ถึงเกณฑ์ (≥ 80% ของขั้นถัดไป)</div><div class="v" style="color:var(--warning-dark)">12</div><div class="sub">ในนี้ 5 รายถึง 95% แล้ว · ดูความคืบหน้า →</div></a>
+      <div class="stat"><div class="l">แคมเปญกำลังดำเนินการ</div><div class="v">2</div><div class="sub">สะสมยอด 1 · ช่วงเวลา+โควตา 1</div></div>
+      <div class="stat"><div class="l">โควตาที่ถูกพักอยู่ตอนนี้</div><div class="v">38 <span class="small muted" style="font-weight:500">ชิ้น</span></div><div class="sub">จาก 6 ออเดอร์ที่กำลังชำระเงิน (พัก 15 นาที)</div></div>
+    </div>
+    <div class="relative">
+      <span class="pin abs">1</span>
+      <div class="card" style="padding:8px;box-shadow:var(--z8)">
+        <div class="small muted" style="padding:6px 12px 2px">เมนู "สร้างแคมเปญ" (เปิดค้างไว้เพื่อแสดงตัวอย่าง) — เลือกประเภทก่อน</div>
+        <a class="opt" href="02-admin-quota-editor.html">
+          <span class="ico" style="background:var(--info-dark)">Q</span>
+          <span><b>ช่วงเวลา + โควตา</b><br><span class="small muted">ขายสินค้าราคาพิเศษเฉพาะ SKU ที่ผูกไว้ มีโควตารวม/ต่อร้าน พักโควตา 15 นาทีตอนชำระเงิน</span></span>
+        </a>
+        <a class="opt" href="03-admin-ladder-editor.html">
+          <span class="ico" style="background:var(--primary)">L</span>
+          <span><b>สะสมยอดรายปี (ขั้นบันได)</b><br><span class="small muted">สำหรับ B2B ที่ทำสัญญารายปี ยอดสะสมปลดล็อกรางวัลแต่ละขั้น รีเซ็ตทุกปีสัญญา</span></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="overflow:hidden">
+    <div class="table-toolbar">
+      <div class="row wrap">
+        <input class="input" style="width:260px" placeholder="ค้นหาชื่อแคมเปญ">
+        <span class="relative"><span class="pin abs" style="left:-14px">3</span>
+        <span class="seg"><button class="on">ทั้งหมด 6</button><button>ช่วงเวลา+โควตา 3</button><button>สะสมยอดรายปี 3</button></span></span>
+        <select class="select" style="width:170px"><option>สถานะ: ทั้งหมด</option><option>ร่าง</option><option>กำลังดำเนินการ</option><option>สิ้นสุด</option></select>
+      </div>
+      <span class="muted small">แสดง 1–6 จาก 6</span>
+    </div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr>
+        <th>ชื่อแคมเปญ</th><th>ประเภท</th><th>ช่วงเวลา / ปีสัญญา</th><th>ขอบเขตสินค้า</th><th>สถานะ</th><th>ความคืบหน้า</th><th style="width:120px">การดำเนินการ</th>
+      </tr></thead>
+      <tbody>
+        <tr>
+          <td><b>สะสมยอดซื้อรายปี สัญญาปี 2569</b><div class="sub">4 ขั้นรางวัล · 38 ร้านค้าที่มีสัญญา</div></td>
+          <td><span class="chip soft-primary">สะสมยอดรายปี</span></td>
+          <td><b>ปีสัญญา พ.ศ. 2569</b><div class="sub">1 ม.ค. – 31 ธ.ค. 2569 (เหลือ 80 วัน)</div></td>
+          <td>3 แบรนด์<div class="sub">Blackmores, Dumex, Pampers · ยกเว้น 2 รายการ</div></td>
+          <td><span class="chip success">กำลังดำเนินการ</span></td>
+          <td class="prog-cell"><span class="pin" style="margin:0 6px 0 0">4</span><b>38 ร้านเข้าร่วม</b>
+            <div class="mini-steps"><span>ขั้น 1 · 24</span><span>ขั้น 2 · 11</span><span class="hi">ขั้น 3 · 4</span><span>ขั้น 4 · 0</span></div>
+            <div class="sub mt8">คำขอรอตรวจ 7 · ใกล้ถึงเกณฑ์ 12</div></td>
+          <td><div class="acts"><a class="btn text sm" href="03-admin-ladder-editor.html">จัดการขั้น</a><a class="btn text sm" href="04-admin-claims.html">คิวคำขอ</a><a class="btn text sm" href="05-admin-progress.html">ความคืบหน้า</a></div></td>
+        </tr>
+        <tr>
+          <td><b>Blackmores Vitamin C ราคาพิเศษ ต.ค.</b><div class="sub">2 SKU · ตัวคูณพอยท์ ×2 / ×1.5</div></td>
+          <td><span class="chip soft-info">ช่วงเวลา + โควตา</span></td>
+          <td><b>5 – 31 ต.ค. 2569</b><div class="sub">09:00 – 23:59 น. (เหลือ 19 วัน)</div></td>
+          <td>2 SKU<div class="sub">Vitamin C, เจลแอลกอฮอล์</div><div class="sub">โควตารวม 5,000 · ต่อร้าน 50</div></td>
+          <td><span class="chip success">กำลังดำเนินการ</span></td>
+          <td class="prog-cell"><b>ขายแล้ว 3,722 / 5,000 ชิ้น</b> <span class="muted small">+ พักอยู่ 38</span>
+            <div class="progress warn"><i style="width:75.2%"></i></div>
+            <div class="sub">เหลือ 1,240 ชิ้น · 214 ร้านซื้อไปแล้ว</div></td>
+          <td><div class="acts"><a class="btn text sm" href="02-admin-quota-editor.html">แก้ไข</a><button class="btn text sm grey">ทำสำเนา</button><button class="btn text sm grey">ปิดก่อนกำหนด</button></div></td>
+        </tr>
+        <tr>
+          <td><b>Pampers ฉลองเปิดสาขาใหม่ แพ็คละ ฿499</b><div class="sub">1 SKU · ตัวคูณพอยท์ ×1</div></td>
+          <td><span class="chip soft-info">ช่วงเวลา + โควตา</span></td>
+          <td><b>1 – 7 พ.ย. 2569</b><div class="sub">00:00 – 23:59 น. (เริ่มในอีก 20 วัน)</div></td>
+          <td>ผ้าอ้อมเด็ก (แพ็ค)<div class="sub">โควตารวม 2,000 · ต่อร้าน 30</div></td>
+          <td><span class="chip warning">ร่าง</span></td>
+          <td class="prog-cell"><span class="muted">ยังไม่เริ่ม · 0 / 2,000 ชิ้น</span><div class="progress"><i style="width:0"></i></div><div class="sub" style="color:var(--error-dark)">ยังไม่ผ่านการตรวจ: ยังไม่กำหนดกลุ่มลูกค้า</div></td>
+          <td><div class="acts"><a class="btn text sm" href="02-admin-quota-editor.html">แก้ไข</a><button class="btn text sm grey">ลบ</button></div></td>
+        </tr>
+        <tr>
+          <td><b>สะสมยอดซื้อรายปี สัญญาปี 2570</b><div class="sub">ตั้งค่าแล้ว 3 ขั้น · ยังไม่ผูกลูกค้า</div></td>
+          <td><span class="chip soft-primary">สะสมยอดรายปี</span></td>
+          <td><b>ปีสัญญา พ.ศ. 2570</b><div class="sub">1 ม.ค. – 31 ธ.ค. 2570</div></td>
+          <td>ทุกแบรนด์ ยกเว้นสินค้าควบคุมราคา</td>
+          <td><span class="chip warning">ร่าง</span></td>
+          <td class="prog-cell"><span class="muted">ยังไม่เริ่ม</span><div class="sub">ยอดสะสมของปี 2570 เริ่มที่ ฿0</div></td>
+          <td><div class="acts"><a class="btn text sm" href="03-admin-ladder-editor.html">แก้ไข</a><button class="btn text sm grey">ทำสำเนา</button><button class="btn text sm grey">ลบ</button></div></td>
+        </tr>
+        <tr>
+          <td><b>เจลแอลกอฮอล์ Back to Clinic ขวดละ ฿45</b><div class="sub">1 SKU</div></td>
+          <td><span class="chip soft-info">ช่วงเวลา + โควตา</span></td>
+          <td><b>1 – 30 ก.ย. 2569</b><div class="sub">สิ้นสุดแล้ว</div></td>
+          <td>เจลแอลกอฮอล์<div class="sub">โควตารวม 1,800 · ต่อร้าน 40</div></td>
+          <td><span class="chip">สิ้นสุด</span></td>
+          <td class="prog-cell"><b>ขายหมด 1,800 / 1,800 ชิ้น</b> <span class="chip soft-success">โควตาครบ 18 ก.ย.</span>
+            <div class="progress green"><i style="width:100%"></i></div><div class="sub">ใช้เวลา 17 วัน · 176 ร้านซื้อ</div></td>
+          <td><div class="acts"><button class="btn text sm">ดูผลสรุป</button><button class="btn text sm grey">ทำสำเนา</button></div></td>
+        </tr>
+        <tr>
+          <td><b>สะสมยอดซื้อรายปี สัญญาปี 2568</b><div class="sub">3 ขั้นรางวัล · 31 ร้านค้า</div></td>
+          <td><span class="chip soft-primary">สะสมยอดรายปี</span></td>
+          <td><b>ปีสัญญา พ.ศ. 2568</b><div class="sub">1 ม.ค. – 31 ธ.ค. 2568</div></td>
+          <td>แบรนด์ Blackmores, Dumex</td>
+          <td><span class="chip">สิ้นสุด</span></td>
+          <td class="prog-cell"><b>ถึงขั้นสูงสุด 3 ร้าน</b>
+            <div class="mini-steps"><span>ขั้น 1 · 22</span><span>ขั้น 2 · 9</span><span>ขั้น 3 · 3</span></div>
+            <div class="sub mt8">คำขอปิดงานครบ 34 / 34</div></td>
+          <td><div class="acts"><button class="btn text sm">ดูผลสรุป</button><a class="btn text sm" href="04-admin-claims.html">ประวัติคำขอ</a></div></td>
+        </tr>
+      </tbody>
+    </table></div>
+    <div class="pager"><span>แถวต่อหน้า 25</span><span>1–6 จาก 6</span></div>
+  </div>
+
+  <div class="card mt16"><div class="card-b row between">
+    <div class="empty" style="padding:0;text-align:left"><b>ตัวอย่างสถานะว่าง</b> — ค้นหา "สงกรานต์" ไม่พบ<div class="small">ไม่พบแคมเปญที่ตรงเงื่อนไข ลองล้างตัวกรอง หรือสร้างแคมเปญใหม่</div></div>
+    <div class="row"><button class="btn outlined sm">ล้างตัวกรอง</button><button class="btn contained sm">＋ สร้างแคมเปญ</button></div>
+  </div></div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>เมนูสร้างแคมเปญ</b> — เลือกประเภทก่อนเสมอ แล้วพาไปฟอร์มของประเภทนั้น (02 / 03) ประเภทผูกกับแคมเปญตลอดอายุ แก้ไขภายหลังไม่ได้ ต้องสร้างใหม่</span></li>
+    <li><span class="pin">2</span><span><b>การ์ดสถิติ</b> — "คำขอรอตรวจ" ลิงก์ไปคิวคำขอที่กรองสถานะรอตรวจ · "ใกล้ถึงเกณฑ์" ลิงก์ไปหน้าความคืบหน้าที่กรอง ≥ 80% · ตัวเลขนับรวมทุกแคมเปญที่กำลังดำเนินการ</span></li>
+    <li><span class="pin">3</span><span><b>ตัวกรอง</b> — แยกตามประเภทและสถานะ ค่าเริ่มต้นเรียงแคมเปญที่ "กำลังดำเนินการ" ขึ้นก่อน แล้วร่าง แล้วสิ้นสุด</span></li>
+    <li><span class="pin">4</span><span><b>คอลัมน์ความคืบหน้า</b> — ต่างกันตามประเภท: แคมเปญโควตาแสดงขายแล้ว/โควตาและจำนวนที่พักอยู่ · แคมเปญสะสมยอดแสดงจำนวนร้านที่ถึงแต่ละขั้น (ขั้นที่มีคำขอรอตรวจเน้นสี)</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li><b>สถานะ</b>: ร่าง (ลูกค้าไม่เห็น) → กำลังดำเนินการ (เปลี่ยนเองตามวันที่เริ่ม) → สิ้นสุด (เปลี่ยนเองเมื่อพ้นวันสิ้นสุด หรือกด "ปิดก่อนกำหนด")</li>
+    <li>แคมเปญที่ <b>สิ้นสุดแล้ว</b> แก้ไขไม่ได้ เหลือเพียง "ดูผลสรุป" และ "ทำสำเนา" · แคมเปญที่กำลังดำเนินการแก้ได้เฉพาะบางช่อง (ดู 02/03)</li>
+    <li>ลบได้เฉพาะ "ร่าง" ที่ยังไม่เคยเปิด · แคมเปญที่เคยมียอด/คำขอห้ามลบ</li>
+    <li>แคมเปญร่างที่ไม่ผ่านการตรวจ (เช่น ยังไม่กำหนดกลุ่มลูกค้า) แสดงข้อความสีแดงใต้ความคืบหน้า และกด "เปิดใช้" ไม่ได้</li>
+    <li>แคมเปญสะสมยอดรายปีเปิดซ้อนกันได้เฉพาะ<b>ต่างปีสัญญา</b> — ปีสัญญาเดียวกันสร้างซ้ำไม่ได้</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>แคมเปญช่วงเวลา+โควตาหลายรายการที่ใช้ SKU เดียวกันและช่วงเวลาทับกัน — ให้ระบบห้ามบันทึก (ค่าตั้งต้น) หรืออนุญาตแล้วใช้ลำดับ priority?</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

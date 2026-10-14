@@ -1,0 +1,158 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>พอยท์ของฉัน + ประวัติ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .pt-card{background:linear-gradient(135deg,#B32026 0%,#8A2622 100%);color:#fff;border-radius:16px;padding:24px;box-shadow:var(--z4);position:relative;height:100%}
+  .pt-card .lbl{font-size:13px;opacity:.9;font-weight:600}
+  .pt-card .val{font-size:48px;font-weight:800;line-height:1.1;margin:4px 0}
+  .pt-card .val small{font-size:16px;font-weight:600;opacity:.9;margin-left:8px}
+  .pt-card .lots{display:grid;gap:4px;font-size:12.5px;background:rgba(255,255,255,.14);border-radius:10px;padding:10px 12px;margin:14px 0}
+  .pt-card .lots b{font-weight:700}
+  .btn.white{background:#fff;color:var(--primary-dark);border-color:#fff}
+  .btn.ghost-w{border-color:rgba(255,255,255,.6);color:#fff}
+  .acc-card{border:2px dashed var(--info);background:#fff;border-radius:16px;padding:24px;position:relative;height:100%}
+  .acc-card .tag{display:inline-block;background:var(--info-lighter);color:var(--info-dark);font-weight:700;font-size:11.5px;padding:3px 10px;border-radius:6px}
+  .acc-card .val{font-size:34px;font-weight:800;color:var(--info-dark);margin:6px 0 2px}
+  .hist{display:grid;grid-template-columns:40px 1fr auto;gap:14px;align-items:center;padding:14px 0;border-bottom:1px solid var(--g200)}
+  .hist:last-child{border-bottom:0}
+  .hist .ic{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
+  .ic.in{background:var(--success-lighter);color:var(--success-darker)}
+  .ic.out{background:var(--info-lighter);color:var(--info-dark)}
+  .ic.neg{background:var(--error-lighter);color:var(--error-dark)}
+  .ic.exp{background:var(--g200);color:var(--g700)}
+  .ic.adj{background:var(--warning-lighter);color:#B26A00}
+  .hist .amt{font-weight:800;font-size:16px;text-align:right;white-space:nowrap}
+  .amt.p{color:var(--success-darker)}.amt.m{color:var(--error-dark)}
+  .hist .sub{font-size:12px;color:var(--text2)}
+  .earn-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed var(--g300);font-size:13px}
+  .earn-row:last-child{border-bottom:0}
+  .mult{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:999px;background:var(--warning-lighter);color:#8A4B00;border:1px solid #FFD180;font-size:11.5px;font-weight:700;white-space:nowrap}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="points">
+<main id="screen">
+
+  <div class="crumbs">หน้าแรก / พอยท์ / พอยท์ของฉัน</div>
+  <div class="row between mb16" style="align-items:flex-end">
+    <div><h4>พอยท์ของฉัน</h4><p class="muted">ร้านยา ทดสอบ จำกัด · พอยท์เข้าทันทีที่ชำระเงินสำเร็จ และนำไปแลกของรางวัลได้ทันที</p></div>
+    <a class="btn contained" href="05-customer-redeem.html">แลกของรางวัล →</a>
+  </div>
+
+  <div class="alert warning mb16 relative"><span class="pin abs">3</span>
+    <div style="flex:1"><div class="a-title">พอยท์ 120 พอยท์ จะหมดอายุวันที่ 31 ต.ค. 2569 (อีก 19 วัน)</div>
+      พอยท์ที่ใกล้หมดอายุที่สุดจะถูกใช้ก่อนเมื่อแลกของรางวัล — แลกก่อนหมดอายุเพื่อไม่ให้เสียสิทธิ์</div>
+    <a class="btn outlined sm" href="05-customer-redeem.html">ไปแลกของรางวัล</a>
+  </div>
+
+  <div class="grid" style="grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);align-items:stretch">
+    <div class="pt-card"><span class="pin abs">1</span>
+      <div class="lbl">พอยท์ของฉัน (แลกของได้)</div>
+      <div class="val">2,480<small>พอยท์</small></div>
+      <div class="lots">
+        <div class="row between"><span>120 พอยท์</span><b>หมดอายุ 31 ต.ค. 2569</b></div>
+        <div class="row between"><span>2,360 พอยท์</span><b>หมดอายุ 31 ธ.ค. 2569</b></div>
+      </div>
+      <div class="row wrap"><a class="btn white" href="05-customer-redeem.html">แลกของรางวัล</a><a class="btn ghost-w" href="#hist">ดูประวัติ</a></div>
+    </div>
+
+    <div class="acc-card"><span class="pin abs">2</span>
+      <span class="tag">ยอดสะสมแคมเปญ · บัญชีแยกจากพอยท์</span>
+      <div class="val">฿742,500</div>
+      <div class="small muted mb8">สัญญาปี 2569 · รีเซ็ตเมื่อขึ้นสัญญาปีใหม่</div>
+      <div class="progress"><i style="width:74%;background:var(--info-dark)"></i></div>
+      <div class="small mt8">อีก <b>฿257,500</b> ถึงรางวัลขั้นถัดไป (฿1,000,000)</div>
+      <div class="legal mt16">ยอดนี้ใช้ปลดล็อกรางวัลขั้นบันไดของแคมเปญเท่านั้น <b>ไม่ถูกหักเมื่อแลกพอยท์</b> และแปลงเป็นพอยท์หรือส่วนลดไม่ได้</div>
+      <a class="btn outlined primary sm mt16" href="../campaign/06-customer-ladder.html">ดูขั้นบันไดรางวัลของฉัน →</a>
+    </div>
+  </div>
+
+  <div class="grid mt24" style="grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);align-items:start">
+    <div class="card" id="hist"><div class="card-b relative">
+      <span class="pin abs">4</span>
+      <div class="tabs" data-tabs>
+        <button class="on" data-tab="all">ประวัติทั้งหมด</button>
+        <button data-tab="in">ที่ได้รับ</button>
+        <button data-tab="out">ที่ใช้</button>
+      </div>
+
+      <div data-panel="all" class="on">
+        <div class="hist"><span class="ic in">＋</span><div><b>ได้รับพอยท์จากออเดอร์ SO-69-004512</b><div class="sub">12 ต.ค. 2569 14:32 · หมดอายุ 31 ธ.ค. 2569 · ตัวคูณ ×1.5 และ Blackmores ×3.5</div></div><div class="amt p">+340</div></div>
+        <div class="hist"><span class="ic out">🎁</span><div><b>แลกคูปองส่งฟรี</b><div class="sub">11 ต.ค. 2569 09:10 · <a href="../coupon/08-customer-center.html">ดูในกระเป๋าคูปอง</a></div></div><div class="amt m">−300</div></div>
+        <div class="hist"><span class="ic neg">↩</span><div><b>หักพอยท์คืน: ยกเลิกออเดอร์ SO-69-004388</b><div class="sub">08 ต.ค. 2569 16:45 · พอยท์ที่ออเดอร์นี้เคยให้ถูกหักออก</div></div><div class="amt m">−85</div></div>
+        <div class="hist"><span class="ic in">＋</span><div><b>ได้รับพอยท์จากออเดอร์ SO-69-004388</b><div class="sub">05 ต.ค. 2569 11:20 · หมดอายุ 31 ธ.ค. 2569</div></div><div class="amt p">+85</div></div>
+        <div class="hist"><span class="ic adj">±</span><div><b>ทีมงานปรับพอยท์: ชดเชยออเดอร์ส่งล่าช้า</b><div class="sub">02 ต.ค. 2569 10:05 · หมดอายุ 31 ธ.ค. 2569</div></div><div class="amt p">+200</div></div>
+        <div class="hist"><span class="ic in">＋</span><div><b>ได้รับพอยท์จากออเดอร์ SO-69-004201</b><div class="sub">28 ก.ย. 2569 13:48 · แคมเปญส่งท้ายไตรมาส 3 (×2) · หมดอายุ 31 ต.ค. 2569</div></div><div class="amt p">+420</div></div>
+        <div class="hist"><span class="ic out">🎁</span><div><b>แลกคูปองลด ฿50</b><div class="sub">15 ก.ย. 2569 18:02</div></div><div class="amt m">−500</div></div>
+        <div class="hist"><span class="ic exp">⏱</span><div><b>พอยท์หมดอายุ</b><div class="sub">31 ส.ค. 2569 · ล็อต "ฉลองเปิดสาขา ส.ค."</div></div><div class="amt m">−150</div></div>
+        <div class="center mt16"><button class="btn outlined sm">ดูรายการเก่ากว่า</button></div>
+      </div>
+
+      <div data-panel="in">
+        <div class="hist"><span class="ic in">＋</span><div><b>ออเดอร์ SO-69-004512</b><div class="sub">12 ต.ค. 2569 · หมดอายุ 31 ธ.ค. 2569</div></div><div class="amt p">+340</div></div>
+        <div class="hist"><span class="ic in">＋</span><div><b>ออเดอร์ SO-69-004388</b><div class="sub">05 ต.ค. 2569 · (ถูกหักคืนแล้ว −85)</div></div><div class="amt p">+85</div></div>
+        <div class="hist"><span class="ic adj">±</span><div><b>ทีมงานปรับพอยท์</b><div class="sub">02 ต.ค. 2569</div></div><div class="amt p">+200</div></div>
+        <div class="hist"><span class="ic in">＋</span><div><b>ออเดอร์ SO-69-004201</b><div class="sub">28 ก.ย. 2569 · หมดอายุ 31 ต.ค. 2569</div></div><div class="amt p">+420</div></div>
+      </div>
+
+      <div data-panel="out">
+        <div class="hist"><span class="ic out">🎁</span><div><b>แลกคูปองส่งฟรี</b><div class="sub">11 ต.ค. 2569 · <a href="../coupon/08-customer-center.html">ใช้ได้ถึง 25 ต.ค. 2569</a></div></div><div class="amt m">−300</div></div>
+        <div class="hist"><span class="ic out">🎁</span><div><b>แลกคูปองลด ฿50</b><div class="sub">15 ก.ย. 2569 · ใช้แล้ว</div></div><div class="amt m">−500</div></div>
+      </div>
+    </div></div>
+
+    <div class="stack">
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">5</span>
+        <h6 class="mb8">สะสมพอยท์อย่างไร</h6>
+        <div class="small muted mb8">พอยท์คิดตามสินค้าแต่ละรายการ × จำนวนที่ซื้อ ไม่ได้คิดจากยอดรวมบิล</div>
+        <div class="earn-row"><span>นมผงสูตร 3 (ลัง)</span><b>10 พอยท์/ลัง</b></div>
+        <div class="earn-row"><span>Blackmores Vitamin C (ขวด)</span><b>5 พอยท์/ขวด</b></div>
+        <div class="earn-row"><span>ถุงมือยาง (กล่อง)</span><b>4 พอยท์/กล่อง</b></div>
+        <div class="earn-row"><span>ผ้าอ้อมเด็ก · ยาน้ำแก้ไอ</span><span class="chip">ไม่ได้พอยท์</span></div>
+        <hr class="divider">
+        <div class="label mb8">ตัวคูณที่เปิดอยู่ตอนนี้</div>
+        <div class="stack s8">
+          <div class="row between"><span><span class="mult">×1.5</span> ทุกสินค้าที่มีพอยท์</span><span class="small muted">ถึง 31 ต.ค.</span></div>
+          <div class="row between"><span><span class="mult">×2</span> แบรนด์ Blackmores</span><span class="small muted">ถึง 18 ต.ค.</span></div>
+        </div>
+        <div class="soft small mt16">ตัวคูณซ้อนกันด้วยการ <b>บวก</b> — Blackmores จึงได้ ×3.5 (1.5 + 2)</div>
+        <a class="btn text sm mt8" href="06-customer-earn-preview.html">ดูตัวอย่างพอยท์ที่จะได้ →</a>
+      </div></div>
+
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">6</span>
+        <h6 class="mb8">สถานะเมื่อยังไม่มีพอยท์</h6>
+        <div class="empty" style="padding:16px 8px;border:1px dashed var(--g300);border-radius:12px">
+          <div class="semi" style="color:var(--text)">ยังไม่มีพอยท์ในบัญชี</div>
+          <div class="small mt8">ซื้อสินค้าที่ร่วมรายการเพื่อเริ่มสะสม — พอยท์จะเข้าทันทีที่ชำระเงินสำเร็จ</div>
+          <a class="btn contained sm mt16" href="#">เลือกซื้อสินค้า</a>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>การ์ดพอยท์:</b> ตัวเลขใหญ่ = พอยท์ที่แลกได้ตอนนี้ (รวมทุกล็อตที่ยังไม่หมดอายุ) · แจกแจงล็อตตามวันหมดอายุ เรียงใกล้หมดก่อน · ไม่แสดงมูลค่าเป็นบาท</span></li>
+    <li><span class="pin">2</span><span><b>ยอดสะสมแคมเปญ (บัญชีแยก):</b> เป็นการ์ดคนละสี กรอบประ มีป้ายกำกับชัดเจน และคำอธิบายว่าไม่ถูกหักเมื่อแลกพอยท์ — ป้องกันลูกค้าสับสนว่าแลกของแล้วยอดแคมเปญจะลด</span></li>
+    <li><span class="pin">3</span><span><b>แถบเตือนใกล้หมดอายุ:</b> ขึ้นเมื่อมีล็อตหมดอายุภายใน 30 วัน (≤7 วันเปลี่ยนเป็นสีแดง) · แสดงบนเว็บเท่านั้น ไม่ส่ง SMS/อีเมล/LINE · ปิดแถบไม่ได้จนกว่าจะแลกหรือพอยท์หมด</span></li>
+    <li><span class="pin">4</span><span><b>แท็บ ประวัติ / ที่ได้รับ / ที่ใช้:</b> "ประวัติ" รวมทุกอย่างเรียงใหม่ → เก่า · "ที่ได้รับ" เฉพาะรายการ + · "ที่ใช้" เฉพาะการแลก พร้อมลิงก์ไปดูสิทธิ์ที่ได้ (คูปอง/คำขอรับของ)</span></li>
+    <li><span class="pin">5</span><span><b>วิธีสะสม:</b> อัตราตัวอย่างดึงจากสินค้าขายดี + ตัวคูณที่ active ตอนนี้พร้อมวันสิ้นสุด และบอกชัดว่าซ้อนกันด้วยการบวก — ลิงก์ไปหน้าตัวอย่างพอยท์ที่จะได้</span></li>
+    <li><span class="pin">6</span><span><b>สถานะว่าง:</b> ลูกค้าใหม่หรือพอยท์ 0 เห็นการ์ดนี้แทนรายการ · ปุ่มแลกของรางวัลยังกดเข้าได้แต่ทุกรายการเป็น "พอยท์ไม่พอ"</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>รายการ "หักคืน" แสดงเลขออเดอร์ที่ถูกยกเลิก · ถ้ายอดไม่พอหักจะหักเท่าที่มี ไม่ทำให้พอยท์ติดลบ</li>
+    <li>รายการ "ทีมงานปรับพอยท์" แสดงเหตุผลสั้น ๆ ให้ลูกค้าเห็น (รายละเอียด/หลักฐานเห็นเฉพาะแอดมิน)</li>
+    <li>แลกของ: หักจากล็อตที่ใกล้หมดอายุก่อน · พอยท์ที่หมดอายุแล้วขอคืนไม่ได้</li>
+    <li>ลูกค้าหลายผู้ใช้ในร้านเดียวกัน (บัญชีร้าน) ใช้ยอดพอยท์ร่วมกันทั้งร้าน</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>พอยท์เป็นของ "บัญชีร้าน" ทั้งร้านหรือรายผู้ใช้ (มอคอัพ: ทั้งร้าน)</li>
+    <li>จะแสดงเตือนหมดอายุที่หน้าอื่น (หน้าแรก/ตะกร้า) ด้วยหรือเฉพาะหน้านี้และหน้าแลกของรางวัล</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

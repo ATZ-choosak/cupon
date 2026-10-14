@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ภาพรวม Flow เซตร้านยาเปิดใหม่</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .sn{display:inline-flex;width:18px;height:18px;border-radius:50%;background:var(--g800);color:#fff;font-size:10.5px;font-weight:700;align-items:center;justify-content:center;margin-right:6px;vertical-align:1px}
+  .node small{display:block;color:var(--text2);font-size:11.5px;margin-top:3px;line-height:1.4}
+  .node .pin{position:absolute;top:-10px;right:-8px;left:auto;margin:0}
+  .gap.or{font-size:12px;font-weight:700;color:var(--g600)}
+  .swim .lane-b{padding-top:22px}
+  .chip-list{display:grid;grid-template-columns:auto 1fr;gap:10px 14px;align-items:center;font-size:13px}
+</style>
+</head>
+<body data-shell="bare">
+<main id="screen" style="max-width:1280px;margin:0 auto;padding:24px">
+
+  <div class="page-head">
+    <div>
+      <h4>เซตร้านยาเปิดใหม่ — ภาพรวม Flow</h4>
+      <p class="muted">ชุดสินค้าเริ่มต้นสำหรับผู้เปิดร้านยาใหม่ · สินค้าบังคับล็อก + สินค้าทางเลือกเปิด-ปิดได้ + ราคาสุทธิคำนวณสด · เฉพาะบัญชีร้านค้า (B2B) · สั่งเองหรือให้เซลล์สั่งแทน</p>
+    </div>
+    <div class="row">
+      <a class="btn outlined" href="01-admin-list.html">เริ่มจากฝั่งแอดมิน</a>
+      <a class="btn contained" href="04-customer-catalog.html">เริ่มจากฝั่งลูกค้า</a>
+    </div>
+  </div>
+
+  <div class="swim">
+    <!-- แอดมิน -->
+    <div class="lane"><div class="lane-h"><div>แอดมิน / เซลล์<div class="small muted" style="font-weight:400">ตั้งค่าเซต · สั่งแทน</div></div></div><div class="lane-b">
+      <a class="node adm" href="01-admin-list.html"><b><span class="sn">1</span>สร้างเซต</b>ตั้งชื่อ + ขนาด (มาตรฐาน S/M/L หรือกำหนดเอง)</a>
+      <div class="gap">→</div>
+      <a class="node adm" href="02-admin-editor.html"><span class="pin">1</span><b><span class="sn">2</span>กำหนดบังคับ / ทางเลือก / ส่วนลด</b><small>จำนวนขั้นต่ำ · จำนวนแนะนำ · ส่วนลดชุด</small></a>
+      <div class="gap">→</div>
+      <a class="node adm" href="01-admin-list.html"><b><span class="sn">3</span>เปิดขาย</b>ผ่านตรวจ validation แล้วสถานะเป็น "ขาย"</a>
+      <div class="gap or">หรือ</div>
+      <a class="node adm" href="03-admin-order-behalf.html"><span class="pin">6</span><b><span class="sn">4</span>สั่งแทนลูกค้า</b><small>เลือกบัญชี B2B → ปรับเซต → ยืนยัน</small></a>
+    </div></div>
+
+    <!-- ลูกค้า -->
+    <div class="lane"><div class="lane-h"><div>ลูกค้า B2B<div class="small muted" style="font-weight:400">ร้านยา ทดสอบ จำกัด</div></div></div><div class="lane-b">
+      <a class="node cust" href="04-customer-catalog.html"><b><span class="sn">5</span>เปิดหน้าเซต</b>เลือกเซตขนาด S / M / L หรือเซตกำหนดเอง</a>
+      <div class="gap">→</div>
+      <a class="node cust" href="05-customer-builder.html"><b><span class="sn">6</span>ปรับสินค้าทางเลือก</b>สวิตช์เปิด-ปิด + ปรับจำนวน (บังคับล็อกไว้)</a>
+      <div class="gap">→</div>
+      <a class="node cust" href="05-customer-builder.html"><span class="pin">4</span><b><span class="sn">7</span>ดูราคาสด</b>ราคาสุทธิ + ประหยัดเท่าไรเทียบซื้อแยก</a>
+      <div class="gap">→</div>
+      <a class="node cust" href="05-customer-builder.html"><b><span class="sn">8</span>ใส่ตะกร้า</b>ทั้งเซตเข้าตะกร้าเป็นกลุ่มเดียว</a>
+      <div class="gap">→</div>
+      <a class="node cust" href="06-customer-blocked.html#s4"><b><span class="sn">9</span>เช็คเอาต์</b>เลือกวิธีชำระ · ตรวจสต็อกซ้ำ</a>
+    </div></div>
+
+    <!-- ระบบ -->
+    <div class="lane"><div class="lane-h"><div>ระบบ<div class="small muted" style="font-weight:400">ตรวจ · คำนวณ · บันทึก</div></div></div><div class="lane-b">
+      <a class="node sys" href="06-customer-blocked.html#s3"><span class="pin">2</span><b>ตรวจสิทธิ์ B2B</b><small>ไม่ใช่ B2B → ปฏิเสธ (กรณี A)</small></a>
+      <div class="gap">→</div>
+      <a class="node sys" href="06-customer-blocked.html#s1"><span class="pin">3</span><b>ตรวจสต็อกบังคับ / ทางเลือก</b><small>บังคับหมด → บล็อก (B) · ทางเลือกหมด → ปิดเอง (C)</small></a>
+      <div class="gap">→</div>
+      <a class="node sys" href="05-customer-builder.html"><b>คำนวณราคา</b><small>Σบังคับ + Σทางเลือกที่เลือก − ส่วนลดชุด</small></a>
+      <div class="gap">→</div>
+      <div class="node sys"><span class="pin">5</span><b>สร้างออเดอร์เดียวทั้งเซต</b><small>สินค้าทุกบรรทัดอยู่ในออเดอร์เดียว</small></div>
+      <div class="gap">→</div>
+      <div class="node end"><b>ผูกส่วนลดชุดเซต</b><small>บันทึกเป็นบรรทัดส่วนลด + แหล่งที่มา (เว็บ/แอดมิน)</small></div>
+    </div></div>
+
+    <!-- blocked -->
+    <div class="lane"><div class="lane-h" style="background:var(--warning-lighter)"><div>กรณีถูกบล็อก<div class="small muted" style="font-weight:400">ทางแยกจากขั้นตรวจ</div></div></div><div class="lane-b">
+      <a class="node warn" href="06-customer-blocked.html#s3"><b><span class="sn">A</span>บัญชีทั่วไป (B2C)</b><small>สั่งไม่ได้ · ปุ่ม "ขออัปเกรดเป็นบัญชีร้านค้า"</small></a>
+      <div class="gap">·</div>
+      <a class="node warn" href="06-customer-blocked.html#s1"><span class="pin">7</span><b><span class="sn">B</span>สินค้าบังคับหมด</b><small>บล็อกทั้งเซต · แจ้งวันที่คาดว่าจะมี</small></a>
+      <div class="gap">·</div>
+      <a class="node warn" href="06-customer-blocked.html#s2"><b><span class="sn">C</span>สินค้าทางเลือกหมด</b><small>สวิตช์ถูกปิดอัตโนมัติ · เซตยังสั่งได้</small></a>
+      <div class="gap">·</div>
+      <a class="node warn" href="06-customer-blocked.html#s4"><b><span class="sn">D</span>สต็อกหลุดตอนเช็คเอาต์</b><small>ชำระไม่ได้ · เลือกทางแก้ 4 แบบ</small></a>
+      <div class="gap">→</div>
+      <a class="node adm" href="01-admin-list.html"><b><span class="sn">E</span>แอดมินเติมสต็อก</b><small>เซตกลับเป็น "ขาย" · แจ้งผู้ที่กดรับแจ้งเตือน</small></a>
+    </div></div>
+  </div>
+  <div class="flow-legend"><span><i style="background:var(--primary-lighter)"></i>แอดมิน / เซลล์</span><span><i style="background:#fff"></i>ลูกค้า B2B</span><span><i style="background:var(--info-lighter)"></i>ระบบ</span><span><i style="background:var(--success-lighter)"></i>ผลลัพธ์</span><span><i style="background:var(--warning-lighter)"></i>ถูกบล็อก / ข้อยกเว้น</span><span>ตัวเลขเหลือง = จุดที่อธิบายไว้ในหมายเหตุ UX ด้านล่าง</span></div>
+
+  <div class="grid g2 mt16">
+    <div class="card"><div class="card-h"><h6>กติกาหลัก</h6></div><div class="card-b">
+      <ul style="margin:0;padding-left:18px;display:grid;gap:6px">
+        <li><b>เฉพาะบัญชีร้านค้า (B2B)</b> สั่งได้ — บัญชีทั่วไป (B2C) เห็นหน้าเซตแต่สั่งไม่ได้</li>
+        <li><b>สินค้าบังคับ</b> ถอดออกไม่ได้ · ต้องไม่ต่ำกว่าจำนวนขั้นต่ำที่แอดมินกำหนด · แสดงล็อกพร้อมป้าย "บังคับ"</li>
+        <li><b>สินค้าทางเลือก</b> เปิด-ปิดได้ · เปิดแล้วใช้จำนวนแนะนำเป็นค่าเริ่มต้น · ปิดแล้วจำนวน = 0</li>
+        <li><b>ราคาเซตรวม</b> = Σบังคับ + Σทางเลือกที่เลือก − ส่วนลดชุดเซต · เช่น 25,000 + 3,500 − 2,000 = <b>฿26,500</b> · คำนวณใหม่ทุกครั้งที่สลับ/ปรับจำนวน</li>
+        <li><b>บังคับหมดสต็อก</b> → บล็อกทั้งเซตจนแอดมินเติมสต็อก · <b>ทางเลือกหมด</b> → ปิดอัตโนมัติ เซตยังสั่งได้</li>
+        <li>ลูกค้าสั่งเองบนเว็บ <b>หรือ</b> แอดมิน/เซลล์สั่งแทน — ราคาและเงื่อนไขชุดเดียวกัน ไม่มีการ override</li>
+        <li>สั่งทั้งเซตเป็น <b>ออเดอร์เดียว</b> ผูกส่วนลดชุดเซตเป็นบรรทัดส่วนลดของออเดอร์นั้น</li>
+      </ul>
+    </div></div>
+
+    <div class="card"><div class="card-h"><h6>สถานะของสิ่งที่ลูกค้าได้รับ</h6></div><div class="card-b">
+      <div class="chip-list">
+        <span class="chip success">ขาย</span><span>เซตเปิดขาย สินค้าบังคับครบ — ลูกค้า B2B สั่งได้</span>
+        <span class="chip error">สต็อกไม่พอ</span><span>มีสินค้าบังคับต่ำกว่าขั้นต่ำ/หมด — บล็อกทั้งเซต ปุ่มใส่ตะกร้าใช้ไม่ได้</span>
+        <span class="chip">ปิด</span><span>แอดมินปิดการขาย — ไม่แสดงในหน้าเซตของลูกค้า</span>
+        <span class="chip soft-primary">บังคับ</span><span>แถวล็อก ถอดไม่ได้ ปรับจำนวนได้ไม่ต่ำกว่าขั้นต่ำ</span>
+        <span class="chip soft-success">ทางเลือก · เลือก</span><span>นับรวมในราคา ปรับจำนวนได้</span>
+        <span class="chip outline">ทางเลือก · ไม่เลือก</span><span>ไม่นับรวมในราคา (จำนวน 0)</span>
+        <span class="chip soft-warning">หมดสต็อก · ปิดอัตโนมัติ</span><span>สวิตช์ปิดและกดไม่ได้ ราคาคำนวณใหม่แล้ว</span>
+        <span class="chip soft-error">บัญชีทั่วไป สั่งไม่ได้</span><span>ไม่ใช่ B2B — แสดงปุ่มขออัปเกรด</span>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="card mt16"><div class="card-h"><h6>เชื่อมกับโมดูลอื่นอย่างไร</h6></div><div class="card-b">
+    <div class="grid g3">
+      <div class="soft"><b>โปรโมชั่น / เซตของแถม</b><div class="small muted mt8">ข้อเสนอ: สินค้าในเซตร้านยาไม่ถูกนับซ้ำในโปรโมชั่นรายสินค้า/เซตของแถม — ส่วนลดชุดเซตเป็นส่วนลดเดียวของบรรทัดนี้</div></div>
+      <div class="soft"><b>คูปอง</b><div class="small muted mt8">ข้อเสนอ: คูปองออนไลน์ใช้กับยอดออเดอร์เซตได้ตามเงื่อนไขขั้นต่ำของคูปอง แต่ไม่ซ้อนกับส่วนลดชุดเซตซ้ำบรรทัดเดียวกัน</div></div>
+      <div class="soft"><b>พอยท์</b><div class="small muted mt8">ข้อเสนอ: คิดพอยท์จากยอดสุทธิหลังหักส่วนลดชุด ตามอัตราพอยท์รายสินค้าของแต่ละบรรทัด</div></div>
+      <div class="soft"><b>แคมเปญสะสมยอดรายปี</b><div class="small muted mt8">ข้อเสนอ: ยอดสุทธิของเซตนับเข้ายอดสะสมของร้านค้าเมื่อออเดอร์ชำระแล้ว</div></div>
+      <div class="soft"><b>สุ่มรางวัล</b><div class="small muted mt8">ข้อเสนอ: ออเดอร์เซตเป็นทางเข้าสิทธิ์ได้ถ้ากิจกรรมตั้งไว้ตามยอดสั่งซื้อ</div></div>
+      <div class="soft"><b>คำสั่งซื้อ / สต็อก / ลูกค้า</b><div class="small muted mt8">ออเดอร์เซตตัดสต็อกรายสินค้าเหมือนออเดอร์ปกติ · ใช้ตรวจสอบสิทธิ์ B2B จากประเภทลูกค้าเดิมของ pmpc</div></div>
+    </div>
+  </div></div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>กำหนดบังคับ / ทางเลือก / ส่วนลด</b> — แอดมินต้องมีสินค้าบังคับอย่างน้อย 1 รายการ และสินค้าเดียวกันห้ามอยู่ทั้งสองรายการ ถึงจะเปิดขายได้ (รายละเอียดที่หน้า 02)</span></li>
+    <li><span class="pin">2</span><span><b>ตรวจสิทธิ์ B2B</b> — ตรวจจากประเภทบัญชีที่ผูกกับผู้ล็อกอิน ทุกครั้งที่เปิดหน้าเซต ใส่ตะกร้า และเช็คเอาต์ (ไม่เชื่อค่าที่ค้างในหน้า)</span></li>
+    <li><span class="pin">3</span><span><b>ตรวจสต็อก</b> — แยกผลเป็น 2 แบบ: สินค้าบังคับต่ำกว่าขั้นต่ำ = บล็อกทั้งเซต, สินค้าทางเลือกไม่พอ = ปิดอัตโนมัติและแจ้งลูกค้า</span></li>
+    <li><span class="pin">4</span><span><b>ดูราคาสด</b> — ราคาใหม่แสดงทันทีบนฝั่งหน้าจอ และเซิร์ฟเวอร์คำนวณซ้ำด้วยสูตรเดียวกันทุกครั้งที่ใส่ตะกร้า/เช็คเอาต์ (ราคาที่หน้าจอไม่ใช่ราคาที่เชื่อถือได้)</span></li>
+    <li><span class="pin">5</span><span><b>ออเดอร์เดียวทั้งเซต</b> — ทุกบรรทัดสินค้ามีป้ายชื่อเซต + ประเภท (บังคับ/ทางเลือก) ติดไว้ ใช้ตอนเคลม/คืนสินค้า/รายงาน</span></li>
+    <li><span class="pin">6</span><span><b>สั่งแทนลูกค้า</b> — ผ่านทางเดียวกับลูกค้า ใช้ตรวจสิทธิ์ B2B ตัวเดียวกัน และบันทึกผู้สั่ง (staff) ไว้ในออเดอร์</span></li>
+    <li><span class="pin">7</span><span><b>บังคับหมดสต็อก</b> — บล็อกเฉพาะการสั่ง ลูกค้ายังเปิดดูเซตได้ และกด "แจ้งเตือนเมื่อพร้อม" ได้</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะ "สต็อกไม่พอ" ของเซตคำนวณอัตโนมัติจากสินค้าบังคับ — ไม่ใช่สถานะที่แอดมินตั้งเอง; ปิดการขายเป็นอีกสถานะที่แอดมินตั้ง</li>
+    <li>เมื่อแอดมินแก้ราคา/จำนวนขั้นต่ำของเซตที่มีอยู่ในตะกร้าลูกค้า ตะกร้าจะคำนวณใหม่ตอนเปิด และแจ้ง "ราคาเซตมีการเปลี่ยนแปลง"</li>
+    <li>ออเดอร์ที่สร้างแล้วเก็บราคา ณ เวลาสั่ง ไม่ถูกคำนวณย้อนหลังเมื่อแอดมินแก้เซต</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ส่วนลดชุดเซตใช้ร่วมกับโปรโมชั่นรายสินค้า / คูปอง / พอยท์ ได้หรือไม่ (เสนอ: ไม่ซ้อนกับโปรรายสินค้า, คูปองได้, พอยท์คิดจากยอดสุทธิ)</li>
+    <li>ยอดเซตนับเข้าแคมเปญสะสมยอดรายปีและสิทธิ์ลุ้นรางวัลหรือไม่ (เสนอ: นับ)</li>
+    <li>ลูกค้าสั่งได้กี่เซตต่อออเดอร์ (เสนอ: 1 เซตต่อออเดอร์ ถ้าต้องการเพิ่มให้สั่งซ้ำ)</li>
+    <li>ราคาต่อหน่วยในเซตผูกกับราคาสินค้าปัจจุบัน (ขยับตามเมื่อแก้ราคาสินค้า) หรือล็อกราคาไว้ในเซต (เสนอ: ตามราคาสินค้าปัจจุบัน)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

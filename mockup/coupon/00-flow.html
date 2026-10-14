@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ภาพรวม Flow คูปอง</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.tbl-c th,.tbl-c td{padding:10px 12px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ck.y{background:var(--success)}.ck.n{background:var(--error)}.ck.w{background:var(--warning)}
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.hl td{background:var(--primary-lighter)!important}
+.dim{opacity:.55}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.lbl-sm{font-size:11.5px;color:var(--text2)}
+.err-box{border:1.5px solid var(--error);background:var(--error-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#5F2120}
+.ok-box{border:1.5px solid var(--success);background:var(--success-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1E4620}
+.warn-box{border:1.5px solid var(--warning);background:var(--warning-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#663C00}
+.input.bad{border-color:var(--error);background:var(--error-lighter)}
+.input.good{border-color:var(--success)}
+.input.amber{border-color:var(--warning)}
+label.switch{white-space:nowrap}
+details.faq{border:1px solid var(--g300);border-radius:10px;background:#fff;padding:0}
+details.faq+details.faq{margin-top:8px}
+details.faq>summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq>summary::after{content:"＋";color:var(--primary);font-weight:800}
+details.faq[open]>summary::after{content:"−"}
+details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
+
+body{background:var(--g100)}
+#screen{max-width:1392px;margin:0 auto;padding:24px}
+.node{width:146px;font-size:12px;padding:10px}
+.node b{font-size:12.5px;display:flex;gap:6px;align-items:flex-start}
+.sn{flex:none;width:18px;height:18px;border-radius:50%;background:var(--g800);color:#fff;font-size:10.5px;display:inline-flex;align-items:center;justify-content:center;margin-top:1px}
+.node.adm .sn{background:var(--primary)}.node.sys .sn{background:var(--info-dark)}.node.end .sn{background:var(--success-dark)}.node.warn .sn{background:var(--warning-dark)}
+.node .tag{display:inline-block;font-size:10px;font-weight:700;border-radius:4px;padding:0 5px;margin-bottom:3px;background:var(--g200);color:var(--g700)}
+.gap{width:24px}
+.swim .lane-h{font-size:12.5px}
+.swim .lane-b{padding:12px 16px;min-height:96px}
+.sw-title{display:flex;align-items:center;gap:10px;margin:28px 0 10px}
+.sw-title:first-of-type{margin-top:0}
+.cmp th,.cmp td{vertical-align:top}
+.cmp td:first-child{white-space:nowrap}
+</style>
+</head>
+<body data-shell="bare">
+<main id="screen">
+
+<div class="row between mb16" style="align-items:flex-start">
+  <div><h2>ภาพรวม Flow คูปอง (4 แบบ)</h2><p class="muted">คูปองกระดาษ · ออนไลน์ · เก็บเอง/แจกรายเดือน · ลูกค้าใหม่ — ต่างกันที่ "วิธีรับสิทธิ์" และ "วิธีกันใช้ซ้ำ"</p></div>
+  <div class="row"><a class="btn outlined" href="../index.html">Mockup hub</a><a class="btn contained" href="01-admin-hub.html">เริ่มที่ภาพรวมแอดมิน →</a></div>
+</div>
+
+<div class="alert info mb24"><div><div class="a-title">ระบบไม่ได้สั่งพิมพ์คูปองกระดาษ</div>แอดมินตั้งค่าชุดและดูตัวอย่างหน้า–หลังเท่านั้น ทีมการตลาดพิมพ์และแจกเอง — ระบบรับรู้อีกครั้งเมื่อร้านส่งก้นคูปองเข้ามาเบิก</div></div>
+
+<div class="sw-title"><h5>A · คูปองกระดาษ</h5><span class="chip soft-primary">หน้า–หลัง · ใช้ที่ร้าน</span><span class="pin">1</span></div>
+<div class="swim"><div class="lane"><div class="lane-h">แอดมิน / ทีมการตลาด</div><div class="lane-b"><a class="node adm" href="03-admin-paper-editor.html"><b><span class="sn">1</span><span>ตั้งค่าชุดคูปอง</span></b>มูลค่า · ร้านที่ร่วม · เงื่อนไขหลังใบ</a><div class="gap">→</div><a class="node adm" href="04-admin-paper-preview.html"><b><span class="sn">2</span><span>ดูตัวอย่างหน้า–หลัง</span></b>ตรวจข้อความ ส่งให้ทีมการตลาด</a><div class="gap">→</div><div class="node warn"><b><span class="sn">3</span><span>พิมพ์เอง + แจกหน้างาน</span></b><span class="tag">นอกระบบ</span><br>ระบบไม่ได้สั่งพิมพ์</div><div class="gap sp" style="width:534px"></div><a class="node adm" href="05-admin-paper-claims.html"><b><span class="sn">8</span><span>บันทึกการจ่าย</span></b>ร้าน/ตัวแทนได้รับเงิน = ก้น × มูลค่า</a></div></div><div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b"><div class="gap sp" style="width:510px"></div><a class="node cust" href="10-customer-paper-info.html"><b><span class="sn">4</span><span>ซื้อที่ร้านที่ร่วมรายการ</span></b>ยื่นคูปองที่หน้าร้าน/POS · เช็กร้านได้ที่หน้าตรวจสอบ</a></div></div><div class="lane"><div class="lane-h">ร้าน / ตัวแทน</div><div class="lane-b"><div class="gap sp" style="width:680px"></div><div class="node cust"><b><span class="sn">5</span><span>รับคูปอง ฉีกก้นเก็บ</span></b>หักส่วนลดที่ POS · เก็บก้นทุกใบ</div><div class="gap">→</div><div class="node cust"><b><span class="sn">6</span><span>ส่งก้นเข้ามาเบิก</span></b>ภายในกำหนด (เช่น 30 วัน)</div></div></div><div class="lane"><div class="lane-h">ระบบ</div><div class="lane-b"><div class="gap sp" style="width:1020px"></div><a class="node sys" href="05-admin-paper-claims.html"><b><span class="sn">7</span><span>นับ + ตรวจธง</span></b>ร้านอยู่ในชุด · ไม่เกินใบสูงสุด/จำนวนออก · ไม่เกินกำหนด</a></div></div></div>
+<div class="sw-title"><h5>B · คูปองออนไลน์ (โค้ดแชร์ได้)</h5><span class="chip soft-info">ตรวจประวัติบัญชีทุกครั้ง</span><span class="pin">2</span></div>
+<div class="swim"><div class="lane"><div class="lane-h">แอดมิน</div><div class="lane-b"><a class="node adm" href="06-admin-online.html"><b><span class="sn">1</span><span>สร้างโค้ด</span></b>ส่วนลด · ขั้นต่ำ · โควตา · ช่วงเวลา</a><div class="gap sp" style="width:704px"></div><a class="node adm" href="06-admin-online.html"><b><span class="sn">6</span><span>ดูประวัติ + ทดลองใช้โค้ด</span></b>ตรวจย้อนหลังได้ทุกครั้ง</a></div></div><div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b"><div class="gap sp" style="width:170px"></div><a class="node cust" href="09-customer-cart-coupon.html"><b><span class="sn">2</span><span>เช็คเอาต์</span></b>ตะกร้า → กด "เพิ่มคูปอง"</a><div class="gap">→</div><a class="node cust" href="09-customer-cart-coupon.html"><b><span class="sn">3</span><span>กรอกโค้ด</span></b>เช่น SAVE100</a><div class="gap sp" style="width:194px"></div><a class="node warn" href="09-customer-cart-coupon.html"><b><span class="sn">5b</span><span>ถูกบล็อก + เห็นเหตุผล</span></b>เช่น "ใช้ครบโควตาต่อคนแล้ว"</a></div></div><div class="lane"><div class="lane-h">ระบบ</div><div class="lane-b"><div class="gap sp" style="width:510px"></div><div class="node sys"><b><span class="sn">4</span><span>ตรวจประวัติการใช้ของบัญชี</span></b>ช่วงเวลา · ขั้นต่ำ · โควตารวม · ต่อคน</div><div class="gap">→</div><div class="node end"><b><span class="sn">5a</span><span>ผ่าน: หักส่วนลด</span></b>บันทึกประวัติ ตัดโควตา</div></div></div></div>
+<div class="sw-title"><h5>C · คูปองเก็บเอง / แจกอัตโนมัติรายเดือน</h5><span class="chip soft-success">กระเป๋าคูปอง</span><span class="pin">3</span></div>
+<div class="swim"><div class="lane"><div class="lane-h">แอดมิน</div><div class="lane-b"><a class="node adm" href="07-admin-collectible.html"><b><span class="sn">1</span><span>ตั้งค่าคูปอง + เลือกวิธีแจก</span></b>เงื่อนไขส่วนลด · โควตา · วันหมดอายุ</a></div></div><div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b"><div class="gap sp" style="width:170px"></div><a class="node cust" href="08-customer-center.html"><b><span class="sn">2</span><span>เปิดศูนย์คูปอง กดเก็บ</span></b><span class="tag">เก็บเอง</span><br>เฉพาะแบบเก็บเอง</a><div class="gap sp" style="width:194px"></div><a class="node cust" href="08-customer-center.html"><b><span class="sn">4</span><span>กระเป๋าคูปอง</span></b>พร้อมใช้ / ใช้แล้ว / หมดอายุ</a><div class="gap">→</div><a class="node cust" href="09-customer-cart-coupon.html"><b><span class="sn">5</span><span>ใช้ในตะกร้า</span></b>เลือกคูปองตอนเช็คเอาต์</a></div></div><div class="lane"><div class="lane-h">ระบบ — เก็บเอง</div><div class="lane-b"><div class="gap sp" style="width:340px"></div><div class="node sys"><b><span class="sn">3</span><span>ตัดโควตารวม</span></b>ผูกรหัสกับบัญชี 1 คน 1 ใบ</div></div></div><div class="lane"><div class="lane-h">ระบบ — แจกรายเดือน</div><div class="lane-b"><div class="gap sp" style="width:340px"></div><div class="node sys"><b><span class="sn">3</span><span>วันที่ 1 ออกสิทธิ์</span></b><span class="tag">รายเดือน</span><br>ให้ทุกคนอัตโนมัติ หมดสิ้นเดือน</div><div class="gap sp" style="width:364px"></div><div class="node end"><b><span class="sn">6</span><span>ตรวจ + หักส่วนลด</span></b>ตัดสิทธิ์ 1 ครั้ง</div></div></div></div>
+<div class="sw-title"><h5>D · คูปองลูกค้าใหม่</h5><span class="chip">ครั้งเดียวต่อบัญชี</span><span class="pin">4</span></div>
+<div class="swim"><div class="lane"><div class="lane-h">แอดมิน</div><div class="lane-b"><a class="node adm" href="07-admin-collectible.html"><b><span class="sn">1</span><span>ตั้งค่าคูปองลูกค้าใหม่</span></b>ขั้นต่ำ ฿5,000 ลด ฿300</a></div></div><div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b"><div class="gap sp" style="width:170px"></div><div class="node cust"><b><span class="sn">2</span><span>สมัคร / ยืนยันบัญชี</span></b>บัญชีใหม่ยังไม่เคยสั่งซื้อ</div><div class="gap sp" style="width:364px"></div><a class="node cust" href="09-customer-cart-coupon.html"><b><span class="sn">5</span><span>ใช้ได้ครั้งเดียว</span></b>ซื้อครบ ฿5,000 → ลด ฿300</a></div></div><div class="lane"><div class="lane-h">ระบบ</div><div class="lane-b"><div class="gap sp" style="width:340px"></div><div class="node sys"><b><span class="sn">3</span><span>ตรวจ: ยังไม่เคยสั่งซื้อ</span></b>จากประวัติคำสั่งซื้อของบัญชี</div><div class="gap">→</div><a class="node end" href="08-customer-center.html"><b><span class="sn">4</span><span>ออกคูปองอัตโนมัติ</span></b>เข้ากระเป๋าคูปอง</a></div></div></div>
+<div class="flow-legend"><span><i style="background:#fff"></i>ลูกค้า / ร้าน</span><span><i style="background:var(--primary-lighter)"></i>แอดมิน</span><span><i style="background:var(--info-lighter)"></i>ระบบ</span><span><i style="background:var(--success-lighter)"></i>ผลลัพธ์</span><span><i style="background:var(--warning-lighter)"></i>นอกระบบ / ถูกบล็อก</span><span>เลขในโหนด = ลำดับขั้นของแต่ละแบบ · คลิกโหนดเพื่อไปหน้านั้น</span></div>
+
+<div class="card mb16 mt24"><div class="card-h"><h6>เปรียบเทียบ 4 แบบ <span class="pin">5</span></h6></div><div class="card-b">
+  <div class="table-wrap"><table class="table cmp tbl-c">
+    <thead><tr><th></th><th>กระดาษ</th><th>ออนไลน์ (โค้ดแชร์ได้)</th><th>เก็บเอง / รายเดือน</th><th>ลูกค้าใหม่</th></tr></thead>
+    <tbody>
+      <tr><td><b>วิธีรับสิทธิ์</b></td><td>ได้ใบกระดาษหน้างาน (รหัสเดียวกันทั้งชุด)</td><td>ได้โค้ดจากโพสต์/Influencer แล้วกรอกตอนเช็คเอาต์</td><td>กดเก็บในศูนย์คูปอง / ระบบแจกวันที่ 1 ทุกเดือน</td><td>ออกให้อัตโนมัติเมื่อสมัคร/ยืนยันบัญชี</td></tr>
+      <tr><td><b>กันใช้ซ้ำ</b></td><td>ร้านฉีกก้นคูปองเก็บไว้ + ตรวจก้นตอนเบิก</td><td>ระบบตรวจประวัติการใช้ของบัญชี (ต่อคน/รวม)</td><td>รหัสเฉพาะบัญชี 1 คน 1 รหัส · ใช้ได้ 1 ครั้ง</td><td>ใช้ได้ครั้งเดียวต่อบัญชี + ตรวจว่ายังไม่เคยสั่งซื้อ</td></tr>
+      <tr><td><b>ใช้ที่ไหน</b></td><td>หน้าร้าน/POS ของร้านที่ร่วมรายการ <span class="chip soft-warning">ออนไลน์ = รอตัดสินใจ</span></td><td>เว็บ/แอป (ตะกร้า–เช็คเอาต์)</td><td>เว็บ/แอป</td><td>เว็บ/แอป</td></tr>
+      <tr><td><b>เหมาะกับ</b></td><td>แจกหน้างาน บูท สัมมนา</td><td>แคมเปญที่แชร์ได้ โพสต์ Influencer</td><td>สิทธิ์ที่ให้ลูกค้าเลือกเก็บ / สิทธิ์ประจำเดือน</td><td>ต้อนรับลูกค้าใหม่</td></tr>
+    </tbody>
+  </table></div>
+</div></div>
+
+<div class="grid g2 mb16">
+  <div class="card"><div class="card-h"><h6>กติกาใช้ร่วมกันต่อบิล <span class="pin">6</span></h6></div><div class="card-b">
+    <div class="ok-box mb8"><b>ใช้ได้สูงสุด 2 ใบ/บิล (ออนไลน์): ส่วนลด 1 + ส่งฟรี 1</b></div>
+    <ul style="margin:0;padding-left:18px;line-height:1.9;font-size:13px">
+      <li>แต่ละใบตั้งได้ว่า "ใช้ร่วมกับโปรโมชั่นได้ไหม" และ "ใช้ร่วมกับคูปองอื่นได้ไหม"</li>
+      <li>ใช้ร่วมโปรไม่ได้ = ไม่ลดกับรายการที่จับคู่โปรแล้ว แต่ลดกับรายการที่เหลือได้</li>
+      <li>ใช้ร่วมคูปองอื่นไม่ได้ = ต้องเป็นใบเดียวในบิล (ใบที่ใส่ก่อนมีผล)</li>
+      <li>คูปองกระดาษ: ตามจำนวน "ใบ/บิล" ของแต่ละชุด ใช้ที่หน้าร้าน ไม่นับรวมกับตะกร้าออนไลน์</li>
+      <li>พอยท์: ตั้งเป็นรายคูปองว่าใช้ร่วมได้หรือไม่ (ดูโมดูลพอยท์)</li>
+    </ul>
+  </div></div>
+  <div class="card"><div class="card-h"><h6>กติกาหลัก</h6></div><div class="card-b">
+    <ul style="margin:0;padding-left:18px;line-height:1.9;font-size:13px">
+      <li>คูปองเป็นสิทธิ์ที่ลูกค้าต้อง "ได้รับ" ก่อนจึงใช้ได้ (ต่างจากโปรโมชั่นที่เกิดเอง)</li>
+      <li>ยอดส่วนลดคำนวณที่ระบบเสมอ — หน้าจอแสดงตัวอย่าง ยอดจริงคิดที่เซิร์ฟเวอร์</li>
+      <li>คูปองกระดาษ: ระบบไม่สั่งพิมพ์ · ต้องแสดงทั้งหน้าและหลัง (ร้านที่ใช้ได้ / ช่องทาง / เงื่อนไข)</li>
+      <li>ร้านที่เบิกเงินต้องมาจากรายชื่อที่ลงทะเบียนเท่านั้น — ไม่มีการพิมพ์ชื่อร้านอิสระ</li>
+      <li>คูปองออนไลน์ไม่พึ่งความไม่ซ้ำของโค้ด แต่ตรวจประวัติของบัญชีทุกครั้ง พร้อมบอกเหตุผลเมื่อบล็อก</li>
+      <li>ยกเลิก/คืนสินค้าหลังใช้คูปองแล้ว ไม่คืนสิทธิ์ (ถือว่าใช้แล้ว)</li>
+      <li>ไม่มีการแจ้งเตือนทางอีเมล/SMS/LINE — ลูกค้าเข้าเว็บดูกระเป๋าคูปองเอง</li>
+    </ul>
+  </div></div>
+</div>
+
+<div class="grid g2 mb16">
+  <div class="card"><div class="card-h"><h6>สถานะของสิ่งที่ลูกค้าได้รับ <span class="pin">7</span></h6></div><div class="card-b">
+    <table class="table tbl-c" style="font-size:12.5px"><tbody>
+      <tr><td><span class="chip success">พร้อมใช้</span></td><td>อยู่ในกระเป๋า ยังไม่หมดอายุ ใช้ได้เมื่อตะกร้าเข้าเงื่อนไข</td></tr>
+      <tr><td><span class="chip">ใช้แล้ว</span></td><td>ผูกกับออเดอร์ที่ชำระสำเร็จ — ไม่คืนสิทธิ์แม้ยกเลิก/คืนสินค้า</td></tr>
+      <tr><td><span class="chip error">หมดอายุ</span></td><td>พ้นวันหมดอายุ หรือพ้นสิ้นเดือน (แบบรายเดือน)</td></tr>
+      <tr><td><span class="chip warning">รอวันที่ 1</span></td><td>สิทธิ์รายเดือนของเดือนหน้า ยังไม่ออก</td></tr>
+      <tr><td><span class="chip soft-warning">สิทธิ์หมดแล้ว</span></td><td>คูปองเก็บเอง โควตารวมครบ เก็บไม่ได้</td></tr>
+      <tr><td><span class="chip soft-error">ถูกบล็อก</span></td><td>โค้ดออนไลน์: เกินโควตา/ยังไม่ถึงขั้นต่ำ/นอกช่วงเวลา (พร้อมเหตุผล)</td></tr>
+      <tr><td><span class="chip soft-info">รอตรวจนับ</span></td><td>(ฝั่งร้าน) ก้นคูปองส่งเบิกแล้ว รอนับ → ตรวจนับแล้ว → จ่ายแล้ว</td></tr>
+    </tbody></table>
+  </div></div>
+  <div class="card"><div class="card-h"><h6>เชื่อมกับโมดูลอื่นอย่างไร</h6></div><div class="card-b">
+    <ul style="margin:0;padding-left:18px;line-height:1.9;font-size:13px">
+      <li><b>โปรโมชั่น:</b> คูปองคิดจากยอดหลังหักโปร — ถ้าคูปองตั้ง "ใช้ร่วมโปรไม่ได้" จะข้ามรายการที่ได้โปรแล้ว</li>
+      <li><b>พอยท์:</b> พอยท์ที่ได้คิดจากยอดหลังหักคูปอง · พอยท์แลกของรางวัลสามารถออกเป็นคูปองเข้ากระเป๋าได้</li>
+      <li><b>แคมเปญ / ขั้นบันได:</b> รางวัลบางขั้นออกเป็นคูปองส่วนลดเข้ากระเป๋า</li>
+      <li><b>สุ่มรางวัล:</b> รางวัลที่ได้เป็นคูปองจะเข้ากระเป๋าคูปองเดียวกัน</li>
+      <li><b>เซตร้านยาเปิดใหม่:</b> ใช้คูปองกับเซตได้ตามเงื่อนไข "ใช้ร่วม" ของแต่ละใบ</li>
+      <li><b>ตะกร้า/เช็คเอาต์:</b> จุดเดียวที่ลูกค้าเลือกและกรอกคูปอง (หน้าเพิ่มคูปอง)</li>
+    </ul>
+  </div></div>
+</div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>คูปองกระดาษ: ระบบเข้ามามีส่วนตอนตั้งค่า/ดูตัวอย่าง และตอนร้านส่งก้นเข้ามาเบิก — ส่วนพิมพ์และแจกอยู่นอกระบบ (โหนดสีเหลือง)</span></li>
+    <li><span class="pin">2</span><span>คูปองออนไลน์: ทุกครั้งที่กรอกโค้ดระบบตรวจประวัติของบัญชี ถ้าไม่ผ่านจะบล็อกพร้อมบอกเหตุผลที่ลูกค้าอ่านเข้าใจ</span></li>
+    <li><span class="pin">3</span><span>เก็บเอง = ลูกค้ากดเก็บ (ตัดโควตารวมทันที) · รายเดือน = ระบบออกให้วันที่ 1 และหมดอายุสิ้นเดือน — ทั้งคู่อยู่ในกระเป๋าเดียวกัน</span></li>
+    <li><span class="pin">4</span><span>ลูกค้าใหม่: ออกให้ครั้งเดียวต่อบัญชีที่ยังไม่เคยสั่งซื้อ ใช้ได้ครั้งเดียว</span></li>
+    <li><span class="pin">5</span><span>ตารางเปรียบเทียบ: วิธีรับสิทธิ์ / กันใช้ซ้ำ / ใช้ที่ไหน / เหมาะกับ — ใช้อธิบายลูกค้าว่าทำไมคูปองกระดาษใช้ออนไลน์ไม่ได้ในค่าเริ่มต้น</span></li>
+    <li><span class="pin">6</span><span>กติกาใช้ร่วมกัน: ส่วนลด 1 + ส่งฟรี 1 ต่อบิลสำหรับออนไลน์ และการตั้ง "ใช้ร่วมโปร/คูปองอื่น" ต่อใบ</span></li>
+    <li><span class="pin">7</span><span>สถานะที่ลูกค้า/ร้านเห็นและความหมาย — ใช้เป็นชุดชิปเดียวกันทุกหน้าของโมดูล</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ลำดับคิดเงินในตะกร้า: ราคาสินค้า → โปรโมชั่น → คูปอง → ค่าจัดส่ง → พอยท์ที่ได้</li>
+    <li>คูปองลดได้ไม่เกินยอดของรายการที่เข้าเงื่อนไข (ไม่ติดลบ ไม่ทอนเงินสด)</li>
+    <li>ทุกการใช้/ถูกบล็อก/ตรวจนับ มีประวัติให้ตรวจย้อนหลังในหน้าแอดมิน</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>คูปองกระดาษจะให้ใช้ออนไลน์ได้หรือไม่ — ค่าเริ่มต้นที่เสนอคือ "ไม่ได้" เพราะรหัสเหมือนกันทั้งชุด ถ้าเปิดต้องนับประวัติต่อบัญชีและกำหนดโควตา</li>
+    <li>นโยบายก้นที่ส่งเกินกำหนดหรือเกินใบสูงสุดต่อร้าน (ปฏิเสธ / จ่ายเฉพาะส่วนที่ไม่เกิน / อนุมัติพิเศษ)</li>
+    <li>จำนวนคูปองสูงสุดต่อบิลออนไลน์ (เสนอ 2 ใบ: ส่วนลด 1 + ส่งฟรี 1)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

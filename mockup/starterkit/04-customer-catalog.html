@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เลือกเซตร้านยาเปิดใหม่</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .kcard{display:grid;grid-template-columns:168px minmax(0,1fr);overflow:hidden}
+  .kcard .img{background:linear-gradient(135deg,var(--primary-lighter),var(--g200));padding:10px;display:flex;flex-direction:column;justify-content:space-between;color:var(--g600);font-size:12px}
+  .kcard .kb{padding:16px 18px;display:grid;gap:8px;align-content:start}
+  .kcard ul{margin:0;padding-left:18px;font-size:12.5px;color:var(--g700);display:grid;gap:3px}
+  .kcard .priceline{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:6px}
+  .kcard .from{font-size:11.5px;color:var(--text2)}
+  .kcard .amt{font-size:24px;font-weight:800;color:var(--primary);line-height:1.2;font-variant-numeric:tabular-nums}
+  .kcard.blocked .img{filter:grayscale(.6)}
+  .why{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .why .w{padding:16px;border:1px solid var(--g200);border-radius:12px;background:#fff}
+  .why .w .ic{width:34px;height:34px;border-radius:8px;background:var(--primary-lighter);color:var(--primary);display:flex;align-items:center;justify-content:center;font-weight:800;margin-bottom:8px}
+  .banner{display:flex;align-items:center;justify-content:space-between;gap:16px;border-radius:12px;padding:14px 18px}
+  .banner.warn{background:var(--warning-lighter);border:1px solid #FFD180}
+  .banner.err{background:var(--error-lighter);border:1px solid #FFCDD2}
+  .state-h{display:flex;align-items:center;gap:8px;margin:0 0 8px}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="starterkit">
+<main id="screen">
+  <div class="crumbs">หน้าแรก / เซตร้านยาเปิดใหม่</div>
+  <div class="page-head">
+    <div><h4>เซตร้านยาเปิดใหม่</h4><p class="muted">ชุดสินค้าเริ่มต้นสำหรับเปิดร้านยา — สินค้าบังคับครบตามที่ร้านต้องมี เลือกสินค้าเสริมเพิ่มได้ ราคาถูกกว่าซื้อแยก</p></div>
+    <div class="relative"><span class="pin abs" style="left:auto;right:-8px">1</span><span class="chip soft-success lg">บัญชีร้านค้า (B2B) · สั่งเซตได้</span></div>
+  </div>
+
+  <div class="grid g2">
+    <!-- M -->
+    <div class="card kcard relative">
+      <div class="img"><div><span class="chip primary">ขายดี</span></div><span>รูปเซต</span></div>
+      <div class="kb">
+        <div class="row between"><h5>เซตร้านยาเปิดใหม่ ขนาด M</h5><span class="chip soft-info">มาตรฐาน M</span></div>
+        <div class="small muted">สิ่งที่รวมอยู่ในเซต</div>
+        <ul>
+          <li>ยาสามัญประจำบ้านครบ 8 รายการ (พาราเซตามอล ยาน้ำแก้ไอ ผงเกลือแร่ ยาแก้แพ้)</li>
+          <li>เวชภัณฑ์พื้นฐาน เบตาดีน เจลแอลกอฮอล์ ถุงมือยาง หน้ากากอนามัย</li>
+          <li>เลือกเพิ่มได้ 6 รายการ วิตามินซี เวชสำอาง นมผง ผ้าอ้อม</li>
+        </ul>
+        <div class="row wrap"><span class="chip soft-primary">บังคับ 8 รายการ</span><span class="chip outline">ทางเลือก 6 รายการ</span><span class="pin">3</span></div>
+        <div class="priceline"><div><div class="from">ราคาเริ่มต้น (เฉพาะสินค้าบังคับ) <span class="pin">2</span></div><div class="amt">฿23,000</div><span class="chip soft-success">ประหยัดสูงสุด ฿2,000</span></div>
+          <a class="btn contained" href="05-customer-builder.html">ดูและปรับเซต <span class="pin" style="margin:0">5</span></a></div>
+      </div>
+    </div>
+
+    <!-- S -->
+    <div class="card kcard">
+      <div class="img"><div></div><span>รูปเซต</span></div>
+      <div class="kb">
+        <div class="row between"><h5>เซตร้านยาเปิดใหม่ ขนาด S</h5><span class="chip soft-info">มาตรฐาน S</span></div>
+        <div class="small muted">สิ่งที่รวมอยู่ในเซต</div>
+        <ul>
+          <li>ยาสามัญประจำบ้านพื้นฐาน 6 รายการ</li>
+          <li>เจลแอลกอฮอล์ สำลีก้อน ผ้าก๊อซ ถุงมือยาง</li>
+          <li>เลือกเสริมวิตามินและเวชสำอางได้ 4 รายการ</li>
+        </ul>
+        <div class="row wrap"><span class="chip soft-primary">บังคับ 6 รายการ</span><span class="chip outline">ทางเลือก 4 รายการ</span></div>
+        <div class="priceline"><div><div class="from">ราคาเริ่มต้น (เฉพาะสินค้าบังคับ)</div><div class="amt">฿12,400</div><span class="chip soft-success">ประหยัดสูงสุด ฿1,000</span></div>
+          <a class="btn contained" href="05-customer-builder.html">ดูและปรับเซต</a></div>
+      </div>
+    </div>
+
+    <!-- L blocked -->
+    <div class="card kcard blocked">
+      <div class="img"><div><span class="chip error">สั่งไม่ได้ชั่วคราว</span></div><span>รูปเซต</span></div>
+      <div class="kb">
+        <div class="row between"><h5>เซตร้านยาเปิดใหม่ ขนาด L</h5><span class="chip soft-info">มาตรฐาน L</span></div>
+        <div class="small muted">สิ่งที่รวมอยู่ในเซต</div>
+        <ul>
+          <li>ยาสามัญและเวชภัณฑ์ 12 รายการ สำหรับร้านมีเภสัชกรประจำ</li>
+          <li>รวมปรอทวัดไข้ดิจิทัล อุปกรณ์ปฐมพยาบาลครบชุด</li>
+          <li>เลือกเสริมได้ 8 รายการ</li>
+        </ul>
+        <div class="alert error" style="padding:8px 12px;font-size:12px">สินค้าบังคับ "ปรอทวัดไข้ดิจิทัล" หมดชั่วคราว คาดว่ามีของ 18 ต.ค. 2569 <span class="pin">4</span></div>
+        <div class="priceline"><div><div class="from">ราคาเริ่มต้น</div><div class="amt" style="color:var(--g600)">฿38,300</div><span class="chip soft-success">ประหยัดสูงสุด ฿3,500</span></div>
+          <a class="btn outlined primary" href="06-customer-blocked.html#s1">ดูสถานะ / แจ้งเตือน</a></div>
+      </div>
+    </div>
+
+    <!-- mom & baby custom -->
+    <div class="card kcard">
+      <div class="img"><div><span class="chip warning">กำหนดเอง</span></div><span>รูปเซต</span></div>
+      <div class="kb">
+        <div class="row between"><h5>เซตร้านยาแม่และเด็ก</h5><span class="chip soft-primary">เซตพิเศษ</span></div>
+        <div class="small muted">สิ่งที่รวมอยู่ในเซต</div>
+        <ul>
+          <li>นมผงสูตร 3 ผ้าอ้อมเด็ก ขวดนม PP ครบชุดสำหรับมุมแม่และเด็ก</li>
+          <li>ยาสามัญสำหรับเด็ก พาราเซตามอลน้ำ ผงเกลือแร่</li>
+          <li>เลือกเสริมวิตามินและเวชสำอางเด็กได้ 5 รายการ</li>
+        </ul>
+        <div class="row wrap"><span class="chip soft-primary">บังคับ 7 รายการ</span><span class="chip outline">ทางเลือก 5 รายการ</span></div>
+        <div class="priceline"><div><div class="from">ราคาเริ่มต้น (เฉพาะสินค้าบังคับ)</div><div class="amt">฿17,100</div><span class="chip soft-success">ประหยัดสูงสุด ฿1,250 (5%)</span></div>
+          <a class="btn contained" href="05-customer-builder.html">ดูและปรับเซต</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mt24 relative"><span class="pin abs">6</span><div class="card-b">
+    <h5 class="mb16">ทำไมต้องซื้อเป็นเซต</h5>
+    <div class="why">
+      <div class="w"><div class="ic">฿</div><b>ถูกกว่าซื้อแยก</b><div class="small muted mt8">ส่วนลดชุดเซตหักให้ทันที ไม่ต้องรอโปรโมชั่นหรือสะสมยอด</div></div>
+      <div class="w"><div class="ic">✓</div><b>ครบตามที่ร้านต้องมี</b><div class="small muted mt8">สินค้าบังคับคือยาและเวชภัณฑ์มาตรฐานที่ร้านยาควรมีตั้งแต่วันแรก</div></div>
+      <div class="w"><div class="ic">±</div><b>ปรับให้เข้ากับร้านคุณ</b><div class="small muted mt8">เปิด-ปิดสินค้าทางเลือก ปรับจำนวน ราคาสุทธิอัปเดตให้เห็นทันที</div></div>
+      <div class="w"><div class="ic">1</div><b>สั่งครั้งเดียว</b><div class="small muted mt8">ออเดอร์เดียวทั้งเซต จัดส่งและออกเอกสารรวมกัน หรือให้ทีมขายสั่งแทนให้ก็ได้</div></div>
+    </div>
+    <div class="row between mt16 soft"><span class="small">อยากให้เซลล์ช่วยจัดเซตให้? ติดต่อทีมขาย แล้วเซลล์จะสั่งแทนในนามร้านคุณ ราคาเท่ากับที่เห็นบนเว็บ</span><button class="btn outlined sm">ติดต่อทีมขาย</button></div>
+  </div></div>
+
+  <h5 class="mt24 mb8">สถานะอื่นของหน้านี้ (ผู้เยี่ยมชมที่ไม่ใช่ร้านค้า)</h5>
+  <div class="stack s12">
+    <div class="relative"><span class="pin abs">7</span>
+      <div class="banner warn">
+        <div><b>ยังไม่ได้เข้าสู่ระบบ</b><div class="small">เซตร้านยาเปิดใหม่สำหรับบัญชีร้านค้า (B2B) — เข้าสู่ระบบเพื่อดูราคาและสั่งซื้อ</div></div>
+        <div class="row"><button class="btn outlined">สมัครบัญชีร้านค้า</button><button class="btn contained">เข้าสู่ระบบ</button></div>
+      </div>
+    </div>
+    <div class="relative"><span class="pin abs">8</span>
+      <div class="banner err">
+        <div><b>บัญชีของคุณเป็นบัญชีทั่วไป (B2C) — ดูเซตได้ แต่สั่งซื้อไม่ได้</b><div class="small">ขออัปเกรดเป็นบัญชีร้านค้า ทีมงานจะตรวจเอกสารและแจ้งผลให้ภายใน 1–2 วันทำการ</div></div>
+        <a class="btn contained" href="06-customer-blocked.html#s3">ขออัปเกรดเป็นบัญชีร้านค้า</a>
+      </div>
+      <div class="row top mt16" style="gap:16px">
+        <div class="card kcard" style="opacity:.75;max-width:620px;flex:1">
+          <div class="img"><div></div><span>รูปเซต</span></div>
+          <div class="kb"><b>เซตร้านยาเปิดใหม่ ขนาด M</b><div class="from small muted">ราคาเริ่มต้น</div><div class="amt">฿23,000</div>
+            <button class="btn contained disabled" disabled>สั่งไม่ได้ · ต้องเป็นบัญชีร้านค้า</button></div>
+        </div>
+        <div class="small muted" style="max-width:360px">มุมมองการ์ดของบัญชีทั่วไป: เห็นราคาและรายการสินค้าได้ แต่ปุ่ม "ดูและปรับเซต" เปลี่ยนเป็นปุ่มที่กดไม่ได้ (ยังเปิดหน้ารายละเอียดแบบอ่านอย่างเดียวได้)</div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ชิปสถานะบัญชีบนหัวหน้า: บอกผู้ใช้ทันทีว่าสั่งได้ (B2B) หรือไม่ ลดการลองกดแล้วโดนปฏิเสธ</span></li>
+    <li><span class="pin">2</span><span>"ราคาเริ่มต้น" = ราคาต่ำสุดของเซต (เฉพาะสินค้าบังคับ − ส่วนลด) ไม่ใช่ราคาที่ต้องจ่ายจริง — ราคาจริงขึ้นกับทางเลือกที่เลือกในหน้าปรับเซต · ชิป "ประหยัดสูงสุด" = ส่วนลดชุดเซตสูงสุดที่เป็นไปได้</span></li>
+    <li><span class="pin">3</span><span>จำนวนรายการแยก "บังคับ/ทางเลือก" ตรงกับที่แอดมินตั้ง · เซตเรียงตามลำดับที่แอดมินจัด (ขายดีขึ้นก่อน)</span></li>
+    <li><span class="pin">4</span><span>เซตที่สินค้าบังคับหมด: ยังแสดงในรายการ แต่เทาลงและเปลี่ยนปุ่มเป็น "ดูสถานะ / แจ้งเตือน" พร้อมวันที่คาดว่ามีของ (ไปหน้า 06) — ไม่ซ่อนเพื่อให้ลูกค้ารู้ว่ากำลังจะกลับมา</span></li>
+    <li><span class="pin">5</span><span>ปุ่ม "ดูและปรับเซต" พาไปหน้า 05 ซึ่งเป็นที่เดียวที่ใส่ตะกร้าได้ — การ์ดไม่มีปุ่มใส่ตะกร้าตรง เพราะราคาขึ้นกับการปรับ</span></li>
+    <li><span class="pin">6</span><span>คำอธิบาย "ทำไมต้องซื้อเป็นเซต" เป็นข้อความคงที่ (แก้ได้ในระบบเนื้อหา) · มีทางลัดให้เซลล์สั่งแทน ไม่มีราคาหลังบ้านต่างจากเว็บ</span></li>
+    <li><span class="pin">7</span><span>ผู้เยี่ยมชมยังไม่ล็อกอิน: เห็นเนื้อหาเซตและรายการสินค้า แต่ราคาแสดงตามนโยบายสินค้าของเว็บ (ถ้าซ่อนราคากับผู้เยี่ยมชม ให้ซ่อนที่นี่ด้วย) พร้อมปุ่มเข้าสู่ระบบ/สมัครบัญชีร้านค้า</span></li>
+    <li><span class="pin">8</span><span>บัญชีทั่วไป (B2C): แถบแดง + ปุ่ม "ขออัปเกรดเป็นบัญชีร้านค้า" (ไปหน้า 06 กรณีที่ 3) · ปุ่มสั่งบนการ์ดกดไม่ได้</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>เซตที่แอดมินปิดการขายไม่แสดงในหน้านี้ · เซต "สต็อกไม่พอ" แสดงแบบเทา</li>
+    <li>ไม่มีเซตเปิดขายเลย: แสดง "ยังไม่มีเซตร้านยาเปิดใหม่ในขณะนี้ กรุณาติดต่อทีมขาย"</li>
+    <li>ตัวเลข "ประหยัดสูงสุด" ของเซตที่ส่วนลดเป็น % คิดจากราคาสูงสุดของเซต (ทางเลือกครบ)</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ผู้เยี่ยมชมที่ยังไม่ล็อกอินเห็นราคาเซตหรือไม่ (เสนอ: ตามนโยบายแสดงราคาสินค้าของเว็บเดิม)</li>
+    <li>ขั้นตอนขออัปเกรด B2C → B2B ใช้ฟอร์ม/เอกสารเดิมของ pmpc หรือสร้างใหม่ (เสนอ: ใช้ขั้นตอนเดิมถ้ามี)</li>
+    <li>รูปเซตและข้อความ "สิ่งที่รวม" ให้แอดมินเขียนเองต่อเซต หรือระบบสร้างจากรายการสินค้าอัตโนมัติ (เสนอ: เขียนเองได้ ถ้าว่างใช้ชื่อสินค้าบังคับ 3 รายการแรก)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

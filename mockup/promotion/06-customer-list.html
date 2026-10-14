@@ -1,0 +1,209 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หน้ารวมโปรโมชั่น</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .head-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:16px}
+  .chip.sq{height:20px;font-size:10.5px;padding:0 7px}
+  .hero{border-radius:14px;overflow:hidden;background:linear-gradient(120deg,#F57C00,#B32026);color:#fff;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;padding:18px 22px;margin-bottom:20px}
+  .hero .ft{font-size:22px;font-weight:800}
+  .hero .fs{font-size:13px;opacity:.92;margin-top:2px}
+  .hero .cats{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+  .hero .cats span{background:rgba(255,255,255,.18);border-radius:8px;padding:4px 10px;font-size:12px;font-weight:600}
+  .timer{display:flex;gap:6px;align-items:center;font-weight:800;font-size:20px}
+  .timer span{background:rgba(0,0,0,.28);border-radius:6px;padding:4px 9px;min-width:42px;text-align:center}
+  .timer i{font-style:normal;opacity:.8}
+  .hero .btn{background:#fff;color:var(--primary-dark);margin-top:10px}
+  .filters{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{border:1px solid var(--g300);background:#fff;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:600;color:var(--g700);cursor:pointer}
+  .pill.on{background:var(--primary);border-color:var(--primary);color:#fff}
+  .promos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+  .pc{display:flex;flex-direction:column;height:100%}
+  .pc .card-b{display:flex;flex-direction:column;flex:1;padding:18px 20px}
+  .pc h6{font-size:16px;font-weight:700;line-height:1.4}
+  .pc p{font-size:13px;color:var(--text2)}
+  .pc .kv2{font-size:13px;display:grid;gap:4px;margin:10px 0}
+  .quota{background:var(--g50);border-radius:8px;padding:10px 12px;margin:6px 0 10px}
+  .quota .t{font-weight:700;font-size:13px;margin-bottom:2px}
+  .quota .r{display:flex;justify-content:space-between;font-size:13px}
+  .ok{color:var(--success-dark)}.bad{color:var(--error-dark)}
+  .sumline{font-size:13px;flex:1}
+  .pc .btn{margin-top:14px}
+  .pc.off{opacity:.92}
+  .ladder .step{padding:10px 14px;grid-template-columns:38px 1fr auto}
+  .ladder .step .no{width:34px;height:34px;font-size:13px}
+  .sec-label{font-size:12px;font-weight:700;color:var(--text2);margin:28px 0 10px;display:flex;align-items:center;gap:8px}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="promotion">
+<main id="screen">
+
+  <div class="crumbs">หน้าแรก / โปรโมชั่น</div>
+  <div class="head-row">
+    <div><h4>โปรโมชั่น</h4><p class="muted">โปรโมชั่นและข้อเสนอพิเศษ</p></div>
+  </div>
+
+  <div class="hero relative">
+    <span class="pin abs" style="top:-8px">6</span>
+    <div>
+      <span class="promo-tag flash" style="background:rgba(0,0,0,.28)">Flash</span>
+      <div class="ft">Flash Sale 10.10 — ลดสูงสุด 30%</div>
+      <div class="fs">เฉพาะกลุ่มสินค้าที่ร่วมรายการ · จบ 12 ต.ค. 2569 เวลา 23:59 หรือเมื่อโควตาหมด</div>
+      <div class="cats"><span>ยาสามัญ −30%</span><span>วิตามิน −20% · เหลือ 13 ชิ้น</span></div>
+    </div>
+    <div style="text-align:right">
+      <div class="timer"><span>08</span><i>:</i><span>42</span><i>:</i><span>17</span></div>
+      <a class="btn sm" href="07-customer-product.html">ดูสินค้า Flash →</a>
+    </div>
+  </div>
+
+  <div class="filters">
+    <div class="pills relative"><span class="pin abs" style="top:-12px;left:-12px">1</span>
+      <span class="pill on">ทั้งหมด</span><span class="pill">ของแถม</span><span class="pill">ส่วนลด</span><span class="pill">ส่งฟรี</span><span class="pill">ขั้นบันได</span>
+    </div>
+    <label class="switch relative"><span class="pin" style="margin:0 4px 0 0">2</span><input type="checkbox" checked> เฉพาะที่ใช้ได้ตอนนี้</label>
+  </div>
+
+  <div class="promos">
+
+    <div class="card pc"><div class="card-b">
+      <div class="row between top"><h6>ซื้อ Blackmores ครบ ฿1,000 ลด ฿100</h6><span class="chip success">ใช้งาน</span></div>
+      <div class="row mt8" style="gap:6px"><span class="promo-tag">ส่วนลด</span><span class="promo-tag" style="background:var(--g700)">ทวีคูณได้</span></div>
+      <p class="mt8">ซื้อสินค้าแบรนด์ Blackmores ครบ ฿1,000 รับส่วนลดทันที</p>
+      <p class="mt8">ซื้อครบ ฿2,000 ลด ฿200 · ครบ ฿3,000 ลด ฿300 (ทวีคูณตามยอดที่ซื้อ) ยกเว้น Pregnancy Gold</p>
+      <div class="kv2">
+        <div><b>ประเภทเงื่อนไข:</b> ตามยอดเงิน</div>
+        <div><b>ยอดขั้นต่ำ:</b> ฿1,000</div>
+        <div><b>ระยะเวลา:</b> 1 ต.ค. 2569 - 31 ธ.ค. 2569</div>
+      </div>
+      <div class="quota"><div class="t">โควต้าต่อลูกค้า</div><div class="r ok">ไม่จำกัด</div></div>
+      <div class="sumline"><b>ส่วนลด:</b> ฿100 ต่อชุด</div>
+      <a class="btn contained block" href="08-customer-detail.html">ดูรายละเอียด</a>
+    </div></div>
+
+    <div class="card pc" style="grid-column:span 2;border:2px solid var(--primary-light)"><div class="card-b relative">
+      <span class="pin abs" style="top:-12px;left:-12px">3</span>
+      <div class="row between top"><h6>นมผงสูตร 3 ซื้อเยอะ แถมเยอะ</h6><span class="chip success">ใช้งาน</span></div>
+      <div class="row mt8" style="gap:6px"><span class="promo-tag gift">ของแถม</span><span class="promo-tag" style="background:var(--g700)">ขั้นบันได 3 ขั้น</span></div>
+      <p class="mt8">ยิ่งซื้อยิ่งได้ของแถมมากขึ้น ซื้อนมผงสูตร 3 ตั้งแต่ 1 ลัง รับของแถมทันที</p>
+      <div class="soft mt8 small"><b>ในตะกร้าตอนนี้มีนมผงสูตร 3 จำนวน 4 ลัง</b> · เพิ่มอีก <b style="color:var(--primary)">1 ลัง</b> รับขั้น 2: ผ้าอ้อมเด็ก 1 แพ็ค
+        <div class="progress mt8"><i style="width:80%"></i></div></div>
+      <div class="ladder mt8">
+        <div class="step done"><span class="no">✓</span><div><b>ซื้อ 1 ลัง</b> · รับ เจลแอลกอฮอล์ 1 ขวด</div><span class="chip success sq">ได้แล้ว</span></div>
+        <div class="step now"><span class="no">2</span><div><b>ซื้อ 5 ลัง</b> · รับ ผ้าอ้อมเด็ก 1 แพ็ค</div><span class="chip primary sq">อีก 1 ลัง</span></div>
+        <div class="step lock"><span class="no">3</span><div><b>ซื้อ 10 ลัง</b> · รับ Blackmores Vitamin C 2 ขวด</div><span class="chip sq">อีก 6 ลัง</span></div>
+      </div>
+      <div class="quota"><div class="t">โควต้าต่อลูกค้า</div><div class="r ok">ไม่จำกัด</div></div>
+      <div class="kv2"><div><b>ระยะเวลา:</b> 1 ต.ค. 2569 - 31 ธ.ค. 2569 · ได้ของแถมขั้นสูงสุดที่ถึงเพียงขั้นเดียวต่อบิล</div></div>
+      <a class="btn contained block" href="08-customer-detail.html" style="margin-top:0">ดูรายละเอียด</a>
+    </div></div>
+
+    <div class="card pc"><div class="card-b">
+      <div class="row between top"><h6>ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์</h6><span class="chip success">ใช้งาน</span></div>
+      <div class="row mt8"><span class="promo-tag gift">ของแถม</span></div>
+      <p class="mt8">นมผงสูตร 3 ครบ 5 ชิ้น พร้อมขวดนม PP 2 ชิ้น รับเจลแอลกอฮอล์ฟรี</p>
+      <p class="mt8">ซื้อเป็น 2 เท่าได้ 2 ชุด สูงสุด 5 ชุดต่อบิล</p>
+      <div class="kv2">
+        <div><b>ประเภทเงื่อนไข:</b> ตามจำนวน</div>
+        <div><b>ระยะเวลา:</b> 1 ต.ค. 2569 - 31 ธ.ค. 2569</div>
+      </div>
+      <div class="quota relative"><span class="pin abs" style="top:-10px;left:auto;right:-6px">4</span><div class="t">โควต้าต่อลูกค้า</div><div class="r"><span class="muted">ใช้แล้ว: 2</span><span class="ok">โควต้าที่เหลือ: 1</span></div></div>
+      <div class="sumline"><b>สินค้าฟรี:</b> เจลแอลกอฮอล์</div>
+      <a class="btn contained block" href="08-customer-detail.html">ดูรายละเอียด</a>
+    </div></div>
+
+    <div class="card pc"><div class="card-b">
+      <div class="row between top"><h6>ซื้อเวชภัณฑ์ครบ ฿2,000 ส่งฟรี</h6><span class="chip success">ใช้งาน</span></div>
+      <div class="row mt8"><span class="promo-tag ship">ส่งฟรี</span></div>
+      <p class="mt8">ซื้อสินค้าหมวดเวชภัณฑ์ครบ ฿2,000 ไม่เสียค่าจัดส่งสำหรับสินค้าในหมวดนี้</p>
+      <div class="kv2">
+        <div><b>ประเภทเงื่อนไข:</b> ตามยอดเงิน</div>
+        <div><b>ยอดขั้นต่ำ:</b> ฿2,000</div>
+        <div><b>ระยะเวลา:</b> 1 ต.ค. 2569 - 31 ธ.ค. 2569</div>
+      </div>
+      <div class="quota"><div class="t">โควต้าต่อลูกค้า</div><div class="r ok">ไม่จำกัด</div></div>
+      <div class="sumline"><b>สิทธิ์ที่ได้:</b> ฟรีค่าจัดส่ง</div>
+      <a class="btn contained block" href="08-customer-detail.html">ดูรายละเอียด</a>
+    </div></div>
+
+    <div class="card pc"><div class="card-b">
+      <div class="row between top"><h6>ซื้อ Blackmores Vitamin C ครบ 3 ขวด ลด 10%</h6><span class="chip success">ใช้งาน</span></div>
+      <div class="row mt8"><span class="promo-tag">ลด 10%</span></div>
+      <p class="mt8">ซื้อ Vitamin C 500 mg รวมกันครบ 3 ขวด (ขวดหรือกล่องก็ได้) ลดทันที 10% สูงสุด ฿150</p>
+      <div class="kv2">
+        <div><b>ประเภทเงื่อนไข:</b> ตามจำนวน</div>
+        <div><b>ระยะเวลา:</b> 1 ต.ค. 2569 - 31 ธ.ค. 2569</div>
+      </div>
+      <div class="quota"><div class="t">โควต้าต่อลูกค้า</div><div class="r"><span class="muted">ใช้แล้ว: 0</span><span class="ok">โควต้าที่เหลือ: 2</span></div></div>
+      <div class="sumline"><b>ส่วนลด:</b> 10% (สูงสุด ฿150)</div>
+      <a class="btn contained block" href="08-customer-detail.html">ดูรายละเอียด</a>
+    </div></div>
+
+    <div class="card pc"><div class="card-b">
+      <div class="row between top"><h6>ซื้อ Dumex ครบ 10 กระป๋อง แถมถุงมือยาง 1 กล่อง</h6><span class="chip success">ใช้งาน</span></div>
+      <div class="row mt8"><span class="promo-tag gift">ของแถม</span></div>
+      <p class="mt8">ซื้อนมผง Dumex ครบ 10 กระป๋อง รับถุงมือยางฟรี 1 กล่อง</p>
+      <div class="kv2">
+        <div><b>ประเภทเงื่อนไข:</b> ตามจำนวน</div>
+        <div><b>ระยะเวลา:</b> 1 ต.ค. 2569 - 31 ธ.ค. 2569</div>
+      </div>
+      <div class="quota"><div class="t">โควต้าต่อลูกค้า</div><div class="r"><span class="muted">ใช้แล้ว: 1</span><span class="bad">โควต้าที่เหลือ: 0</span></div></div>
+      <div class="sumline"><b>สินค้าฟรี:</b> ถุงมือยาง</div>
+      <button class="btn contained block" disabled>โควต้าเต็มแล้ว</button>
+    </div></div>
+
+    <div class="card pc off"><div class="card-b">
+      <div class="row between top"><h6>ซื้อ Pampers ครบ 3 แพ็ค แถมเจลแอลกอฮอล์ 2 ขวด</h6><span class="chip info">ยังไม่เริ่มต้น</span></div>
+      <div class="row mt8"><span class="promo-tag gift">ของแถม</span></div>
+      <p class="mt8">ผ้าอ้อม Pampers ครบ 3 แพ็ค รับเจลแอลกอฮอล์ฟรี 2 ขวด</p>
+      <div class="kv2">
+        <div><b>ประเภทเงื่อนไข:</b> ตามจำนวน</div>
+        <div><b>ระยะเวลา:</b> 1 พ.ย. 2569 - 30 พ.ย. 2569</div>
+      </div>
+      <div class="quota"><div class="t">โควต้าต่อลูกค้า</div><div class="r ok">ไม่จำกัด</div></div>
+      <div class="sumline"><b>สินค้าฟรี:</b> เจลแอลกอฮอล์</div>
+      <button class="btn contained block" disabled>ยังไม่เริ่มต้น</button>
+    </div></div>
+  </div>
+
+  <div class="sec-label"><span class="chip soft-primary sq">สถานะอื่น</span> เมื่อกรองแล้วไม่พบโปรโมชั่น / ยังไม่เข้าสู่ระบบ <span class="pin">5</span></div>
+  <div class="grid g2">
+    <div class="card"><div class="empty" style="padding:44px 16px">
+      <h6 style="color:var(--text2);font-weight:600">ไม่พบโปรโมชั่น</h6>
+      <p class="small mt8">โปรดติดตามข่าวสารจากทาง Pharmaplex เพื่อดูข้อเสนอพิเศษในอนาคต</p>
+      <button class="btn outlined sm mt16">ล้างตัวกรอง</button>
+    </div></div>
+    <div class="card pc"><div class="card-b">
+      <div class="row between top"><h6>ซื้อ Blackmores ครบ ฿1,000 ลด ฿100</h6><span class="chip success">ใช้งาน</span></div>
+      <p class="mt8">ผู้เยี่ยมชมที่ยังไม่เข้าสู่ระบบ: โควต้าแสดงเป็นค่าตั้งต้น (ไม่แสดงใช้แล้ว/เหลือ) และปุ่มเป็น "เข้าสู่ระบบเพื่อดูรายละเอียด"</p>
+      <div class="quota"><div class="t">โควต้าต่อลูกค้า</div><div class="r" style="color:var(--text2)">ไม่จำกัด</div></div>
+      <button class="btn contained block" style="margin-top:0">เข้าสู่ระบบเพื่อดูรายละเอียด</button>
+    </div></div>
+  </div>
+
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ตัวกรองประเภท</b> <span class="chip soft-primary sq">ใหม่</span> ทั้งหมด / ของแถม / ส่วนลด / ส่งฟรี / ขั้นบันได — หน้าเดิมแสดงทุกเซตในหน้าเดียวไม่มีตัวกรอง · เลือกได้ทีละประเภท ค่าเริ่มต้น "ทั้งหมด"</span></li>
+    <li><span class="pin">2</span><span><b>เฉพาะที่ใช้ได้ตอนนี้</b> <span class="chip soft-primary sq">ใหม่</span> เปิดอยู่ = ซ่อนโปรที่ยังไม่เริ่มและที่โควต้าเต็ม · ปิด = เห็นทั้งหมด (โปรที่ยังไม่เริ่มแสดงปุ่มเทา "ยังไม่เริ่มต้น" ตามหน้าเดิม) · จำค่าไว้ในเบราว์เซอร์</span></li>
+    <li><span class="pin">3</span><span><b>การ์ดกลุ่มขั้นบันได</b> <span class="chip soft-primary sq">ใหม่</span> 1 การ์ดต่อกลุ่ม กว้าง 2 ช่อง แสดงบันไดทุกขั้น พร้อมสถานะจากตะกร้าปัจจุบัน ("เพิ่มอีก 1 ลัง รับขั้น 2") · ลูกค้าที่ไม่มีของในตะกร้าเห็นบันไดเป็นสถานะรอทุกขั้น</span></li>
+    <li><span class="pin">4</span><span><b>โควต้าต่อลูกค้า</b> กล่องเทาตามหน้าเดิม: ไม่จำกัด (เขียว) หรือ ใช้แล้ว / เหลือ — เหลือ &gt; 0 เขียว, = 0 แดง และปุ่มเปลี่ยนเป็น "โควต้าเต็มแล้ว" (ปิดการกด) · ค่า "ใช้แล้ว" นับจำนวนครั้งที่รับสิทธิ์จากออเดอร์ที่ยืนยันแล้ว</span></li>
+    <li><span class="pin">5</span><span><b>สถานะว่าง / ยังไม่ล็อกอิน</b> ไม่พบโปร: ข้อความ "ไม่พบโปรโมชั่น" + คำอธิบายเดิม · ผู้เยี่ยมชม: ปุ่ม "เข้าสู่ระบบเพื่อดูรายละเอียด" (เปิด popup ล็อกอิน) ไม่นับโควต้า</span></li>
+    <li><span class="pin">6</span><span><b>แบนเนอร์ Flash</b> <span class="chip soft-primary sq">ใหม่</span> แสดงเมื่อมีแคมเปญลดตามวันพิเศษที่กำลังจัดอยู่และลูกค้าอยู่ในกลุ่มเป้าหมาย · นับถอยหลังถึงเวลาสิ้นสุด · กลุ่มที่โควตาหมดไม่แสดงใน chip · ปุ่มพาไปรายการสินค้าที่ร่วมรายการ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>แสดงเฉพาะโปรที่ใช้งานและอยู่ในช่วงวันที่ (เรียงตาม priority เหมือนเดิม) — ยกเว้นโปร "ยังไม่เริ่มต้น" ที่แสดงเป็นการ์ดประกาศล่วงหน้า · โปรหมดอายุหรือปิดชั่วคราว (ของแถมหมด) ไม่แสดง</li>
+    <li>ตัวเลข priority ไม่แสดงให้ลูกค้าเห็น · สถานะ chip ตามหน้าเดิม: ใช้งาน / ยังไม่เริ่มต้น / หมดอายุ</li>
+    <li>คลิกทั้งการ์ดหรือปุ่ม "ดูรายละเอียด" ไปหน้า 08 · ถ้าโควต้าเต็มปุ่มกดไม่ได้</li>
+    <li>ข้อความ "ของแถม/ส่วนลด/ส่งฟรี" ที่ท้ายการ์ดสร้างจากผลตอบแทนที่ตั้งไว้ (เดิมมีเฉพาะ "สินค้าฟรี")</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>แบนเนอร์ Flash อยู่บนหน้า "โปรโมชั่น" นี้ด้วย หรือแสดงเฉพาะหน้าแรก/หน้าสินค้า</li>
+    <li>โปรที่โควต้าเต็ม: ยังแสดงการ์ดเทา (ค่าเริ่มต้น เหมือนหน้าเดิม) หรือซ่อนทันที</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

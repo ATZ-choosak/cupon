@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตัวอย่างคูปองกระดาษ หน้า-หลัง</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.tbl-c th,.tbl-c td{padding:10px 12px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ck.y{background:var(--success)}.ck.n{background:var(--error)}.ck.w{background:var(--warning)}
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.stat-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.hl td{background:var(--primary-lighter)!important}
+.dim{opacity:.55}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.lbl-sm{font-size:11.5px;color:var(--text2)}
+.err-box{border:1.5px solid var(--error);background:var(--error-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#5F2120}
+.ok-box{border:1.5px solid var(--success);background:var(--success-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#1E4620}
+.warn-box{border:1.5px solid var(--warning);background:var(--warning-lighter);border-radius:8px;padding:10px 12px;font-size:12.5px;color:#663C00}
+.input.bad{border-color:var(--error);background:var(--error-lighter)}
+.input.good{border-color:var(--success)}
+.input.amber{border-color:var(--warning)}
+label.switch{white-space:nowrap}
+details.faq{border:1px solid var(--g300);border-radius:10px;background:#fff;padding:0}
+details.faq+details.faq{margin-top:8px}
+details.faq>summary{cursor:pointer;padding:12px 16px;font-weight:600;list-style:none;display:flex;justify-content:space-between;gap:12px}
+details.faq>summary::after{content:"＋";color:var(--primary);font-weight:800}
+details.faq[open]>summary::after{content:"−"}
+details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
+
+.pcw{width:calc(630px*var(--s,1));height:calc(285px*var(--s,1));position:relative;flex:none}
+.pcs{width:630px;height:285px;transform:scale(var(--s,1));transform-origin:0 0}
+.pcs .pface{width:630px;height:285px;aspect-ratio:auto;padding:0;font-size:11px;line-height:1.35;color:var(--g800)}
+.pcs .flip,.pcs .flip-inner{width:630px;height:285px;cursor:pointer}
+.pf-main{position:absolute;left:0;top:0;bottom:0;width:78%;padding:24px 20px 12px 28px;display:flex;flex-direction:column}
+.pf-brand{font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--primary)}
+.pcs .big{font-size:62px;margin:4px 0 0;letter-spacing:-.02em}
+.pf-sub{font-size:16px;font-weight:700;margin-top:2px}
+.pf-chips{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.pf-chips span{border:1px solid var(--g500);border-radius:6px;padding:1px 8px;font-size:10.5px;font-weight:600;background:#fff}
+.pf-chips span.no{border-color:var(--error);color:var(--error-dark)}
+.pf-foot{margin-top:auto;font-size:10.5px;color:var(--g700);border-top:1px solid var(--g300);padding-top:6px}
+.pcs .stub{width:22%;padding:8px;gap:5px}
+.pcs .qrbox{width:62px;height:62px}
+.pcs .stub .cd{font-family:ui-monospace,Consolas,monospace;font-weight:800;font-size:13px}
+.pcs .stub .tr{font-size:9.5px;color:var(--g700);line-height:1.35}
+.pb-main{position:absolute;left:0;top:0;bottom:0;width:78%;padding:18px 14px 8px 24px;display:flex;flex-direction:column}
+.pb-h{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:12px;border-bottom:2px solid var(--g800);padding:0 0 3px 56px;margin-bottom:6px}
+.pb-h span{font-family:ui-monospace,Consolas,monospace;font-size:11px}
+.pb-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0}
+.pb-cols h6{font-size:12.5px;font-weight:800;color:var(--primary);margin:0 0 3px}
+.pb-cols ul{margin:0;padding:0;list-style:none;font-size:11.5px;line-height:1.4}
+.pb-cols li{padding-left:9px;position:relative}
+.pb-cols li::before{content:"•";position:absolute;left:0}
+.pb-cols li.ln::before{content:""}
+.pb-cols li.ln{padding-left:0;color:var(--g700)}
+.pb-chan{margin-top:6px;font-size:11.5px;font-weight:700;line-height:1.55}
+.pb-chan .y{color:var(--success-darker)}.pb-chan .n{color:var(--error-dark)}
+.pb-note{border-top:1px dashed var(--g500);margin-top:4px;padding-top:3px;font-size:10px;color:var(--g700);line-height:1.3}
+.pf-void{position:absolute;left:150px;top:100px;border:4px solid var(--error);color:var(--error);font-weight:800;font-size:34px;padding:2px 22px;border-radius:10px;transform:rotate(-12deg);background:rgba(255,255,255,.7);z-index:6}
+.pp{position:absolute;margin:0;z-index:5}
+.pface.clip-note .pb-note{outline:1.5px dashed var(--error);outline-offset:1px}
+</style>
+</head>
+<body data-shell="admin" data-nav="coupon" data-crumb="โปรโมชั่นและสิทธิพิเศษ / คูปอง / คูปองกระดาษ / ตัวอย่าง">
+<main id="screen">
+
+<div class="page-head">
+  <div><h4>ตัวอย่างคูปองกระดาษ — <span class="mono-b" style="font-size:17px">NOV80</span> <span class="chip warning">ร่าง</span></h4><p class="muted">บูทสัมมนาเภสัช พ.ย. 69 · ฿80/ใบ · ซื้อครบ ฿600 · 1,500 ใบ · ใช้ได้ถึง 31 ม.ค. 2570</p></div>
+  <div class="row"><a class="btn outlined" href="03-admin-paper-editor.html">← กลับไปแก้ไข</a><button class="btn outlined primary relative">คัดลอกข้อความหลังคูปอง <span class="pin">6</span></button><a class="btn contained" href="02-admin-paper-list.html">เผยแพร่ชุด</a></div>
+</div>
+
+<div class="alert info mb16 relative"><span class="pin" style="margin-right:8px">1</span><div><div class="a-title">ระบบไม่ได้สั่งพิมพ์ให้</div>หน้านี้เป็นตัวอย่างหน้า-หลังสำหรับตรวจความถูกต้องเท่านั้น — ทีมการตลาดจะพิมพ์และแจกหน้างานเอง ระบบไม่มีปุ่มสั่งพิมพ์ ไม่ส่งไฟล์เข้าโรงพิมพ์ และไม่ออกเลขใบรายใบ</div></div>
+
+<div style="display:grid;grid-template-columns:678px minmax(0,1fr);gap:16px;align-items:start" class="mb16">
+  <div class="card"><div class="card-b">
+    <div class="row between mb8"><h6>พลิกดูหน้า ↔ หลัง <span class="pin">2</span></h6><span class="chip soft-info">คลิกที่คูปองเพื่อพลิก</span></div>
+    <div class="pcw" style="--s:1"><div class="pcs"><div class="flip"><div class="flip-inner"><div class="face"><div class="pface front"><span class="cap">หน้า</span>
+  <div class="pf-main">
+    <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
+    <div class="big">฿80</div>
+    <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿600</div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-foot">ใช้ได้ถึง 31 ม.ค. 2570 · บูทสัมมนาเภสัช พ.ย. 69</div>
+  </div>
+  <div class="stub"><div class="qrbox"></div><div class="cd">NOV80</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  
+    <span class="pin pp" style="left:6px;top:20px">A</span>
+    <span class="pin pp" style="left:4px;top:56px">B</span>
+    <span class="pin pp" style="left:4px;top:128px">C</span>
+    <span class="pin pp" style="left:496px;top:128px">D</span>
+    <span class="pin pp" style="left:474px;top:14px">E</span>
+    <span class="pin pp" style="left:540px;top:64px">F</span>
+</div></div><div class="face back"><div class="pface rear"><span class="cap">หลัง</span>
+  <div class="pb-main">
+    <div class="pb-h">เงื่อนไขการใช้คูปอง<span>ชุด NOV80</span></div>
+    <div class="pb-cols">
+      <div>
+        <h6>ใช้ได้ที่ร้าน/สาขา</h6>
+        <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาสุขใจ สาขาลาดพร้าว</li><li>ร้านยาสุขใจ สาขาบางนา</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+      </div>
+      <div>
+        <h6>สิทธิ์และเงื่อนไข</h6>
+        <ul><li>ซื้อครบ ฿600 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 พ.ย. 2569 – 31 ม.ค. 2570</li></ul>
+      </div>
+    </div>
+    <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
+  </div>
+  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  
+    <span class="pin pp" style="left:-1px;top:40px">G</span>
+    <span class="pin pp" style="left:-1px;top:178px">H</span>
+    <span class="pin pp" style="left:230px;top:40px">I</span>
+    <span class="pin pp" style="left:-1px;top:252px">J</span>
+    <span class="pin pp" style="left:496px;top:20px">K</span>
+</div></div></div></div></div></div>
+    <div class="lbl-sm mt8">ตัวอักษร A–K ตรงกับคำอธิบายด้านขวา</div>
+  </div></div>
+  <div class="card"><div class="card-b">
+    <h6 class="mb8">คำอธิบายองค์ประกอบที่พิมพ์ <span class="pin">3</span></h6>
+    <div class="stack s8">
+      <div class="label">ด้านหน้า</div>
+      <div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">A</span><div><b>หัวคูปอง</b><div class="small muted">ชื่อแบรนด์ + คำว่า "คูปองส่วนลด" (คงที่ทุกชุด)</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">B</span><div><b>มูลค่าส่วนลด</b><div class="small muted">ตัวเลขบาทต่อใบ ดึงจาก "มูลค่าต่อใบ" ของชุด</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">C</span><div><b>เงื่อนไขย่อ</b><div class="small muted">ยอดซื้อขั้นต่ำ · ใช้ที่ร้านที่ร่วมรายการ · ✘ ออนไลน์ · ใบ/บิล</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">D</span><div><b>รหัสชุด</b><div class="small muted">รหัสเดียวกันทุกใบ — ร้านใช้กรอก/สแกนที่ POS และเขียนบนก้น</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">E</span><div><b>ก้นคูปอง</b><div class="small muted">ส่วนที่ร้านฉีกเก็บไว้ส่งเบิก (รอยประ ~22% ด้านขวา)</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">F</span><div><b>QR สำหรับ POS</b><div class="small muted">สแกนเข้าระบบ POS ของร้านได้ (ไม่ใช่ลิงก์ให้ลูกค้าใช้ออนไลน์)</div></div></div>
+      <div class="sep" style="margin:6px 0"></div>
+      <div class="label">ด้านหลัง</div>
+      <div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">G</span><div><b>ร้าน/สาขาที่ใช้ได้</b><div class="small muted">รายชื่อจากขั้น ② · ถ้าเลือก "ทุกร้าน" จะพิมพ์จำนวนร้าน + ที่ดูรายชื่อล่าสุด</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">H</span><div><b>ช่องทางที่ใช้ได้</b><div class="small muted">บรรทัด ✔/✘ ชัดเจน: หน้าร้าน/POS และออนไลน์</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">I</span><div><b>สิทธิ์และเงื่อนไข</b><div class="small muted">ขั้นต่ำ · ใบ/บิล · ใช้ร่วมโปร/คูปอง/พอยท์ · สินค้ายกเว้น · ใครใช้ได้ · ไม่ทอนเงินสด · วันที่ใช้ได้</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">J</span><div><b>ข้อความเพิ่มเติม</b><div class="small muted">ไม่เกิน 160 ตัวอักษร (พื้นที่พิมพ์จำกัด)</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">K</span><div><b>ก้นคูปอง (ด้านหลัง)</b><div class="small muted">บอกร้านว่าต้องเก็บก้นและส่งเบิกภายในกี่วัน</div></div></div>
+    </div>
+  </div></div>
+</div>
+
+<div class="card mb16"><div class="card-b">
+  <div class="row between mb8"><h6>หน้า–หลังเทียบกัน (ขนาดย่อ 80%)</h6><span class="muted small">เหมาะสำหรับตรวจตัวสะกดคู่กัน</span></div>
+  <div class="row top" style="gap:24px">
+    <div class="pcw" style="--s:0.8"><div class="pcs"><div class="pface front"><span class="cap">หน้า</span>
+  <div class="pf-main">
+    <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
+    <div class="big">฿80</div>
+    <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿600</div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-foot">ใช้ได้ถึง 31 ม.ค. 2570 · บูทสัมมนาเภสัช พ.ย. 69</div>
+  </div>
+  <div class="stub"><div class="qrbox"></div><div class="cd">NOV80</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  
+    <span class="pin pp" style="left:6px;top:20px">A</span>
+    <span class="pin pp" style="left:4px;top:56px">B</span>
+    <span class="pin pp" style="left:4px;top:128px">C</span>
+    <span class="pin pp" style="left:496px;top:128px">D</span>
+    <span class="pin pp" style="left:474px;top:14px">E</span>
+    <span class="pin pp" style="left:540px;top:64px">F</span>
+</div></div></div>
+    <div class="pcw" style="--s:0.8"><div class="pcs"><div class="pface rear"><span class="cap">หลัง</span>
+  <div class="pb-main">
+    <div class="pb-h">เงื่อนไขการใช้คูปอง<span>ชุด NOV80</span></div>
+    <div class="pb-cols">
+      <div>
+        <h6>ใช้ได้ที่ร้าน/สาขา</h6>
+        <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาสุขใจ สาขาลาดพร้าว</li><li>ร้านยาสุขใจ สาขาบางนา</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+      </div>
+      <div>
+        <h6>สิทธิ์และเงื่อนไข</h6>
+        <ul><li>ซื้อครบ ฿600 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 พ.ย. 2569 – 31 ม.ค. 2570</li></ul>
+      </div>
+    </div>
+    <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
+  </div>
+  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  
+    <span class="pin pp" style="left:-1px;top:40px">G</span>
+    <span class="pin pp" style="left:-1px;top:178px">H</span>
+    <span class="pin pp" style="left:230px;top:40px">I</span>
+    <span class="pin pp" style="left:-1px;top:252px">J</span>
+    <span class="pin pp" style="left:496px;top:20px">K</span>
+</div></div></div>
+  </div>
+</div></div>
+
+<div class="grid g2">
+  <div class="card"><div class="card-b">
+    <h6 class="mb8">ข้อกำหนดขนาดสำหรับทีมการตลาด <span class="pin">4</span></h6>
+    <dl class="kv">
+      <dt>ขนาดใบ</dt><dd>21 × 9.5 ซม. (แนวนอน) · ตัดตก 3 มม.</dd>
+      <dt>ก้นคูปอง</dt><dd>กว้าง 22% ของใบ (≈ 4.6 ซม.) · รอยประฉีกได้</dd>
+      <dt>QR สำหรับ POS</dt><dd>ไม่เล็กกว่า 1.8 × 1.8 ซม. ทดสอบสแกนก่อนพิมพ์</dd>
+      <dt>ตัวอักษรหลังใบ</dt><dd>ไม่เล็กกว่า 7 pt · ข้อความเพิ่มเติม ≤ 160 ตัวอักษร</dd>
+      <dt>ข้อความที่ระบบสร้าง</dt><dd>หัวใบ/ร้านที่ใช้ได้/เงื่อนไข ดึงจากการตั้งค่า — ห้ามแก้เองในไฟล์พิมพ์</dd>
+    </dl>
+    <div class="legal mt16">ตัวเลขข้างต้นเป็นคำแนะนำให้ทีมการตลาด — ระบบไม่ตรวจไฟล์พิมพ์</div>
+  </div></div>
+  <div class="card"><div class="card-b">
+    <h6 class="mb8">เช็กลิสต์ก่อนส่งทีมการตลาด <span class="pin">5</span></h6>
+    <div class="vlist" style="display:grid;gap:10px;font-size:13px">
+      <label class="check"><input type="checkbox" checked> ข้อมูลชุดครบ (รหัส/มูลค่า/ขั้นต่ำ/จำนวน)</label>
+      <label class="check"><input type="checkbox" checked> รายชื่อร้านด้านหลังตรงกับที่ลงทะเบียน (5 แห่ง)</label>
+      <label class="check"><input type="checkbox" checked> วันหมดอายุ (31 ม.ค. 2570) หลังวันเริ่ม (1 พ.ย. 2569)</label>
+      <label class="check"><input type="checkbox" checked> ช่องทาง: ✘ ออนไลน์ ตรงกับนโยบาย</label>
+      <label class="check"><input type="checkbox"> ตรวจตัวสะกดชื่อสาขา/ข้อความเพิ่มเติม โดยฝ่ายการตลาด</label>
+      <label class="check"><input type="checkbox"> ทดสอบสแกน QR ที่เครื่อง POS 1 สาขา</label>
+    </div>
+    <div class="warn-box mt16">เหลือ 2 ข้อที่ต้องตรวจเอง — เผยแพร่ชุดได้ แต่ควรครบก่อนส่งทีมการตลาดพิมพ์</div>
+  </div></div>
+</div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ข้อความย้ำชัดว่าระบบไม่ได้สั่งพิมพ์ — ไม่มีปุ่มสั่งพิมพ์/ส่งโรงพิมพ์/ดาวน์โหลดไฟล์พิมพ์ในหน้านี้ ทีมการตลาดพิมพ์เองจากข้อมูลที่เห็น</span></li>
+    <li><span class="pin">2</span><span>คูปองแบบพลิกได้ (คลิกพลิกหน้า ↔ หลัง) ขนาดเท่าของจริงที่ 100% ใช้ตรวจข้อความทีละด้าน</span></li>
+    <li><span class="pin">3</span><span>ตัวอักษร A–K บนใบคือจุดอ้างอิงถึงรายการอธิบาย — ใช้ตอนคุยกับทีมการตลาดว่า "จุด G ต้องตรงกับรายชื่อร้าน"</span></li>
+    <li><span class="pin">4</span><span>ข้อกำหนดขนาดพิมพ์เป็นคำแนะนำ (21 × 9.5 ซม. ก้นคูปอง 22%) ระบบไม่ตรวจไฟล์ของทีมการตลาด</span></li>
+    <li><span class="pin">5</span><span>เช็กลิสต์ 4 ข้อแรกระบบติ๊กให้จากข้อมูลที่ตรวจได้ · 2 ข้อท้ายเป็นของคนตรวจเอง (ไม่บล็อกการเผยแพร่)</span></li>
+    <li><span class="pin">6</span><span>ปุ่มคัดลอกข้อความหลังคูปอง (ร้าน/ช่องทาง/เงื่อนไข/หมายเหตุ) เป็นข้อความธรรมดา ให้ทีมการตลาดนำไปวางในไฟล์ออกแบบ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ตัวอย่างสร้างจากค่าที่ตั้งในหน้า "สร้างชุด" เสมอ — แก้ค่าแล้วตัวอย่างเปลี่ยนตาม ไม่มีการแก้ข้อความบนตัวอย่างโดยตรง</li>
+    <li>ถ้าชุดมี "ใช้ออนไลน์" เปิด บรรทัด H จะเป็น ✔ และต้องมีข้อความเงื่อนไขโควตาต่อบัญชีเพิ่มในหลังใบ</li>
+    <li>ถ้ารายชื่อร้านยาวเกินพื้นที่ (เกิน ~6 ร้าน) หลังใบจะแสดง "ร้านที่ร่วมรายการ 12 แห่ง ดูรายชื่อที่ pharmaplex.co.th/coupon" แทนการพิมพ์ทุกชื่อ</li>
+    <li>ชุดที่เผยแพร่แล้วดูตัวอย่างได้เสมอ แต่แก้รหัส/มูลค่าไม่ได้ — ต้อง "ทำซ้ำชุด" เป็นรหัสใหม่</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>จำนวนร้านสูงสุดที่ยอมให้พิมพ์ชื่อลงหลังใบ (ข้อเสนอ: ไม่เกิน 6 ร้าน เกินนั้นให้ชี้ไปดูรายชื่อที่เว็บ) — ลูกค้าต้องยืนยันว่ายอมรับให้ลูกค้าปลายทางต้องเปิดเว็บเช็กหรือไม่</li>
+    <li>ข้อความ URL บนหลังใบ (ตัวอย่าง pharmaplex.co.th/coupon) — ต้องยืนยันโดเมน/หน้าจริงที่จะใช้</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

@@ -1,0 +1,151 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ภาพรวม Flow โปรโมชั่น</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .swim .lane{grid-template-columns:104px 1fr}
+  .swim .lane-h{font-size:12.5px;line-height:1.35}
+  .swim .lane-h small{display:block;font-weight:400;color:var(--text2);font-size:11px;margin-top:2px}
+  .swim .lane-b{padding:18px 14px 16px 18px;min-height:112px}
+  .swim .node{width:126px;font-size:11.5px;padding:9px 10px;line-height:1.4}
+  .swim .node b{font-size:12.5px}
+  .swim .gap{width:20px;font-size:16px}
+  .swim .col{flex:none;width:146px}
+  .swim .col.sp{visibility:hidden}
+  .node small{display:block;color:var(--text2);font-size:10.5px;margin-top:3px}
+  .node .tolink{display:block;margin-top:4px;font-size:10.5px;color:var(--primary);font-weight:700}
+  .phase{display:flex;gap:0;margin:0 0 6px 122px;font-size:11.5px;font-weight:700;color:var(--text2)}
+  .phase span{flex:none;text-align:center;padding:4px 0;border-bottom:3px solid var(--g300)}
+  .phase .p1{width:584px;border-color:var(--primary-light);color:var(--primary-dark)}
+  .phase .p2{width:584px;border-color:#90CAF9;color:var(--info-dark)}
+  .st-grid{display:grid;grid-template-columns:200px 1fr;gap:10px 14px;align-items:center;font-size:13px}
+  .st-grid .chip{justify-self:start}
+  .cols3{display:grid;grid-template-columns:1.1fr 1.2fr 1.1fr;gap:16px;align-items:start}
+</style>
+</head>
+<body data-shell="bare">
+<main id="screen" style="max-width:1360px;margin:0 auto;padding:24px">
+
+  <div class="page-head">
+    <div>
+      <h4>ภาพรวม Flow: โปรโมชั่น</h4>
+      <p class="muted">แนวคิดเดียวกับ "เซตของแถม (Bundle)" ที่ใช้งานอยู่ใน pmpc — แอดมินตั้งเงื่อนไข เลือกผลตอบแทน (ของแถม / ส่วนลด / ฟรีค่าจัดส่ง) จัดลำดับ priority แล้วระบบตรวจและคำนวณให้เองทุกครั้งที่ตะกร้าเปลี่ยน · คลิกกล่องในแผนภาพเพื่อไปดูหน้าจอจริง</p>
+    </div>
+    <div class="row"><a class="btn outlined" href="06-customer-list.html">ดูฝั่งลูกค้า</a><a class="btn contained" href="01-admin-list.html">เริ่มที่ฝั่งแอดมิน</a></div>
+  </div>
+
+  <div class="phase"><span class="p1">ช่วงตั้งค่า (แอดมิน · ทำเมื่อสร้าง/แก้โปร)</span><span class="p2">ช่วงใช้งานจริง (ทุกครั้งที่ลูกค้าเปิดสินค้า/ใส่ตะกร้า/ชำระเงิน)</span></div>
+  <div class="swim">
+
+    <div class="lane"><div class="lane-h"><div>แอดมิน<small>ตั้งค่า</small></div></div><div class="lane-b">
+      <a class="node adm" href="02-admin-editor.html"><span class="pin no">1</span><b>สร้างโปร</b>เลือกขอบเขตสินค้า ผลตอบแทน ทวีคูณ<span class="tolink">02 · 03 · 04 →</span></a><div class="gap">→</div>
+      <a class="node adm" href="05-admin-simulator.html"><span class="pin no">2</span><b>จำลองตะกร้า</b>ตรวจโปรที่ทับซ้อนก่อนเปิด<span class="tolink">05 →</span></a><div class="gap">→</div>
+      <a class="node adm" href="01-admin-list.html"><span class="pin no">3</span><b>จัดลำดับ priority</b>ลากเรียง #1 = สูงสุด<span class="tolink">01 →</span></a><div class="gap">→</div>
+      <a class="node adm" href="01-admin-list.html"><span class="pin no">4</span><b>เปิดใช้งาน</b>ตามช่วงวันที่ + กลุ่มลูกค้า<span class="tolink">01 →</span></a>
+      <div class="col sp"></div><div class="col sp"></div>
+      <a class="node warn" href="01-admin-list.html"><span class="pin no">12</span><b>รับแจ้งเตือน</b>เติมสต็อกของแถม แล้วเปิดโปรอีกครั้ง<span class="tolink">01 →</span></a>
+    </div></div>
+
+    <div class="lane"><div class="lane-h"><div>ลูกค้า<small>ฝั่งหน้าร้าน</small></div></div><div class="lane-b">
+      <div class="col sp"></div><div class="col sp"></div><div class="col sp"></div><div class="col sp"></div>
+      <a class="node cust" href="07-customer-product.html"><span class="pin no">5</span><b>เห็นแท็กโปรบนการ์ดสินค้า</b>ซื้อครบรับฟรี / ลด % / ส่งฟรี<span class="tolink">07 →</span></a><div class="gap">→</div>
+      <a class="node cust" href="08-customer-detail.html"><b>ดูรายละเอียดโปร</b>เงื่อนไข โควต้า ของแถม<span class="tolink">06 · 08 →</span></a><div class="gap">→</div>
+      <a class="node cust" href="08-customer-detail.html"><b>เลือกสินค้า / ใส่ตะกร้า</b>เลือกตัวเลือก (OR) ให้ครบจำนวน<span class="tolink">08 →</span></a><div class="gap">→</div>
+      <a class="node cust" href="09-customer-cart.html"><b>ดูตะกร้า → เช็คเอาต์</b>เห็นโปรที่ได้ ของแถม ส่วนลด<span class="tolink">09 →</span></a>
+    </div></div>
+
+    <div class="lane"><div class="lane-h"><div>ระบบ<small>คำนวณทุกครั้งที่ตะกร้าเปลี่ยน</small></div></div><div class="lane-b">
+      <div class="col sp"></div><div class="col sp"></div><div class="col sp"></div><div class="col sp"></div>
+      <div class="node sys"><span class="pin no">6</span><b>ตรวจเงื่อนไข</b>ทุกโปรที่ active · ช่วงเวลา กลุ่มลูกค้า จำนวน/ยอดเงิน</div><div class="gap">→</div>
+      <div class="node sys"><span class="pin no">7</span><b>เลือกโปร priority สูงสุด</b>สินค้าชุดเดียวกัน ชนะ 1 โปร ไม่บวกซ้อน</div><div class="gap">→</div>
+      <div class="node sys"><span class="pin no">8</span><b>คำนวณผลตอบแทน</b>เฉพาะรายการที่เข้าเงื่อนไข · ทวีคูณ?</div><div class="gap">→</div>
+      <div class="node sys"><span class="pin no">9</span><b>ตรวจโควตา / สต็อกของแถม</b>โควต้าต่อคน · โควตาแคมเปญ</div>
+    </div></div>
+
+    <div class="lane"><div class="lane-h"><div>ระบบ<small>ตอนยืนยันออเดอร์ / กรณีพิเศษ</small></div></div><div class="lane-b">
+      <div class="col sp"></div><div class="col sp"></div><div class="col sp"></div><div class="col sp"></div><div class="col sp"></div><div class="col sp"></div>
+      <div class="node warn"><span class="pin no">11</span><b>ของแถมหมดสต็อก</b>พบตอนข้อ 9 หรือสต็อกเหลือ 0<small>ปิดโปรชั่วคราวอัตโนมัติ + แจ้งเตือนแอดมิน (ข้อ 12)</small></div>
+      <div class="gap"></div>
+      <div class="node end"><span class="pin no">10</span><b>บันทึกการใช้สิทธิ์</b>ตอนออเดอร์ยืนยัน · ผูกออเดอร์ · ตัดโควตา/สต็อก</div>
+    </div></div>
+  </div>
+
+  <div class="flow-legend">
+    <span><i style="background:#fff"></i>ลูกค้า</span>
+    <span><i style="background:var(--primary-lighter)"></i>แอดมิน</span>
+    <span><i style="background:var(--info-lighter)"></i>ระบบ</span>
+    <span><i style="background:var(--success-lighter)"></i>ผลลัพธ์</span>
+    <span><i style="background:var(--warning-lighter)"></i>กรณีพิเศษ / แจ้งเตือน</span>
+    <span>ตัวเลขเหลือง = ข้อ UX ในกรอบท้ายหน้า</span>
+  </div>
+
+  <div class="cols3 mt16">
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">กติกาหลัก</h6>
+      <ul style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:13px">
+        <li><b>ไม่ต้องใส่โค้ด</b> โปรเกิดขึ้นเองเมื่อตะกร้าเข้าเงื่อนไข ยอดที่ชำระคำนวณที่เซิร์ฟเวอร์เสมอ</li>
+        <li><b>ตั้งค่าหน้าเดียวกับเซตของแถมเดิม</b> ขยายผลตอบแทนเป็นของแถม / ส่วนลด / ฟรีค่าจัดส่ง ไม่แยกหน้าตั้งค่า</li>
+        <li><b>หลายโปรตรงพร้อมกัน</b> ใช้ลำดับ priority สูงสุด (#1 ก่อน) · โปรแบบแบรนด์/หมวดที่แย่งกลุ่มสินค้าเดียวกัน ชนะ 1 โปร ไม่บวกซ้อน</li>
+        <li><b>ผลตอบแทนคิดเฉพาะรายการที่เข้าเงื่อนไข</b> ไม่ใช่ทั้งบิล</li>
+        <li><b>ทวีคูณหรือจำกัด 1 ชุด/บิล</b> เลือกได้ต่อโปร (ส่วนลด % ไม่ทวีคูณ)</li>
+        <li><b>โควต้าต่อลูกค้า</b> นับเป็นจำนวนครั้งที่รับสิทธิ์ · ของแถมหมดสต็อก = ปิดโปรชั่วคราวและแจ้งแอดมิน</li>
+        <li><b>ยกเลิก/คืนสินค้าไม่เรียกคืนสิทธิ์</b> ที่ใช้ไปแล้ว (นโยบายร่วมของระบบ)</li>
+      </ul>
+    </div></div>
+
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">สถานะของสิ่งที่ลูกค้าได้รับ</h6>
+      <div class="st-grid">
+        <span class="chip soft-info">ใกล้ถึงเงื่อนไข</span><span>ยังไม่ครบ แต่ใกล้แล้ว เช่น "อีก 2 ลัง รับโปรขั้น 2" (แสดงในหน้าสินค้า/ตะกร้า)</span>
+        <span class="chip success">ได้รับสิทธิ์ในตะกร้า</span><span>เข้าเงื่อนไขและชนะ priority — เห็นของแถม/ส่วนลดในตะกร้าแล้ว</span>
+        <span class="chip soft-warning">ผ่านเงื่อนไข แต่ไม่ถูกใช้</span><span>แพ้โปรที่ priority สูงกว่า หรือสินค้าชุดเดียวกันถูกใช้ไปแล้ว</span>
+        <span class="chip success">ใช้งานแล้ว</span><span>ออเดอร์ยืนยันแล้ว — บันทึกในประวัติการใช้งาน นับโควต้า</span>
+        <span class="chip error">โควต้าเต็มแล้ว</span><span>ใช้ครบตามโควต้าต่อลูกค้า — ปุ่มถูกปิด</span>
+        <span class="chip info">ยังไม่เริ่มต้น</span><span>ถึงวันเริ่มแล้วจึงใช้ได้ — การ์ดยังเห็นเพื่อประกาศล่วงหน้า</span>
+        <span class="chip">หมดอายุ</span><span>พ้นวันสิ้นสุด — ไม่แสดงในหน้ารวม</span>
+        <span class="chip soft-error">หยุดชั่วคราว (ของแถมหมด)</span><span>ระบบปิดให้อัตโนมัติ — ไม่ถูกคิดในตะกร้า จนกว่าแอดมินเปิดอีกครั้ง</span>
+      </div>
+    </div></div>
+
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">เชื่อมกับโมดูลอื่นอย่างไร</h6>
+      <ul style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:13px">
+        <li><b>ลำดับการคิดเงิน</b> Flash Sale (ลดราคาสินค้า) → โปรโมชั่น → คูปอง → ค่าจัดส่ง → ใช้พอยท์ — แต่ละขั้นคิดต่อจากยอดคงเหลือของขั้นก่อนหน้า</li>
+        <li><b>คูปอง</b> ใช้ร่วมได้หรือไม่ตั้งที่ตัวโปร (และนโยบายร่วม) · คูปองไม่ลดซ้ำกับรายการที่โปรจับคู่แล้ว ถ้าตั้งว่าไม่ใช้ร่วม</li>
+        <li><b>พอยท์</b> พอยท์ที่ได้คิดรายสินค้าตามจำนวนที่ซื้อ ไม่เปลี่ยนตามส่วนลดโปร · ของแถมได้ 0 พอยท์ (ค่าเริ่มต้น)</li>
+        <li><b>แคมเปญ / สุ่มรางวัล</b> ยอดซื้อสะสมแคมเปญนับจากยอดสินค้าที่เข้าร่วม — โปรแถมไม่เพิ่มยอดสะสม</li>
+        <li><b>ใบสั่งซื้อ / POS</b> ของแถมเป็นบรรทัด ฿0 ในออเดอร์ ตัดสต็อกจริงและส่งต่อ POS</li>
+      </ul>
+    </div></div>
+  </div>
+
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>สร้างโปร</b> เริ่มจากกล่องเดียว ใช้ฟอร์มเดียวกับ Bundle เดิม — ส่วนที่เพิ่มใหม่มีป้าย "ใหม่": ผลตอบแทน 3 แบบ ขอบเขตแบรนด์/หมวด ทวีคูณ ใช้ร่วมกับสิทธิ์อื่น (หน้า 02) · กลุ่มขั้นบันไดแยกหน้า 03 · ลดตามวันพิเศษแยกหน้า 04</span></li>
+    <li><span class="pin">2</span><span><b>จำลองตะกร้า</b> เป็นขั้นแนะนำ ไม่บังคับ — ใช้ตรวจว่าโปรใหม่ไปชนโปรเดิมหรือไม่ก่อนเปิดใช้งาน (ทดสอบโปรที่ยังปิดอยู่ได้)</span></li>
+    <li><span class="pin">3</span><span><b>จัดลำดับ</b> ลากแถวในตาราง ตัวเลข #1 = สูงสุด ระบบบันทึกทันที (เหมือน Bundle เดิม) — แนะนำจัดหลังสร้างโปรใหม่ทุกครั้ง เพราะโปรใหม่ถูกวางท้ายสุดโดยค่าเริ่มต้น</span></li>
+    <li><span class="pin">4</span><span><b>เปิดใช้งาน</b> สถานะแสดงตามวันที่เริ่ม–สิ้นสุด (ใช้งาน / ยังไม่เริ่มต้น / หมดอายุ) บันทึกเป็น "ใช้งาน" ไม่ได้ถ้ายังไม่มีสินค้าที่ต้องมีและผลตอบแทน</span></li>
+    <li><span class="pin">5</span><span><b>แท็กบนการ์ดสินค้า</b> ป้ายเดียวต่อประเภทผลตอบแทนของโปรที่ชนะ/ใกล้ถึง ไม่แสดงตัวเลข priority ให้ลูกค้าเห็น</span></li>
+    <li><span class="pin">6</span><span><b>ตรวจเงื่อนไข</b> ทำใหม่ทุกครั้งที่จำนวนหรือรายการในตะกร้าเปลี่ยน ไม่ใช้ผลที่จำไว้จากหน้าก่อน</span></li>
+    <li><span class="pin">7</span><span><b>เลือกโปร</b> จัดกลุ่มตามสินค้าที่ใช้ร่วมกัน — ภายในกลุ่มเดียวกัน priority สูงสุดที่ผ่านเงื่อนไขชนะ 1 โปร โปรที่แพ้ถูกบันทึกเหตุผลไว้โชว์ในตะกร้า/จำลองตะกร้า</span></li>
+    <li><span class="pin">8</span><span><b>คำนวณ</b> ผลตอบแทนอิงเฉพาะบรรทัดที่เข้าเงื่อนไข · ถ้าโปรตั้งทวีคูณ จำนวนชุด = ⌊ที่ซื้อ ÷ ที่กำหนด⌋ (ไม่เกินเพดานชุด) · ถ้าจำกัด = 1 ชุด/บิล</span></li>
+    <li><span class="pin">9</span><span><b>ตรวจโควตา/สต็อก</b> ถ้าโควต้าต่อคนเต็ม โปรไม่ถูกใช้ (ปุ่มหน้าลูกค้าแสดง "โควต้าเต็มแล้ว") · ถ้าของแถมไม่พอสำหรับจำนวนชุดที่ได้ ระบบลดจำนวนชุดลงเท่าที่สต็อกพอ ถ้าเหลือ 0 ไปข้อ 11</span></li>
+    <li><span class="pin">10</span><span><b>บันทึกการใช้สิทธิ์</b> เกิดตอนออเดอร์ยืนยัน/ชำระสำเร็จ ไม่ใช่ตอนใส่ตะกร้า — จึงไม่ต้องมีการพักโควตา (ต่างจากแคมเปญโควตา)</span></li>
+    <li><span class="pin">11</span><span><b>ของแถมหมดสต็อก</b> ระบบปิดโปรชั่วคราวทันที ตะกร้าที่มีโปรนี้อยู่จะไม่ได้ของแถมและแสดงข้อความอธิบาย (หน้า 09)</span></li>
+    <li><span class="pin">12</span><span><b>รับแจ้งเตือน</b> แอดมินเห็นป้ายแดง "ปิดชั่วคราว: ของแถมหมด" ที่แถวโปรในหน้ารายการ (หน้า 01) เติมสต็อกแล้วกดเปิดใช้งานเอง</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>โปรที่ถูกปิดชั่วคราวเพราะของแถมหมดจะ<b>ไม่เปิดคืนเอง</b> แม้เติมสต็อกแล้ว แอดมินต้องกดเปิดเอง (ค่าเริ่มต้น)</li>
+    <li>แก้ไขโปรที่มีผู้ใช้สิทธิ์ไปแล้ว มีผลกับตะกร้า/ออเดอร์ใหม่เท่านั้น ประวัติเดิมไม่เปลี่ยน</li>
+    <li>ลูกค้าเห็นโปรเฉพาะที่ active และอยู่ในช่วงเวลา · โปร "ยังไม่เริ่มต้น" แสดงเป็นการ์ดเทาและกดไม่ได้</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>โปรที่ถูกปิดชั่วคราวเพราะของแถมหมด: ให้เปิดคืนอัตโนมัติเมื่อมีสต็อก หรือให้แอดมินเปิดเอง (ค่าเริ่มต้นในมอคอัพ = แอดมินเปิดเอง)</li>
+    <li>ยอดที่ใช้นับเงื่อนไขโปรคิดจากราคาก่อนหรือหลังลด Flash Sale (ค่าเริ่มต้น = หลังลด คือราคาที่ลูกค้าจ่ายจริง)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

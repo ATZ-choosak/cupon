@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สินค้าแคมเปญ: โควตา + พักโควตา — Pharmaplex</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .sec-label{display:flex;align-items:center;gap:10px;margin:28px 0 10px}
+  .sec-label .chip{flex:none}
+  .pd{display:grid;grid-template-columns:380px minmax(0,1fr);gap:28px}
+  .pd .gallery{height:340px;border-radius:14px;background:linear-gradient(135deg,var(--g100),var(--g200));display:flex;align-items:center;justify-content:center;color:var(--g500);position:relative}
+  .pd .gallery .tags{position:absolute;top:12px;left:12px;display:flex;gap:6px;flex-wrap:wrap}
+  .pd .bigprice{font-size:32px;font-weight:800;color:var(--primary)}
+  .pd .bigprice s{font-size:16px;font-weight:400;color:var(--g500);margin-left:8px}
+  .quota-box{border:1.5px solid var(--g200);border-radius:12px;padding:14px 16px;background:var(--g50);display:grid;gap:10px}
+  .meter{height:10px;background:var(--g200);border-radius:999px;overflow:hidden}
+  .meter i{display:block;height:100%;background:var(--warning)}
+  .meter.out i{background:var(--g400)}
+  .qty-err .qty{border-color:var(--error)}
+  .hold{display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;border-radius:12px;padding:12px 18px;border:1.5px solid #90CAF9;background:var(--info-lighter)}
+  .hold .clock{font-size:30px;font-weight:800;font-variant-numeric:tabular-nums;color:var(--info-dark);letter-spacing:.02em}
+  .hold .meter{height:8px;margin-top:8px;background:#fff}
+  .hold .meter i{background:var(--info)}
+  .hold.warn{border-color:#FFB74D;background:var(--warning-lighter)}
+  .hold.warn .clock{color:var(--warning-dark)}.hold.warn .meter i{background:var(--warning)}
+  .hold.crit{border-color:var(--error);background:var(--error-lighter)}
+  .hold.crit .clock{color:var(--error-dark)}.hold.crit .meter i{background:var(--error)}
+  .co{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+  .mini-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .mini{border:1px solid var(--g200);border-radius:14px;background:#fff;padding:16px;display:grid;gap:10px;align-content:start}
+  .mini .img{height:90px;border-radius:10px;background:linear-gradient(135deg,var(--g100),var(--g200));position:relative}
+  .mini .img .tags{position:absolute;top:8px;left:8px}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="campaign">
+<main id="screen">
+
+  <div class="crumbs">หน้าแรก / สินค้า / อาหารเสริม / Blackmores Vitamin C 500 mg</div>
+  <div class="row between top">
+    <div><h4>สินค้าแคมเปญ: โควตา + พักโควตา</h4><p class="muted">ตัวอย่างหน้าจอฝั่งลูกค้าของแคมเปญ "Blackmores Vitamin C ราคาพิเศษ ต.ค." ทุกสถานะ · <a href="06-customer-ladder.html">← ขั้นบันไดรางวัลของฉัน</a></p></div>
+  </div>
+
+  <!-- A -->
+  <div class="sec-label"><span class="chip primary lg">A</span><h5>หน้าสินค้าระหว่างแคมเปญ (ปกติ + ใส่จำนวนเกินสิทธิ์ร้าน)</h5></div>
+  <div class="card"><div class="card-b">
+    <div class="pd">
+      <div class="gallery">รูปสินค้า<div class="tags"><span class="promo-tag flash relative">ราคาพิเศษ จำนวนจำกัด</span><span class="promo-tag gift">พอยท์ ×2</span></div></div>
+      <div class="stack s12">
+        <div>
+          <div class="small muted">Blackmores · อาหารเสริม</div>
+          <h4 style="margin-top:2px">Blackmores Vitamin C 500 mg (ขวด)</h4>
+        </div>
+        <div class="relative"><span class="pin abs" style="top:-4px;left:-24px">1</span>
+          <div class="bigprice">฿329 <s>฿380</s> <span class="chip soft-primary" style="vertical-align:middle">ลด 13%</span></div>
+          <div class="small muted">ราคาแคมเปญถึง 31 ต.ค. 2569 23:59 น. · ได้พอยท์ ×2</div>
+        </div>
+        <div class="quota-box relative"><span class="pin abs" style="top:-10px;left:-10px">2</span>
+          <div class="row between"><b>โควตาแคมเปญ</b><span class="chip warning">เหลือน้อย</span></div>
+          <div class="meter"><i style="width:75.2%"></i></div>
+          <div class="row between"><span><b style="font-size:16px">เหลือ 1,240 / 5,000 ชิ้น</b></span><span class="small muted">มีคนกำลังชำระเงินอยู่ 38 ชิ้น</span></div>
+          <div class="relative" style="border-top:1px dashed var(--g300);padding-top:10px"><span class="pin abs" style="top:2px;left:-24px">3</span>
+            <b>ร้านคุณซื้อได้อีก 20 ขวด</b> <span class="small muted">· สิทธิ์ต่อร้าน 50 ขวด ซื้อไปแล้ว 30</span></div>
+        </div>
+        <div class="relative qty-err"><span class="pin abs" style="top:-4px;left:-24px">4</span>
+          <div class="row">
+            <div class="qty"><button>−</button><span>25</span><button>+</button></div>
+            <button class="btn contained lg" disabled>ใส่ตะกร้า</button>
+          </div>
+          <div class="err mt8" style="color:var(--error-dark);font-size:12.5px"><b>เกินสิทธิ์ร้านคุณ</b> — ซื้อราคาแคมเปญได้อีกไม่เกิน 20 ขวด <button class="btn text sm">ปรับเป็น 20</button></div>
+        </div>
+        <div class="small muted">สิทธิ์ต่อร้านนับรวมทุกสาขาที่ใช้บัญชีเดียวกัน · พอยท์จะเข้าหลังชำระเงินสำเร็จ</div>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- B -->
+  <div class="sec-label"><span class="chip primary lg">B</span><h5>เช็คเอาต์: พักโควตาให้ 15 นาที <span class="pin">5</span></h5></div>
+  <div class="stack">
+    <div class="hold">
+      <div class="clock">14:32</div>
+      <div><b>พักโควตาให้คุณแล้ว — กรุณาชำระเงินภายใน 15 นาที</b>
+        <div class="small muted">ถ้าไม่ชำระเงินทัน ระบบจะคืนโควตาและราคาแคมเปญอาจเปลี่ยน · สินค้า 20 ขวดถูกกันไว้ให้ร้านของคุณ</div>
+        <div class="meter"><i style="width:97%"></i></div></div>
+      <span class="chip info">เวลาเหลือ</span>
+    </div>
+    <div class="row wrap small muted relative" style="gap:16px"><span class="pin" style="margin:0">6</span>
+      <span>เหลือ ≤ 3 นาที:</span>
+      <div class="hold warn" style="grid-template-columns:auto 1fr;padding:6px 14px;gap:10px"><div class="clock" style="font-size:20px">02:10</div><b style="font-size:12.5px">ใกล้หมดเวลา — ชำระเงินเลย</b></div>
+      <span>เหลือ ≤ 1 นาที:</span>
+      <div class="hold crit" style="grid-template-columns:auto 1fr;padding:6px 14px;gap:10px"><div class="clock" style="font-size:20px">00:45</div><b style="font-size:12.5px">เหลือไม่ถึง 1 นาที</b></div>
+    </div>
+    <div class="co">
+      <div class="card"><div class="card-b">
+        <h6 class="mb8">รายการสั่งซื้อ</h6>
+        <div class="cart-line"><span class="thumb"></span><div><b>Blackmores Vitamin C 500 mg (ขวด)</b> <span class="promo-tag flash">ราคาแคมเปญ</span><div class="small muted">฿329 × 20 · ไม่สามารถแก้จำนวนระหว่างพักโควตา</div></div><b>฿6,580</b></div>
+        <div class="cart-line"><span class="thumb"></span><div><b>เจลแอลกอฮอล์ (ขวด)</b><div class="small muted">฿55 × 10 · ไม่ร่วมแคมเปญ</div></div><b>฿550</b></div>
+      </div></div>
+      <div class="card"><div class="card-b">
+        <div class="sum-row"><span>ยอดสินค้า (ราคาปกติ)</span><span>฿8,150</span></div>
+        <div class="sum-row disc"><span>ส่วนลดแคมเปญ<small>Vitamin C 20 ขวด × ฿51</small></span><span>−฿1,020</span></div>
+        <div class="sum-row"><span>ค่าจัดส่ง</span><span>฿0</span></div>
+        <div class="sum-row total"><span>ยอดสุทธิ</span><span>฿7,130</span></div>
+        <div class="small muted mt8">จะได้รับพอยท์ 40 พอยท์ (20 ขวด × 1 พอยท์ × ตัวคูณ ×2)</div>
+        <button class="btn contained lg block mt16">ชำระเงิน</button>
+      </div></div>
+    </div>
+  </div>
+
+  <!-- C -->
+  <div class="sec-label"><span class="chip error lg">C</span><h5>หมดเวลาพักโควตา → กลับไปตะกร้า <span class="pin">7</span></h5></div>
+  <div class="card" style="border-color:var(--error)"><div class="card-b">
+    <div class="alert error mb16"><div><div class="a-title">หมดเวลาพักโควตาแล้ว — โควตาถูกคืนเข้าระบบ</div>
+      คุณยังไม่ได้ชำระเงินภายใน 15 นาที ตะกร้ายังอยู่ครบ ราคาแคมเปญจะคำนวณใหม่ตามโควตาที่เหลือ ณ ตอนนี้ (เหลือ 1,198 ชิ้น · ร้านคุณซื้อได้อีก 20 ขวด)</div></div>
+    <div class="co">
+      <div>
+        <div class="cart-line"><span class="thumb"></span><div><b>Blackmores Vitamin C 500 mg (ขวด)</b> <span class="chip soft-warning">รอตรวจโควตาใหม่</span><div class="small muted">฿329 × 20 · ราคาแคมเปญยังไม่ถูกกัน</div></div><div class="qty"><button>−</button><span>20</span><button>+</button></div></div>
+        <div class="cart-line"><span class="thumb"></span><div><b>เจลแอลกอฮอล์ (ขวด)</b><div class="small muted">฿55 × 10</div></div><div class="qty"><button>−</button><span>10</span><button>+</button></div></div>
+      </div>
+      <div class="stack s8">
+        <button class="btn contained lg block">ไปชำระเงินอีกครั้ง (พักโควตาใหม่)</button>
+        <span class="small muted center">กดแล้วระบบจะตรวจโควตาและเริ่มพักใหม่ 15 นาที</span>
+      </div>
+    </div>
+  </div></div>
+
+  <!-- D -->
+  <div class="sec-label"><span class="chip lg">D</span><h5>โควตาหมด / ร้านใช้สิทธิ์ครบ <span class="pin">8</span></h5></div>
+  <div class="mini-grid">
+    <div class="mini">
+      <span class="chip soft-error">โควตารวมหมด · ตั้งค่า "กลับราคาปกติ"</span>
+      <div class="img"><div class="tags"><span class="promo-tag" style="background:var(--g600)">โควตาแคมเปญหมดแล้ว</span></div></div>
+      <b>Blackmores Vitamin C 500 mg (ขวด)</b>
+      <div class="price">฿380</div>
+      <div><div class="meter out"><i style="width:100%"></i></div><div class="small mt8"><b>เหลือ 0 / 5,000 ชิ้น</b></div></div>
+      <div class="small muted">ราคากลับเป็นราคาปกติ ยังสั่งซื้อได้ · ไม่ได้ตัวคูณพอยท์ ×2</div>
+      <button class="btn contained block">ใส่ตะกร้า (ราคาปกติ)</button>
+    </div>
+    <div class="mini">
+      <span class="chip soft-error">โควตารวมหมด · ตั้งค่า "ปิดสินค้าแคมเปญ"</span>
+      <div class="img"><div class="tags"><span class="promo-tag" style="background:var(--g600)">โควตาแคมเปญหมดแล้ว</span></div></div>
+      <b>เจลแอลกอฮอล์ (ขวด)</b>
+      <div class="price" style="color:var(--g500)">฿45 <s>฿55</s></div>
+      <div><div class="meter out"><i style="width:100%"></i></div><div class="small mt8"><b>เหลือ 0 / 2,000 ชิ้น</b></div></div>
+      <div class="small muted">สินค้านี้ถูกปิดขายจนกว่าแคมเปญสิ้นสุด 31 ต.ค. 2569</div>
+      <button class="btn outlined block" disabled>โควตาแคมเปญหมดแล้ว</button>
+    </div>
+    <div class="mini">
+      <span class="chip soft-warning">โควตารวมเหลือ แต่ร้านใช้สิทธิ์ครบ</span>
+      <div class="img"><div class="tags"><span class="promo-tag flash">ราคาพิเศษ</span></div></div>
+      <b>Blackmores Vitamin C 500 mg (ขวด)</b>
+      <div class="price">฿380 <s style="text-decoration:none"><span class="small muted">ราคาปกติ</span></s></div>
+      <div><div class="meter"><i style="width:75%"></i></div><div class="small mt8"><b>เหลือ 1,240 / 5,000 ชิ้น</b></div></div>
+      <div class="alert warning" style="padding:8px 12px"><div class="small"><b>ร้านคุณซื้อครบสิทธิ์แล้ว 50/50 ขวด</b> — ซื้อเพิ่มได้ในราคาปกติ</div></div>
+      <button class="btn contained block">ใส่ตะกร้า (ราคาปกติ)</button>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ราคาและป้าย</b> — ราคาแคมเปญใหญ่ + ราคาปกติขีดฆ่า + % ลด · ป้ายแคมเปญและตัวคูณพอยท์บนรูป · แสดงเวลาสิ้นสุดแคมเปญ · ลูกค้านอกกลุ่มที่ร่วมแคมเปญเห็นราคาปกติ ไม่เห็นป้าย</span></li>
+    <li><span class="pin">2</span><span><b>มิเตอร์โควตารวม</b> — แสดง "เหลือ X / Y ชิ้น" และจำนวนที่กำลังถูกพัก (กระตุ้นให้รีบ แต่ไม่ถูกนับเป็นขายแล้ว) · เหลือ ≤ 20% ชิปเตือน "เหลือน้อย"</span></li>
+    <li><span class="pin">3</span><span><b>โควตาต่อร้าน</b> — "ร้านคุณซื้อได้อีก N" คำนวณจากสิทธิ์ − (ชำระแล้ว + กำลังพัก) ของบัญชีลูกค้า · เป็นตัวเลขที่ทับซ้อนกับโควตารวม ใช้ค่าที่น้อยกว่าเป็นเพดาน</span></li>
+    <li><span class="pin">4</span><span><b>ตัวเลือกจำนวน</b> — ขึ้น error ทันทีที่เกินเพดาน (min ของสิทธิ์ร้านและโควตารวมคงเหลือ) พร้อมปุ่ม "ปรับเป็น N" · ปุ่มใส่ตะกร้าปิดจนกว่าจะแก้</span></li>
+    <li><span class="pin">5</span><span><b>แถบพักโควตา</b> — เริ่มเมื่อเข้าหน้าเช็คเอาต์ แสดงเวลานับถอยหลังและแถบเวลาเหลือ · เวลาอ้างอิงจากเซิร์ฟเวอร์ (ไม่ใช่นาฬิกาเครื่องลูกค้า) · ล็อกการแก้จำนวนสินค้าระหว่างพัก</span></li>
+    <li><span class="pin">6</span><span><b>เปลี่ยนสีตามเวลา</b> — ฟ้า (ปกติ) → ส้มเมื่อเหลือ ≤ 3 นาที → แดงเมื่อ ≤ 1 นาที · ข้อความบอกสิ่งที่จะเกิดขึ้นถ้าหมดเวลา</span></li>
+    <li><span class="pin">7</span><span><b>หมดเวลา</b> — กลับตะกร้า (ไม่ทิ้งรายการ) ข้อความอธิบายว่าโควตาถูกคืนแล้วและราคาจะคำนวณใหม่ · ปุ่มเดียว "ไปชำระเงินอีกครั้ง" เริ่มพักใหม่ถ้าโควตายังพอ</span></li>
+    <li><span class="pin">8</span><span><b>โควตาหมด</b> — ตามที่แอดมินตั้ง: "กลับราคาปกติ" (ซื้อได้ ราคา ฿380 ไม่ได้พอยท์ ×2) หรือ "ปิดสินค้าแคมเปญ" (ปุ่มกดไม่ได้) · ร้านที่ใช้สิทธิ์ครบแต่โควตารวมยังเหลือ ซื้อได้ในราคาปกติ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะโควตาในหนึ่งออเดอร์: ว่าง → พักอยู่ (15 นาที) → ขายแล้ว (ชำระสำเร็จ) หรือ คืน (หมดเวลา/ยกเลิก)</li>
+    <li>ถ้าตอนกด "ชำระเงิน" โควตารวมเหลือน้อยกว่าที่ต้องการ: ระบบไม่พักบางส่วน แต่แจ้ง "เหลือ N ชิ้น ปรับจำนวนก่อน" และกลับตะกร้า</li>
+    <li>ลูกค้าเปิดเช็คเอาต์หลายแท็บ — นับเป็นการพักครั้งเดียวต่อบัญชี (พักใหม่แทนที่ของเดิม ไม่พักซ้อน)</li>
+    <li>ชำระด้วยโอน/QR ที่ยืนยันช้า: ระหว่างรอผลการชำระ ระบบขยายเวลาพักอัตโนมัติสูงสุด 5 นาที (ตามผลของเกตเวย์)</li>
+    <li>ลูกค้าชำระสำเร็จหลังหมดเวลา (เงินเข้าแต่โควตาถูกคืนไปแล้ว): ถ้ายังมีโควตา ออเดอร์ได้ราคาแคมเปญ · ถ้าหมดแล้ว ฝ่ายขายติดต่อลูกค้าเพื่อปรับราคาหรือคืนเงิน (ต้องตัดสินใจ)</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>แสดงจำนวน "กำลังชำระเงินอยู่ 38 ชิ้น" ให้ลูกค้าเห็นหรือไม่ (เพิ่มความเร่งด่วน แต่เปิดเผยพฤติกรรมของร้านอื่น)</li>
+    <li>ระยะพักนับจากตอน "เข้าหน้าเช็คเอาต์" (ค่าตั้งต้น) หรือตอน "กดยืนยันชำระ"</li>
+    <li>กรณีชำระสำเร็จหลังหมดเวลาแล้วโควตาหมด — ให้ยอมขายตามราคาแคมเปญ (กำไรลด) หรือคืนเงิน?</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

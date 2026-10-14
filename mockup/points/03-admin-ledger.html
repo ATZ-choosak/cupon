@@ -1,0 +1,177 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สมุดพอยท์ลูกค้า + ปรับพอยท์</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .sub{display:block;font-size:11px;color:var(--text2)}
+  .bal{font-size:36px;font-weight:800;line-height:1.1;color:var(--primary)}
+  .bal small{font-size:14px;font-weight:600;color:var(--text2);margin-left:6px}
+  .acct-pts{border:2px solid var(--primary);background:linear-gradient(135deg,#fff 55%,var(--primary-lighter))}
+  .acct-camp{border:2px dashed var(--info);background:var(--info-lighter)}
+  .acct-tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:8px}
+  .acct-pts .acct-tag{background:var(--primary);color:#fff}
+  .acct-camp .acct-tag{background:var(--info-dark);color:#fff}
+  .plus{color:var(--success-darker);font-weight:700}.minus{color:var(--error-dark);font-weight:700}
+  tr.pending td{background:var(--warning-lighter)}
+  .amt{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .filters .chip{cursor:pointer;height:28px}
+</style>
+</head>
+<body data-shell="admin" data-nav="points" data-crumb="โปรโมชั่นและสิทธิพิเศษ / พอยท์ / สมุดพอยท์ลูกค้า">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>สมุดพอยท์ลูกค้า</h4>
+      <p class="muted">ตรวจประวัติพอยท์ทุกรายการของลูกค้ารายหนึ่ง และปรับพอยท์ด้วยมือเมื่อจำเป็น (ทุกการปรับมีเหตุผลและ audit)</p>
+    </div>
+    <div class="row">
+      <a class="btn outlined" href="01-admin-rules.html">กติกาพอยท์</a>
+      <a class="btn outlined" href="02-admin-catalog.html">แคตตาล็อกแลก</a>
+      <button class="btn outlined">ส่งออก CSV</button>
+      <a class="btn contained" href="#adjust-form">± ปรับพอยท์</a>
+    </div>
+  </div>
+
+  <div class="card mb16"><div class="card-b">
+    <div class="row wrap">
+      <div class="relative" style="flex:1;min-width:320px;max-width:560px"><input class="input" value="ร้านยา ทดสอบ" placeholder="ค้นหาด้วยชื่อร้าน เบอร์โทร หรือรหัสลูกค้า"><span class="pin abs">1</span></div>
+      <button class="btn contained">ค้นหา</button>
+      <span class="muted small">ค้นได้ด้วย ชื่อร้าน / เบอร์โทร / รหัสลูกค้า (เช่น PM-10482)</span>
+    </div>
+    <div class="soft mt16 row between">
+      <div><b>ร้านยา ทดสอบ จำกัด</b> <span class="chip soft-info">B2B</span>
+        <div class="small muted">รหัส PM-10482 · เบอร์ 081-234-5678 · สมาชิกตั้งแต่ 3 มี.ค. 2568</div></div>
+      <span class="small muted">พบ 1 รายการ · <a href="#">เปลี่ยนลูกค้า</a></span>
+    </div>
+  </div></div>
+
+  <div class="grid" style="grid-template-columns:minmax(0,1.2fr) minmax(0,1fr) minmax(0,1fr);align-items:stretch">
+    <div class="card acct-pts"><div class="card-b relative">
+      <span class="pin abs">2</span>
+      <span class="acct-tag">บัญชีพอยท์ (แลกของได้)</span>
+      <div class="bal">2,480<small>พอยท์คงเหลือ</small></div>
+      <div class="kv mt16" style="grid-template-columns:150px 1fr">
+        <dt>ได้รับปีนี้ (2569)</dt><dd class="plus">+13,820</dd>
+        <dt>แลกของรางวัลแล้ว</dt><dd class="minus">−9,420</dd>
+        <dt>หมดอายุแล้ว</dt><dd class="minus">−1,450</dd>
+        <dt>หักคืน / ปรับสุทธิ</dt><dd class="minus">−470</dd>
+      </div>
+    </div></div>
+
+    <div class="card"><div class="card-b relative">
+      <span class="pin abs">3</span>
+      <div class="label mb8">กำลังจะหมดอายุภายใน 30 วัน</div>
+      <div class="bal" style="color:var(--warning-dark)">120<small>พอยท์</small></div>
+      <div class="small muted mt8">หมดอายุ 31 ต.ค. 2569 (อีก 19 วัน)</div>
+      <hr class="divider">
+      <div class="small"><b>ล็อตที่ยังมีอยู่</b><br>120 พอยท์ · หมดอายุ 31 ต.ค. 2569<br>2,360 พอยท์ · หมดอายุ 31 ธ.ค. 2569</div>
+    </div></div>
+
+    <div class="card acct-camp"><div class="card-b relative">
+      <span class="pin abs">4</span>
+      <span class="acct-tag">ยอดสะสมแคมเปญ (บัญชีแยก)</span>
+      <div class="bal" style="color:var(--info-dark);font-size:30px">฿742,500</div>
+      <div class="progress mt8"><i style="width:74%;background:var(--info-dark)"></i></div>
+      <div class="small mt8">อีก ฿257,500 ถึงขั้นถัดไป (฿1,000,000)</div>
+      <div class="small muted mt8">ไม่ถูกหักเมื่อแลกพอยท์ · แปลงเป็นพอยท์ไม่ได้ · รีเซ็ตเมื่อขึ้นสัญญาปีใหม่</div>
+      <a class="btn outlined sm mt8" href="../campaign/05-admin-progress.html">ดูความคืบหน้าแคมเปญ</a>
+    </div></div>
+  </div>
+
+  <div class="card mt24" style="overflow:hidden">
+    <div class="table-toolbar" style="flex-wrap:wrap">
+      <div class="row wrap">
+        <b>สมุดพอยท์ (ใหม่ → เก่า)</b><span class="pin">5</span>
+        <div class="filters">
+          <span class="chip primary">ทั้งหมด</span><span class="chip soft-success">ได้รับ</span><span class="chip soft-info">แลก</span><span class="chip">หมดอายุ</span><span class="chip soft-warning">ปรับ</span><span class="chip soft-error">หักคืน</span>
+        </div>
+      </div>
+      <div class="row"><input class="input" type="date" value="2026-08-01" style="max-width:150px"><span class="muted">–</span><input class="input" type="date" value="2026-10-12" style="max-width:150px"></div>
+    </div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>วันที่ / เวลา</th><th>รายการ</th><th>อ้างอิง (ออเดอร์ / รางวัล / เหตุผล)</th><th class="num">+ / −</th><th class="num">คงเหลือ</th><th>หมดอายุ <span class="pin">6</span></th><th>โดย</th></tr></thead>
+      <tbody>
+        <tr class="pending"><td>12 ต.ค. 69 15:00</td><td><span class="chip soft-warning">ปรับ</span> <span class="chip warning">รออนุมัติ</span></td>
+          <td>เพิ่มพอยท์ชดเชยตามข้อตกลงงานแสดงสินค้า<span class="sub">หมวด: ชดเชยลูกค้า · เกินวงเงิน 1,000 พอยท์ → รอผู้จัดการ</span></td><td class="amt plus">+1,500</td><td class="amt muted">ยังไม่มีผล</td><td>31 ธ.ค. 2569</td><td>staff1 → รอ mgr1</td></tr>
+        <tr><td>12 ต.ค. 69 14:32</td><td><span class="chip success">ได้รับ</span></td>
+          <td><a href="#">SO-69-004512</a><span class="sub">8 รายการ · ตัวคูณ ×1.5 / Blackmores ×3.5</span></td><td class="amt plus">+340</td><td class="amt">2,480</td><td>31 ธ.ค. 2569</td><td>ระบบ</td></tr>
+        <tr><td>11 ต.ค. 69 09:10</td><td><span class="chip info">แลก</span></td>
+          <td>RW-0003 คูปองส่งฟรี → คูปอง CP-883120<span class="sub">หักจากล็อตที่ใกล้หมดอายุก่อน (28 ก.ย. 69)</span></td><td class="amt minus">−300</td><td class="amt">2,140</td><td class="muted">—</td><td>ลูกค้า</td></tr>
+        <tr><td>08 ต.ค. 69 16:45</td><td><span class="chip soft-error">หักคืน</span></td>
+          <td>ยกเลิกออเดอร์ <a href="#">SO-69-004388</a><span class="sub">ยกเลิกโดย staff2 · หักคืนเท่าที่เคยให้</span></td><td class="amt minus">−85</td><td class="amt">2,440</td><td class="muted">—</td><td>ระบบ</td></tr>
+        <tr><td>05 ต.ค. 69 11:20</td><td><span class="chip success">ได้รับ</span></td>
+          <td><a href="#">SO-69-004388</a><span class="sub">3 รายการ · ตัวคูณ ×1.5</span></td><td class="amt plus">+85</td><td class="amt">2,525</td><td>31 ธ.ค. 2569</td><td>ระบบ</td></tr>
+        <tr><td>02 ต.ค. 69 10:05</td><td><span class="chip warning">ปรับ</span></td>
+          <td>ชดเชยออเดอร์ SO-69-004101 ส่งล่าช้า<span class="sub">หมวด: ชดเชยลูกค้า · แนบไฟล์ 1 · ไม่ต้องอนุมัติ</span></td><td class="amt plus">+200</td><td class="amt">2,440</td><td>31 ธ.ค. 2569</td><td>staff1</td></tr>
+        <tr><td>28 ก.ย. 69 13:48</td><td><span class="chip success">ได้รับ</span></td>
+          <td><a href="#">SO-69-004201</a><span class="sub">แคมเปญ "ส่งท้ายไตรมาส 3" ×2 · มีส่วนเพิ่ม 210</span></td><td class="amt plus">+420</td><td class="amt">2,240</td><td>31 ต.ค. 2569 <span class="chip soft-warning">override แคมเปญ</span></td><td>ระบบ</td></tr>
+        <tr><td>15 ก.ย. 69 18:02</td><td><span class="chip info">แลก</span></td>
+          <td>RW-0001 คูปองลด ฿50 → คูปอง CP-871455</td><td class="amt minus">−500</td><td class="amt">1,820</td><td class="muted">—</td><td>ลูกค้า</td></tr>
+        <tr><td>10 ก.ย. 69 10:31</td><td><span class="chip success">ได้รับ</span></td>
+          <td><a href="#">SO-69-003977</a><span class="sub">14 รายการ</span></td><td class="amt plus">+650</td><td class="amt">2,320</td><td>31 ธ.ค. 2569</td><td>ระบบ</td></tr>
+        <tr><td>31 ส.ค. 69 00:05</td><td><span class="chip">หมดอายุ</span></td>
+          <td>ล็อต "ฉลองเปิดสาขา ส.ค." หมดอายุ<span class="sub">ตัดอัตโนมัติ · ล็อตจากแคมเปญ ส.ค. สิ้นสุดวันที่ 31 ส.ค.</span></td><td class="amt minus">−150</td><td class="amt">1,670</td><td class="muted">—</td><td>ระบบ</td></tr>
+      </tbody>
+    </table></div>
+    <div class="pager"><span>แถวต่อหน้า 25</span><span>1–10 จาก 41</span><span>‹ ›</span></div>
+  </div>
+
+  <h6 class="mt24 mb8" id="adjust-form">หน้าต่างปรับพอยท์ (เปิดจากปุ่ม "± ปรับพอยท์")</h6>
+  <div class="backdrop"><div class="dialog md">
+    <div class="dialog-h">ปรับพอยท์: ร้านยา ทดสอบ จำกัด<button class="x">✕</button></div>
+    <div class="dialog-b">
+      <div class="soft row between mb16"><span>พอยท์คงเหลือปัจจุบัน <b>2,480</b></span><span>หลังปรับ <b style="color:var(--primary)">2,680</b></span></div>
+      <div class="form-grid">
+        <div class="field relative"><label>ประเภทการปรับ <span class="pin">7</span></label>
+          <div class="seg"><button class="on">＋ เพิ่มพอยท์</button><button>− ลดพอยท์</button></div></div>
+        <div class="field"><label>จำนวนพอยท์ *</label>
+          <div class="input-adorn"><input class="input" value="200"><span class="adorn">พอยท์</span></div>
+          <span class="help">จำนวนเต็ม &gt; 0 · ลดได้ไม่เกินยอดคงเหลือ</span></div>
+        <div class="field relative"><label>หมวดเหตุผล * <span class="pin">8</span></label>
+          <select class="select"><option>ชดเชยลูกค้า</option><option>แก้ไขข้อผิดพลาดของระบบ</option><option>ออเดอร์นอกระบบ (ขายหน้าร้าน)</option><option>แลกผิดพลาด / ยกเลิกการแลก</option><option>ตามข้อตกลงพิเศษ</option><option>อื่น ๆ</option></select></div>
+        <div class="field"><label>วันหมดอายุของพอยท์ที่เพิ่ม</label>
+          <select class="select"><option>ตามนโยบายเริ่มต้น (31 ธ.ค. 2569)</option><option>กำหนดเอง…</option></select></div>
+        <div class="field span2"><label>เหตุผลโดยละเอียด * (อย่างน้อย 10 ตัวอักษร)</label>
+          <textarea class="textarea">ชดเชยออเดอร์ SO-69-004101 ส่งล่าช้า 5 วัน ตามที่ตกลงกับลูกค้าทางโทรศัพท์</textarea></div>
+        <div class="field span2"><label>หลักฐานแนบ</label>
+          <div class="soft row between"><span>📎 ข้อความแชท.png (182 KB)</span><button class="btn text sm">ลบ</button></div>
+          <span class="help">ไฟล์ภาพ/PDF ไม่เกิน 5 MB · บังคับแนบเมื่อเกินวงเงินอนุมัติ</span></div>
+      </div>
+      <div class="alert warning mt16 relative"><span class="pin abs">9</span><div><div class="a-title">เกณฑ์ที่ต้องให้ผู้จัดการอนุมัติ</div>
+        เกิน <b>1,000 พอยท์ต่อครั้ง</b> หรือสะสมเกิน <b>5,000 พอยท์ต่อวัน</b> ต่อผู้ปรับ — รายการจะเป็น "รออนุมัติ" และยังไม่เปลี่ยนยอดจนกว่าผู้จัดการอนุมัติ · ครั้งนี้ 200 พอยท์ จึงมีผลทันที</div></div>
+      <div class="legal mt16">บันทึก audit อัตโนมัติ: staff1 (ฝ่ายการตลาด) · 12 ต.ค. 2569 15:08 · ค่าก่อน/หลัง: 2,480 → 2,680 · ดูย้อนหลังได้ที่สมุดนี้และรายงานการปรับพอยท์</div>
+    </div>
+    <div class="dialog-f"><button class="btn text grey">ยกเลิก</button><button class="btn contained">ยืนยันปรับพอยท์</button></div>
+  </div></div>
+
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ค้นหาลูกค้า:</b> ชื่อร้าน / เบอร์โทร / รหัสลูกค้า (พิมพ์บางส่วนได้) — พบหลายรายให้เลือกจากรายการ; ไม่พบแสดง "ไม่พบลูกค้า ตรวจสอบรหัสอีกครั้ง"</span></li>
+    <li><span class="pin">2</span><span><b>พอยท์คงเหลือ:</b> ยอดรวมทุกล็อตที่ยังไม่หมดอายุ — ตัวเลขนี้คือที่ลูกค้าเห็นและแลกได้ · แสดงสรุปได้รับ/แลก/หมดอายุ/หักคืนของปีปฏิทินปัจจุบันเพื่อใช้กระทบยอด</span></li>
+    <li><span class="pin">3</span><span><b>กำลังจะหมดอายุ 30 วัน:</b> รวมล็อตที่หมดอายุภายใน 30 วัน พร้อมแจกแจงล็อต — ใช้ตอบลูกค้าที่โทรถามว่า "ทำไมพอยท์หาย"</span></li>
+    <li><span class="pin">4</span><span><b>ยอดสะสมแคมเปญ (บัญชีแยก):</b> แสดงให้เห็นแต่ปรับจากหน้านี้ไม่ได้ — ไม่ถูกหักเมื่อแลกพอยท์ และไม่ใช่ส่วนหนึ่งของพอยท์คงเหลือ (สีและกรอบต่างกันตั้งใจ)</span></li>
+    <li><span class="pin">5</span><span><b>ประเภทรายการ:</b> ได้รับ / แลก / หมดอายุ / ปรับ / หักคืน — กรองตามประเภทและช่วงวันที่ได้ · รายการอ้างอิงเลขออเดอร์หรือรหัสรางวัลคลิกเข้าดูได้</span></li>
+    <li><span class="pin">6</span><span><b>หมดอายุ (ต่อล็อต):</b> แต่ละรายการ "ได้รับ" ผูกวันหมดอายุของตัวเอง (ตามรอบ/แคมเปญ) · รายการ override จากแคมเปญมีป้ายกำกับ</span></li>
+    <li><span class="pin">7</span><span><b>ปรับพอยท์ เพิ่ม/ลด:</b> ลดได้ไม่เกินยอดคงเหลือ · แสดง "หลังปรับ" สดขณะกรอก เพื่อกันกรอกผิดจำนวน</span></li>
+    <li><span class="pin">8</span><span><b>เหตุผลบังคับ:</b> เลือกหมวด + ใส่รายละเอียดอย่างน้อย 10 ตัวอักษร ปุ่มยืนยันกดไม่ได้จนกว่าจะครบ · หลักฐานแนบเป็นภาพ/PDF</span></li>
+    <li><span class="pin">9</span><span><b>อนุมัติและ audit:</b> เกินวงเงินต้องให้ผู้จัดการอนุมัติ (แถวสีเหลืองในสมุด) · ทุกการปรับบันทึกผู้ทำ เวลา ค่าก่อน/หลัง เหตุผล หลักฐาน และแก้ไข/ลบย้อนหลังไม่ได้</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สมุดพอยท์เป็นแบบ append-only — แก้ผิดต้องปรับกลับด้วยรายการใหม่ ไม่แก้/ลบรายการเดิม</li>
+    <li>รายการ "หักคืน" จากการยกเลิกออเดอร์ หักได้เท่าที่คงเหลือ ถ้าลูกค้าแลกไปแล้ว ส่วนที่ขาดไม่ตามเรียกคืน (ไม่ทำให้ติดลบ)</li>
+    <li>ผู้ปรับกับผู้อนุมัติต้องเป็นคนละคน · ผู้จัดการอนุมัติ/ปฏิเสธพร้อมหมายเหตุ ปฏิเสธแล้วไม่เปลี่ยนยอด</li>
+    <li>การแลกที่ลูกค้ากดผิด: แอดมินแก้ได้ด้วยการปรับ "แลกผิดพลาด" (+) และต้องยกเลิกสิทธิ์ที่ออกไปเองด้วย (เช่น คูปองในกระเป๋า)</li>
+    <li>สิทธิ์เข้าหน้านี้: ฝ่ายการตลาด (ดู) · ผู้จัดการ (ดู + อนุมัติ) · ผู้ปรับต้องมีสิทธิ์ "ปรับพอยท์"</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>วงเงินที่ต้องอนุมัติ: ต่อครั้ง 1,000 พอยท์ / ต่อวัน 5,000 พอยท์ (ค่าสมมุติ) — หรือกำหนดเป็นมูลค่า ฿ แทน</li>
+    <li>แอดมินปรับ "ยอดสะสมแคมเปญ" ได้หรือไม่ (มอคอัพ: ปรับไม่ได้จากหน้านี้ ต้องทำที่ความคืบหน้าแคมเปญ)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

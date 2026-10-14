@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>จับตามรอบและประกาศผล</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .ph{display:inline-block;font-size:10px;font-weight:700;line-height:1;padding:3px 6px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+  .ph.p3{background:#FFF3E0;color:#BF360C}
+  .mode{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;border-radius:7px;font-weight:800;font-size:12px}
+  .mode.b{background:#F3E5F5;color:#6A1B9A}
+  .hero{background:linear-gradient(135deg,#751D1A,#B32026);color:#fff;border-radius:16px;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+  .hero h5{font-size:20px}
+  .cd{display:flex;gap:10px}
+  .cd div{background:rgba(255,255,255,.14);border-radius:12px;min-width:76px;text-align:center;padding:10px 6px}
+  .cd b{display:block;font-size:30px;font-weight:800;line-height:1.1;font-variant-numeric:tabular-nums}
+  .cd span{font-size:11.5px;opacity:.85}
+  .hash{font-family:ui-monospace,Consolas,monospace;font-size:12px;background:var(--g100);border:1px solid var(--g300);border-radius:8px;padding:10px 12px;word-break:break-all;line-height:1.6}
+  .prize-card{background:#fff;border:1px solid var(--g200);border-radius:14px;overflow:hidden}
+  .prize-card .img{height:130px;background:linear-gradient(135deg,var(--g100),var(--g200));display:flex;align-items:center;justify-content:center;color:var(--g500);font-size:12px}
+  .prize-card .pb{padding:14px}
+  .winners-n{font-size:22px;font-weight:800;color:var(--primary)}
+  .divider-label{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;color:var(--text2);margin:8px 0}
+  .divider-label::before,.divider-label::after{content:"";height:1px;background:var(--g300);flex:1}
+  .win-banner{background:linear-gradient(135deg,var(--success-lighter),#fff);border:1.5px solid #A5D6A7;border-radius:16px;padding:20px 24px}
+  .mk{letter-spacing:.5px}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="raffle">
+<main id="screen">
+
+  <div class="crumbs">หน้าแรก / ลุ้นรางวัล / <a href="06-customer-tickets.html">สิทธิ์ลุ้นของฉัน</a> / ลุ้นทองคำประจำเดือน ก.ย. 69</div>
+
+  <div class="stack">
+
+    <div class="hero relative"><span class="pin abs">1</span>
+      <div>
+        <div class="small" style="opacity:.85"><span class="mode b">B</span> จับตามรอบ<span class="ph p3">ระยะ 3</span></div>
+        <h5 class="mt8">ลุ้นทองคำประจำเดือน ก.ย. 69</h5>
+        <div class="small mt8" style="opacity:.9">จับรางวัลวันนี้ 12 ต.ค. 2569 เวลา 20:00 น. · แจกแน่ 15 รางวัล ตามที่ประกาศ</div>
+      </div>
+      <div class="cd"><div><b>00</b><span>วัน</span></div><div><b>07</b><span>ชั่วโมง</span></div><div><b>43</b><span>นาที</span></div><div><b>12</b><span>วินาที</span></div></div>
+    </div>
+
+    <div class="grid g2">
+      <div class="card relative"><span class="pin abs">2</span>
+        <div class="card-h"><h6>สิทธิ์ของฉันในกองนี้</h6><span class="chip soft-info">เข้ากองแล้ว 3 ใบ</span></div>
+        <div class="card-b">
+          <div class="stack s8">
+            <div class="row between"><span class="mono">TK-11-000412</span><span class="small muted">แลกพอยท์ · 14 ก.ย. 69</span></div>
+            <div class="row between"><span class="mono">TK-11-000413</span><span class="small muted">ยอดซื้อ บิล SO-69-09877</span></div>
+            <div class="row between"><span class="mono">TK-11-000990</span><span class="small muted">ยอดซื้อ บิล SO-69-09944</span></div>
+          </div>
+          <hr class="divider">
+          <div class="row between"><span>โอกาสโดยประมาณที่จะถูกอย่างน้อย 1 รางวัล</span><b>≈ 1.4%</b></div>
+          <div class="small muted mt8">คำนวณจาก 3 ใบ ในกอง 3,102 ใบ และ 15 รางวัล — สิทธิ์ที่เข้ากองแล้วถอนคืนหรือโอนไม่ได้</div>
+        </div>
+      </div>
+
+      <div class="card relative"><span class="pin abs">3</span>
+        <div class="card-h"><h6>กองสิทธิ์ที่ประกาศแล้ว</h6><span class="chip success">ประกาศเมื่อ 1 ต.ค. 2569 09:00</span></div>
+        <div class="card-b">
+          <div class="grid g2 mb16">
+            <div><div class="small muted">สิทธิ์ทั้งกอง</div><div class="winners-n">3,102 ใบ</div></div>
+            <div><div class="small muted">ผู้ร่วมกิจกรรม</div><div class="winners-n">428 ร้าน</div></div>
+          </div>
+          <div class="label mb8">รหัสยืนยัน (commitment hash)</div>
+          <div class="hash">b7e4a19c03d85f26e1a97c4b50d3f82a6c91e7054bd8a3f17e60c29d4a85b3f1</div>
+          <div class="small muted mt8">รหัสนี้ประกาศก่อนจับ — หลังจับ ระบบจะเปิดเผย seed จริงเพื่อให้ทุกคนตรวจสอบได้ว่าผลไม่ได้เลือกทีหลัง</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card relative"><span class="pin abs">4</span>
+      <div class="card-h"><h6>รางวัลที่แจก (รวม 15 ราย)</h6><span class="small muted">จำนวนผู้ได้รับกำหนดไว้ล่วงหน้า ไม่เปลี่ยนแปลง</span></div>
+      <div class="card-b">
+        <div class="grid g3">
+          <div class="prize-card"><div class="img">รูปทองคำแท่ง</div><div class="pb"><b>ทองคำแท่ง 1 สลึง</b><div class="winners-n mt8">2 รางวัล</div><div class="small muted">มูลค่า ≈ ฿10,000 ต่อรางวัล</div></div></div>
+          <div class="prize-card"><div class="img">รูปตั๋วเครื่องบิน</div><div class="pb"><b>ตั๋วเครื่องบินภายในประเทศ ไป-กลับ</b><div class="winners-n mt8">3 รางวัล</div><div class="small muted">มูลค่า ≈ ฿4,500 ต่อรางวัล</div></div></div>
+          <div class="prize-card"><div class="img">รูปคูปอง</div><div class="pb"><b>คูปองส่วนลด ฿500</b><div class="winners-n mt8">10 รางวัล</div><div class="small muted">เข้ากระเป๋าคูปองอัตโนมัติ</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">สถานะหลังจับเสร็จ — หน้าเดียวกันเปลี่ยนเนื้อหาเมื่อประกาศผล (ตัวอย่าง)</div>
+
+    <div class="grid g2">
+      <div class="card relative"><span class="pin abs">5</span>
+        <div class="card-h"><h6>ผลการจับรางวัล</h6><span class="chip info">จับแล้ว 12 ต.ค. 2569 20:00</span></div>
+        <div class="card-b">
+          <div class="table-wrap"><table class="table">
+            <thead><tr><th>รางวัล</th><th>ผู้ชนะ</th><th>หมายเลขสิทธิ์</th></tr></thead>
+            <tbody>
+              <tr><td>ทองคำแท่ง 1 สลึง</td><td class="mk">ร้านยา ส***ใจ ลาดพร้าว</td><td class="mono">TK-11-001873</td></tr>
+              <tr><td>ทองคำแท่ง 1 สลึง</td><td class="mk">ร้านยา ช***ม คลองหลวง</td><td class="mono">TK-11-002940</td></tr>
+              <tr><td>ตั๋วเครื่องบิน</td><td class="mk">ร้านยา เ***กรเมือง</td><td class="mono">TK-11-000655</td></tr>
+              <tr><td>ตั๋วเครื่องบิน</td><td class="mk">ร้านยา ก***หน้า</td><td class="mono">TK-11-002217</td></tr>
+              <tr><td>ตั๋วเครื่องบิน</td><td class="mk">ร้านยา ส***ใจ บางนา</td><td class="mono">TK-11-001104</td></tr>
+              <tr><td>คูปอง ฿500</td><td class="mk">ร้านยา ธ***ภัช</td><td class="mono">TK-11-000087</td></tr>
+              <tr><td colspan="3" class="muted center">อีก 9 รางวัล · <a href="#">ดูทั้งหมด</a></td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="card relative"><span class="pin abs">6</span>
+        <div class="card-h"><h6>ตรวจสอบผลได้เอง</h6><span class="chip success">รหัสตรงกัน</span></div>
+        <div class="card-b">
+          <div class="label mb8">seed ที่เปิดเผยหลังจับ</div>
+          <div class="hash">6f3a91d27c04b8e5a2d7193cb40e8f65</div>
+          <ol class="small mt16" style="margin:0;padding-left:18px;display:grid;gap:6px">
+            <li>ดาวน์โหลดรายการหมายเลขสิทธิ์ทั้ง 3,102 ใบ (ไม่มีชื่อ)</li>
+            <li>นำ seed + รายการไปคำนวณ SHA-256 ต้องได้ <span class="mono">b7e4a19c…a85b3f1</span> ตรงกับรหัสที่ประกาศเมื่อ 1 ต.ค.</li>
+            <li>รันตัวตรวจสอบสาธารณะด้วย seed เดิม จะได้รายชื่อผู้ชนะชุดเดียวกับที่ประกาศ</li>
+          </ol>
+          <div class="row mt16"><button class="btn outlined sm">ดาวน์โหลดรายการสิทธิ์ (CSV)</button><button class="btn text sm">วิธีตรวจสอบอย่างละเอียด</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="win-banner relative"><span class="pin abs">7</span>
+      <div class="row between wrap" style="align-items:flex-start">
+        <div><span class="chip success">ตัวอย่างสถานะผู้ชนะ (หากบัญชีนี้ถูกรางวัล)</span>
+          <h5 class="mt8" style="font-size:20px">ยินดีด้วย! สิทธิ์ TK-11-000413 ได้รับ ตั๋วเครื่องบินภายในประเทศ ไป-กลับ</h5>
+          <div class="small muted mt8">กรอกข้อมูลรับของภายใน <b>11 พ.ย. 2569</b> (30 วัน) เพื่อเข้าคิวคำขอรับของ — ทีมงานจะติดต่อกลับภายใน 7 วันทำการ</div></div>
+        <span class="chip warning">รอข้อมูลจัดส่ง</span>
+      </div>
+      <hr class="divider">
+      <div class="form-grid">
+        <div class="field"><label>ชื่อผู้รับ *</label><input class="input" value="คุณสมชาย ใจดี (ร้านยา ทดสอบ จำกัด)"></div>
+        <div class="field"><label>เบอร์โทรติดต่อ *</label><input class="input" value="081-234-5678"></div>
+        <div class="field span2"><label>ที่อยู่จัดส่ง *</label><textarea class="textarea">99/9 ถ.มิตรภาพ ต.ในเมือง อ.เมือง จ.นครราชสีมา 30000</textarea></div>
+        <div class="field"><label>วิธีรับของ</label><select class="select"><option>ส่งรายละเอียดตั๋วให้ทางอีเมล/ที่อยู่ที่ระบุ</option><option>รับที่ Pharmaplex สาขาโคราช</option></select></div>
+        <div class="field"><label>เลขประจำตัวผู้เสียภาษี (ถ้ากฎหมายกำหนด)</label><input class="input readonly" value="0-1055-xxxxx-xx-x (จากบัญชีร้านค้า)" readonly><span class="help">ใช้เพื่อเอกสารภาษีของมูลค่ารางวัล หากฝ่ายบัญชีกำหนด</span></div>
+      </div>
+      <div class="row end mt16"><button class="btn text grey">บันทึกร่าง</button><a class="btn contained" href="09-customer-history.html">ส่งข้อมูลรับรางวัล</a></div>
+    </div>
+
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ส่วนหัว: ชื่อกิจกรรม + เวลาจับ + นับถอยหลังแบบสด (ใช้เวลาเซิร์ฟเวอร์ ไม่ใช่เครื่องลูกค้า); เมื่อถึงเวลา หน้าเปลี่ยนเป็น "กำลังจับรางวัล" แล้วขึ้นผลเองโดยไม่ต้องรีเฟรช</span></li>
+    <li><span class="pin">2</span><span>แสดงสิทธิ์ของลูกค้าที่เข้ากองพร้อมหมายเลข (ใช้ตรวจผล) และโอกาสโดยประมาณ — ตัวเลขนี้เป็นค่าประมาณ ระบุไว้ชัดว่าไม่ใช่การรับประกัน</span></li>
+    <li><span class="pin">3</span><span>กองสิทธิ์ที่ประกาศ: จำนวนสิทธิ์รวม + จำนวนผู้ร่วม + commitment hash ต้องเผยแพร่ก่อนเวลาจับเสมอ; ผู้ร่วมคัดลอกรหัสเก็บไว้เทียบหลังจับได้</span></li>
+    <li><span class="pin">4</span><span>แกลเลอรีรางวัลระบุ "จำนวนผู้ได้รับ" ที่ล็อกไว้ตั้งแต่เปิดกิจกรรม — จุดต่างหลักจากโหมด A ที่งบเป็นค่าคาดหวัง</span></li>
+    <li><span class="pin">5</span><span>หลังจับ: รายชื่อผู้ชนะแสดงชื่อปิดบังบางส่วน + หมายเลขสิทธิ์ (ให้ผู้ร่วมตรวจว่าตรงกับกองที่ประกาศ) ไม่แสดงข้อมูลติดต่อ</span></li>
+    <li><span class="pin">6</span><span>การ์ด "ตรวจสอบผลได้เอง": แสดง seed ที่เปิดเผย, ผลเทียบ hash อัตโนมัติ, ขั้นตอนตรวจ 3 ข้อ และไฟล์รายการสิทธิ์ที่ไม่มีชื่อ</span></li>
+    <li><span class="pin">7</span><span>สถานะผู้ชนะ (เฉพาะผู้ที่ถูก): แบนเนอร์ + ฟอร์มข้อมูลจัดส่งแบบเดียวกับฟอร์มรับรางวัลแคมเปญ มีกำหนดส่งภายใน 30 วัน; กดส่งแล้วเข้าคิวคำขอรับของ และเห็นสถานะในหน้า "รางวัลของฉัน"</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>สถานะหน้า: ก่อนจับ (นับถอยหลัง) → กำลังจับ → ประกาศผลแล้ว (มี/ไม่มีผู้ชนะในบัญชีนี้)</li>
+    <li>ไม่ถูกรางวัล: การ์ดสถานะแสดง "รอบนี้ยังไม่ถูกรางวัล" พร้อมลิงก์ไปรอบถัดไป ไม่แสดงฟอร์ม</li>
+    <li>ผู้ชนะที่ไม่กรอกข้อมูลภายในกำหนด สิทธิ์ในรางวัลสิ้นสุดตามเงื่อนไขกิจกรรม (ข้อความเงื่อนไขต้องบอกชัดตั้งแต่ก่อนร่วม)</li>
+    <li>รางวัลคูปอง/พอยท์ในโหมด B ไม่ต้องกรอกข้อมูล เข้ากระเป๋า/ยอดพอยท์ทันทีที่ประกาศ</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>แสดงชื่อผู้ชนะแบบปิดบังบางส่วนหรือเฉพาะรหัสลูกค้า (ความเป็นส่วนตัว B2B) — เสนอ: ปิดบังบางส่วน + หมายเลขสิทธิ์</li>
+    <li>กำหนดเวลาให้ผู้ชนะกรอกข้อมูล (เสนอ 30 วัน) และวิธีส่งทองคำ/ของมูลค่าสูง (ประกันพัสดุ/รับเอง)</li>
+    <li>ต้องเก็บเลขผู้เสียภาษีหรือเอกสารเพิ่มจากผู้ชนะหรือไม่ — รอผลตรวจฝ่ายบัญชี</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

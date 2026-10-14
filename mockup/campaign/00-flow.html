@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ภาพรวม Flow แคมเปญ — Pharmaplex</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .swim.tight .node{width:170px;padding:10px 12px;font-size:12.5px}
+  .swim.tight .node b{font-size:12.5px}
+  .swim.tight .gap{width:22px}
+  .swim.tight .sp-node{flex:none;width:170px}
+  .alert>div{flex:1;min-width:0}
+  .swim.tight .lane-h{padding:12px 10px}
+  .swim .lane-b{min-height:96px}
+  .type-head{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+  .type-head .chip{flex:none}
+  .reset-bar{display:grid;grid-template-columns:1fr 36px 1fr;align-items:center;gap:0}
+  .reset-bar .yr{border:1.5px solid var(--g300);border-radius:12px;padding:12px 14px;background:#fff}
+  .reset-bar .yr.old{background:var(--g50)}
+  .reset-bar .arrow{text-align:center;color:var(--primary);font-weight:800;font-size:20px}
+  .reset-bar .bar{height:10px;border-radius:999px;background:var(--g200);overflow:hidden;margin:8px 0 6px}
+  .reset-bar .bar i{display:block;height:100%;background:var(--primary)}
+  .status-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 24px}
+  .status-grid .s{display:grid;grid-template-columns:104px 1fr;gap:10px;align-items:flex-start;font-size:12.5px}
+  .rel-list{margin:0;padding:0;list-style:none;display:grid;gap:10px;font-size:13px}
+  .rel-list li{padding-left:12px;border-left:3px solid var(--primary-light)}
+  .rel-list b{display:block}
+</style>
+</head>
+<body data-shell="bare">
+<main id="screen" style="max-width:1360px;margin:0 auto;padding:24px">
+
+  <div class="page-head">
+    <div>
+      <h4>ภาพรวม Flow แคมเปญ</h4>
+      <p class="muted">แคมเปญมี 2 แบบในรายการเดียวกัน — <b>สะสมยอดรายปี (ขั้นบันได)</b> สำหรับลูกค้า B2B ขายส่งที่ทำสัญญา และ <b>ช่วงเวลา + โควตา</b> สำหรับสินค้าราคาพิเศษที่มีจำนวนจำกัด · คลิกกล่องในแผนภาพเพื่อเปิดหน้าจอจริง</p>
+    </div>
+    <div class="row"><a class="btn outlined" href="01-admin-list.html">เปิดรายการแคมเปญ (แอดมิน)</a><a class="btn contained" href="06-customer-ladder.html">ดูมุมมองลูกค้า</a></div>
+  </div>
+
+  <!-- ===== Type 2 ===== -->
+  <div class="type-head"><span class="chip soft-primary lg">แบบที่ 1</span><h5>แคมเปญสะสมยอดรายปี (ขั้นบันได) — กลไกหลักของโมดูลนี้</h5></div>
+  <p class="muted small mb8">ช่วงที่ 1 · ตั้งค่า → ลูกค้าซื้อ → ระบบบวกยอดสะสมและแจ้งเตือนอัตโนมัติ</p>
+  <div class="swim tight">
+    <div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b">
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <a class="node cust" href="08-customer-quota-product.html"><span class="pin no">4</span><b>ซื้อสินค้าที่ร่วมรายการ</b>สั่งและชำระเงินตามปกติ</a><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div>
+    </div></div>
+    <div class="lane"><div class="lane-h">ระบบ</div><div class="lane-b">
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="node sys"><span class="pin no">5</span><b>บวกยอดสะสมอัตโนมัติ</b>จากออเดอร์ที่ชำระแล้ว (หักเมื่อยกเลิก)</div><div class="gap">→</div>
+      <a class="node sys" href="05-admin-progress.html"><span class="pin no">6</span><b>แจ้งเตือน 80% / 95%</b>และก่อนสัญญาหมด</a>
+    </div></div>
+    <div class="lane"><div class="lane-h">แอดมิน</div><div class="lane-b">
+      <a class="node adm" href="01-admin-list.html"><span class="pin no">1</span><b>สร้างแคมเปญ</b>เลือกประเภท "สะสมยอดรายปี"</a><div class="gap">→</div>
+      <a class="node adm" href="03-admin-ladder-editor.html"><span class="pin no">2</span><b>กำหนดขั้น + ฟอร์ม</b>เกณฑ์ ของรางวัล จำนวนสิทธิ์ ฟอร์มขอข้อมูล</a><div class="gap">→</div>
+      <a class="node adm" href="03-admin-ladder-editor.html"><span class="pin no">3</span><b>เปิดแคมเปญ</b>สถานะ "กำลังดำเนินการ"</a><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div>
+    </div></div>
+  </div>
+
+  <p class="muted small mt16 mb8">ช่วงที่ 2 · ลูกค้าถึงเกณฑ์ → ขอรับสิทธิ์ → ทีมงานตรวจ/ส่งมอบ → ปิดงาน</p>
+  <div class="swim tight">
+    <div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b">
+      <a class="node cust" href="06-customer-ladder.html"><span class="pin no">7</span><b>ถึงเกณฑ์ขั้นใดขั้นหนึ่ง</b>เห็นการ์ด "ปลดล็อกแล้ว"</a><div class="gap">→</div>
+      <a class="node cust" href="07-customer-claim-form.html"><span class="pin no">8</span><b>กดขอรับสิทธิ์ + กรอกฟอร์ม</b>ยืนยันแล้วแก้เองไม่ได้</a><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <a class="node cust" href="07-customer-claim-form.html"><span class="pin no">12</span><b>ติดตามสถานะคำขอ</b>ดูได้ที่ "คำขอของฉัน"</a><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="node end"><span class="pin no">13</span><b>ได้รับรางวัล</b>สถานะ "ได้รับแล้ว"</div>
+    </div></div>
+    <div class="lane"><div class="lane-h">ระบบ</div><div class="lane-b">
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="node sys"><span class="pin no">9</span><b>ตัดสิทธิ์คงเหลือ</b>แล้วส่งเข้าคิวคำขอ + เก็บ snapshot ยอดสะสม</div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div>
+    </div></div>
+    <div class="lane"><div class="lane-h">แอดมิน</div><div class="lane-b">
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <a class="node adm" href="04-admin-claims.html"><span class="pin no">10</span><b>ตรวจคำขอ → อนุมัติ</b>หรือปฏิเสธ (ต้องระบุเหตุผล)</a><div class="gap">→</div>
+      <a class="node adm" href="04-admin-claims.html"><span class="pin no">11</span><b>จัดส่ง / ส่งมอบ</b>ใส่เลขอ้างอิง/ใบส่งมอบ แล้วปิดงาน</a><div class="gap sp"></div>
+      <div class="sp-node"></div>
+    </div></div>
+  </div>
+
+  <div class="alert warning mt16"><div>
+    <div class="a-title">รีเซ็ตรายปี</div>
+    <div class="reset-bar mt8">
+      <div class="yr old"><b>ปีสัญญา 2569 (1 ม.ค. – 31 ธ.ค. 2569)</b>
+        <div class="bar"><i style="width:64%"></i></div>
+        <span class="small">ยอดสะสม ฿642,350 ณ 12 ต.ค. 2569 · ขั้น 1–3 ปลดล็อกแล้ว</span></div>
+      <div class="arrow">→</div>
+      <div class="yr"><b>ปีสัญญา 2570 (เริ่ม 1 ม.ค. 2570)</b>
+        <div class="bar"><i style="width:0"></i></div>
+        <span class="small">ยอดสะสมเริ่มที่ ฿0 · ไม่ยกยอดข้ามปี · ขั้นรางวัลของปีใหม่ตั้งใหม่ได้</span></div>
+    </div>
+    <div class="small mt8">สิทธิ์ที่ปลดล็อกแล้วแต่ยังไม่กดขอรับ ใช้ได้จนกว่า<b>แคมเปญสิ้นสุด</b> (31 ธ.ค. 2569) — หลังจากนั้นปิดการขอรับและเก็บประวัติเป็นอ่านอย่างเดียว</div>
+  </div></div>
+
+  <!-- ===== Type 1 ===== -->
+  <div class="type-head mt24"><span class="chip soft-info lg">แบบที่ 2</span><h5>แคมเปญช่วงเวลา + โควตา (พักโควตา 15 นาทีระหว่างชำระเงิน)</h5></div>
+  <div class="swim tight">
+    <div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b">
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <a class="node cust" href="08-customer-quota-product.html"><span class="pin no">C</span><b>ใส่ตะกร้า</b>ระบบเช็คโควตารวม + โควตาร้านก่อน</a><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <a class="node cust" href="08-customer-quota-product.html"><span class="pin no">E</span><b>ชำระเงินภายใน 15 นาที</b>เห็นนับถอยหลัง</a><div class="gap sp"></div>
+      <a class="node warn" href="08-customer-quota-product.html"><span class="pin no">G</span><b>ชำระไม่ทัน</b>กลับตะกร้าพร้อมข้อความ</a>
+    </div></div>
+    <div class="lane"><div class="lane-h">ระบบ</div><div class="lane-b">
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="node sys"><span class="pin no">D</span><b>พักโควตา 15 นาที</b>หักจาก "เหลือ" ชั่วคราว</div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="node end"><span class="pin no">F</span><b>ชำระสำเร็จ</b>ตัดโควตาถาวร + พอยท์ ×ตัวคูณ</div>
+    </div></div>
+    <div class="lane"><div class="lane-h">แอดมิน</div><div class="lane-b">
+      <a class="node adm" href="02-admin-quota-editor.html"><span class="pin no">A</span><b>ตั้งค่าแคมเปญ</b>ช่วงเวลา SKU โควตา ตัวคูณพอยท์</a><div class="gap">→</div>
+      <a class="node adm" href="01-admin-list.html"><span class="pin no">B</span><b>เปิดแคมเปญ</b>เริ่มเองตามเวลาที่ตั้ง</a><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div><div class="gap sp"></div>
+      <div class="sp-node"></div>
+    </div></div>
+  </div>
+
+  <div class="flow-legend"><span><i style="background:#fff"></i>ลูกค้า</span><span><i style="background:var(--primary-lighter)"></i>แอดมิน</span><span><i style="background:var(--info-lighter)"></i>ระบบ</span><span><i style="background:var(--success-lighter)"></i>ผลลัพธ์</span><span><i style="background:var(--warning-lighter)"></i>กรณีพิเศษ / หมดเวลา</span></div>
+
+  <div class="grid g2 mt16">
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">กติกาหลัก</h6>
+      <ul style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:13px">
+        <li><b>ยอดสะสมแยกจากพอยท์</b> — เป็นบัญชีคนละใบ ไม่ถูกหักเมื่อแลกพอยท์ และแปลงเป็นพอยท์/ส่วนลดไม่ได้</li>
+        <li><b>นับเฉพาะสินค้าที่ร่วมรายการ</b> จากออเดอร์ที่ชำระแล้ว ไม่รวมค่าจัดส่ง · ยกเลิก/คืนสินค้าแล้วหักยอดคืน</li>
+        <li><b>ทุกขั้นคือ "ขั้นบันได" เหมือนกัน</b> — "คนแรกที่ถึง" = ตั้งสิทธิ์น้อย · "สุ่มจับรางวัลนอกระบบ" = เว้นสิทธิ์ว่าง (ไม่จำกัด) + แอดมินเขียนรายละเอียดเอง</li>
+        <li><b>ถึงเกณฑ์แล้วกดขอรับได้ทุกเมื่อจนแคมเปญสิ้นสุด</b> ไม่มีวันหมดอายุรายรางวัล (แต่สิทธิ์มีจำกัดจึงควรกดเร็ว)</li>
+        <li><b>ฟอร์มขอข้อมูล 1 ฟอร์มต่อ 1 ขั้น</b> แอดมินออกแบบเอง ทุกคนที่ปลดล็อกเห็นฟอร์มเดียวกัน · ส่งแล้วลูกค้าแก้เองไม่ได้</li>
+        <li><b>รีเซ็ตเป็น ฿0 ทุกปีสัญญาใหม่</b> ไม่ยกยอดข้ามปี</li>
+        <li><b>แคมเปญโควตา:</b> พักโควตา 15 นาทีตอนชำระเงิน ไม่สำเร็จคืนโควตาอัตโนมัติ · ซื้อได้ไม่เกินโควตาร้าน</li>
+        <li><b>แจ้งเตือนอัตโนมัติ</b> เมื่อยอดถึง 80% / 95% ของขั้นถัดไป และก่อนสัญญาหมด</li>
+      </ul>
+    </div></div>
+
+    <div class="stack">
+      <div class="card"><div class="card-b">
+        <h6 class="mb8">สถานะของสิ่งที่ลูกค้าได้รับ</h6>
+        <div class="status-grid">
+          <div class="s"><span><span class="chip">ล็อก</span></span><span>ยอดสะสมยังไม่ถึงเกณฑ์ขั้นนั้น — แสดง "อีก ฿X"</span></div>
+          <div class="s"><span><span class="chip primary">ปลดล็อก</span></span><span>ถึงเกณฑ์แล้ว กดขอรับสิทธิ์ได้</span></div>
+          <div class="s"><span><span class="chip soft-error">สิทธิ์เต็ม</span></span><span>สิทธิ์ขั้นนั้นถูกกดครบแล้ว กดขอรับไม่ได้</span></div>
+          <div class="s"><span><span class="chip soft-warning">รอตรวจ</span></span><span>ส่งคำขอแล้ว รอทีมงานตรวจสอบ</span></div>
+          <div class="s"><span><span class="chip soft-info">อนุมัติ</span></span><span>ผ่านการตรวจ กำลังเตรียมส่งมอบ</span></div>
+          <div class="s"><span><span class="chip info">กำลังจัดส่ง</span></span><span>สินค้ากำลังไปหา หรือรอคิวทริป/ตั๋ว</span></div>
+          <div class="s"><span><span class="chip success">ได้รับแล้ว</span></span><span>ปิดงาน ส่งมอบเรียบร้อย</span></div>
+          <div class="s"><span><span class="chip error">ปฏิเสธ</span></span><span>แสดงเหตุผล · สิทธิ์ถูกคืนให้ขอใหม่ได้</span></div>
+          <div class="s"><span><span class="chip soft-info">พักโควตา</span></span><span>โควตาถูกกันไว้ให้ 15 นาทีระหว่างชำระเงิน</span></div>
+          <div class="s"><span><span class="chip outline">คืนโควตา</span></span><span>ชำระไม่ทัน/ยกเลิก — โควตากลับเข้าระบบ</span></div>
+        </div>
+      </div></div>
+      <div class="card"><div class="card-b">
+        <h6 class="mb8">เชื่อมกับโมดูลอื่นอย่างไร</h6>
+        <ul class="rel-list">
+          <li><b>พอยท์</b>ตัวคูณพอยท์ของ SKU ในแคมเปญโควตาคูณเมื่อชำระสำเร็จ (ตัวคูณหลายแคมเปญบวกกัน) · ของพรีเมียมที่แลกด้วยพอยท์เข้า<u>คิวคำขอเดียวกัน</u> (ติดแท็ก "แลกพอยท์")</li>
+          <li><b>โปรโมชั่น / คูปอง</b>ขั้นรางวัลประเภท "คูปอง" ออกเข้ากระเป๋าคูปองเมื่ออนุมัติ · ราคาแคมเปญกับโปรโมชั่นซ้อนกันอย่างไร ดูข้อตัดสินใจใน 02</li>
+          <li><b>สุ่มรางวัล</b>"สุ่มจับรางวัลนอกระบบ" ในขั้นบันไดทำนอกระบบ ไม่ใช้เครื่องสุ่มของโมดูลสุ่มรางวัล</li>
+          <li><b>คำสั่งซื้อ / ชำระเงิน</b>ยอดสะสมอ่านจากออเดอร์ที่ชำระแล้ว · สินค้า POS ที่เป็นรางวัลสร้างรายการจัดส่งผ่านระบบคำสั่งซื้อเดิม</li>
+        </ul>
+      </div></div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>สร้างแคมเปญ</b> — เมนู "สร้างแคมเปญ" ในรายการเลือกประเภทก่อน (สะสมยอดรายปี / ช่วงเวลา+โควตา) เพราะฟอร์มต่างกันโดยสิ้นเชิง เปลี่ยนประเภทภายหลังไม่ได้</span></li>
+    <li><span class="pin">2</span><span><b>กำหนดขั้น + ฟอร์ม</b> — เรียงขั้นตามยอดเกณฑ์อัตโนมัติ · แต่ละขั้นมีฟอร์มขอข้อมูลของตัวเองได้ 1 ฟอร์ม</span></li>
+    <li><span class="pin">3</span><span><b>เปิดแคมเปญ</b> — บันทึกเป็น "ร่าง" ได้ ยังไม่แสดงให้ลูกค้า · เปิดแล้วแก้ยอดเกณฑ์ของขั้นที่มีคนถึงแล้วไม่ได้ (ดูกติกา)</span></li>
+    <li><span class="pin">4</span><span><b>ลูกค้าซื้อ</b> — ไม่ต้องทำอะไรเพิ่ม ระบบนับให้เองเฉพาะสินค้าในขอบเขตที่แอดมินตั้ง</span></li>
+    <li><span class="pin">5</span><span><b>บวกยอดสะสม</b> — บวกเมื่อสถานะการชำระ = สำเร็จ ไม่รวมค่าส่ง · ยกเลิก/คืนสินค้า = หักคืนและบันทึกประวัติ</span></li>
+    <li><span class="pin">6</span><span><b>แจ้งเตือน</b> — ถึง 80%, 95% ของขั้นถัดไป และก่อนสัญญาหมด N วัน ผ่าน LINE/อีเมล/ในเว็บ ส่งครั้งเดียวต่อเหตุการณ์ต่อขั้น</span></li>
+    <li><span class="pin">7</span><span><b>ถึงเกณฑ์</b> — การ์ดขั้นเปลี่ยนเป็น "ปลดล็อกแล้ว" ทันทีหลังชำระเงิน (ไม่ต้องรอรอบคำนวณ)</span></li>
+    <li><span class="pin">8</span><span><b>ขอรับสิทธิ์</b> — เปิดฟอร์มของขั้นนั้น ตรวจ required/รูปแบบก่อนส่ง มีคำเตือนส่งแล้วแก้ไม่ได้</span></li>
+    <li><span class="pin">9</span><span><b>ตัดสิทธิ์</b> — ตัดสิทธิ์คงเหลือทันทีที่ส่งสำเร็จ (กันคนแย่งกัน) และจับ snapshot ยอดสะสม ณ เวลานั้นไว้ให้แอดมินตรวจ</span></li>
+    <li><span class="pin">10</span><span><b>ตรวจ/อนุมัติ</b> — ปฏิเสธต้องกรอกเหตุผล แล้วสิทธิ์คืนกลับ ลูกค้าส่งใหม่ได้</span></li>
+    <li><span class="pin">11</span><span><b>ส่งมอบ</b> — สินค้า POS ลิงก์ไปรายการจัดส่ง · ของนอก POS ใส่เลขอ้างอิง/แนบใบส่งมอบ (เช่น PNR ตั๋ว)</span></li>
+    <li><span class="pin">12</span><span><b>ติดตามสถานะ</b> — ทุกการเปลี่ยนสถานะแจ้งลูกค้าในเว็บ/LINE</span></li>
+    <li><span class="pin">13</span><span><b>ได้รับรางวัล</b> — ปิดงานแล้วการ์ดขั้นนั้นเป็น "ได้รับแล้ว" และขอซ้ำไม่ได้</span></li>
+    <li><span class="pin">A</span><span><b>ตั้งค่าแคมเปญโควตา</b> — ผูก SKU, ราคา/ตัวคูณพอยท์, โควตารวม และโควตาต่อร้าน</span></li>
+    <li><span class="pin">B</span><span><b>เปิดเอง</b> — แคมเปญเริ่ม/จบตามวันเวลาที่ตั้ง ไม่ต้องกดเปิดปิดเอง</span></li>
+    <li><span class="pin">C</span><span><b>ใส่ตะกร้า</b> — ไม่เกินโควตาคงเหลือรวมและโควตาต่อร้าน ถ้าเกินแจ้งจำนวนที่ซื้อได้</span></li>
+    <li><span class="pin">D</span><span><b>พักโควตา</b> — เริ่มเมื่อลูกค้ากด "ไปชำระเงิน"; ลูกค้าอื่นเห็นโควตา "เหลือ" ลดลงทันที</span></li>
+    <li><span class="pin">E</span><span><b>ชำระเงิน</b> — แสดงเวลานับถอยหลังเด่นชัดตลอดหน้าเช็คเอาต์</span></li>
+    <li><span class="pin">F</span><span><b>สำเร็จ</b> — โควตาที่พักกลายเป็น "ขายแล้ว" ถาวร และพอยท์ถูกคูณตามตัวคูณของ SKU</span></li>
+    <li><span class="pin">G</span><span><b>หมดเวลา</b> — โควตาคืนเข้าระบบ ตะกร้ายังอยู่ ราคาคำนวณใหม่ตามโควตาที่เหลือ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ยกเลิกออเดอร์ที่เคยนับยอดแล้วทำให้ยอดต่ำกว่าเกณฑ์ที่ลูกค้ากดขอรับไปแล้ว → ระบบ<b>ไม่ถอนสิทธิ์อัตโนมัติ</b> แต่ขึ้นธงในคำขอให้แอดมินตัดสินใจ</li>
+    <li>แคมเปญสิ้นสุด: ปุ่มขอรับสิทธิ์ถูกปิดทุกขั้น คำขอที่ค้างอยู่ยังดำเนินการต่อได้จนปิดงาน</li>
+    <li>ลูกค้าที่ไม่มีสัญญาสะสมยอดรายปีไม่เห็นหน้าขั้นบันได (เห็นเฉพาะแคมเปญโควตา)</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ยอดสะสมนับจาก "ยอดสินค้าหลังหักส่วนลดและคูปอง" (ค่าตั้งต้นที่เลือก) หรือก่อนหักส่วนลด?</li>
+    <li>ปีสัญญาของแต่ละร้านเริ่ม/จบพร้อมกันทั้งแคมเปญ (ปีปฏิทิน) หรือเริ่มตามวันที่เซ็นสัญญารายร้าน?</li>
+    <li>ถ้ายกเลิก/คืนสินค้าหลังขอรับรางวัลไปแล้วจนยอดต่ำกว่าเกณฑ์ ต้องเรียกคืนรางวัลหรือไม่ (ค่าตั้งต้น: ไม่เรียกคืนอัตโนมัติ ให้แอดมินพิจารณา)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

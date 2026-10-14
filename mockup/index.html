@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pharmaplex Mockup — โปรโมชั่น คูปอง พอยท์ แคมเปญ สุ่มรางวัล เซตร้านยาเปิดใหม่</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="assets/mockup.css">
+<script src="assets/registry.js"></script>
+<style>
+  .hub{max-width:1240px;margin:0 auto;padding:32px 24px 64px}
+  .hub h1{margin-bottom:8px}
+  .mod{background:#fff;border:1px solid var(--g200);border-radius:16px;box-shadow:var(--z1);padding:24px}
+  .mod .no{font-size:13px;font-weight:700;color:var(--primary);letter-spacing:.06em}
+  .mod ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+  .mod li a{display:flex;gap:8px;align-items:center;padding:8px 10px;border-radius:8px;border:1px solid var(--g200);color:var(--text);text-decoration:none;font-size:13px}
+  .mod li a:hover{border-color:var(--primary);background:var(--primary-lighter)}
+  .mod li .r{margin-left:auto}
+  .rel{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;font-size:13px}
+  .rel div{background:#fff;border:1px solid var(--g200);border-radius:12px;padding:14px}
+  .rel b{display:block;margin-bottom:4px}
+</style>
+</head>
+<body>
+<div class="hub">
+  <p class="mb8"><a href="../index.html">◀ กลับหน้าหลัก cupon</a></p><div class="chip soft-primary mb8">MOCKUP สำหรับนำเสนอลูกค้า + ใช้เป็นแนวทาง dev</div>
+  <h1>ระบบโปรโมชั่น · คูปอง · พอยท์ · แคมเปญ · สุ่มรางวัล · เซตร้านยาเปิดใหม่</h1>
+  <p class="muted mt8" style="max-width:860px">
+    ทุกหน้าเป็น HTML คลิกต่อกันได้ตาม flow จริง — สกินตามธีม pmpc (แดง <code>#B32026</code>, Noto Sans Thai, การ์ด/ปุ่ม/ตารางสไตล์ MUI เดียวกับหน้าแอดมินปัจจุบัน)
+    แต่ละหน้าแนบ "หมายเหตุ UX" (วงเลขเหลือง) บอกพฤติกรรม กติกา และข้อที่ยังต้องตัดสินใจ · เริ่มจากกดการ์ดโมดูลด้านล่าง แล้วเปิดหน้า <b>"ภาพรวม Flow"</b> ของโมดูลนั้นก่อน
+  </p>
+
+  <div class="rel mt24">
+    <div><b>ทุกโมดูลไหลเข้าจุดเดียวกัน</b>ตะกร้า/เช็คเอาต์ (โปรโมชั่น → คูปอง → พอยท์ที่ใช้ → ยอดสุทธิ)</div>
+    <div><b>ผลหลังชำระเงิน</b>ได้พอยท์รายสินค้า · ยอดสะสมแคมเปญ · สิทธิ์ลุ้นรางวัล (Tickets)</div>
+    <div><b>รางวัลไม่ต้องสร้างระบบใหม่</b>ไหลเข้ากระเป๋าคูปอง / ยอดพอยท์ / คิวคำขอรับของ ที่มีอยู่แล้ว</div>
+  </div>
+
+  <div class="grid g3 mt24" id="mods"></div>
+</div>
+<script src="assets/mockup.js"></script>
+<script>
+  (function () {
+    var host = document.getElementById('mods');
+    var roleChip = { admin: '<span class="chip soft-info r">แอดมิน</span>', customer: '<span class="chip soft-primary r">ลูกค้า</span>', both: '<span class="chip soft-success r">ภาพรวม</span>' };
+    host.innerHTML = window.MOCKUP.modules.map(function (m) {
+      return '<section class="mod"><div class="no">MODULE ' + m.no + '</div><h3>' + m.title + '</h3>' +
+        '<p class="muted small mt8">' + m.desc + '</p><ul>' +
+        m.screens.map(function (s) {
+          return '<li><a href="' + m.slug + '/' + s.file + '"><span>' + s.title + '</span>' + roleChip[s.role] + '</a></li>';
+        }).join('') + '</ul></section>';
+    }).join('');
+  })();
+</script>
+</body>
+</html>

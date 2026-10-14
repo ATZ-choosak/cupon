@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ฟอร์มรับสิทธิ์ + ประวัติ — Pharmaplex</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .dialog-b .field{margin-bottom:14px}
+  .input.err{border-color:var(--error);background:#FFF8F8}
+  .file-drop{border:1.5px dashed var(--g400);border-radius:10px;padding:12px 14px;background:var(--g50);display:flex;align-items:center;gap:12px}
+  .file-drop .ft{width:40px;height:40px;border-radius:8px;background:var(--g200);flex:none}
+  .claim-card{padding:18px 20px}
+  .claim-card .stepper{margin:14px 0 12px}
+  .claim-card .stepper .st{font-size:12.5px}
+  .next{border-radius:10px;padding:10px 14px;font-size:12.5px;background:var(--g50);border:1px solid var(--g200)}
+  .src-pts{background:#EDE7F6;color:#4527A0}
+  .state-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .sum-box{display:grid;grid-template-columns:repeat(3,1fr);gap:0;background:var(--g50);border:1px solid var(--g200);border-radius:10px;margin-bottom:14px}
+  .sum-box>div{padding:10px 14px;border-right:1px solid var(--g200)}
+  .sum-box>div:last-child{border-right:0}
+  .sum-box b{display:block;font-size:15px}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="campaign">
+<main id="screen">
+
+  <div class="crumbs"><a href="06-customer-ladder.html">ขั้นบันไดรางวัลของฉัน</a> / ขอรับสิทธิ์ขั้น 3</div>
+  <h4>ขอรับสิทธิ์รางวัล</h4>
+  <p class="muted mb16">กรอกข้อมูลที่ทีมงานต้องใช้ในการดำเนินการ · ฟอร์มนี้เป็นแบบเดียวกันสำหรับทุกร้านที่ปลดล็อกขั้นนี้</p>
+
+  <div class="backdrop mb24"><div class="dialog md relative">
+    <div class="dialog-h">ขอรับสิทธิ์ · ขั้น 3 ทริปสัมมนาเภสัชกรต่างประเทศ<button class="x">✕</button></div>
+    <div class="dialog-b">
+      <div class="sum-box relative"><span class="pin abs">1</span>
+        <div><span class="small muted">ยอดเกณฑ์ขั้น 3</span><b>฿500,000 <span style="color:var(--success-dark)">✓</span></b></div>
+        <div><span class="small muted">ยอดสะสมของคุณ</span><b>฿642,350</b></div>
+        <div><span class="small muted">สิทธิ์คงเหลือ</span><b style="color:var(--warning-dark)">17 / 20</b></div>
+      </div>
+
+      <div class="alert error mb16"><div><div class="a-title">กรุณาแก้ไข 2 รายการก่อนส่ง</div>ชื่อผู้เดินทางต้องเป็นตัวอักษรภาษาอังกฤษ · เบอร์ติดต่อต้องมี 10 หลัก</div></div>
+
+      <div class="relative"><span class="pin abs" style="top:-12px;left:-14px">2</span>
+        <div class="field"><label>ชื่อผู้เดินทางตามพาสปอร์ต <span style="color:var(--error-dark)">*</span></label>
+          <input class="input err" value="สมชาย ใจดี"><span class="err relative"><span class="pin" style="margin:0 6px 0 0">3</span>กรอกเป็นตัวอักษรภาษาอังกฤษตามพาสปอร์ต เช่น SOMCHAI JAIDEE</span></div>
+        <div class="field"><label>เบอร์ติดต่อ <span style="color:var(--error-dark)">*</span></label>
+          <input class="input err" value="081-234-567"><span class="err">เบอร์โทรศัพท์ต้องมี 10 หลัก (ตอนนี้ 9 หลัก)</span></div>
+        <div class="field"><label>เลือกวันเดินทาง <span style="color:var(--error-dark)">*</span></label>
+          <select class="select"><option>รอบที่ 1 · 14–16 ก.พ. 2570 (ว่าง)</option><option>รอบที่ 2 · 21–23 ก.พ. 2570 (ว่าง)</option></select></div>
+        <div class="field relative"><span class="pin abs" style="top:-4px;left:-14px">4</span>
+          <label>แนบสำเนาพาสปอร์ต <span style="color:var(--error-dark)">*</span></label>
+          <div class="file-drop"><span class="ft"></span><div class="grow"><b>passport_somchai.jpg</b><div class="small muted">1.2 MB · อัปโหลดแล้ว</div></div><button class="btn text sm">เปลี่ยนไฟล์</button></div>
+          <span class="help">รองรับ JPG / PNG / PDF ไม่เกิน 5 MB · ใช้เพื่อจองตั๋วเท่านั้น</span></div>
+      </div>
+
+      <label class="check mb16 relative"><input type="checkbox"> ข้าพเจ้ายืนยันว่าข้อมูลข้างต้นถูกต้องและตรงกับเอกสารจริง</label>
+
+      <div class="alert warning relative"><span class="pin abs" style="top:-10px;left:-10px">5</span><div><div class="a-title">ส่งแล้วแก้ไขไม่ได้</div>
+        หลังกดส่งคำขอ คุณแก้ไขข้อมูลเองไม่ได้ หากต้องการแก้ไขโปรดติดต่อทีมงาน (LINE @pharmaplex · 02-123-4567) · สิทธิ์ 1 ที่จะถูกตัดจากจำนวนคงเหลือทันที</div></div>
+    </div>
+    <div class="dialog-f relative"><span class="pin abs" style="top:-4px;left:auto;right:-6px">6</span>
+      <a class="btn text grey" href="06-customer-ladder.html">ยกเลิก</a><button class="btn contained" disabled>ส่งคำขอรับสิทธิ์</button></div>
+  </div></div>
+
+  <h5 class="mb8">สถานะหลังกดส่ง <span class="pin">7</span></h5>
+  <div class="state-grid mb24">
+    <div class="card" style="border-color:var(--success)"><div class="card-b">
+      <div class="row"><span class="chip success lg">ส่งคำขอสำเร็จ</span><span class="muted small">CL-2569-0046</span></div>
+      <p class="mt8"><b>ระบบตัดสิทธิ์ให้คุณแล้ว (เหลือ 16/20)</b></p>
+      <p class="small muted mt8">ทีมงานจะตรวจสอบข้อมูลภายใน 2 วันทำการ และแจ้งผลทาง LINE / อีเมล · ติดตามสถานะได้ที่ "คำขอของฉัน" ด้านล่าง</p>
+      <div class="row mt16"><a class="btn contained sm" href="#history">ดูคำขอของฉัน</a><a class="btn outlined sm" href="06-customer-ladder.html">กลับขั้นบันได</a></div>
+    </div></div>
+    <div class="card" style="border-color:var(--error)"><div class="card-b">
+      <div class="row"><span class="chip error lg">ส่งไม่สำเร็จ</span><span class="muted small">สิทธิ์เต็มระหว่างที่กรอกฟอร์ม</span></div>
+      <p class="mt8"><b>ขออภัย สิทธิ์ขั้นนี้ถูกกดครบแล้ว (0/20)</b></p>
+      <p class="small muted mt8">ข้อมูลที่คุณกรอกไม่ถูกบันทึกและไม่ตัดสิทธิ์ · ยอดสะสมของคุณยังนับต่อไปยังขั้น 4 · หากสนใจ ติดต่อฝ่ายขายได้</p>
+      <div class="row mt16"><a class="btn outlined sm" href="06-customer-ladder.html">กลับขั้นบันได</a></div>
+    </div></div>
+  </div>
+
+  <div id="history" class="row between mb8"><h5>คำขอของฉัน (4) <span class="pin">8</span></h5><span class="small muted">รวมคำขอจากแคมเปญสะสมยอดและการแลกของรางวัลด้วยพอยท์</span></div>
+  <div class="stack">
+
+    <div class="card claim-card">
+      <div class="row between top">
+        <div><span class="chip src-pts">แลกพอยท์</span> <b style="margin-left:6px">กระติกน้ำสุญญากาศ</b><div class="small muted mt8">CL-2569-0045 · ใช้ 1,200 พอยท์ · ส่งคำขอ 12 ต.ค. 2569 08:15</div></div>
+        <span class="chip soft-warning lg">รอตรวจ</span>
+      </div>
+      <div class="stepper"><div class="st done"><span class="n">✓</span>ส่งคำขอ</div><div class="st on"><span class="n">2</span>ตรวจสอบ</div><div class="st"><span class="n">3</span>อนุมัติ</div><div class="st"><span class="n">4</span>จัดส่ง</div><div class="st"><span class="n">5</span>เสร็จสิ้น</div></div>
+      <div class="next relative"><span class="pin abs" style="top:-10px">9</span><b>ต้องทำอะไรต่อ:</b> ไม่ต้องทำอะไร — ทีมงานกำลังตรวจที่อยู่จัดส่งและสต็อก คาดว่าอนุมัติภายใน 2 วันทำการ</div>
+    </div>
+
+    <div class="card claim-card">
+      <div class="row between top">
+        <div><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 2</span> <b style="margin-left:6px">เครื่องฟอกอากาศ</b><div class="small muted mt8">CL-2569-0039 · ส่งคำขอ 7 ต.ค. 2569 13:10 · อนุมัติ 8 ต.ค.</div></div>
+        <span class="chip info lg">กำลังจัดส่ง</span>
+      </div>
+      <div class="stepper"><div class="st done"><span class="n">✓</span>ส่งคำขอ</div><div class="st done"><span class="n">✓</span>ตรวจสอบ</div><div class="st done"><span class="n">✓</span>อนุมัติ</div><div class="st on"><span class="n">4</span>จัดส่ง</div><div class="st"><span class="n">5</span>เสร็จสิ้น</div></div>
+      <div class="next"><b>ต้องทำอะไรต่อ:</b> เตรียมรับพัสดุ EMS TH4821 0093 5TH · คาดว่าถึง 14–15 ต.ค. · ตรวจสภาพสินค้าตอนรับ หากมีปัญหาแจ้งทีมงานภายใน 7 วัน</div>
+    </div>
+
+    <div class="card claim-card" style="border-color:var(--error)">
+      <div class="row between top">
+        <div><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 3</span> <b style="margin-left:6px">ทริปสัมมนาเภสัชกรต่างประเทศ</b><div class="small muted mt8">CL-2569-0036 · ส่งคำขอ 29 ก.ย. 2569 15:02 · ปฏิเสธ 30 ก.ย.</div></div>
+        <span class="chip error lg">ปฏิเสธ</span>
+      </div>
+      <div class="alert error mt16"><div><div class="a-title">เหตุผลจากทีมงาน</div>สำเนาพาสปอร์ตอ่านไม่ชัด ไม่สามารถยืนยันชื่อผู้เดินทางได้ — กรุณาแนบไฟล์ใหม่ที่เห็นข้อมูลครบทุกบรรทัด</div></div>
+      <div class="next mt8 row between"><span><b>ต้องทำอะไรต่อ:</b> สิทธิ์ของคุณถูกคืนแล้ว (ยังมีสิทธิ์เหลือ 17/20) — ส่งคำขอใหม่ได้</span><a class="btn contained sm" href="#top">ขอรับสิทธิ์อีกครั้ง</a></div>
+    </div>
+
+    <div class="card claim-card" style="opacity:.92">
+      <div class="row between top">
+        <div><span class="chip soft-primary">สะสมยอด 2569 · ขั้น 1</span> <b style="margin-left:6px">เครื่องวัดความดันโลหิตดิจิทัล</b><div class="small muted mt8">CL-2569-0012 · ส่งคำขอ 3 ก.ค. 2569 · ส่งมอบ 9 ก.ค. 2569</div></div>
+        <span class="chip success lg">เสร็จสิ้น</span>
+      </div>
+      <div class="stepper"><div class="st done"><span class="n">✓</span>ส่งคำขอ</div><div class="st done"><span class="n">✓</span>ตรวจสอบ</div><div class="st done"><span class="n">✓</span>อนุมัติ</div><div class="st done"><span class="n">✓</span>จัดส่ง</div><div class="st done"><span class="n">✓</span>เสร็จสิ้น</div></div>
+    </div>
+  </div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>สรุปบนหัวฟอร์ม</b> — ยืนยันว่าถึงเกณฑ์จริงและบอกสิทธิ์คงเหลือก่อนกรอก · ถ้าสิทธิ์เหลือน้อยเน้นสีส้ม</span></li>
+    <li><span class="pin">2</span><span><b>ช่องกรอก = ฟอร์มที่แอดมินออกแบบ</b> (03) เรียงตามที่ตั้ง ใช้ฟอร์มเดียวกันกับทุกร้านที่ปลดล็อกขั้นนี้ · ช่องจำเป็นมีดอกจันสีแดง · ท้ายฟอร์มระบบเพิ่มช่องติ๊กยืนยันให้เสมอ</span></li>
+    <li><span class="pin">3</span><span><b>Validation</b> — ตรวจเมื่อออกจากช่องและตอนกดส่ง ข้อความบอกวิธีแก้พร้อมตัวอย่าง · มีสรุปบนสุด · ไม่ล้างค่าที่กรอก</span></li>
+    <li><span class="pin">4</span><span><b>แนบไฟล์</b> — JPG/PNG/PDF ≤ 5 MB แสดงชื่อไฟล์/ขนาด ขึ้น error ใต้ช่องถ้าชนิดหรือขนาดไม่ผ่าน</span></li>
+    <li><span class="pin">5</span><span><b>คำเตือนก่อนส่ง</b> — "ส่งแล้วแก้ไขไม่ได้ ติดต่อทีมงานเท่านั้น" เห็นตลอดเหนือปุ่มส่ง และบอกว่าสิทธิ์จะถูกตัดทันที</span></li>
+    <li><span class="pin">6</span><span><b>ปุ่มส่ง</b> — ปิดอยู่จนกว่าจะติ๊กยืนยันและกรอกช่องจำเป็นครบ · กดแล้วปุ่มเป็น loading กันกดซ้ำ</span></li>
+    <li><span class="pin">7</span><span><b>ผลหลังกดส่ง</b> — สำเร็จ: แสดงเลขคำขอ + ขั้นตอนต่อไป · สิทธิ์เต็มระหว่างกรอก: ไม่บันทึกอะไรและไม่ตัดสิทธิ์ อธิบายตรงๆ</span></li>
+    <li><span class="pin">8</span><span><b>คำขอของฉัน</b> — รวมทุกแหล่ง (แคมเปญ + แลกพอยท์) เรียงใหม่สุดก่อน แต่ละคำขอมี stepper 5 ขั้น</span></li>
+    <li><span class="pin">9</span><span><b>"ต้องทำอะไรต่อ"</b> — ข้อความสั้นตามสถานะ: รอตรวจ (ไม่ต้องทำอะไร), กำลังจัดส่ง (เตรียมรับ + เลขพัสดุ), ปฏิเสธ (เหตุผล + ปุ่มขอใหม่), เสร็จสิ้น (ไม่มี)</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ลูกค้าส่งคำขอได้ 1 ครั้งต่อขั้นต่อปีสัญญา ยกเว้นคำขอที่ถูกปฏิเสธ</li>
+    <li>ตัดสิทธิ์ตอน "ส่งสำเร็จ" ไม่ใช่ตอนเปิดฟอร์ม — จึงมีกรณีสิทธิ์เต็มระหว่างกรอก (ใช้การตรวจ+ตัดแบบ atomic ฝั่งระบบ)</li>
+    <li>ข้อมูลที่กรอกแล้วแก้เองไม่ได้ — ต้องติดต่อทีมงาน ซึ่งแก้ในหน้าคิวคำขอ (04) พร้อมบันทึกประวัติ</li>
+    <li>แคมเปญสิ้นสุดระหว่างกรอกฟอร์ม: ส่งไม่สำเร็จ ข้อความ "แคมเปญนี้สิ้นสุดแล้ว"</li>
+    <li>รางวัลประเภทคูปอง/พอยท์ ไม่มีฟอร์มและไม่มีสถานะรอตรวจ — ออกเข้ากระเป๋าทันทีและขึ้น "ได้รับแล้ว"</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ลูกค้าแก้ข้อมูลหลังส่ง (เช่น พิมพ์ชื่อพาสปอร์ตผิด) ต้องผ่านทีมงานเท่านั้นตามสเปก — ต้องการช่องทางขอแก้ไขในหน้านี้ (ส่งข้อความหาทีมงาน) หรือไม่</li>
+    <li>ระยะเวลาที่ให้ลูกค้าเห็นว่า "ตรวจภายใน 2 วันทำการ" เป็นคำสัญญาที่ธุรกิจรับได้จริงหรือไม่</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

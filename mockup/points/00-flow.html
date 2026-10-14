@@ -1,0 +1,149 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ภาพรวม Flow พอยท์</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .swim .node{width:158px;min-height:84px;font-size:12px}
+  .swim .gap{width:26px}
+  .swim .lane-b{padding:18px 16px 16px 20px}
+  .swim-title{display:flex;align-items:center;gap:10px;margin:0 0 10px}
+  .swim-title h5{font-size:15px}
+  .node small{display:block;color:var(--text2);font-size:11px;margin-top:2px}
+  .node .tolink{display:block;margin-top:4px;font-size:11px;color:var(--primary);font-weight:600}
+  .col-sp{flex:none;visibility:hidden}
+</style>
+</head>
+<body data-shell="bare">
+<main id="screen" style="max-width:1320px;margin:0 auto;padding:24px">
+
+  <div class="page-head">
+    <div>
+      <h4>ภาพรวม Flow: พอยท์</h4>
+      <p class="muted">พอยท์เกิดจากสินค้าที่ลูกค้าซื้อ (รายสินค้า × จำนวน × ตัวคูณแคมเปญ) เข้าบัญชีทันทีเมื่อชำระเงินสำเร็จ แล้วนำไปแลกคูปอง ส่งฟรี ของพรีเมียม เครดิต หรือสิทธิ์ลุ้น · คลิกกล่องในแผนภาพเพื่อไปดูหน้าจอจริง</p>
+    </div>
+    <div class="row"><a class="btn outlined" href="01-admin-rules.html">เริ่มที่ฝั่งแอดมิน</a><a class="btn contained" href="04-customer-dashboard.html">เริ่มที่ฝั่งลูกค้า</a></div>
+  </div>
+
+  <div class="swim-title"><h5>เส้นทางหลัก: ตั้งค่า → ซื้อ → ได้พอยท์ → แลกของรางวัล</h5></div>
+  <div class="swim">
+    <!-- ลูกค้า -->
+    <div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b">
+      <div class="gap sp" style="width:184px"></div>
+      <a class="node cust" href="06-customer-earn-preview.html"><span class="pin no">3</span><b>ซื้อสินค้า + ชำระเงิน</b>เห็น "จะได้กี่พอยท์" ตั้งแต่การ์ดสินค้า ตะกร้า ถึงหลังชำระ<span class="tolink">06 พอยท์ที่จะได้ →</span></a><div class="gap">↘</div>
+      <div class="gap sp" style="width:368px"></div>
+      <a class="node cust" href="05-customer-redeem.html"><span class="pin no">6</span><b>ดูพอยท์ / เลือกแลกของรางวัล</b>กดแลก ยืนยัน (ย้อนไม่ได้)<span class="tolink">04 พอยท์ของฉัน · 05 แลกของ →</span></a><div class="gap">↘</div>
+    </div></div>
+    <!-- ระบบ -->
+    <div class="lane"><div class="lane-h">ระบบ</div><div class="lane-b">
+      <div class="gap sp" style="width:368px"></div>
+      <div class="node sys"><span class="pin no">4</span><b>คิดพอยท์ตาม SKU × ตัวคูณ</b>Σ(จำนวน × พอยท์/หน่วย × ตัวคูณ) ปัดเศษตามกติกา</div><div class="gap">→</div>
+      <div class="node end"><span class="pin no">5</span><b>พอยท์เข้าบัญชีทันที</b>บันทึกลงสมุดพอยท์ + กำหนดวันหมดอายุของล็อตนั้น</div><div class="gap">↗</div>
+      <div class="gap sp" style="width:184px"></div>
+      <div class="node end"><span class="pin no">7</span><b>หักพอยท์ + ออกสิทธิ์ทันที</b>คูปอง→กระเป๋า · ของ→คิวคำขอรับของ · เครดิต→บัญชี · สิทธิ์ลุ้น→Tickets</div>
+    </div></div>
+    <!-- แอดมิน -->
+    <div class="lane"><div class="lane-h">แอดมิน</div><div class="lane-b">
+      <a class="node adm" href="01-admin-rules.html"><span class="pin no">1</span><b>ตั้งอัตราพอยท์รายสินค้า + ตัวคูณแคมเปญ</b>ตั้งก่อนเปิดขาย<span class="tolink">01 กติกาพอยท์ →</span></a><div class="gap">↗</div>
+      <div class="gap sp" style="width:552px"></div>
+      <a class="node adm" href="02-admin-catalog.html"><span class="pin no">2</span><b>ตั้งรายการแลก + พอยท์ที่ใช้ ↑</b>ตั้งไว้ก่อน ใช้ตอนลูกค้าแลก<span class="tolink">02 แคตตาล็อกแลก →</span></a>
+    </div></div>
+  </div>
+
+  <div class="swim-title mt24"><h5>เหตุการณ์แยก: ยกเลิกออเดอร์ · พอยท์หมดอายุ · ปรับด้วยมือ</h5></div>
+  <div class="swim">
+    <div class="lane"><div class="lane-h">ลูกค้า</div><div class="lane-b">
+      <div class="gap sp" style="width:368px"></div>
+      <a class="node cust" href="04-customer-dashboard.html"><span class="pin no">A</span><b>เห็นรายการ "หักคืน" ในประวัติ</b>เช่น −340 พอยท์ อ้างอิงเลขออเดอร์<span class="tolink">04 พอยท์ของฉัน →</span></a>
+      <div class="gap sp" style="width:26px"></div>
+      <div class="gap sp" style="width:184px"></div>
+      <a class="node cust" href="04-customer-dashboard.html"><span class="pin no">B</span><b>เห็นแถบเตือนพอยท์ใกล้หมดอายุ</b>แสดงบนเว็บ ไม่ส่ง SMS/อีเมล/LINE<span class="tolink">04 → 05 รีบแลก →</span></a>
+    </div></div>
+    <div class="lane"><div class="lane-h">ระบบ</div><div class="lane-b">
+      <div class="gap sp" style="width:184px"></div>
+      <div class="node warn"><span class="pin no">A</span><b>หักพอยท์ที่ออเดอร์นั้นเคยให้คืน</b>อัตโนมัติ (ตามนโยบาย "ยกเลิกออเดอร์ → หักคืน")</div><div class="gap">↗</div>
+      <div class="gap sp" style="width:184px"></div>
+      <div class="node warn"><span class="pin no">B</span><b>ตรวจวันหมดอายุทุกคืน</b>ล็อตที่เหลือ ≤30 วัน และ ≤7 วัน → ขึ้นเตือน</div><div class="gap">↗</div>
+      <div class="gap sp" style="width:184px"></div>
+      <div class="node warn"><span class="pin no">B</span><b>ตัดพอยท์ที่หมดอายุ</b>บันทึกรายการ "หมดอายุ" ในสมุด ย้อนคืนไม่ได้</div>
+    </div></div>
+    <div class="lane"><div class="lane-h">แอดมิน</div><div class="lane-b">
+      <a class="node adm" href="03-admin-ledger.html" style="width:158px"><span class="pin no">C</span><b>ยกเลิกออเดอร์ / ปรับพอยท์ด้วยมือ</b>ต้องใส่เหตุผล · ดูสมุดพอยท์<span class="tolink">03 สมุดพอยท์ →</span></a>
+      <div class="gap">↗</div>
+    </div></div>
+  </div>
+  <div class="flow-legend"><span><i style="background:#fff"></i>ลูกค้า</span><span><i style="background:var(--primary-lighter)"></i>แอดมิน</span><span><i style="background:var(--info-lighter)"></i>ระบบ</span><span><i style="background:var(--success-lighter)"></i>ผลลัพธ์</span><span><i style="background:var(--warning-lighter)"></i>เหตุการณ์พิเศษ (ยกเลิก/หมดอายุ)</span></div>
+
+  <div class="grid g2 mt16">
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">กติกาหลัก</h6>
+      <ul style="margin:0;padding-left:18px;display:grid;gap:6px;font-size:13px">
+        <li><b>พอยท์คิดรายสินค้า ไม่ใช่จากยอดบิล</b> — พอยท์ = Σ(จำนวน × พอยท์ต่อหน่วยของสินค้านั้น × ตัวคูณแคมเปญ) สินค้าควบคุมราคา ยาน้ำ นมผง หรือราคาพิเศษตั้งเป็น 0 ได้</li>
+        <li><b>เข้าบัญชีทันทีที่ชำระเงินสำเร็จ</b> ไม่ต้องกดแปลงหรือรออนุมัติ</li>
+        <li><b>ตัวคูณซ้อนกันคือบวกกัน</b> เช่น ×1.5 + ×2 → ×3.5 (ไม่ใช่ 1.5 × 2 = 3)</li>
+        <li><b>วันหมดอายุตั้งต่อรอบ/ต่อแคมเปญ</b> ไม่ใช่นโยบายเดียวทั้งระบบ — มีค่าเริ่มต้น แล้ว override รายแคมเปญได้</li>
+        <li><b>แลกแล้วหักทันที ใช้สิทธิ์ได้ทันที</b> และยกเลิกการแลกเองไม่ได้ (ต้องให้แอดมินปรับ)</li>
+        <li><b>ยอดสะสมแคมเปญเป็นบัญชีแยก</b> ไม่ถูกหักเมื่อแลกพอยท์ และแปลงเป็นพอยท์ไม่ได้ (ใช้ปลดล็อกขั้นบันไดรายปีเท่านั้น)</li>
+        <li><b>ยกเลิกออเดอร์ → หักพอยท์ที่ออเดอร์นั้นให้คืนอัตโนมัติ</b> (เปิด/ปิดได้ที่นโยบาย) แต่ไม่เรียกคืนรางวัลที่แลกไปแล้ว</li>
+        <li><b>ไม่มีการแจ้งเตือนทาง SMS / อีเมล / LINE</b> — เตือนพอยท์หมดอายุเป็นแถบบนเว็บเท่านั้น (นโยบายร่วมของระบบ)</li>
+      </ul>
+    </div></div>
+
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">สถานะของสิ่งที่ลูกค้าได้รับ</h6>
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>สิ่งที่ได้รับ</th><th>สถานะ</th><th>ความหมาย</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="4"><b>พอยท์</b><div class="small muted">ทีละล็อต (แต่ละล็อตมีวันหมดอายุของตัวเอง)</div></td><td><span class="chip success">ใช้ได้</span></td><td class="small">อยู่ในยอดคงเหลือ แลกได้ทันที</td></tr>
+          <tr><td><span class="chip warning">ใกล้หมดอายุ</span></td><td class="small">เหลือ ≤30 วัน — ขึ้นแถบเตือน (≤7 วัน เป็นสีแดง)</td></tr>
+          <tr><td><span class="chip">หมดอายุ</span></td><td class="small">ตัดออกจากยอด บันทึกรายการ "หมดอายุ"</td></tr>
+          <tr><td><span class="chip soft-error">หักคืน</span></td><td class="small">ออเดอร์ถูกยกเลิก พอยท์ที่เคยให้ถูกหักออก</td></tr>
+          <tr><td><b>คูปองที่แลก</b></td><td><span class="chip success">พร้อมใช้</span> <span class="chip">ใช้แล้ว</span> <span class="chip error">หมดอายุ</span></td><td class="small">อยู่ในกระเป๋าคูปอง · นับอายุหลังแลกตามที่ตั้งไว้</td></tr>
+          <tr><td><b>ของพรีเมียม</b></td><td><span class="chip soft-warning">รอตรวจสอบ</span> <span class="chip soft-info">กำลังเตรียม</span> <span class="chip success">ส่งแล้ว</span></td><td class="small">เข้าคิวคำขอรับของเดียวกับรางวัลแคมเปญ</td></tr>
+          <tr><td><b>เครดิตเงินคืน</b></td><td><span class="chip success">ในบัญชี</span> <span class="chip">ใช้แล้ว</span></td><td class="small">หักจากยอดชำระออเดอร์ถัดไป</td></tr>
+          <tr><td><b>สิทธิ์ลุ้นรางวัล</b></td><td><span class="chip success">รอใช้</span> <span class="chip">ใช้แล้ว</span></td><td class="small">อยู่ใน Tickets ของโมดูลสุ่มรางวัล</td></tr>
+        </tbody>
+      </table></div>
+    </div></div>
+  </div>
+
+  <div class="card mt16"><div class="card-b">
+    <h6 class="mb8">เชื่อมกับโมดูลอื่นอย่างไร</h6>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th style="width:180px">โมดูล</th><th>จุดเชื่อม</th><th style="width:240px">หน้าที่เกี่ยวข้อง</th></tr></thead>
+      <tbody>
+        <tr><td><b>แคมเปญ</b></td><td>ตัวคูณพอยท์ตั้งที่แคมเปญ แล้วมาซ้อน (บวก) ตอนคิดพอยท์ · ยอดสะสมแคมเปญเป็นบัญชีแยก · ของพรีเมียมที่แลกเข้าคิวคำขอรับของเดียวกับรางวัลแคมเปญ</td><td><a href="../campaign/01-admin-list.html">แคมเปญ: รายการ</a> · <a href="../campaign/04-admin-claims.html">คิวคำขอรับรางวัล</a> · <a href="../campaign/06-customer-ladder.html">ขั้นบันไดของฉัน</a></td></tr>
+        <tr><td><b>คูปอง</b></td><td>แลกคูปองลด/ส่งฟรี ได้คูปองออนไลน์เข้ากระเป๋าทันที ใช้ตามกติกาคูปอง (ยอดขั้นต่ำ วันหมดอายุ)</td><td><a href="../coupon/08-customer-center.html">ศูนย์คูปอง + กระเป๋า</a></td></tr>
+        <tr><td><b>สุ่มรางวัล</b></td><td>แลกพอยท์เป็นสิทธิ์ลุ้น (Ticket) หนึ่งในทางเข้าสิทธิ์ของกิจกรรม — ระยะถัดไป</td><td><a href="../raffle/06-customer-tickets.html">สิทธิ์ลุ้นของฉัน</a> · <a href="../raffle/01-admin-list.html">รายการกิจกรรม</a></td></tr>
+        <tr><td><b>โปรโมชั่น</b></td><td>พอยท์คิดจากสินค้าที่ซื้อจริง ไม่รวมของแถมที่ได้ฟรี (ของแถม = 0 พอยท์) · ราคาหลังหักส่วนลดไม่มีผลต่อพอยท์ เพราะคิดต่อหน่วย</td><td><a href="../promotion/09-customer-cart.html">ตะกร้า: โปรที่ได้รับ</a></td></tr>
+        <tr><td><b>ออเดอร์ / ชำระเงิน</b></td><td>ชำระสำเร็จ → ให้พอยท์ · ยกเลิกออเดอร์ → หักคืน · เครดิตเงินคืนที่แลกไว้ใช้เป็นส่วนลดตอนชำระ</td><td class="muted">ระบบสั่งซื้อเดิมของ pmpc</td></tr>
+      </tbody>
+    </table></div>
+  </div></div>
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ตั้งก่อนขาย:</b> อัตราพอยท์รายสินค้า (รวมตั้งตามแบรนด์/หมวด) + ตัวคูณแคมเปญ + นโยบายหมดอายุ — สินค้าที่ยังไม่ตั้งใช้ "ค่าเริ่มต้นเมื่อสินค้าไม่ได้ตั้งไว้"</span></li>
+    <li><span class="pin">2</span><span><b>ตั้งรายการแลก:</b> ประเภท พอยท์ที่ใช้ โควตารวม/ต่อคน สถานะ — ปิดชั่วคราวได้โดยไม่กระทบสิทธิ์ที่ลูกค้าแลกไปแล้ว</span></li>
+    <li><span class="pin">3</span><span><b>ลูกค้าเห็นพอยท์ก่อนจ่าย:</b> การ์ดสินค้า → ตะกร้า (รายการละเอียด) → หน้าผลลัพธ์หลังชำระ เพื่อให้เห็นว่าซื้ออะไรได้พอยท์เท่าไร</span></li>
+    <li><span class="pin">4</span><span><b>คิดที่เซิร์ฟเวอร์:</b> ตัวเลขบนหน้าจอเป็นประมาณการ ยอดจริงคำนวณที่ระบบตอนชำระสำเร็จ (ใช้อัตราและตัวคูณ ณ เวลาที่ชำระ)</span></li>
+    <li><span class="pin">5</span><span><b>เข้าทันที:</b> ไม่มีขั้นตอนกดรับ/แปลง — แต่ละออเดอร์สร้างล็อตใหม่ 1 ล็อต (ฐาน + ส่วนเพิ่มจากตัวคูณ) พร้อมวันหมดอายุ</span></li>
+    <li><span class="pin">6</span><span><b>แลกแล้วย้อนไม่ได้เอง:</b> ต้องผ่านหน้าต่างยืนยันที่แสดงยอดคงเหลือหลังแลก — ถ้าแลกผิด ต้องติดต่อแอดมินเพื่อปรับพอยท์</span></li>
+    <li><span class="pin">7</span><span><b>ออกสิทธิ์ทันที:</b> คูปอง→กระเป๋าคูปอง · ของพรีเมียม→คิวคำขอรับของ (ลูกค้ากรอกที่อยู่/ฟอร์ม) · เครดิต→ยอดเครดิตในบัญชี · สิทธิ์ลุ้น→Tickets</span></li>
+    <li><span class="pin">A</span><span><b>ยกเลิกออเดอร์:</b> หักคืนเท่ากับที่ออเดอร์นั้นให้ไว้ (ทั้งฐานและส่วนเพิ่ม) ตามนโยบายที่เปิดไว้ ถ้าพอยท์ถูกแลกไปแล้วจะหักได้เท่าที่เหลือในบัญชี (ดูข้อที่ต้องตัดสินใจ)</span></li>
+    <li><span class="pin">B</span><span><b>หมดอายุ:</b> ระบบตรวจทุกคืน ขึ้นแถบเตือนที่ 30 และ 7 วันก่อน แล้วตัดล็อตที่หมดอายุ — ไม่มีการส่ง SMS/อีเมล/LINE</span></li>
+    <li><span class="pin">C</span><span><b>ปรับด้วยมือ:</b> ทำได้เฉพาะแอดมินที่มีสิทธิ์ ต้องใส่เหตุผล เกินวงเงินต้องให้ผู้จัดการอนุมัติ ทุกรายการมี audit "ใครทำ เมื่อไหร่"</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ลำดับหักตอนแลก: หักล็อตที่ใกล้หมดอายุก่อน (เพื่อไม่ให้ลูกค้าเสียพอยท์โดยไม่จำเป็น)</li>
+    <li>ของแถมจากโปรโมชั่นและสินค้าราคา 0 ไม่ให้พอยท์; สินค้า 0 พอยท์ยังนับเข้ายอดสะสมแคมเปญได้ตามกติกาแคมเปญ (แยกบัญชี)</li>
+    <li>คืนสินค้า/ยกเลิกหลังจากลูกค้าใช้สิทธิ์ที่แลกไปแล้ว: ไม่เรียกคืนสิทธิ์ที่ใช้แล้ว (นโยบายร่วม §1.6) — หักได้เท่าที่เหลือในบัญชี</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ถ้าลูกค้าแลกพอยท์ไปหมดแล้วค่อยยกเลิกออเดอร์: ให้ยอดติดลบได้ หรือหักได้แค่เท่าที่มี (ค่าเริ่มต้นในมอคอัพ: หักได้เท่าที่มี ไม่ติดลบ)</li>
+    <li>ใช้อัตราตามยอดบิล (ทุก ฿100 ได้ X พอยท์) แทนอัตรารายสินค้าได้ไหม — ต้นแบบสถิตเดิมใช้แบบตามยอดบิล แต่ spec ที่อนุมัติคิดรายสินค้า</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

@@ -1,0 +1,158 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตะกร้า: โปรที่ได้รับ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .cg{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:24px;align-items:start}
+  .chip.sq{height:20px;font-size:10.5px;padding:0 7px}
+  .cart-line .thumb{width:56px;height:56px}
+  .cart-line .nm{font-weight:700}
+  .cart-line .pr{font-size:12px;color:var(--text2)}
+  .cart-line.gift{background:var(--success-lighter);margin:0 -24px;padding:12px 24px;border-bottom:1px solid #C8E6C9}
+  .cart-line.gift .nm{color:var(--success-darker)}
+  .cart-line.gift .thumb{background:#A5D6A7}
+  .cart-line.oos{background:var(--g50);margin:0 -24px;padding:12px 24px}
+  .cart-line.oos .thumb{background:var(--g300)}
+  .cart-line.oos .nm{text-decoration:line-through;color:var(--g600)}
+  .cart-line.disc{background:var(--primary-lighter);margin:0 -24px;padding:12px 24px;border-bottom:0}
+  .cart-line.disc .thumb{background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--primary-dark);font-size:18px}
+  .locked{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--success-darker);font-weight:700}
+  .mult{display:inline-flex;align-items:center;justify-content:center;background:var(--primary);color:#fff;border-radius:8px;padding:1px 9px;font-size:12px;font-weight:800}
+  .applied{border:1.5px solid var(--success);border-radius:12px;padding:14px 16px;background:#fff}
+  .applied+.applied{margin-top:12px}
+  .applied .h{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+  .applied .t{font-weight:700}
+  .nudge{margin-top:10px;background:var(--info-lighter);border-radius:8px;padding:8px 12px;font-size:12.5px;display:flex;justify-content:space-between;gap:10px;align-items:center;color:#0D3C61}
+  .nudge .progress{height:6px;margin-top:6px}
+  .sum-card{position:sticky;top:12px}
+  .sum-sep{font-size:11.5px;font-weight:700;color:var(--text2);text-transform:none;margin:12px 0 2px;padding-top:10px;border-top:1px dashed var(--g300)}
+  .save{background:var(--success-lighter);color:var(--success-darker);border-radius:8px;padding:8px 12px;font-size:12.5px;font-weight:700;margin-top:10px;text-align:center}
+  .msg{border-radius:12px;padding:12px 16px;font-size:13px;display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+  .msg+.msg{margin-top:10px}
+  .msg.warn{background:var(--warning-lighter);color:#663C00;border:1px solid #FFD180}
+  .msg.info{background:var(--g50);color:var(--g800);border:1px solid var(--g300)}
+  .msg ul{margin:6px 0 0;padding-left:16px;display:grid;gap:6px}
+</style>
+</head>
+<body data-shell="customer" data-cust-nav="promotion">
+<main id="screen">
+
+  <div class="crumbs">หน้าแรก / ตะกร้าสินค้า</div>
+  <h4 class="mb16">ตะกร้าสินค้า <span class="muted" style="font-weight:400;font-size:15px">(4 รายการ)</span></h4>
+
+  <div class="cg">
+    <div class="stack">
+
+      <!-- lines -->
+      <div class="card"><div class="card-b">
+        <div class="cart-line"><span class="thumb"></span><div><div class="nm">นมผงสูตร 3 (ลัง)</div><div class="pr">฿1,200 × 4</div></div><div class="row"><div class="qty"><button>−</button><span>4</span><button>+</button></div><b style="min-width:70px;text-align:right">฿4,800</b></div></div>
+        <div class="cart-line"><span class="thumb"></span><div><div class="nm">Blackmores Vitamin C 500 mg (ขวด) <span class="promo-tag flash">Flash −20%</span></div><div class="pr"><s>฿380</s> ฿304 × 8</div></div><div class="row"><div class="qty"><button>−</button><span>8</span><button>+</button></div><b style="min-width:70px;text-align:right">฿2,432</b></div></div>
+        <div class="cart-line"><span class="thumb"></span><div><div class="nm">ผ้าอ้อมเด็ก (แพ็ค)</div><div class="pr">฿540 × 2</div></div><div class="row"><div class="qty"><button>−</button><span>2</span><button>+</button></div><b style="min-width:70px;text-align:right">฿1,080</b></div></div>
+        <div class="cart-line"><span class="thumb"></span><div><div class="nm">ขวดนม PP (ชิ้น)</div><div class="pr">฿60 × 2</div></div><div class="row"><div class="qty"><button>−</button><span>2</span><button>+</button></div><b style="min-width:70px;text-align:right">฿120</b></div></div>
+
+        <div class="cart-line gift relative"><span class="pin abs" style="left:10px">1</span><span class="thumb"></span>
+          <div><div class="nm">เจลแอลกอฮอล์ (ขวด) <span class="promo-tag gift">ของแถม ฟรี</span></div><div class="pr">ได้รับจากโปร "นมผงสูตร 3 ซื้อเยอะ แถมเยอะ" · ขั้น 1 · มูลค่า ฿55</div></div>
+          <div class="row"><span class="locked">จำนวนล็อก ×1</span><b style="min-width:70px;text-align:right;color:var(--success-darker)">ฟรี</b></div></div>
+
+        <div class="cart-line oos relative"><span class="pin abs" style="left:10px">6</span><span class="thumb"></span>
+          <div><div class="nm">ขวดนม PP (ชิ้น) <span class="promo-tag gift" style="text-decoration:none">ของแถม</span></div><div class="pr" style="color:var(--error-dark);font-weight:700">หมดชั่วคราว — โปรนี้หยุดชั่วคราว จึงไม่ได้ของแถมในบิลนี้</div></div>
+          <div class="row"><span class="chip soft-error">หมดชั่วคราว</span></div></div>
+
+        <div class="cart-line disc relative"><span class="pin abs" style="left:10px">2</span><span class="thumb">%</span>
+          <div><div class="nm">ส่วนลดโปรโมชั่น <span class="mult">×2 ชุด</span></div><div class="pr">ซื้อ Blackmores ครบ ฿1,000 ลด ฿100 · ยอด Blackmores ฿2,432 ได้ 2 ชุด</div></div>
+          <b style="min-width:70px;text-align:right;color:var(--primary-dark)">−฿200</b></div>
+      </div></div>
+
+      <!-- applied promos -->
+      <div class="card"><div class="card-b relative">
+        <span class="pin abs">3</span>
+        <div class="row between mb16"><h6 style="font-size:16px">โปรโมชั่นที่ได้รับ (2)</h6><a class="small" href="06-customer-list.html">ดูโปรโมชั่นทั้งหมด →</a></div>
+
+        <div class="applied">
+          <div class="h"><div><span class="promo-tag gift">ของแถม</span> <span class="t">นมผงสูตร 3 ซื้อเยอะ แถมเยอะ</span>
+            <div class="small muted mt8">ขั้น 1 (นมผงสูตร 3 รวม 4 ลัง) · ได้ เจลแอลกอฮอล์ 1 ขวด</div></div><span class="mult">×1 ชุด</span></div>
+          <div class="nudge relative"><span class="pin abs" style="left:auto;right:-8px;top:-10px">4</span>
+            <div style="flex:1"><b>เพิ่มนมผงสูตร 3 อีก 1 ลัง</b> รับขั้น 2: ผ้าอ้อมเด็ก 1 แพ็ค (ได้ขั้นสูงสุดที่ถึงขั้นเดียว แทนเจลแอลกอฮอล์)
+              <div class="progress"><i style="width:80%"></i></div></div>
+            <button class="btn contained sm">เพิ่ม 1 ลัง</button></div>
+        </div>
+
+        <div class="applied">
+          <div class="h"><div><span class="promo-tag">ส่วนลด</span> <span class="t">ซื้อ Blackmores ครบ ฿1,000 ลด ฿100</span>
+            <div class="small muted mt8">Blackmores ฿2,432 ÷ ฿1,000 = 2 ชุด · ลด ฿100 × 2 = ฿200 (คิดเฉพาะสินค้า Blackmores)</div></div><span class="mult">×2 ชุด</span></div>
+          <div class="nudge"><div style="flex:1">เพิ่ม Blackmores อีก <b>฿568</b> รับชุดที่ 3 (ลดเพิ่ม ฿100)<div class="progress"><i style="width:81%"></i></div></div>
+            <a class="btn outlined sm" href="07-customer-product.html">เลือกสินค้า</a></div>
+        </div>
+      </div></div>
+
+      <!-- messages -->
+      <div class="card"><div class="card-b">
+        <div class="relative">
+          <div class="msg warn"><span class="pin" style="margin:0">6</span><div>
+            <b>ขวดนม PP หมดชั่วคราว</b> — โปร "ซื้อผ้าอ้อมเด็กครบ 2 แพ็ค แถมขวดนม PP 1 ชิ้น" หยุดชั่วคราวเพราะของแถมหมด จึงไม่ได้ของแถมในบิลนี้
+            <div class="small mt8">ยอดชำระไม่เปลี่ยนแปลง และระบบจะไม่ชดเชยเป็นส่วนลดอัตโนมัติ — เมื่อโปรกลับมาเปิด ระบบจะแสดงในตะกร้าให้เอง</div></div></div>
+        </div>
+        <div class="msg info relative"><span class="pin" style="margin:0">5</span><div>
+          <b>โปรที่ผ่านเงื่อนไข แต่ไม่ถูกใช้ในตะกร้านี้ (2)</b>
+          <ul>
+            <li>โปร "ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์" ไม่ถูกใช้ เพราะโปร "นมผงสูตร 3 ซื้อเยอะ แถมเยอะ" มีลำดับสูงกว่า (ใช้นมผงสูตร 3 ชุดเดียวกัน)</li>
+            <li>โปร "ซื้อ Blackmores Vitamin C ครบ 3 ขวด ลด 10%" ไม่ถูกใช้ เพราะโปร "ซื้อ Blackmores ครบ ฿1,000 ลด ฿100" มีลำดับสูงกว่า</li>
+          </ul>
+          <div class="small muted mt8">ระบบเลือกสิทธิ์ที่ได้ประโยชน์ตามลำดับความสำคัญให้อัตโนมัติ ไม่ต้องกดเลือกเอง</div></div></div>
+      </div></div>
+    </div>
+
+    <!-- summary -->
+    <div class="card sum-card"><div class="card-b relative">
+      <span class="pin abs">7</span>
+      <h6 class="mb8" style="font-size:16px">สรุปคำสั่งซื้อ</h6>
+      <div class="sum-row"><span>ยอดสินค้า (ราคาปกติ)</span><span>฿9,040</span></div>
+      <div class="sum-row disc"><span>ส่วนลด Flash Sale<small>Vitamin C 8 ขวด × ฿76</small></span><span>−฿608</span></div>
+      <div class="sum-row disc"><span><b>ส่วนลดโปรโมชั่น</b><small>ซื้อ Blackmores ครบ ฿1,000 ×2 ชุด</small></span><span>−฿200</span></div>
+      <div class="sum-row"><span>ของแถมโปรโมชั่น<small>เจลแอลกอฮอล์ 1 ขวด</small></span><span>฿0</span></div>
+
+      <div class="sum-sep">คูปองและพอยท์ (แยกจากโปรโมชั่น)</div>
+      <div class="sum-row"><span>ส่วนลดคูปอง<small><a href="#">เลือก/ใส่คูปอง</a> · ยังไม่ได้ใช้</small></span><span>−฿0</span></div>
+      <div class="sum-row"><span>ใช้พอยท์ชำระ<small>มี 1,250 พอยท์ · ยังไม่ได้ใช้</small></span><span>−฿0</span></div>
+
+      <div class="sum-sep">การจัดส่ง</div>
+      <div class="sum-row"><span>ค่าจัดส่ง<small>ซื้อเวชภัณฑ์ครบ ฿2,000 ส่งฟรี — ตอนนี้ ฿0</small></span><span>฿150</span></div>
+
+      <div class="sum-row total"><span>ยอดสุทธิ</span><span>฿8,382</span></div>
+      <div class="save relative"><span class="pin abs" style="top:-10px;left:auto;right:-8px">8</span>คุณประหยัดจากโปรโมชั่นและ Flash Sale ไปแล้ว ฿808</div>
+
+      <a class="btn contained lg block mt16" href="#">ดำเนินการชำระเงิน</a>
+      <a class="btn text block mt8" href="06-customer-list.html">ดูโปรโมชั่นอื่น</a>
+      <div class="small muted mt8 center">ยอดชำระจริงคำนวณที่ระบบอีกครั้งตอนยืนยันคำสั่งซื้อ</div>
+    </div></div>
+  </div>
+
+</main>
+
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>บรรทัดของแถม</b> พื้นเขียว ป้าย "ของแถม ฟรี" ราคาแสดงว่า "ฟรี" · จำนวนล็อก ลูกค้าแก้/ลบเองไม่ได้ (จำนวนมาจากโปรและชุดที่ได้) — เมื่อลูกค้าลดสินค้าที่ต้องมี ของแถมหายไปเองพร้อม toast "ของแถมถูกนำออก เพราะไม่เข้าเงื่อนไขแล้ว" · ของแถมแสดงมูลค่าไว้เป็นข้อมูล ไม่รวมในยอด</span></li>
+    <li><span class="pin">2</span><span><b>บรรทัดส่วนลด</b> แยกเป็นบรรทัดพื้นแดงอ่อน บอกโปร จำนวนชุด และฐานที่คำนวณ (เฉพาะสินค้าที่เข้าเงื่อนไข ไม่ใช่ทั้งบิล) · ป้าย ×2 ชุด ปรากฏเมื่อโปรตั้งทวีคูณและลูกค้าซื้อได้ ≥ 2 ชุด (ชุด = 1 ไม่แสดงป้าย)</span></li>
+    <li><span class="pin">3</span><span><b>โปรโมชั่นที่ได้รับ</b> การ์ดต่อโปรที่ถูกใช้ แสดงสิ่งที่ได้และเหตุที่ได้ · เรียงตามลำดับ priority · ลูกค้าไม่เห็นเลข priority</span></li>
+    <li><span class="pin">4</span><span><b>ข้อความชวนซื้อเพิ่ม</b> "เพิ่มอีก N …" แสดงเมื่อใกล้ถึงขั้น/ยอดถัดไป (ขาดไม่เกิน 1 ขั้นหรือ 30% ของเงื่อนไข) · ปุ่มเพิ่มจำนวนที่ขาดให้ทันที · ถ้าเปลี่ยนโปรที่ได้ (ขั้น 1 → ขั้น 2) บอกว่าของแถมเดิมจะถูกแทน</span></li>
+    <li><span class="pin">5</span><span><b>โปรที่ไม่ถูกใช้</b> แจ้งแบบข้อความสั้นว่าโปร Z ไม่ถูกใช้ เพราะโปร X ลำดับสูงกว่า — เพื่อไม่ให้ลูกค้าสงสัยว่าทำไมไม่ได้ · แสดงเฉพาะโปรที่ผ่านเงื่อนไขครบแต่แพ้ (ไม่แสดงโปรที่ลูกค้าไม่ได้เข้าใกล้เลย)</span></li>
+    <li><span class="pin">6</span><span><b>ของแถมหมดสต็อก</b> ค่าเริ่มต้นที่เสนอ: โปรถูกปิดชั่วคราวตามกติกา → บรรทัดของแถมขึ้นเทา ขีดฆ่า ป้าย "หมดชั่วคราว" และข้อความอธิบาย · ไม่แปลงเป็นส่วนลดอัตโนมัติ · ไม่บล็อกการชำระเงิน</span></li>
+    <li><span class="pin">7</span><span><b>สรุปยอดแยกกลุ่ม</b> ส่วนลดโปรโมชั่น (และ Flash) อยู่แยกจากส่วนลดคูปองและการใช้พอยท์ เพื่อให้ตรวจสอบง่ายและสอดคล้องลำดับการคิดเงิน: Flash → โปรโมชั่น → คูปอง → ส่ง → พอยท์ · แต่ละบรรทัดมีคำอธิบายย่อยบอกที่มา</span></li>
+    <li><span class="pin">8</span><span><b>ยอดที่ประหยัด</b> รวม Flash + โปรโมชั่น (ไม่รวมมูลค่าของแถม และคูปองที่ยังไม่ใช้) · ปุ่มชำระเงินพาไปหน้าเช็คเอาต์เดิม ซึ่งคำนวณโปรซ้ำอีกครั้งที่เซิร์ฟเวอร์</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>คำนวณใหม่ทุกครั้งที่จำนวนเปลี่ยน · สถานะโหลด: แสดงบรรทัดสรุปเป็น skeleton ไม่แสดงตัวเลขเก่า</li>
+    <li>ถ้าสต็อกของแถมไม่พอสำหรับจำนวนชุดที่ได้ (เช่น ได้ 3 ชุดแต่เหลือ 2) ระบบให้เท่าที่มีและแจ้งข้อความ "ของแถมเหลือเพียง N ชิ้น"</li>
+    <li>โควต้าต่อลูกค้าเต็ม: โปรไม่ถูกคิดและแสดงในกลุ่ม "ไม่ถูกใช้" พร้อมเหตุผล "โควต้าเต็มแล้ว"</li>
+    <li>ยกเลิกออเดอร์/คืนสินค้าภายหลัง ไม่เรียกคืนของแถมหรือส่วนลดที่ใช้ไปแล้ว (นโยบายร่วม)</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li><b>ของแถมหมดสต็อกตอนลูกค้ามีโปรในตะกร้า:</b> ค่าเริ่มต้นในมอคอัพ = ไม่ให้ของแถม ไม่ชดเชย แจ้งข้อความ · ทางเลือก: แปลงเป็นส่วนลดเท่ามูลค่าของแถม (เช่น ฿60 — ต้องเพิ่มฟิลด์ "มูลค่าชดเชย" ในโปร) หรือให้ลูกค้าเลือกของแถมอื่นในโปรเดียวกัน</li>
+    <li>แสดง "โปรที่ไม่ถูกใช้" ให้ลูกค้าเห็นหรือไม่ (ค่าเริ่มต้น = แสดงเฉพาะที่ผ่านเงื่อนไขครบ)</li>
+    <li>ลูกค้าเลือกไม่ใช้โปรบางตัวได้หรือไม่ (ค่าเริ่มต้น = ไม่ได้ ระบบเลือกให้)</li>
+    <li>แสดงมูลค่าของแถมในสรุปยอดและในยอด "ประหยัดไปแล้ว" หรือไม่ (ค่าเริ่มต้น = แสดงมูลค่าในบรรทัด ไม่รวมในยอดประหยัด)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>
