@@ -413,7 +413,7 @@ Pharmaplex เป็นแพลตฟอร์มซื้อขายยาแ
 
 #### ภาพรวม · ภาพรวม Flow โปรโมชั่น
 
-![ภาพรวม Flow โปรโมชั่น](assets/shots/ui-promotion-00-flow.png)
+![ภาพรวม Flow โปรโมชั่น](assets/shots/flow-promotion-1.png)
 
 **คำอธิบายแต่ละส่วนในหน้าจอ**
 
@@ -783,7 +783,13 @@ Pharmaplex เป็นแพลตฟอร์มซื้อขายยาแ
 
 #### ภาพรวม · ภาพรวม Flow คูปอง
 
-![ภาพรวม Flow คูปอง](assets/shots/ui-coupon-00-flow.png)
+![ภาพรวม Flow คูปอง](assets/shots/flow-coupon-1.png)
+
+![ภาพรวม Flow คูปอง](assets/shots/flow-coupon-2.png)
+
+![ภาพรวม Flow คูปอง](assets/shots/flow-coupon-3.png)
+
+![ภาพรวม Flow คูปอง](assets/shots/flow-coupon-4.png)
 
 **คำอธิบายแต่ละส่วนในหน้าจอ**
 
@@ -1165,7 +1171,9 @@ Pharmaplex เป็นแพลตฟอร์มซื้อขายยาแ
 
 #### ภาพรวม · ภาพรวม Flow พอยท์
 
-![ภาพรวม Flow พอยท์](assets/shots/ui-points-00-flow.png)
+![ภาพรวม Flow พอยท์](assets/shots/flow-points-1.png)
+
+![ภาพรวม Flow พอยท์](assets/shots/flow-points-2.png)
 
 **คำอธิบายแต่ละส่วนในหน้าจอ**
 
@@ -1364,7 +1372,11 @@ C. ปรับด้วยมือ: ทำได้เฉพาะแอดม
 
 #### ภาพรวม · ภาพรวม Flow แคมเปญ
 
-![ภาพรวม Flow แคมเปญ](assets/shots/ui-campaign-00-flow.png)
+![ภาพรวม Flow แคมเปญ](assets/shots/flow-campaign-1.png)
+
+![ภาพรวม Flow แคมเปญ](assets/shots/flow-campaign-2.png)
+
+![ภาพรวม Flow แคมเปญ](assets/shots/flow-campaign-3.png)
 
 **คำอธิบายแต่ละส่วนในหน้าจอ**
 
@@ -1734,7 +1746,7 @@ G. หมดเวลา — โควตาคืนเข้าระบบ �
 
 #### ภาพรวม · ภาพรวม Flow สุ่มรางวัล
 
-![ภาพรวม Flow สุ่มรางวัล](assets/shots/ui-raffle-00-flow.png)
+![ภาพรวม Flow สุ่มรางวัล](assets/shots/flow-raffle-1.png)
 
 **คำอธิบายแต่ละส่วนในหน้าจอ**
 
@@ -2055,7 +2067,7 @@ G. หมดเวลา — โควตาคืนเข้าระบบ �
 
 #### ภาพรวม · ภาพรวม Flow เซตร้านยา
 
-![ภาพรวม Flow เซตร้านยา](assets/shots/ui-starterkit-00-flow.png)
+![ภาพรวม Flow เซตร้านยา](assets/shots/flow-starterkit-1.png)
 
 **คำอธิบายแต่ละส่วนในหน้าจอ**
 
