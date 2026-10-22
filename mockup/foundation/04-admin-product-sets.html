@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>กลุ่มสินค้า (แบรนด์/หมวด/SKU)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .table .nm{font-weight:700}
+  .table .sub{font-size:11.5px;color:var(--text2);margin-top:2px;font-weight:400}
+  .table tr.sel td{background:var(--primary-lighter)}
+  .rl{display:grid;grid-template-columns:96px 130px 1fr 36px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--g200)}
+</style>
+</head>
+<body data-shell="admin" data-nav="foundation" data-crumb="โปรโมชั่นและสิทธิพิเศษ / กลุ่มและชุดที่ใช้ซ้ำ / กลุ่มสินค้า">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>กลุ่มสินค้า</h4>
+      <p class="muted">กำหนดสินค้าด้วยแบรนด์ หมวด หรือรายชิ้น (รวม/ยกเว้น) ไว้ใช้เป็นเงื่อนไขโปร ขอบเขตแคมเปญ ตัวคูณพอยท์ และรายการยกเว้นส่งฟรี</p>
+    </div>
+    <div class="row"><button class="btn contained">＋ สร้างกลุ่มสินค้า</button></div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:minmax(0,1fr) 460px;align-items:start">
+    <div class="card" style="overflow:hidden">
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>ชื่อกลุ่ม</th><th>กติกา</th><th>SKU ที่เข้า <span class="pin">1</span></th><th>ใช้ใน</th></tr></thead>
+        <tbody>
+          <tr class="sel"><td><div class="nm">Blackmores (ยกเว้น 2 รายการ)</div></td><td>แบรนด์ 1 · ยกเว้น SKU 2</td><td><b>34</b></td><td>โปรโมชั่น 2 · ตัวคูณพอยท์ 1</td></tr>
+          <tr><td><div class="nm">สินค้าหนัก (ไม่ร่วมส่งฟรี)</div></td><td>หมวด 2 · SKU 5</td><td><b>61</b></td><td>คูปองส่งฟรี 3</td></tr>
+          <tr><td><div class="nm">นมผงทุกตรา</div></td><td>หมวดแม่และเด็ก · ยกเว้น ขวดนม</td><td><b>18</b></td><td>พอยท์ 1 (0 พอยท์)</td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card"><div class="card-b">
+      <h6>Blackmores (ยกเว้น 2 รายการ)</h6>
+      <div class="field mt8"><label>ชื่อกลุ่ม *</label><input class="input" value="Blackmores (ยกเว้น 2 รายการ)"></div>
+      <div class="mt8"><b class="small">กติกา <span class="pin">2</span></b>
+        <div class="rl"><span class="chip soft-success">รวม</span><select class="select"><option>แบรนด์</option></select><select class="select"><option>Blackmores</option></select><button class="btn text sm grey">✕</button></div>
+        <div class="rl"><span class="chip soft-error">ยกเว้น</span><select class="select"><option>SKU</option></select><select class="select"><option>วิตามินซี 1000mg (Blackmores) — ตัวอย่าง</option></select><button class="btn text sm grey">✕</button></div>
+        <div class="rl"><span class="chip soft-error">ยกเว้น</span><select class="select"><option>SKU</option></select><select class="select"><option>น้ำมันปลา Omega-3 — ตัวอย่าง</option></select><button class="btn text sm grey">✕</button></div>
+        <button class="btn outlined sm mt8">＋ เพิ่มกติกา</button>
+      </div>
+      <div class="alert info mt8"><div class="small"><b>ตัวอย่างสินค้าที่เข้ากลุ่ม (34)</b> <span class="pin">1</span><br>แคลเซียม+ดี (Blackmores) · … และอีก 33 รายการ</div></div>
+      <div class="row mt8" style="justify-content:flex-end"><button class="btn outlined">ยกเลิก</button><button class="btn contained">บันทึก</button></div>
+    </div></div>
+  </div>
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>จำนวน SKU ที่เข้ากลุ่ม</b> คำนวณสดจากกติกา — สินค้าใหม่ในแบรนด์/หมวดที่เลือกเข้ากลุ่มเอง ไม่ต้องกลับมาแก้</span></li>
+    <li><span class="pin">2</span><span><b>กติกา</b> รวม (include) หรือ ยกเว้น (exclude) ตามแบรนด์ / หมวด / SKU · ยกเว้นชนะรวมเสมอ</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>กลุ่มที่ไม่มีสินค้าเข้าเลย (0 SKU) ใช้เป็นเงื่อนไขไม่ได้ — ระบบเตือน</li>
+    <li>ใช้แทนรายการ “ยกเว้นหมวด” ของคูปองส่งฟรีเดิม (<span class="mono">coupon_category_exclusions</span>)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

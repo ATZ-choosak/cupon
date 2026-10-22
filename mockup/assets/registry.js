@@ -4,6 +4,18 @@ window.MOCKUP = {
   title: 'Pharmaplex — Mockup ระบบโปรโมชั่น คูปอง พอยท์ แคมเปญ สุ่มรางวัล เซตร้านยาเปิดใหม่',
   modules: [
     {
+      slug: 'foundation', no: '00', title: 'กลุ่มและชุดที่ใช้ซ้ำ',
+      desc: 'กลุ่มลูกค้า · ชุดของรางวัล · กลุ่มสินค้า · ตัวเลือก “ทุกคน/บางคน” — ตั้งครั้งเดียว ใช้ได้ทั้งโปรโมชั่น คูปอง พอยท์ แคมเปญ สุ่มรางวัล เซตร้านยา',
+      screens: [
+        { file: '00-flow.html', title: 'ภาพรวม Flow กลุ่ม/ชุดที่ใช้ซ้ำ', role: 'both' },
+        { file: '01-admin-customer-sets.html', title: 'กลุ่มลูกค้า: รายการ', role: 'admin' },
+        { file: '02-admin-customer-set-editor.html', title: 'กลุ่มลูกค้า: สมาชิก + นำเข้า', role: 'admin' },
+        { file: '03-admin-reward-sets.html', title: 'ชุดของรางวัล', role: 'admin' },
+        { file: '04-admin-product-sets.html', title: 'กลุ่มสินค้า (แบรนด์/หมวด/SKU)', role: 'admin' },
+        { file: '05-admin-audience-picker.html', title: 'ตัวเลือกกลุ่มเป้าหมาย “ทุกคน/บางคน” (ใช้ทุกหน้าตั้งค่า)', role: 'admin' }
+      ]
+    },
+    {
       slug: 'promotion', no: '01', title: 'โปรโมชั่น',
       desc: 'แนวคิดเดียวกับ "เซตของแถม (Bundle)" ที่ใช้งานอยู่ใน pmpc — ขยายผลตอบแทนเป็นของแถม / ส่วนลด / ฟรีค่าจัดส่ง',
       screens: [

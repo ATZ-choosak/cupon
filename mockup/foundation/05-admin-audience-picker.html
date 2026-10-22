@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตัวเลือกกลุ่มเป้าหมาย “ทุกคน/บางคน”</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .pick{border:1px solid var(--g300);border-radius:12px;padding:16px;background:#fff}
+  .gr{display:grid;grid-template-columns:96px 1fr 70px 36px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--g200)}
+  .gr:last-child{border-bottom:0}
+  .hint{font-size:12px;color:var(--text2)}
+</style>
+</head>
+<body data-shell="admin" data-nav="foundation" data-crumb="โปรโมชั่นและสิทธิพิเศษ / กลุ่มและชุดที่ใช้ซ้ำ / ตัวเลือกกลุ่มเป้าหมาย">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>ตัวเลือกกลุ่มเป้าหมาย (component)</h4>
+      <p class="muted">ส่วนนี้ฝังอยู่ในหน้าสร้าง/แก้ไขทุกชนิด: โปรโมชั่น · คูปอง · พอยท์ · แคมเปญ · ลุ้นโชค · เซตร้านยา — แสดง 4 สถานะให้ดูเทียบกัน</p>
+    </div>
+  </div>
+
+  <div class="grid g2">
+    <div class="pick">
+      <b>สถานะ 1 · ทุกคน (ค่าเริ่มต้น)</b>
+      <div class="field mt8"><label>ใครใช้สิทธิ์นี้ได้ <span class="pin">1</span></label>
+        <div class="seg"><button class="on">ทุกคน</button><button>บางคน (เลือกกลุ่ม)</button></div>
+        <div class="hint">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้ได้ — ไม่ต้องตั้งอะไรเพิ่ม</div></div>
+    </div>
+
+    <div class="pick">
+      <b>สถานะ 2 · บางคน (รวมกลุ่มเดียว)</b>
+      <div class="field mt8"><label>ใครใช้สิทธิ์นี้ได้</label>
+        <div class="seg"><button>ทุกคน</button><button class="on">บางคน (เลือกกลุ่ม)</button></div></div>
+      <div class="gr"><span class="chip soft-success">รวม</span><select class="select"><option>ร้านยา VIP ปี 2569 (38 ราย)</option></select><span class="small muted">38</span><button class="btn text sm grey">✕</button></div>
+      <div class="row mt8"><button class="btn outlined sm">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="01-admin-customer-sets.html">สร้างกลุ่มใหม่ ↗</a></div>
+      <div class="hint mt8">ผู้ที่เข้าข่าย: <b>38</b> ราย <span class="pin">2</span></div>
+    </div>
+
+    <div class="pick">
+      <b>สถานะ 3 · บางคน + ยกเว้น</b>
+      <div class="field mt8"><label>ใครใช้สิทธิ์นี้ได้</label>
+        <div class="seg"><button>ทุกคน</button><button class="on">บางคน (เลือกกลุ่ม)</button></div></div>
+      <div class="gr"><span class="chip soft-success">รวม</span><select class="select"><option>ร้านยา VIP ปี 2569 (38 ราย)</option></select><span class="small muted">38</span><button class="btn text sm grey">✕</button></div>
+      <div class="gr"><span class="chip soft-error">ยกเว้น</span><select class="select"><option>ลูกค้าติดตามหนี้ (6 ราย)</option></select><span class="small muted">6</span><button class="btn text sm grey">✕</button></div>
+      <div class="hint mt8">ผู้ที่เข้าข่าย: <b>35</b> ราย (3 รายอยู่ทั้งสองกลุ่ม → ยกเว้นชนะ) <span class="pin">3</span></div>
+    </div>
+
+    <div class="pick" style="border-color:var(--error)">
+      <b>สถานะ 4 · ผิดเงื่อนไข เผยแพร่ไม่ได้</b>
+      <div class="field mt8"><label>ใครใช้สิทธิ์นี้ได้</label>
+        <div class="seg"><button>ทุกคน</button><button class="on">บางคน (เลือกกลุ่ม)</button></div></div>
+      <div class="alert" style="background:var(--error-lighter,#FDECEA);color:#7A1F17"><div class="small"><b>ยังไม่ได้เลือกกลุ่ม</b> <span class="pin">4</span><br>เลือกกลุ่ม “รวม” อย่างน้อย 1 กลุ่ม หรือเปลี่ยนเป็น “ทุกคน” จึงจะเผยแพร่ได้ (บันทึกเป็นร่างได้)</div></div>
+      <button class="btn contained mt8" disabled>เผยแพร่</button>
+    </div>
+  </div>
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ทุกคน</b> ไม่เก็บแถวกลุ่มใด ๆ และระบบไม่ต้องตรวจรายชื่อ — “ทุกคน” คือใคร (รวมบัญชีรออนุมัติหรือไม่) ยังเป็นคำถามค้าง Q-1</span></li>
+    <li><span class="pin">2</span><span><b>จำนวนผู้เข้าข่าย</b> คำนวณสดตอนเลือกกลุ่ม ช่วยให้แอดมินเห็นก่อนเผยแพร่ว่าเลือกถูกขนาด</span></li>
+    <li><span class="pin">3</span><span><b>ยกเว้นชนะรวม</b> ลูกค้าที่อยู่ทั้งสองกลุ่มไม่ได้สิทธิ์ — ข้อความอธิบายอยู่ใต้ตัวเลข</span></li>
+    <li><span class="pin">4</span><span><b>ตรวจก่อนเผยแพร่</b> บางคนแต่ไม่มีกลุ่มรวม เผยแพร่ไม่ได้ (ร่างเก็บได้)</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ตรวจสิทธิ์ที่เซิร์ฟเวอร์ — ลูกค้านอกกลุ่มใส่โค้ดหรือเปิดลิงก์ตรงจะถูกปฏิเสธ</li>
+    <li>ลูกค้านอกกลุ่มเห็นรายการหรือไม่ และข้อความที่แสดง ยังรอตัดสิน (Q-2)</li>
+    <li>เพิ่มลูกค้าเข้ากลุ่มหลังเปิดแล้ว ได้สิทธิ์ในตะกร้าถัดไป</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

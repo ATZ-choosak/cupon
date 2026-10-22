@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ชุดของรางวัล</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .table .nm{font-weight:700}
+  .table .sub{font-size:11.5px;color:var(--text2);margin-top:2px;font-weight:400}
+  .table tr.sel td{background:var(--primary-lighter)}
+  .ri{display:grid;grid-template-columns:150px 1fr 90px 36px;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--g200)}
+  .ri:last-child{border-bottom:0}
+</style>
+</head>
+<body data-shell="admin" data-nav="foundation" data-crumb="โปรโมชั่นและสิทธิพิเศษ / กลุ่มและชุดที่ใช้ซ้ำ / ชุดของรางวัล">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>ชุดของรางวัล</h4>
+      <p class="muted">รวมรางวัลหลายรายการเป็นชุดเดียว แล้วเลือกใช้ซ้ำในโปรโมชั่น คูปอง ขั้นบันไดแคมเปญ รางวัลลุ้นโชค และของแลกพอยท์</p>
+    </div>
+    <div class="row"><button class="btn contained">＋ สร้างชุดของรางวัล</button></div>
+  </div>
+
+  <div class="grid" style="grid-template-columns:minmax(0,1fr) 440px;align-items:start">
+    <div class="card" style="overflow:hidden">
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>ชื่อชุด</th><th>รายการ</th><th>ใช้ใน <span class="pin">1</span></th><th>เวอร์ชัน <span class="pin">2</span></th><th></th></tr></thead>
+        <tbody>
+          <tr class="sel"><td><div class="nm">ชุดต้อนรับ</div><div class="sub">คูปอง ฿50 + พอยท์ 100</div></td><td>2</td><td>ขั้นแคมเปญ 1 · ลุ้นโชค 1 · แลกพอยท์ 1</td><td>v2</td><td><button class="btn text sm">แก้ไข</button></td></tr>
+          <tr><td><div class="nm">ของแถมนมผง</div><div class="sub">ขวดนม PP 240ml × 1</div></td><td>1</td><td>โปรโมชั่น 1</td><td>v1</td><td><button class="btn text sm">แก้ไข</button></td></tr>
+          <tr><td><div class="nm">ทริปญี่ปุ่น 2 ท่าน</div><div class="sub">ของรางวัลนอก POS</div></td><td>1</td><td>ขั้นแคมเปญ 3 · ลุ้นโชค 1</td><td>v1</td><td><button class="btn text sm">แก้ไข</button></td></tr>
+          <tr><td><div class="nm">ส่งฟรี 1 ครั้ง</div><div class="sub">ส่งฟรี ยกเว้นกลุ่ม “สินค้าหนัก”</div></td><td>1</td><td>แลกพอยท์ 1 · ลุ้นโชค 1</td><td>v1</td><td><button class="btn text sm">แก้ไข</button></td></tr>
+        </tbody>
+      </table></div>
+    </div>
+
+    <div class="card"><div class="card-b">
+      <div class="row between"><h6>ชุดต้อนรับ</h6><span class="chip soft-warning">v2 · แก้ไขอยู่</span></div>
+      <div class="alert info mt8"><div class="small">ชุดนี้ถูกใช้ในรายการที่ใช้งานอยู่ 3 รายการ — บันทึกจะสร้าง <b>v3</b> รายการเดิมยังใช้ v2 จนกด “อัปเดตให้ใช้ v3” <span class="pin">2</span></div></div>
+      <div class="field mt8"><label>ชื่อชุด *</label><input class="input" value="ชุดต้อนรับ"></div>
+
+      <div class="mt8"><b class="small">รายการรางวัล <span class="pin">3</span></b>
+        <div class="ri"><select class="select"><option>คูปองส่วนลด</option></select><div><select class="select"><option>คูปอง ฿50 (ใช้ได้ 30 วัน)</option></select></div><input class="input" value="1"><button class="btn text sm grey">✕</button></div>
+        <div class="ri"><select class="select"><option>พอยท์</option></select><div><input class="input" value="100"></div><input class="input" value="1"><button class="btn text sm grey">✕</button></div>
+        <div class="ri"><select class="select"><option>ของแถม (SKU)</option><option>ส่วนลด ฿/%</option><option>ส่งฟรี</option><option>พอยท์</option><option>คูปอง</option><option>สิทธิ์ลุ้น</option><option>ของรางวัลนอก POS</option></select><div><select class="select"><option>เลือกสินค้า…</option></select></div><input class="input" value="1"><button class="btn text sm grey">✕</button></div>
+        <button class="btn outlined sm mt8">＋ เพิ่มรายการ</button>
+      </div>
+
+      <div class="row mt8 between small"><span class="muted">มูลค่าประเมินต่อชุด <span class="pin">4</span></span><b>฿60.00</b></div>
+      <div class="row mt8" style="justify-content:flex-end"><button class="btn outlined">ยกเลิก</button><button class="btn contained">บันทึกเป็น v3</button></div>
+    </div></div>
+  </div>
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ใช้ใน</b> แสดงทุกที่ที่ชี้ชุดนี้ เพื่อรู้ผลกระทบก่อนแก้</span></li>
+    <li><span class="pin">2</span><span><b>เวอร์ชัน</b> <span class="chip soft-warning sq">เสนอ D-2</span> ชุดที่ถูกใช้ในรายการที่ใช้งานอยู่จะไม่ถูกแก้ทับ — ได้เวอร์ชันใหม่ แล้วแอดมินเลือกอัปเดตรายการ ลูกค้าที่ได้รับรางวัลไปแล้วดูตาม snapshot วันนั้น</span></li>
+    <li><span class="pin">3</span><span><b>ชนิดรายการ</b> ของแถม · ส่วนลด · ส่งฟรี · พอยท์ · คูปอง · สิทธิ์ลุ้น · ของนอก POS — บางชนิดใช้ได้เฉพาะบางที่ (เช่น ส่วนลดใช้ในรางวัลลุ้นโชคไม่ได้) ระบบเตือนตอนเลือกใช้</span></li>
+    <li><span class="pin">4</span><span><b>มูลค่าประเมิน</b> ใช้คำนวณต้นทุนเฉลี่ยและงบในหน้ารางวัลลุ้นโชค</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ชุดที่ไม่มีรายการ ใช้งานไม่ได้ · ของแถมต้องเลือกจาก SKU ที่มีในระบบ</li>
+    <li>ชุดที่ถูกใช้อยู่ลบไม่ได้ เก็บถาวรได้หลังถอดออกจากทุกรายการ</li>
+    <li>ลำดับตัดสินใจเรื่องเวอร์ชันยังรอ dev lead + ลูกค้า (D-2)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

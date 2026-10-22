@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>กลุ่มลูกค้า: สมาชิก + นำเข้า</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .table .nm{font-weight:700}
+  .table .sub{font-size:11.5px;color:var(--text2);margin-top:2px;font-weight:400}
+  .imp-err{background:var(--error-lighter,#FDECEA);border:1px solid #F5C6C0;border-radius:8px;padding:10px 12px;font-size:12.5px}
+</style>
+</head>
+<body data-shell="admin" data-nav="foundation" data-crumb="โปรโมชั่นและสิทธิพิเศษ / กลุ่มและชุดที่ใช้ซ้ำ / กลุ่มลูกค้า / แก้ไข">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>ร้านยา VIP ปี 2569</h4>
+      <p class="muted">กลุ่มลูกค้า · เลือกเอง · 38 ราย · ใช้อยู่ในโปรโมชั่น 2, คูปอง 1, ลุ้นโชค 1</p>
+    </div>
+    <div class="row">
+      <a class="btn outlined" href="01-admin-customer-sets.html">← กลับรายการ</a>
+      <button class="btn contained">บันทึก</button>
+    </div>
+  </div>
+
+  <div class="grid g2" style="grid-template-columns:minmax(0,1fr) 360px;align-items:start">
+    <div class="card" style="overflow:hidden">
+      <div class="card-h"><h6>สมาชิกในกลุ่ม <span class="chip sq">38</span></h6><button class="btn outlined sm" data-open="#mImport">นำเข้าจากไฟล์ <span class="pin" style="margin:0 0 0 4px">2</span></button></div>
+      <div class="table-toolbar">
+        <div class="row" style="flex:1">
+          <input class="input" style="max-width:320px" placeholder="ค้นหาชื่อร้าน / รหัสลูกค้าที่ลงทะเบียน แล้วกดเพิ่ม">
+          <button class="btn outlined primary sm">＋ เพิ่มเข้ากลุ่ม <span class="pin" style="margin:0 0 0 4px">1</span></button>
+        </div>
+      </div>
+      <div class="table-wrap"><table class="table">
+        <thead><tr><th>รหัส</th><th>ลูกค้า</th><th>จังหวัด</th><th>ที่มา <span class="pin">3</span></th><th>เพิ่มเมื่อ</th><th></th></tr></thead>
+        <tbody>
+          <tr><td>C-0142</td><td><div class="nm">ร้านยาสุขใจ สาขาลาดพร้าว</div></td><td>กรุงเทพฯ</td><td><span class="chip outline">เลือกเอง</span></td><td>3 ต.ค. 2569</td><td><button class="btn text sm grey">นำออก</button></td></tr>
+          <tr><td>C-0201</td><td><div class="nm">ร้านยาเภสัชกรเมือง</div></td><td>นครราชสีมา</td><td><span class="chip outline">เลือกเอง</span></td><td>3 ต.ค. 2569</td><td><button class="btn text sm grey">นำออก</button></td></tr>
+          <tr><td>C-0317</td><td><div class="nm">ร้านยาชุมชนคลองหลวง</div></td><td>ปทุมธานี</td><td><span class="chip soft-info">นำเข้าไฟล์</span></td><td>10 ต.ค. 2569</td><td><button class="btn text sm grey">นำออก</button></td></tr>
+          <tr><td>C-0455</td><td><div class="nm">ร้านยาหมอสมชาย</div></td><td>ขอนแก่น</td><td><span class="chip soft-info">นำเข้าไฟล์</span></td><td>10 ต.ค. 2569</td><td><button class="btn text sm grey">นำออก</button></td></tr>
+          <tr><td>C-0498</td><td><div class="nm">ร้านยาล้านนา</div></td><td>เชียงใหม่</td><td><span class="chip outline">เลือกเอง</span></td><td>14 ต.ค. 2569</td><td><button class="btn text sm grey">นำออก</button></td></tr>
+        </tbody>
+      </table></div>
+      <div class="card-b small muted" style="padding-top:10px">แสดง 5 จาก 38 รายการ</div>
+    </div>
+
+    <div class="grid" style="gap:16px">
+      <div class="card"><div class="card-b">
+        <h6 style="margin-bottom:12px">ข้อมูลกลุ่ม</h6>
+        <div class="field"><label>ชื่อกลุ่ม *</label><input class="input" value="ร้านยา VIP ปี 2569"></div>
+        <div class="field mt8"><label>คำอธิบาย (ภายใน)</label><textarea class="textarea">ลูกค้าที่ทำยอดเกิน 500,000 บาท</textarea></div>
+        <div class="field mt8"><label>วัตถุประสงค์</label>
+          <div class="seg"><button class="on">ลูกค้า</button><button>ร้าน/สาขา</button></div>
+          <div class="help">“ร้าน/สาขา” ใช้เป็นรายชื่อร้านที่ร่วมคูปองกระดาษ</div></div>
+      </div></div>
+      <div class="card"><div class="card-b">
+        <h6 style="margin-bottom:8px">ใช้งานอยู่ใน <span class="pin">4</span></h6>
+        <ul class="small" style="margin:0;padding-left:18px;line-height:1.8">
+          <li>โปรโมชั่น: ซื้อ Blackmores ครบ ฿1,000 · <span class="chip soft-success sq">รวม</span></li>
+          <li>โปรโมชั่น: ซื้อคู่นมผง + ขวดนม · <span class="chip soft-success sq">รวม</span></li>
+          <li>คูปอง: VIPNOV (ออนไลน์) · <span class="chip soft-success sq">รวม</span></li>
+          <li>ลุ้นโชคปลายปี 2569 · <span class="chip soft-success sq">รวม</span></li>
+        </ul>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="modal" id="mImport"><div class="card" style="width:560px"><div class="card-b">
+    <h6>นำเข้ารายชื่อจากไฟล์ <span class="chip soft-warning sq">เสนอ</span></h6>
+    <p class="small muted">ไฟล์ CSV 1 คอลัมน์ “รหัสลูกค้า” — แถวที่ไม่ผ่านจะรายงานให้ ไม่ล้มทั้งไฟล์</p>
+    <div style="border:2px dashed var(--g400);border-radius:10px;padding:22px;text-align:center;margin:12px 0">ลากไฟล์มาวาง หรือ <a href="#">เลือกไฟล์</a><div class="small muted">vip-nov.csv · 42 แถว</div></div>
+    <div class="imp-err"><b>ผลตรวจไฟล์</b><br>ผ่าน 38 แถว · ซ้ำกับสมาชิกเดิม 2 แถว · ไม่พบรหัสในทะเบียนลูกค้า 2 แถว (แถว 17 “C-9921”, แถว 30 “C-0O12”)</div>
+    <div class="row mt8" style="justify-content:flex-end"><button class="btn outlined" data-close>ยกเลิก</button><button class="btn contained" data-close>นำเข้า 38 แถวที่ผ่าน</button></div>
+  </div></div></div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>เพิ่มสมาชิก</b> ค้นหาได้เฉพาะลูกค้าที่ลงทะเบียนแล้วเท่านั้น พิมพ์ชื่อลอย ๆ เพิ่มไม่ได้ · เพิ่มซ้ำรายเดิมไม่ได้ (แจ้ง “อยู่ในกลุ่มแล้ว”)</span></li>
+    <li><span class="pin">2</span><span><b>นำเข้าไฟล์</b> <span class="chip soft-warning sq">เสนอ</span> รายงานผลก่อนยืนยัน แยกซ้ำ / ไม่พบ / ผ่าน ไม่ปฏิเสธทั้งไฟล์</span></li>
+    <li><span class="pin">3</span><span><b>ที่มา</b> เก็บว่าเพิ่มด้วยมือ นำเข้า หรือกติกา (ระยะหลัง) เพื่อตรวจย้อนหลัง</span></li>
+    <li><span class="pin">4</span><span><b>ใช้งานอยู่ใน</b> เตือนก่อนนำสมาชิกออกว่าจะกระทบรายการใดบ้าง · “รวม” = INCLUDE, “ยกเว้น” = EXCLUDE</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>นำสมาชิกออกแล้วมีผลทันทีในตะกร้าถัดไป · สิทธิ์ที่ใช้ไปแล้วไม่ถูกเรียกคืน</li>
+    <li>กลุ่มว่าง (0 สมาชิก) บันทึกได้ แต่ถูกใช้เป็น “รวม” ในรายการที่ใช้งานอยู่ไม่ได้ (ไม่มีใครได้สิทธิ์) — ระบบเตือน</li>
+    <li>ขนาดกลุ่มสูงสุด <b>[__]</b> ราย — รอคำตอบ Q-3</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>
