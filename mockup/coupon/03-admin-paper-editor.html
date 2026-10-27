@@ -112,11 +112,19 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
 
     <!-- STEP 2 -->
     <div data-panel="s2">
-      <div class="radio-cards c2 mb16 relative">
+      <div class="radio-cards c3 mb16 relative">
         <label class="radio-card"><input type="radio" name="shopmode" value="all"><span><span class="rc-t">ทุกร้านที่ลงทะเบียน</span><span class="rc-d" style="display:block">ร้าน/ตัวแทนทั้ง 12 แห่งใช้ได้ · ร้านใหม่ที่ลงทะเบียนภายหลังจะใช้ได้อัตโนมัติ</span></span></label>
         <label class="radio-card"><input type="radio" name="shopmode" value="pick" checked><span><span class="rc-t">เลือกเฉพาะร้าน/สาขา</span><span class="rc-d" style="display:block">เลือกจากรายชื่อที่ลงทะเบียนเท่านั้น (พิมพ์ชื่อเองไม่ได้)</span></span></label>
+        <label class="radio-card"><input type="radio" name="shopmode" value="set"><span><span class="rc-t">เลือกจากกลุ่มที่ตั้งไว้</span><span class="rc-d" style="display:block">ใช้กลุ่มลูกค้า/ร้านที่สร้างไว้แล้ว เช่น “ร้านร่วมคูปอง NOV80”</span></span></label>
       </div>
-      <div class="card flat" style="border:1px solid var(--g200);overflow:hidden">
+      <div data-reveal="shopmode=set" class="mb16">
+        <div class="aud"><div class="aud-h"><b>ร้านที่รับคูปองนี้ได้</b><span class="chip soft-info sq">จากกลุ่มลูกค้า</span></div>
+          <div class="aud-src">รายชื่อมาจาก <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — สมาชิกกลุ่มทุกร้านรับคูปองนี้ได้ · เพิ่ม/ถอดร้านที่กลุ่ม มีผลทันที</div>
+          <div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option><option>ร้านยา VIP ปี 2569 · 38 ราย</option></select><span class="n">5 ร้าน</span><button class="btn text sm grey" type="button">✕</button></div>
+          <div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div>
+        </div>
+      </div>
+      <div data-reveal="shopmode=pick" class="card flat" style="border:1px solid var(--g200);overflow:hidden">
         <div class="table-toolbar" style="flex-wrap:wrap">
           <input class="input" style="max-width:200px" placeholder="ค้นหาชื่อร้าน/สาขา">
           <select class="select" style="max-width:150px"><option>ทุกจังหวัด</option><option>กรุงเทพฯ</option><option>นครราชสีมา</option></select>
@@ -223,12 +231,6 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
         <div class="field"><label>ยอดซื้อขั้นต่ำ</label><input class="input readonly" value="฿600 (จากขั้น ①)" readonly></div>
         <div class="field"><label>ใช้ได้กี่ใบต่อบิล</label><select class="select"><option>1 ใบ/บิล</option><option>2 ใบ/บิล</option><option>3 ใบ/บิล</option></select></div>
       </div>
-      <div class="label mt16 mb8">ใครใช้ได้</div>
-      <div class="radio-cards c3">
-        <label class="radio-card"><input type="radio" name="who" checked><span><span class="rc-t">ลูกค้าทุกคน</span></span></label>
-        <label class="radio-card"><input type="radio" name="who"><span><span class="rc-t">เฉพาะร้านค้า (B2B)</span></span></label>
-        <label class="radio-card"><input type="radio" name="who"><span><span class="rc-t">เฉพาะลูกค้าทั่วไป</span></span></label>
-      </div>
 
       <div class="sep"></div>
       <div class="sec-t">ใช้ร่วมกับ <span class="pin">5</span></div>
@@ -319,6 +321,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
     <li><span class="pin">6</span><span>ข้อความเพิ่มเติมหลังคูปองจำกัด 160 ตัวอักษร มีตัวนับสด เกินแล้วตัวนับ/กรอบเป็นแดงและเผยแพร่ไม่ได้</span></li>
     <li><span class="pin">7</span><span>ตัวอย่างหน้าและหลังจริงสองด้านเสมอ (ไม่มีปุ่มสั่งพิมพ์/ดาวน์โหลดไฟล์พิมพ์) · ลิงก์ไปหน้าดูเต็มแบบพลิก</span></li>
     <li><span class="pin">8</span><span>สรุปความพร้อมต่อขั้น: ✓ ผ่าน ✕ ต้องแก้ (บล็อกการเผยแพร่) ! คำเตือน (เผยแพร่ได้) · ปุ่ม "เผยแพร่ชุด" จะกดได้เมื่อไม่มี ✕</span></li>
+    <li><span class="pin">9</span><span><b>ร้านที่รับคูปอง</b> คูปองกระดาษแจกหน้างาน คุมว่าใครถือใช้ไม่ได้ จึง <u>ไม่มีช่อง “ใครใช้ได้”</u> (ตัดออก รวมตัวเลือก B2B/ลูกค้าทั่วไปเดิม) — ควบคุมที่ “ร้านที่รับคูปอง” แทน · ขั้น 2 เลือกได้ 3 แบบ: ทุกร้าน / เลือกรายร้านจากทะเบียน / เลือกจากกลุ่มที่ตั้งไว้ (กลุ่มเดียวกับหน้ากลุ่มลูกค้า ไม่ต้องติ๊กรายร้านใหม่ทุกครั้ง)</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>สถานะชุด: ร่าง → ใช้งาน → หมดอายุ (อัตโนมัติเมื่อพ้นวันสิ้นสุด) หรือ ปิดชุด (แอดมินสั่ง) · ชุดที่ใช้งานแล้วแก้ได้เฉพาะ ชื่อภายใน/ข้อความหมายเหตุ/รายชื่อร้าน (เพิ่มร้านได้ ถอดร้านที่ยังไม่เคยเบิกได้) — รหัส มูลค่า ขั้นต่ำ แก้ไม่ได้</li>

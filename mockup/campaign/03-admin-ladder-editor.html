@@ -70,6 +70,12 @@
         </div>
       </div></div>
 
+      <!-- กลุ่มเป้าหมาย -->
+      <div class="card"><div class="card-b">
+        <h6 class="mb16">ใครร่วมแคมเปญนี้ได้ <span class="pin">11</span></h6>
+        <div class="aud"><div class="aud-h"><b>กลุ่มลูกค้าเป้าหมาย</b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div><div class="aud-modes"><label class="check"><input type="radio" name="aud" value="all" checked> ทุกคน</label><label class="check"><input type="radio" name="aud" value="some"> บางคน — เลือกจากกลุ่มลูกค้าที่ตั้งไว้</label></div><div class="aud-note" data-reveal="aud=all">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้แคมเปญนี้ได้ ไม่ต้องตั้งอะไรเพิ่ม · ลูกค้านอกกลุ่มไม่เห็นแคมเปญและไม่ถูกนับยอด</div><div class="aud-body" data-reveal="aud=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค และเซตร้านยา</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>ร้านยา VIP ปี 2569 · 38 ราย</option><option>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div><div class="aud-sum">ผู้ที่เข้าข่าย: <b>38</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div>
+      </div></div>
+
       <!-- ขอบเขต -->
       <div class="card"><div class="card-b relative">
         <span class="pin abs">2</span>
@@ -111,7 +117,8 @@
                   <span class="help">แก้ไม่ได้เพราะมีลูกค้าถึงขั้นนี้แล้ว</span></div>
                 <div class="field"><label>ชื่อรางวัล *</label><input class="input" value="เครื่องวัดความดันโลหิตดิจิทัล"></div>
               </div>
-              <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">5</span>
+              <div class="field span2"><div class="rs-pick"><div class="rs-h"><b>เลือกรางวัลจากชุดของรางวัล (ไม่บังคับ)</b><span class="chip soft-primary sq">แนะนำ</span></div><div class="row"><select class="select" style="flex:1"><option>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option selected>ชุดต้อนรับ · v2</option><option>ของแถมนมผง · v1</option><option>ทริปญี่ปุ่น 2 ท่าน · v1</option><option>ส่งฟรี 1 ครั้ง · v1</option></select><a class="btn outlined sm" href="../foundation/03-admin-reward-sets.html">จัดการชุดของรางวัล ↗</a></div><div class="rs-items">คูปอง ฿50 × 1 + พอยท์ 100 × 1 · มูลค่าประเมิน ฿60</div><div class="aud-note">เลือกแล้วประเภทและรายละเอียดด้านล่างดึงจากชุด · ไม่เลือก = กรอกรางวัลของขั้นนี้เองด้านล่าง · รางวัลดึงจาก <a href="../foundation/03-admin-reward-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › ชุดของรางวัล</a> — แก้ชุดที่นั่นที่เดียว รายการนี้ยังใช้เวอร์ชันที่เลือกไว้จนกดอัปเดต</div></div></div>
+                <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">5</span>
                 <label>ประเภทรางวัล *</label>
                 <div class="type-opts">
                   <label class="radio-card"><input type="radio" name="t1" checked><span><span class="rc-t">สินค้าในเว็บ</span><span class="rc-d" style="display:block">สินค้าในคลัง POS</span></span></label>
@@ -152,7 +159,8 @@
                 <div class="field"><label>ยอดเกณฑ์สะสม *</label><div class="input-adorn"><span class="adorn">฿</span><input class="input readonly" value="500,000" readonly></div></div>
                 <div class="field"><label>ชื่อรางวัล *</label><input class="input" value="ทริปสัมมนาเภสัชกรต่างประเทศ 3 วัน 2 คืน"></div>
               </div>
-              <div class="field"><label>ประเภทรางวัล *</label>
+              <div class="field span2"><div class="rs-pick"><div class="rs-h"><b>เลือกรางวัลจากชุดของรางวัล (ไม่บังคับ)</b><span class="chip soft-primary sq">แนะนำ</span></div><div class="row"><select class="select" style="flex:1"><option>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option selected>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option>ของแถมนมผง · v1</option><option>ทริปญี่ปุ่น 2 ท่าน · v1</option><option>ส่งฟรี 1 ครั้ง · v1</option></select><a class="btn outlined sm" href="../foundation/03-admin-reward-sets.html">จัดการชุดของรางวัล ↗</a></div><div class="rs-items">คูปอง ฿50 × 1 + พอยท์ 100 × 1 · มูลค่าประเมิน ฿60</div><div class="aud-note">เลือกแล้วประเภทและรายละเอียดด้านล่างดึงจากชุด · ไม่เลือก = กรอกรางวัลของขั้นนี้เองด้านล่าง · รางวัลดึงจาก <a href="../foundation/03-admin-reward-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › ชุดของรางวัล</a> — แก้ชุดที่นั่นที่เดียว รายการนี้ยังใช้เวอร์ชันที่เลือกไว้จนกดอัปเดต</div></div></div>
+                <div class="field"><label>ประเภทรางวัล *</label>
                 <div class="type-opts">
                   <label class="radio-card"><input type="radio" name="t3"><span><span class="rc-t">สินค้าในเว็บ</span><span class="rc-d" style="display:block">สินค้าในคลัง POS</span></span></label>
                   <label class="radio-card"><input type="radio" name="t3" checked><span><span class="rc-t">ของนอก POS</span><span class="rc-d" style="display:block">ตั๋ว / ทริป / เครื่องใช้ไฟฟ้า</span></span></label>
@@ -192,6 +200,7 @@
               </div>
               <div class="form-grid">
                 <div class="field"><label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label><input class="input" value="" placeholder="ไม่จำกัด"></div>
+                <div class="field span2"><div class="rs-pick"><div class="rs-h"><b>เลือกรางวัลจากชุดของรางวัล (ไม่บังคับ)</b><span class="chip soft-primary sq">แนะนำ</span></div><div class="row"><select class="select" style="flex:1"><option>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option selected>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option>ของแถมนมผง · v1</option><option>ทริปญี่ปุ่น 2 ท่าน · v1</option><option>ส่งฟรี 1 ครั้ง · v1</option></select><a class="btn outlined sm" href="../foundation/03-admin-reward-sets.html">จัดการชุดของรางวัล ↗</a></div><div class="rs-items">คูปอง ฿50 × 1 + พอยท์ 100 × 1 · มูลค่าประเมิน ฿60</div><div class="aud-note">เลือกแล้วประเภทและรายละเอียดด้านล่างดึงจากชุด · ไม่เลือก = กรอกรางวัลของขั้นนี้เองด้านล่าง · รางวัลดึงจาก <a href="../foundation/03-admin-reward-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › ชุดของรางวัล</a> — แก้ชุดที่นั่นที่เดียว รายการนี้ยังใช้เวอร์ชันที่เลือกไว้จนกดอัปเดต</div></div></div>
                 <div class="field"><label>ประเภทรางวัล *</label><select class="select"><option>ของนอก POS</option></select></div>
               </div>
               <div class="hint unl"><b>ไม่จำกัดสิทธิ์</b> — ทุกคนที่ถึงยอดกดขอได้เสมอ เหมาะกับรางวัลที่ทีมงานคัดเลือก/จับรางวัลกันเองนอกระบบ ลูกค้าจะเห็น "ไม่จำกัดสิทธิ์ — ทีมงานคัดเลือก" และควรอธิบายวิธีคัดเลือกในรายละเอียดด้านล่าง</div>
@@ -263,6 +272,7 @@
     <li><span class="pin">8</span><span><b>แก้แคมเปญที่เปิดอยู่</b> — จำกัดสิทธิ์แก้ไขเพื่อไม่ให้ลูกค้าที่ถึงเกณฑ์ไปแล้วเสียสิทธิ์ (ดูกล่องเตือน)</span></li>
     <li><span class="pin">9</span><span><b>การแจ้งเตือน</b> — 80% / 95% ของยอดเกณฑ์ขั้นถัดไป และ N วันก่อนสัญญาหมด · เลือก LINE / อีเมล / ในเว็บ · ตัวแปรในข้อความใช้ {…} · ลูกค้าที่ปลดล็อกทุกขั้นแล้วไม่ได้รับ 80/95%</span></li>
     <li><span class="pin">10</span><span><b>ตัวอย่างสด</b> — เปลี่ยนค่าทางซ้ายแล้วแผงนี้อัปเดตทันที ใช้ยอดตัวอย่าง ฿642,350 เพื่อให้เห็นทุกสถานะ (ผ่านแล้ว/ขั้นปัจจุบัน/ล็อก)</span></li>
+    <li><span class="pin">11</span><span><b>กลุ่มเป้าหมาย + ชุดของรางวัล</b> แคมเปญขั้นบันไดใช้ตัวเลือก “ทุกคน / บางคน” เดียวกับทุกหน้า และแต่ละขั้นเลือก “ชุดของรางวัล” จากเมนูกลุ่มและชุดที่ใช้ซ้ำได้ (หรือกรอกรางวัลของขั้นเองเหมือนเดิม) · ขั้นที่มีลูกค้าถึงแล้วเปลี่ยนชุดไม่ได้ ต้องเพิ่มขั้นใหม่</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>ทุกขั้นเป็น "ขั้นบันได" รูปแบบเดียวกัน — ไม่มีโหมดพิเศษ "คนแรกที่ถึง" หรือ "จับรางวัล" แยก เป็นเพียงค่าจำนวนสิทธิ์ที่ตั้ง</li>

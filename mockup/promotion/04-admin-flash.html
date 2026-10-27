@@ -61,10 +61,7 @@
             <div class="field"><label>เกิดซ้ำ <span class="pin">2</span></label>
               <div class="seg" style="align-self:flex-start"><button>ครั้งเดียว</button><button class="on">ทุกปี (วันเดิม)</button></div>
               <span class="help">ทุกปีวันเดิม: ปีถัดไปเริ่ม 10 ต.ค. 2570 โดยระบบคัดลอกการตั้งค่าและรีเซ็ตโควตาให้</span></div>
-            <div class="field"><label>กลุ่มลูกค้าเป้าหมาย</label>
-              <div class="row"><label class="check"><input type="radio" name="aud" value="all" checked> ลูกค้าทุกคน</label><label class="check"><input type="radio" name="aud" value="some"> ลูกค้าบางคน</label></div>
-              <div data-reveal="aud=some" class="hidden"><div class="row wrap mt8"><span class="chip outline">ร้านยา ทดสอบ จำกัด ✕</span><button class="btn outlined sm">＋ เพิ่มลูกค้า</button></div></div>
-            </div>
+            <div class="field" style="grid-column:1/-1"><div class="aud"><div class="aud-h"><b>กลุ่มลูกค้าเป้าหมาย <span class="pin">7</span></b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div><div class="aud-modes"><label class="check"><input type="radio" name="aud" value="all" checked> ทุกคน</label><label class="check"><input type="radio" name="aud" value="some"> บางคน — เลือกจากกลุ่มลูกค้าที่ตั้งไว้</label></div><div class="aud-note" data-reveal="aud=all">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้แคมเปญนี้ได้ ไม่ต้องตั้งอะไรเพิ่ม</div><div class="aud-body" data-reveal="aud=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค และเซตร้านยา</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>ร้านยา VIP ปี 2569 · 38 ราย</option><option>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div><div class="aud-sum">ผู้ที่เข้าข่าย: <b>38</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div></div>
           </div>
         </div>
       </div></div>
@@ -172,6 +169,7 @@
     <li><span class="pin">4</span><span><b>โควตาต่อรอบและความคืบหน้า</b> นับเป็นชิ้นที่ขายได้ในราคาพิเศษ · แถบเขียว &lt; 90% / เหลือง ≥ 90% / แดงเมื่อหมด · หมดโควตา = ราคากลับปกติเฉพาะกลุ่มนั้นทันที (ไม่รอหมดเวลา)</span></li>
     <li><span class="pin">5</span><span><b>คืนราคาอัตโนมัติ</b> ล็อกเปิดไว้ ไม่ให้ปิด (เป็นหลักของโปรประเภทนี้) · ตั้งแจ้งเตือนแอดมินเมื่อโควตาใกล้หมดได้</span></li>
     <li><span class="pin">6</span><span><b>มุมมองลูกค้า + สถานะจำลอง</b> ปุ่มสลับ "อยู่ในช่วงโปร / นอกช่วงโปร" ใช้เพื่อนำเสนอเท่านั้น ไม่เปลี่ยนข้อมูลจริง (ระบบจริงเช็คจากวันเวลาที่ตั้ง) · แบนเนอร์มีนาฬิกานับถอยหลัง การ์ดสินค้าขีดฆ่าราคาเดิม และป้าย "เหลือ N ชิ้น" เมื่อโควตาต่ำกว่า 20%</span></li>
+    <li><span class="pin">7</span><span><b>กลุ่มลูกค้าเป้าหมาย</b> ใช้ตัวเลือกเดียวกับทุกหน้า (ทุกคน / บางคน = เลือกจากกลุ่มลูกค้าที่ตั้งไว้ รวม-ยกเว้น) · เดิมเป็นช่อง “เพิ่มลูกค้า” รายคนในหน้านี้ — เปลี่ยนมาใช้กลุ่มเพื่อไม่ให้แก้รายชื่อซ้ำหลายที่ · ลูกค้านอกกลุ่มเห็นราคาปกติ</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>สถานะแคมเปญ: ตั้งเวลาไว้ → กำลังจัดอยู่ → จบแล้ว (หมดเวลา/หมดโควตาทุกกลุ่ม) · แก้ % ระหว่างจัดอยู่มีผลกับตะกร้าใหม่ ตะกร้าที่ค้างอยู่คิดใหม่ทุกครั้งที่โหลด</li>

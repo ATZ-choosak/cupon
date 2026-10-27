@@ -15,6 +15,8 @@
 <body data-shell="admin" data-nav="foundation" data-crumb="โปรโมชั่นและสิทธิพิเศษ / กลุ่มและชุดที่ใช้ซ้ำ / กลุ่มลูกค้า">
 <main id="screen">
 
+  <nav class="fnd-nav"><a href="01-admin-customer-sets.html" class="on">กลุ่มลูกค้า</a><a href="04-admin-product-sets.html">กลุ่มสินค้า</a><a href="03-admin-reward-sets.html">ชุดของรางวัล</a><a href="05-admin-audience-picker.html">ตัวเลือกกลุ่มเป้าหมาย (ตัวอย่างที่ใช้ในทุกหน้า)</a><a class="r" href="00-flow.html">ภาพรวม Flow</a></nav>
+
   <div class="page-head">
     <div>
       <h4>กลุ่มลูกค้า</h4>
@@ -26,53 +28,43 @@
   </div>
 
   <div class="alert info mb16"><div>
-    ถ้าโปรโมชั่นเปิดให้ <b>ทุกคน</b> ไม่ต้องสร้างกลุ่ม — หน้านี้ใช้เฉพาะเมื่อต้องการจำกัดเป็น “บางคน”
+    <div class="a-title">กลุ่มลูกค้าคืออะไร</div>
+    รายชื่อ “ลูกค้า / ร้าน / สาขา” ที่ลงทะเบียนในระบบ จัดเป็นกลุ่มตั้งชื่อไว้ แล้วไปเลือกในหน้าตั้งค่าโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค หรือเซตร้านยา ตรง “ใครใช้สิทธิ์นี้ได้ → บางคน” ·
+    ถ้าเปิดให้ <b>ทุกคน</b> ไม่ต้องสร้างกลุ่ม · กลุ่มเดียวใช้ซ้ำได้หลายที่ ไม่ต้องแยกกลุ่มตามว่าไปใช้ทำอะไร
   </div></div>
 
   <div class="card" style="overflow:hidden">
     <div class="table-toolbar">
       <div class="row" style="flex:1">
         <input class="input" style="max-width:300px" placeholder="ค้นหาชื่อกลุ่ม">
-        <select class="select" style="max-width:190px"><option>วัตถุประสงค์: ทั้งหมด</option><option>ลูกค้า</option><option>ร้าน/สาขา (คูปองกระดาษ)</option></select>
         <select class="select" style="max-width:160px"><option>สถานะ: ใช้งาน</option><option>เก็บถาวร</option></select>
       </div>
     </div>
     <div class="table-wrap"><table class="table">
       <thead><tr>
-        <th>ชื่อกลุ่ม</th><th>วัตถุประสงค์</th><th>ชนิด <span class="pin">1</span></th><th>สมาชิก</th><th>ถูกใช้งานใน <span class="pin">2</span></th><th>แก้ไขล่าสุด</th><th>การดำเนินการ</th>
+        <th>ชื่อกลุ่ม</th><th>สมาชิก</th><th>ถูกใช้งานใน <span class="pin">1</span></th><th>แก้ไขล่าสุด</th><th>การดำเนินการ</th>
       </tr></thead>
       <tbody>
         <tr>
           <td><div class="nm">ร้านยา VIP ปี 2569</div><div class="sub">ลูกค้าที่ทำยอดเกิน 500,000 บาท</div></td>
-          <td><span class="chip soft-primary">ลูกค้า</span></td><td><span class="chip outline">เลือกเอง</span></td>
           <td><b>38</b> ราย</td>
           <td>โปรโมชั่น 2 · คูปอง 1 · ลุ้นโชค 1</td><td>14 ต.ค. 2569 · staff1</td>
           <td><a class="btn text sm" href="02-admin-customer-set-editor.html">แก้ไข</a><button class="btn text sm grey">เก็บถาวร</button></td>
         </tr>
         <tr>
           <td><div class="nm">ลูกค้าติดตามหนี้</div><div class="sub">ใช้เป็น “ยกเว้น” ในโปรที่ไม่ต้องการให้</div></td>
-          <td><span class="chip soft-primary">ลูกค้า</span></td><td><span class="chip outline">เลือกเอง</span></td>
           <td><b>6</b> ราย</td>
           <td>โปรโมชั่น 3</td><td>2 ต.ค. 2569 · staff2</td>
           <td><a class="btn text sm" href="02-admin-customer-set-editor.html">แก้ไข</a><button class="btn text sm grey">เก็บถาวร</button></td>
         </tr>
         <tr>
-          <td><div class="nm">บัญชี B2B (เซตร้านยาเปิดใหม่)</div><div class="sub">ตามประเภทลูกค้า = B2B</div></td>
-          <td><span class="chip soft-primary">ลูกค้า</span></td><td><span class="chip soft-warning">อัตโนมัติ · ระยะหลัง</span></td>
-          <td><b>—</b></td>
-          <td>เซตร้านยา 2</td><td>—</td>
-          <td><button class="btn text sm grey" disabled>รอระยะหลัง</button></td>
-        </tr>
-        <tr>
-          <td><div class="nm">ร้านร่วมคูปอง NOV80</div><div class="sub">5 ร้าน/สาขา — เลือกจากรายชื่อที่ลงทะเบียน</div></td>
-          <td><span class="chip soft-success">ร้าน/สาขา</span></td><td><span class="chip outline">เลือกเอง</span></td>
+          <td><div class="nm">ร้านร่วมคูปอง NOV80</div><div class="sub">5 ร้าน/สาขา — ใช้เป็นร้านที่รับคูปองกระดาษ</div></td>
           <td><b>5</b> ร้าน</td>
           <td>คูปองกระดาษ 1</td><td>12 ต.ค. 2569 · staff1</td>
           <td><a class="btn text sm" href="02-admin-customer-set-editor.html">แก้ไข</a><button class="btn text sm grey">เก็บถาวร</button></td>
         </tr>
         <tr class="arch">
           <td><div class="nm">ลูกค้าโปรปีใหม่ 2568</div></td>
-          <td><span class="chip soft-primary">ลูกค้า</span></td><td><span class="chip outline">เลือกเอง</span></td>
           <td><b>120</b> ราย</td><td>— (เก็บถาวร)</td><td>5 ม.ค. 2569</td>
           <td><button class="btn text sm">กู้คืน</button></td>
         </tr>
@@ -83,13 +75,13 @@
 <section class="ux-notes">
   <h6>หมายเหตุ UX</h6>
   <ol>
-    <li><span class="pin">1</span><span><b>ชนิดกลุ่ม</b> “เลือกเอง” ทำในรอบแรก · “อัตโนมัติ” (กติกา เช่น ประเภท B2B, ซื้อครบ X ใน 90 วัน) เป็นระยะหลัง จึงแสดงปุ่มจางไว้ให้เห็นแผน</span></li>
-    <li><span class="pin">2</span><span><b>ถูกใช้งานใน</b> นับเฉพาะรายการที่ใช้งานอยู่ — กดแล้วดูรายชื่อโปร/คูปองที่ผูกกับกลุ่มนี้ ใช้ตัดสินใจก่อนแก้สมาชิก</span></li>
-    <li><span class="pin">3</span><span><b>เก็บถาวรแทนลบ</b> กลุ่มที่ถูกใช้โดยรายการที่ใช้งานอยู่ เก็บถาวรไม่ได้จนกว่าจะถอดออกจากรายการเหล่านั้น</span></li>
+    <li><span class="pin">1</span><span><b>ถูกใช้งานใน</b> นับเฉพาะรายการที่ใช้งานอยู่ — กดแล้วดูรายชื่อโปร/คูปองที่ผูกกับกลุ่มนี้ ใช้ตัดสินใจก่อนแก้สมาชิก</span></li>
+    <li><span class="pin">2</span><span><b>เก็บถาวรแทนลบ</b> กลุ่มที่ถูกใช้โดยรายการที่ใช้งานอยู่ เก็บถาวรไม่ได้จนกว่าจะถอดออกจากรายการเหล่านั้น</span></li>
+    <li><span class="pin">3</span><span><b>ไม่มีช่อง “วัตถุประสงค์” และ “ชนิด”</b> (ตัดออกจากเดิม) · ลูกค้ากับร้าน/สาขาอยู่ในทะเบียนเดียวกัน จึงเป็นกลุ่มประเภทเดียว ใช้ได้ทุกที่ — กลุ่มไปทำหน้าที่อะไรดูจากหน้าที่เลือกกลุ่มไปใช้ (เช่น “ใครใช้สิทธิ์ได้” หรือ “ร้านที่รับคูปองกระดาษ”) และคอลัมน์ “ถูกใช้งานใน” · กลุ่มอัตโนมัติจากกติกา (เช่น ประเภท B2B) เป็นระยะหลัง (FD-7) ยังไม่ทำในรอบแรก จึงไม่แสดงในหน้านี้</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
-    <li>กลุ่มที่มีวัตถุประสงค์ “ร้าน/สาขา” เลือกได้จากรายชื่อที่ลงทะเบียนเท่านั้น ใช้กับคูปองกระดาษ</li>
     <li>เปลี่ยนสมาชิกมีผลกับโปรที่ผูกอยู่ทันที (ไม่ย้อนแก้การใช้สิทธิ์ที่เกิดไปแล้ว)</li>
+    <li>ชื่อกลุ่มซ้ำกันไม่ได้ (รวมกลุ่มที่เก็บถาวร)</li>
     <li>ใครดูแลรายชื่อและขนาดกลุ่ม ยังเป็นคำถามค้าง (Q-3)</li>
   </ul></div>
 </section>

@@ -72,6 +72,8 @@
             <span class="help">กันลูกค้ารายเดียวกว้านสิทธิ์ทั้งหมด — นับรวมทุกทางเข้า; ถึงเพดานแล้วระบบไม่ออกสิทธิ์เพิ่ม</span></div>
         </div>
 
+        <div class="mt16"><div class="aud"><div class="aud-h"><b>ใครร่วมกิจกรรมได้ <span class="pin">9</span></b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div><div class="aud-modes"><label class="check"><input type="radio" name="aud" value="all" checked> ทุกคน</label><label class="check"><input type="radio" name="aud" value="some"> บางคน — เลือกจากกลุ่มลูกค้าที่ตั้งไว้</label></div><div class="aud-note" data-reveal="aud=all">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้กิจกรรมนี้ได้ ไม่ต้องตั้งอะไรเพิ่ม · ใช้กับทุกทางเข้าสิทธิ์ลุ้นของกิจกรรมนี้</div><div class="aud-body" data-reveal="aud=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค และเซตร้านยา</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>ร้านยา VIP ปี 2569 · 38 ราย</option><option>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div><div class="aud-sum">ผู้ที่เข้าข่าย: <b>38</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div></div>
+
         <hr class="divider">
         <div class="relative"><span class="pin abs" style="top:-4px">2</span>
           <div class="label mb8" style="padding-left:16px">โหมดการจับ — ตั้งต่อรางวัล ไม่ได้ตั้งทั้งกิจกรรม</div>
@@ -198,6 +200,7 @@
     <li><span class="pin">6</span><span>ตัวอย่างรวมหลายทางช่วยแอดมินตรวจว่าลูกค้า 1 ราย ได้สิทธิ์มากสุดเท่าไรต่อวัน ก่อนตั้งเพดาน — คำนวณสดจากอัตราที่กรอก</span></li>
     <li><span class="pin">7</span><span>เช็คลิสต์ 4 ข้อ: งบอนุมัติ (ดึงจากผู้อนุมัติงบ), กฎหมาย/ภาษี (บันทึกผู้ยืนยัน + เลขที่อ้างอิง — ระบบไม่ตัดสินให้), รางวัลพอ (ตรวจอัตโนมัติ), ข้อความเงื่อนไข (ต้องไม่ว่าง)</span></li>
     <li><span class="pin">8</span><span>ปุ่ม "เปิดกิจกรรม" ปิดใช้งานจนครบ 4/4 และแสดงข้อที่ขาดข้างปุ่ม; เมื่อครบ ระบบเปิดตามเวลาเริ่มอัตโนมัติ หรือกดเปิดก่อนกำหนดได้ (มีกล่องยืนยัน)</span></li>
+    <li><span class="pin">9</span><span><b>ใครร่วมกิจกรรมได้</b> ตัวเลือกกลุ่มเป้าหมายเดียวกับทุกหน้า — ลูกค้านอกกลุ่มไม่ได้รับสิทธิ์ลุ้นจากทางเข้าใดของกิจกรรมนี้ (รวมถึงแลกด้วยพอยท์) · ผูกกับกลุ่ม ณ เวลาที่ลูกค้าจะได้สิทธิ์ ไม่ย้อนตัดสิทธิ์ที่ได้ไปแล้ว</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>กิจกรรมที่เปิดแล้ว ห้ามเปลี่ยนโหมดของรางวัลที่มีคนใช้สิทธิ์แล้ว และห้ามลดจำนวนรางวัลต่ำกว่ายอดที่แจกไปแล้ว</li>

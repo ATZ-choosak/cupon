@@ -80,7 +80,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
             <label class="switch"><input type="checkbox" checked> ใช้ร่วมกับโปรโมชั่นได้</label>
             <label class="switch"><input type="checkbox" checked> ใช้ร่วมกับคูปองอื่นได้</label>
           </div>
-          <div class="field"><label>กลุ่มลูกค้า</label><div class="seg"><button class="on">ลูกค้าทุกคน</button><button>เฉพาะบางราย</button></div></div>
+          <div class="field" style="grid-column:1/-1"><div class="aud"><div class="aud-h"><b>กลุ่มลูกค้า <span class="pin">8</span></b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div><div class="aud-modes"><label class="check"><input type="radio" name="aud" value="all" checked> ทุกคน</label><label class="check"><input type="radio" name="aud" value="some"> บางคน — เลือกจากกลุ่มลูกค้าที่ตั้งไว้</label></div><div class="aud-note" data-reveal="aud=all">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้โค้ดนี้ได้ ไม่ต้องตั้งอะไรเพิ่ม</div><div class="aud-body" data-reveal="aud=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค และเซตร้านยา</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>ร้านยา VIP ปี 2569 · 38 ราย</option><option>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div><div class="aud-sum">ผู้ที่เข้าข่าย: <b>38</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div></div>
         </div>
       </div>
     </div>
@@ -124,6 +124,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
     <li><span class="pin">5</span><span>เงื่อนไขการใช้ร่วม: ร่วมโปรโมชั่นไม่ได้ = ไม่คิดคูปองกับรายการที่จับคู่โปรแล้ว · ร่วมคูปองอื่นไม่ได้ = ต้องเป็นใบเดียวในบิล</span></li>
     <li><span class="pin">6</span><span>ประวัติการใช้: อนุมัติ = เขียว / ถูกบล็อก = แดงพร้อมเหตุผลที่ตรงกับข้อความที่ลูกค้าเห็นตอนเช็คเอาต์</span></li>
     <li><span class="pin">7</span><span>ทดลองใช้โค้ด จำลองลูกค้า+ยอดตะกร้า แล้วแสดงลำดับการตรวจพร้อมจุดที่ติด — ไม่บันทึกประวัติจริง</span></li>
+    <li><span class="pin">8</span><span><b>กลุ่มลูกค้า</b> ใช้ตัวเลือกเดียวกับทุกหน้า — “บางคน” เลือกจากกลุ่มลูกค้าที่ตั้งไว้ (รวม/ยกเว้น) · ลูกค้านอกกลุ่มกรอกโค้ดจะได้ข้อความ “โค้ดนี้ใช้ไม่ได้กับบัญชีของคุณ” · ลำดับตรวจโค้ดคงเดิม (พบโค้ด → ช่วงเวลา → กลุ่มลูกค้า → ยอดขั้นต่ำ)</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>ลำดับตรวจเมื่อลูกค้ากรอกโค้ด: พบโค้ด → อยู่ในช่วงเวลา → กลุ่มลูกค้าตรง → ยอดถึงขั้นต่ำ (นับเฉพาะสินค้าที่ไม่ถูกยกเว้น) → โควตารวม → โควตาต่อคน → เงื่อนไขใช้ร่วม</li>

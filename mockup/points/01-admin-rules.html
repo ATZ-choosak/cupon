@@ -126,6 +126,11 @@
       <div class="grid" style="grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);align-items:start">
         <div class="card"><div class="card-b">
           <div class="form-sec">
+            <h6>ใครได้รับพอยท์ <span class="pin">10</span></h6>
+            <div class="aud"><div class="aud-h"><b>กลุ่มลูกค้าที่สะสมพอยท์ได้</b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div><div class="aud-modes"><label class="check"><input type="radio" name="aud" value="all" checked> ทุกคน</label><label class="check"><input type="radio" name="aud" value="some"> บางคน — เลือกจากกลุ่มลูกค้าที่ตั้งไว้</label></div><div class="aud-note" data-reveal="aud=all">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้พอยท์นี้ได้ ไม่ต้องตั้งอะไรเพิ่ม · ลูกค้านอกกลุ่มซื้อได้ตามปกติแต่ไม่ได้พอยท์</div><div class="aud-body" data-reveal="aud=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค และเซตร้านยา</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>ร้านยา VIP ปี 2569 · 38 ราย</option><option>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div><div class="aud-sum">ผู้ที่เข้าข่าย: <b>38</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div>
+          </div>
+          <hr class="divider">
+          <div class="form-sec">
             <h6>ค่าเริ่มต้นและการปัดเศษ</h6>
             <div class="form-grid">
               <div class="field relative"><label>ค่าเริ่มต้นเมื่อสินค้าไม่ได้ตั้งไว้ <span class="pin">5</span></label>
@@ -229,6 +234,7 @@
     <li><span class="pin">7</span><span><b>วันหมดอายุตั้งต่อรอบ/แคมเปญ:</b> มีนโยบายเริ่มต้นไว้ 1 ค่า แต่แต่ละแคมเปญที่แจกพอยท์ override ได้ที่หน้าแคมเปญ — ตารางนี้แสดงผลที่ใช้จริงเพื่อให้ตรวจได้ที่เดียว</span></li>
     <li><span class="pin">8</span><span><b>ยกเลิกออเดอร์ → หักคืน:</b> เปิด/ปิดได้ · การหักคืนบันทึกเป็นรายการ "หักคืน" อ้างเลขออเดอร์ในสมุดพอยท์ (ดูหน้า 03)</span></li>
     <li><span class="pin">9</span><span><b>ตัวคูณแคมเปญ (อ่านอย่างเดียว):</b> ตั้งค่าที่เดียวคือในโมดูลแคมเปญ หน้านี้เป็นมุมมองสรุปว่าตอนนี้ตัวคูณไหน active และซ้อนกันแล้วได้เท่าไร</span></li>
+    <li><span class="pin">10</span><span><b>ใครได้รับพอยท์</b> ค่าเริ่มต้น “ทุกคน” · เลือก “บางคน” เมื่อพอยท์เปิดเฉพาะบางกลุ่ม (เช่น ร้านสัญญา) — ใช้กลุ่มลูกค้าเดียวกับโปรโมชั่นและคูปอง · ใครแลกของรางวัลได้ตั้งแยกต่อรายการในแคตตาล็อกแลก</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>อัตรา/ตัวคูณที่เปลี่ยน มีผลกับออเดอร์ที่ <b>ชำระเงินสำเร็จหลังบันทึก</b> เท่านั้น — พอยท์ที่ให้ไปแล้วไม่ถูกคำนวณย้อนหลัง</li>

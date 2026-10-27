@@ -61,7 +61,7 @@
                     <li><span class="node"><span class="cn concrete">OnlineCoupon</span><span class="note">โค้ดแชร์ได้ · กันซ้ำด้วยประวัติต่อบัญชี (โควตารวม + ต่อคน)</span></span></li>
                     <li><span class="node"><span class="cn concrete">CollectibleCoupon</span><span class="note"><code>distribution</code> = MANUAL (กดเก็บ) | AUTO_MONTHLY (ออกให้วันที่ N) → กระเป๋าคูปอง</span></span></li>
                     <li><span class="node"><span class="cn concrete">WelcomeCoupon</span><span class="note">ออเดอร์แรก · <code>FirstOrderCondition</code> · 1 สิทธิ์/บัญชี</span></span></li>
-                    <li><span class="node"><span class="cn concrete">PaperCoupon</span><span class="note">ชุดคูปองกระดาษ · ร้านที่ร่วม = <code>CustomerSet(purpose=STORE)</code> · ไม่สั่งพิมพ์ · นับก้นคูปองเบิก</span></span></li>
+                    <li><span class="node"><span class="cn concrete">PaperCoupon</span><span class="note">ชุดคูปองกระดาษ · ร้านที่ร่วม = เลือกจาก <code>CustomerSet</code> (กลุ่มลูกค้า/ร้านเดียวกับที่ใช้ทั่วระบบ ไม่มี purpose) · ไม่สั่งพิมพ์ · นับก้นคูปองเบิก</span></span></li>
                   </ul></li>
                 <li><span class="node"><span class="cn concrete">StarterKitOffer</span><span class="note">เซตร้านยาเปิดใหม่ · <code>items[]</code> บังคับ/ทางเลือก · audience = B2B</span></span></li>
               </ul></li>
@@ -107,7 +107,8 @@
         <h3>CustomerSet <span class="badge ok">ใหม่</span></h3>
         <ul>
           <li><code>kind</code>: <b>STATIC</b> (แอดมินเลือกรายชื่อ/นำเข้า) — ทำก่อน · <b>DYNAMIC</b> (<code>filter jsonb</code> เช่น ประเภทลูกค้า=B2B, ซื้อ ≥ X ใน 90 วัน) — ระยะหลัง</li>
-          <li><code>purpose</code>: CUSTOMER | STORE (ร้าน/สาขา/ตัวแทนของคูปองกระดาษ — เลือกจากรายชื่อที่ลงทะเบียนเท่านั้น)</li>
+          <li><b>ไม่มีฟิลด์ <code>purpose</code></b> (ตัดออก) — สมาชิกคือลูกค้า/ร้าน/สาขาจากทะเบียนเดียว กลุ่มเดียวใช้ได้ทุกที่ ส่วนว่ากลุ่มทำหน้าที่อะไรดูจากตัวที่อ้างถึง (<code>benefit_audience</code> หรือร้านที่รับคูปองกระดาษ) · ถ้าทะเบียนร้าน/สาขาแยกจากบัญชีลูกค้า ให้ <code>CustomerSetMember</code> ชี้ได้ทั้งสองทะเบียน (<code>memberType</code>) — ต้องยืนยัน</li>
+          <li>นำเข้าไฟล์: .csv/.xlsx · คอลัมน์ A <code>รหัสลูกค้า</code> (จำเป็น) + B <code>ชื่อร้าน</code> (ไม่บังคับ ใช้เทียบเตือน) · แถว 1 = หัวตาราง · มี template ให้ดาวน์โหลด · ผลตรวจแยก ผ่าน/ซ้ำ/ไม่พบรหัส/ชื่อไม่ตรง · นำเข้าแบบ “เพิ่ม” ไม่ลบสมาชิกเดิม</li>
           <li><code>CustomerSetMember(setId, customerId, source, addedBy, addedAt)</code> PK คู่ · index <code>customerId</code></li>
           <li>ลบเซตที่ถูกใช้อยู่ไม่ได้ → <code>isArchived</code></li>
           <li>เปลี่ยนสมาชิกมีผลทันทีกับ benefit ที่ผูก (ไม่ snapshot) แต่ <code>benefit_redemption</code> ที่ใช้ไปแล้วไม่ย้อนแก้</li>
@@ -135,6 +136,9 @@
         <ul>
           <li><code>RewardSet(id, name, description, isArchived)</code> 1:N <code>RewardItem</code> (STI ตาม <code>kind</code>)</li>
           <li>เซตเดียวกันถูกชี้ได้จากหลายที่ แต่ <b>แก้เซตที่ ACTIVE อยู่ต้องมีเวอร์ชัน</b> — <code>RewardGrant</code> เก็บ snapshot ของที่ให้จริง ณ วันนั้น</li>
+          <li><b>ประวัติเวอร์ชัน</b>: ดู/เทียบได้ทุกเวอร์ชัน (ใครแก้ เมื่อไร เปลี่ยนอะไร ใช้อยู่ที่ไหน) · ไม่มี rollback เขียนทับ — “ใช้เป็นฐานแก้” สร้างเวอร์ชันใหม่จากเนื้อหาเก่า · ผู้ใช้เลือกอัปเดตทีละรายการ (<code>benefit</code>/<code>RedeemCatalogItem</code>/<code>RaffleCategory</code> เก็บ <code>rewardSetVersionId</code>)</li>
+          <li><b>RedeemCatalogItem</b> (แคตตาล็อกแลกพอยท์) ชี้ <code>RewardSet</code> แทนการเก็บประเภท/รายละเอียดรางวัลเอง — เหลือเฉพาะ pointsCost, quota, perCustomerLimit, ช่วงเวลา, audience · ประเภทที่แสดงคำนวณจาก item ในชุด · ชนิด item เพิ่ม <code>CREDIT</code> (เครดิตเงินคืน)</li>
+          <li>ขั้นบันไดแคมเปญ / รางวัลลุ้นโชค / ผลตอบแทนโปรเลือก <code>RewardSet</code> ได้ (ตัวเลือกเสริม ยังกรอกเองได้)</li>
           <li><code>valueEstimate</code> ต่อ item ใช้คำนวณต้นทุนเฉลี่ย/งบของลุ้นโชค</li>
         </ul>
       </div>
@@ -260,7 +264,7 @@
         <tr><td>โปรทุกคน (กรณีส่วนใหญ่)</td><td><code>audienceMode = ALL</code></td><td>ไม่มีแถว audience · ไม่ query เซต · เห็นทุกบัญชี</td></tr>
         <tr><td>โปรเฉพาะร้านยาลูกค้า VIP</td><td>SELECTED + INCLUDE "ร้านยา VIP ปี 69"</td><td>เห็น/ใช้ได้เฉพาะสมาชิกเซต · เพิ่มร้านเข้าเซตแล้วมีผลทันที</td></tr>
         <tr><td>ทุกคนยกเว้นร้านที่ติดหนี้</td><td>SELECTED + INCLUDE "ลูกค้าทั้งหมด" (DYNAMIC) + EXCLUDE "ติดหนี้"</td><td>EXCLUDE ชนะ · ต้องการ DYNAMIC ระยะหลัง หรือแอดมินสร้างเซตทั้งหมดเอง</td></tr>
-        <tr><td>คูปองกระดาษ ร่วม 5 ร้าน</td><td>PaperCoupon.stores = CustomerSet(STORE)</td><td>ตรวจร้านที่ส่งก้นเบิกว่าอยู่ในเซต · ร้านที่ลงทะเบียนใหม่ตั้งค่า "ทุกร้าน" ได้อัตโนมัติ</td></tr>
+        <tr><td>คูปองกระดาษ ร่วม 5 ร้าน</td><td>PaperCoupon.stores = เลือกจาก CustomerSet</td><td>ตรวจร้านที่ส่งก้นเบิกว่าอยู่ในเซต · ร้านที่ลงทะเบียนใหม่ตั้งค่า "ทุกร้าน" ได้อัตโนมัติ</td></tr>
         <tr><td>เซตร้านยาเปิดใหม่ เฉพาะ B2B</td><td>StarterKitOffer + INCLUDE "ประเภท=B2B" (DYNAMIC)</td><td>ลูกค้า B2C ไม่เห็นเมนู · สั่งตรงถูกบล็อก ("ไม่มีสิทธิ์สั่ง" ตามหน้า 06-customer-blocked)</td></tr>
         <tr><td>รางวัลชุดเดียว หลายที่</td><td>RewardSet "ชุดต้อนรับ" = คูปอง ฿50 + พอยท์ 100</td><td>ใช้เป็นรางวัลขั้นที่ 1 ของ Ladder, รางวัลลุ้นโชค และของแลกพอยท์พร้อมกัน แก้ที่เดียว</td></tr>
       </tbody>
@@ -343,7 +347,7 @@
 
   /* ---------- ER table ---------- */
   var ER = [
-    ['customer_set', 'WHO', 'id, name, kind (STATIC|DYNAMIC), purpose, filter jsonb, isArchived', 'ใหม่'],
+    ['customer_set', 'WHO', 'id, name, kind (STATIC|DYNAMIC), filter jsonb, isArchived (ไม่มี purpose)', 'ใหม่'],
     ['customer_set_member', 'WHO', 'PK(setId, customerId), source, addedBy, addedAt', 'index customerId'],
     ['product_set / product_set_rule', 'WHAT', 'setId, scopeType, scopeValue, effect', 'ใหม่'],
     ['reward_set / reward_item', 'REWARD', 'item: kind, qty, sku/discount/points/couponId/eventId/title, valueEstimate', 'STI ตาม kind'],

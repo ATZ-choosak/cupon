@@ -75,6 +75,7 @@
             <div class="input readonly row" style="gap:8px"><i class="lk"></i><b>เฉพาะบัญชีร้านค้า (B2B)</b></div>
             <span class="help">กำหนดตายตัวของโมดูลนี้ — แก้ไม่ได้ ลูกค้าทั่วไป (B2C) เห็นเซตแต่สั่งไม่ได้</span>
           </div>
+          <div class="field span2"><div class="aud"><div class="aud-h"><b>จำกัดเพิ่มเติม (ภายในบัญชีร้านค้า B2B) <span class="pin">10</span></b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div><div class="aud-modes"><label class="check"><input type="radio" name="aud" value="all" checked> ทุกคน</label><label class="check"><input type="radio" name="aud" value="some"> บางคน — เลือกจากกลุ่มลูกค้าที่ตั้งไว้</label></div><div class="aud-note" data-reveal="aud=all">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้เซตนี้ได้ ไม่ต้องตั้งอะไรเพิ่ม · เงื่อนไข “เฉพาะ B2B” ยังคงอยู่เสมอ ตัวเลือกนี้ใช้จำกัดให้แคบลงเท่านั้น</div><div class="aud-body" data-reveal="aud=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค และเซตร้านยา</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>ร้านยา VIP ปี 2569 · 38 ราย</option><option>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div><div class="aud-sum">ผู้ที่เข้าข่าย: <b>38</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div></div>
         </div>
       </div></div>
 
@@ -202,6 +203,7 @@
     <li><span class="pin">7</span><span>ส่วนลดชุดเซต แบบบาท = หักคงที่ครั้งเดียว · แบบ % = คิดจากผลรวม (บังคับ + ทางเลือกที่เลือก) ทุกครั้งที่ลูกค้าปรับ · ตรวจต้องน้อยกว่ายอดบังคับ</span></li>
     <li><span class="pin">8</span><span>แผงราคา 3 ค่า อัปเดตสดทุกครั้งที่แอดมินแก้ในหน้านี้; การ์ดตัวอย่างคือสิ่งที่หน้า "เลือกเซตร้านยา" แสดง (ราคาเริ่มต้น = ต่ำสุด)</span></li>
     <li><span class="pin">9</span><span>ข้อความ validation 3 แบบ แสดงที่ช่องที่ผิด และสรุปเป็นรายการบนปุ่มบันทึก · แถวสีแดงอ่อน = แถวที่ต้องแก้</span></li>
+    <li><span class="pin">10</span><span><b>จำกัดเพิ่มเติม</b> เงื่อนไข B2B ตายตัวของโมดูลนี้ไม่เปลี่ยน — แต่เลือก “บางคน” เพื่อเปิดเซตนี้เฉพาะบางกลุ่ม (เช่น ร้านที่ได้รับคัดเลือกช่วงทดลอง) ได้ ใช้กลุ่มลูกค้าเดียวกับทุกหน้า</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>เซตที่มีออเดอร์แล้วแก้ไขได้ — มีผลกับออเดอร์ใหม่เท่านั้น ออเดอร์เดิมเก็บรายการและราคา ณ เวลาสั่ง</li>

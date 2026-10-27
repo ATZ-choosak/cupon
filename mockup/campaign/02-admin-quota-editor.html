@@ -61,13 +61,7 @@
             <label>เริ่ม *</label><input class="input readonly" type="datetime-local" value="2026-10-05T09:00" readonly><span class="help">เริ่มไปแล้ว — แก้ไม่ได้</span></div>
           <div class="field"><label>สิ้นสุด *</label><input class="input" type="datetime-local" value="2026-10-31T23:59"><span class="help">ต้องหลังเวลาปัจจุบัน · ขยายได้ ร่นไม่ต่ำกว่าเวลาปัจจุบัน</span></div>
         </div>
-        <div class="field mt16"><label>กลุ่มลูกค้าที่ร่วมแคมเปญได้ *</label>
-          <div class="row wrap">
-            <label class="check"><input type="checkbox" checked> B2B — ร้านยามีสัญญา</label>
-            <label class="check"><input type="checkbox" checked> B2B — ร้านยาทั่วไป</label>
-            <label class="check"><input type="checkbox"> ลูกค้าทั่วไป (B2C)</label>
-          </div>
-          <span class="help">ลูกค้านอกกลุ่มจะเห็นราคาปกติ และไม่เห็นป้ายแคมเปญ</span></div>
+        <div class="mt16"><div class="aud"><div class="aud-h"><b>กลุ่มลูกค้าที่ร่วมแคมเปญได้ * <span class="pin">11</span></b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div><div class="aud-modes"><label class="check"><input type="radio" name="aud" value="all"> ทุกคน</label><label class="check"><input type="radio" name="aud" value="some" checked> บางคน — เลือกจากกลุ่มลูกค้าที่ตั้งไว้</label></div><div class="aud-note" data-reveal="aud=all">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้แคมเปญนี้ได้ ไม่ต้องตั้งอะไรเพิ่ม · ลูกค้านอกกลุ่มจะเห็นราคาปกติ และไม่เห็นป้ายแคมเปญ</div><div class="aud-body" data-reveal="aud=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค และเซตร้านยา</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>ร้านยา VIP ปี 2569 · 38 ราย</option><option>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div><div class="aud-sum">ผู้ที่เข้าข่าย: <b>38</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div></div>
       </div></div>
 
       <!-- SKU -->
@@ -194,6 +188,7 @@
     <li><span class="pin">8</span><span><b>เมื่อโควตาหมด</b> — 2 ทางเลือก (กลับราคาปกติ / ปิดสินค้าแคมเปญ) ค่าตั้งต้น "กลับราคาปกติ" เพื่อไม่เสียยอดขาย</span></li>
     <li><span class="pin">9</span><span><b>มิเตอร์สด</b> — แยก "ขายแล้ว" กับ "พักอยู่" เพื่อให้แอดมินเข้าใจว่าทำไมโควตา "เหลือ" ลดลงทั้งที่ยังไม่มีออเดอร์สำเร็จ</span></li>
     <li><span class="pin">10</span><span><b>3 จังหวะ</b> — สรุปผลต่อระบบที่เกิดอัตโนมัติ ไม่ต้องมีคนกด</span></li>
+    <li><span class="pin">11</span><span><b>กลุ่มลูกค้าที่ร่วมแคมเปญ</b> เปลี่ยนจากติ๊กประเภทลูกค้า (B2B สัญญา / B2B ทั่วไป / B2C) เป็นตัวเลือกกลุ่มเป้าหมายเดียวกับทุกหน้า · ถ้าต้องการ “ทุกร้านยา B2B” ให้สร้างกลุ่มลูกค้านำเข้าจากไฟล์ (กลุ่มอัตโนมัติตามประเภทลูกค้าเป็นระยะหลัง FD-7)</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>ลูกค้าอยู่ในช่วงพักโควตา เมื่อชำระสำเร็จภายหลังแอดมินปิดแคมเปญก่อนกำหนด → ยังได้ราคาแคมเปญตามที่พักไว้</li>

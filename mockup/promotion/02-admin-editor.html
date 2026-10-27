@@ -80,6 +80,13 @@
           </div>
           <hr class="divider" style="margin:0">
 
+          <!-- 1b audience -->
+          <div class="form-sec">
+            <div class="sec-h"><h6>กลุ่มเป้าหมาย <span class="chip soft-primary sq">ใหม่</span> <span class="pin">9</span></h6></div>
+            <div class="aud"><div class="aud-h"><b>ใครใช้สิทธิ์นี้ได้</b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div><div class="aud-modes"><label class="check"><input type="radio" name="aud" value="all"> ทุกคน</label><label class="check"><input type="radio" name="aud" value="some" checked> บางคน — เลือกจากกลุ่มลูกค้าที่ตั้งไว้</label></div><div class="aud-note" data-reveal="aud=all">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้โปรนี้ได้ ไม่ต้องตั้งอะไรเพิ่ม</div><div class="aud-body" data-reveal="aud=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค และเซตร้านยา</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>ร้านยา VIP ปี 2569 · 38 ราย</option><option>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="aud-row"><span class="chip soft-error">ยกเว้น</span><select class="select"><option>ร้านยา VIP ปี 2569 · 38 ราย</option><option selected>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">6 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div><div class="aud-sum">ผู้ที่เข้าข่าย: <b>35</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div>
+          </div>
+          <hr class="divider" style="margin:0">
+
           <!-- 2 scope + required items -->
           <div class="form-sec">
             <div class="sec-h"><h6>เงื่อนไขและสินค้าที่ต้องมี <span class="chip soft-primary sq">ใหม่: ขอบเขต</span></h6></div>
@@ -91,10 +98,18 @@
             </div>
 
             <div class="label mb8" style="display:flex;align-items:center;gap:6px">ขอบเขตสินค้าที่นับเข้าเงื่อนไข <span class="chip soft-primary sq">ใหม่</span> <span class="pin">2</span></div>
-            <div class="radio-cards c3">
+            <div class="radio-cards c4">
               <label class="radio-card"><input type="radio" name="scope" value="items" checked><span><span class="rc-t">เลือกรายสินค้า/หน่วย</span><span class="rc-d" style="display:block">แบบ Bundle เดิม · เลือกทีละหน่วย</span></span></label>
               <label class="radio-card"><input type="radio" name="scope" value="brand"><span><span class="rc-t">ทั้งแบรนด์</span><span class="rc-d" style="display:block">เช่น Blackmores ทุกสินค้า</span></span></label>
               <label class="radio-card"><input type="radio" name="scope" value="cat"><span><span class="rc-t">ทั้งหมวดหมู่</span><span class="rc-d" style="display:block">เช่น หมวดเวชภัณฑ์</span></span></label>
+              <label class="radio-card"><input type="radio" name="scope" value="pset"><span><span class="rc-t">กลุ่มสินค้าที่ตั้งไว้</span><span class="rc-d" style="display:block">เลือกจาก <a href="../foundation/04-admin-product-sets.html">กลุ่มสินค้า</a> (รวม/ยกเว้น)</span></span></label>
+            </div>
+            <!-- scope = product set -->
+            <div data-reveal="scope=pset" class="mt16">
+              <div class="form-grid">
+                <div class="field"><label>กลุ่มสินค้า *</label><select class="select"><option>Blackmores (ยกเว้น 2 รายการ) · 34 SKU</option><option>นมผงทุกตรา · 18 SKU</option><option>สินค้าหนัก (ไม่ร่วมส่งฟรี) · 61 SKU</option></select><span class="help">ดู/แก้กติกาของกลุ่มที่ <a href="../foundation/04-admin-product-sets.html">กลุ่มสินค้า ↗</a> — สินค้าใหม่ในแบรนด์/หมวดเข้ากลุ่มเอง</span></div>
+                <div class="field"><label>นับจาก</label><select class="select"><option>จำนวนชิ้นรวม</option><option>ยอดเงินรวม</option></select></div>
+              </div>
             </div>
 
             <!-- scope = items -->
@@ -156,11 +171,13 @@
           <!-- 3 reward -->
           <div class="form-sec">
             <div class="sec-h"><h6>ผลตอบแทน <span class="chip soft-primary sq">ใหม่</span> <span class="pin">4</span></h6></div>
-            <div class="radio-cards c3">
+            <div class="radio-cards c4">
               <label class="radio-card"><input type="radio" name="rw" value="gift"><span><span class="rc-t">ของแถม</span><span class="rc-d" style="display:block">ซื้อครบแล้วรับสินค้าฟรี</span></span></label>
               <label class="radio-card"><input type="radio" name="rw" value="disc" checked><span><span class="rc-t">ส่วนลด</span><span class="rc-d" style="display:block">ลดเป็นบาทหรือ %</span></span></label>
               <label class="radio-card"><input type="radio" name="rw" value="ship"><span><span class="rc-t">ฟรีค่าจัดส่ง</span><span class="rc-d" style="display:block">ไม่เสียค่าส่ง</span></span></label>
+              <label class="radio-card"><input type="radio" name="rw" value="set"><span><span class="rc-t">ชุดของรางวัล</span><span class="rc-d" style="display:block">เลือกจากที่ตั้งไว้ (ได้หลายอย่างพร้อมกัน)</span></span></label>
             </div>
+            <div data-reveal="rw=set" class="mt16"><div class="rs-pick"><div class="rs-h"><b>ชุดของรางวัลที่ได้เมื่อซื้อครบ</b></div><div class="row"><select class="select" style="flex:1"><option>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option selected>ของแถมนมผง · v1</option><option>ของแถมนมผง · v1</option><option>ทริปญี่ปุ่น 2 ท่าน · v1</option><option>ส่งฟรี 1 ครั้ง · v1</option></select><a class="btn outlined sm" href="../foundation/03-admin-reward-sets.html">จัดการชุดของรางวัล ↗</a></div><div class="rs-items">ของแถม (SKU) ขวดนม PP 240ml × 1 · มูลค่าประเมิน ฿45</div><div class="aud-note">รางวัลดึงจาก <a href="../foundation/03-admin-reward-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › ชุดของรางวัล</a> — แก้ชุดที่นั่นที่เดียว รายการนี้ยังใช้เวอร์ชันที่เลือกไว้จนกดอัปเดต</div></div></div>
 
             <div data-reveal="rw=disc" class="mt16 stack">
               <div class="row wrap">
@@ -270,6 +287,8 @@
     <li><span class="pin">6</span><span><b>ตัวอย่างที่ลูกค้าเห็น</b> เปลี่ยนตามฟอร์มทันที (ชื่อ เงื่อนไข ช่วงวันที่ ผลตอบแทน แท็กบนการ์ดสินค้า) ใช้ component เดียวกับหน้า 06 — เห็นสถานะ "ยังไม่เริ่มต้น/ใช้งาน" ตามวันที่กรอก</span></li>
     <li><span class="pin">7</span><span><b>ฟิลด์ที่เปลี่ยนตามตัวเลือก</b> แผงสรุปให้ทีมพัฒนาและลูกค้าเห็นภาพรวมว่าแต่ละตัวเลือกเปิดฟิลด์อะไร โดยไม่ต้องคลิกทดลองทีละแบบ</span></li>
     <li><span class="pin">8</span><span><b>เตือนสินค้าทับซ้อน</b> ตรวจตอนเปิดฟอร์มและเมื่อเปลี่ยนขอบเขต: ถ้าสินค้าอยู่ในขอบเขตของโปรที่ priority สูงกว่า จะแสดงชื่อโปรนั้นและลิงก์ไปจำลองตะกร้า — เป็นคำเตือน ไม่บล็อกการบันทึก</span></li>
+    <li><span class="pin">9</span><span><b>กลุ่มเป้าหมาย</b> <span class="chip soft-primary sq">ใหม่</span> ทุกโปรมีช่อง “ใครใช้สิทธิ์นี้ได้” — ทุกคน (ค่าเริ่มต้น) หรือบางคนโดยเลือกจาก <a href="../foundation/01-admin-customer-sets.html">กลุ่มลูกค้า</a> ที่ตั้งไว้ (รวม/ยกเว้น) · แสดงจำนวนผู้เข้าข่ายสด · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงบันทึกเป็นใช้งานได้ · ตัวอย่างหน้านี้แสดงสถานะ “บางคน”</span></li>
+    <li><span class="pin">10</span><span><b>กลุ่มสินค้า / ชุดของรางวัล</b> ขอบเขตสินค้ามีตัวเลือก “กลุ่มสินค้าที่ตั้งไว้” และผลตอบแทนมีตัวเลือก “ชุดของรางวัล” — ทั้งสองดึงจากเมนู <a href="../foundation/00-flow.html">กลุ่มและชุดที่ใช้ซ้ำ</a> ไม่ต้องกรอกซ้ำ · ผลตอบแทนแบบเดิม (ของแถม/ส่วนลด/ฟรีค่าส่ง) ยังใช้ได้</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>บันทึกเป็นใช้งานได้เมื่อมี "สินค้าที่ต้องมี"/ขอบเขต และผลตอบแทนครบ (ของแถมต้องมีสินค้าฟรีอย่างน้อย 1 รายการ) — บันทึกเป็นไม่ใช้งานได้เสมอ</li>
