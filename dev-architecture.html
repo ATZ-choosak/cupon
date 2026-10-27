@@ -70,8 +70,8 @@
                 <li><span class="node"><span class="cn concrete">PointsRule</span><span class="note">ตัวคูณช่วงแคมเปญ (บวกกัน) + อัตราพอยท์รายสินค้า (<code>SkuPointRate</code>) + กติกาปัดเศษ/หมดอายุ</span></span></li>
                 <li><span class="node"><span class="cn abs">Campaign</span><span class="note">ช่วงเวลา + ProductSet ที่ร่วมรายการ</span></span>
                   <ul>
-                    <li><span class="node"><span class="cn concrete">QuotaCampaign</span><span class="note">ราคาแคมเปญต่อ SKU · โควตารวม + ต่อร้าน · พักโควตา 15 นาที</span></span></li>
-                    <li><span class="node"><span class="cn concrete">LadderCampaign</span><span class="note">สะสมยอดรายปี · <code>tiers[]</code> แต่ละขั้น = threshold + RewardSet + สิทธิ์ที่เหลือ + ฟอร์ม</span></span></li>
+                    <li><span class="node"><span class="cn concrete">QuotaCampaign</span><span class="note">ราคาแคมเปญ (โหมด SKU: ต่อ SKU · โหมดกลุ่มสินค้า: กติกาเดียวทั้งกลุ่ม) · โควตารวม + ต่อร้าน · พักโควตา 15 นาที</span></span></li>
+                    <li><span class="node"><span class="cn concrete">LadderCampaign</span><span class="note">สะสมยอดรายปี · ขอบเขตนับยอด = ทุกสินค้า | ProductSet · <code>tiers[]</code> แต่ละขั้น = threshold + RewardSet + สิทธิ์ที่เหลือ + ฟอร์ม (ตัวสร้างฟอร์ม 4 ชนิดช่อง) · ขั้นที่มีลูกค้าถึงแล้วลบ/แก้ threshold ไม่ได้</span></span></li>
                   </ul></li>
               </ul></li>
             <li><span class="node"><span class="cn concrete">RaffleEvent</span><span class="note">ใช้ <code>RaffleTicket</code> · รางวัลมี <code>mode</code> A (ลุ้นทันที) / B (จับตามรอบ) · ทางเข้าสิทธิ์เปิดปิดได้ทีละทาง</span></span></li>
@@ -110,17 +110,19 @@
           <li><b>ไม่มีฟิลด์ <code>purpose</code></b> (ตัดออก) — สมาชิกคือลูกค้า/ร้าน/สาขาจากทะเบียนเดียว กลุ่มเดียวใช้ได้ทุกที่ ส่วนว่ากลุ่มทำหน้าที่อะไรดูจากตัวที่อ้างถึง (<code>benefit_audience</code> หรือร้านที่รับคูปองกระดาษ) · ถ้าทะเบียนร้าน/สาขาแยกจากบัญชีลูกค้า ให้ <code>CustomerSetMember</code> ชี้ได้ทั้งสองทะเบียน (<code>memberType</code>) — ต้องยืนยัน</li>
           <li>นำเข้าไฟล์: .csv/.xlsx · คอลัมน์ A <code>รหัสลูกค้า</code> (จำเป็น) + B <code>ชื่อร้าน</code> (ไม่บังคับ ใช้เทียบเตือน) · แถว 1 = หัวตาราง · มี template ให้ดาวน์โหลด · ผลตรวจแยก ผ่าน/ซ้ำ/ไม่พบรหัส/ชื่อไม่ตรง · นำเข้าแบบ “เพิ่ม” ไม่ลบสมาชิกเดิม</li>
           <li><code>CustomerSetMember(setId, customerId, source, addedBy, addedAt)</code> PK คู่ · index <code>customerId</code></li>
-          <li>ลบเซตที่ถูกใช้อยู่ไม่ได้ → <code>isArchived</code></li>
+          <li>ลบเซตที่ถูกใช้อยู่ไม่ได้ → <code>isArchived</code> (กู้คืนได้) · หน้ารายการแสดง “ถูกใช้งานใน” = reverse lookup จาก <code>benefit_audience</code> / ร้านที่รับคูปองกระดาษ (เฉพาะรายการที่ใช้งานอยู่) · นำสมาชิกออกต้องเตือนผลกระทบก่อน</li>
+          <li><code>CustomerSetMember.source</code> = MANUAL | IMPORT | RULE (RULE ใช้เมื่อทำ DYNAMIC) · ชื่อเซตซ้ำไม่ได้ (รวมที่เก็บถาวร) · เซตว่าง (0 สมาชิก) บันทึกได้แต่ใช้เป็น INCLUDE ในรายการที่ ACTIVE ไม่ได้</li>
           <li>เปลี่ยนสมาชิกมีผลทันทีกับ benefit ที่ผูก (ไม่ snapshot) แต่ <code>benefit_redemption</code> ที่ใช้ไปแล้วไม่ย้อนแก้</li>
         </ul>
       </div>
       <div class="card">
         <h3>BenefitAudience <span class="badge ok">ใหม่</span></h3>
         <ul>
-          <li><code>(benefitId, customerSetId, effect)</code> · effect = INCLUDE | EXCLUDE</li>
+          <li><code>(ownerType, ownerId, customerSetId, effect)</code> · effect = INCLUDE | EXCLUDE · <code>ownerType</code> = BENEFIT | REDEEM_ITEM (รายการแลกพอยท์ไม่ใช่ Benefit แต่ต้องมี “ใครแลกได้” ตามหน้าแคตตาล็อก — D-9)</li>
           <li>ผ่านเมื่อ: <code>ALL</code> หรือ (อยู่ใน INCLUDE ≥ 1 เซต <b>และไม่อยู่</b> ใน EXCLUDE ใดเลย) — EXCLUDE ชนะเสมอ</li>
           <li><code>audienceMode = SELECTED</code> แต่ไม่มี INCLUDE เลย → ไม่ให้เผยแพร่ (validate ตอน ACTIVE)</li>
-          <li>ผูกได้กับ benefit ทุกชนิด รวมถึง RaffleEvent และ StarterKitOffer</li>
+          <li>ผูกได้กับ benefit ทุกชนิด รวมถึง RaffleEvent, StarterKitOffer, PointsRule (กลุ่มที่สะสมพอยท์ได้) และ FlashSalePromotion (แทนรายชื่อลูกค้ารายคนเดิม)</li>
+          <li><b>ข้อยกเว้น</b>: <code>PaperCoupon</code> ไม่มี audience “ใครใช้ได้” (แจกหน้างาน คุมคนถือไม่ได้) — ควบคุมที่ <code>stores</code> เท่านั้น · <code>StarterKitOffer</code> มีเงื่อนไข B2B ตายตัว (ตรวจ <code>customerType</code>) แล้วเลือก audience จำกัดเพิ่มได้ (ไม่ใช้ DYNAMIC เพื่อรอบแรก)</li>
         </ul>
       </div>
       <div class="card">
@@ -129,17 +131,20 @@
           <li><code>ProductSetRule(setId, scopeType, scopeValue, effect)</code> · scopeType = SKU | BRAND | CATEGORY</li>
           <li>resolve เป็นรายการ SKU ตอนประเมิน (cache ตามเวอร์ชันของเซต) — สินค้าใหม่ในแบรนด์เข้าเซตเองอัตโนมัติ</li>
           <li>ใช้กับ: เงื่อนไขโปร, ขอบเขตแคมเปญ, ตัวคูณพอยท์, ยกเว้นคูปองส่งฟรี (แทน <code>coupon_category_exclusions</code> เดิม)</li>
+          <li><b>UI เลือกจากกลุ่มเดียวทุกที่ (ProductSetPicker)</b>: ขอบเขตโปร (ตัวเลือก “กลุ่มสินค้าที่ตั้งไว้” เคียง SKU/แบรนด์/หมวดเดิม) · แคมเปญสะสมยอด (ทุกสินค้า หรือกลุ่มสินค้า — ไม่มี scope แบรนด์/หมวด/SKU/ยกเว้นรายตัวแยกอีก) · แคมเปญช่วงเวลา+โควตา (โหมด SKU หรือโหมดกลุ่มสินค้า)</li>
+          <li>QuotaCampaign มี <code>scopeMode</code> = SKU (ตาราง <code>quota_campaign_sku</code>: ราคา/ตัวคูณพอยท์/โควตารายตัว) | PRODUCT_SET (<code>productSetId</code> + <code>priceRule</code> ลด %/บาทเดียวทั้งกลุ่ม + <code>pointMultiplier</code>; <b>ไม่มีโควตารายตัว</b> ใช้เฉพาะโควตารวม + ต่อร้าน) · กันซ้ำ: SKU เดียวอยู่ในแคมเปญช่วงเวลาทับกันไม่ได้ทั้งสองโหมด (resolve เป็น SKU ตอนบันทึก)</li>
         </ul>
       </div>
       <div class="card">
         <h3>RewardSet / RewardItem <span class="badge ok">ใหม่</span></h3>
         <ul>
-          <li><code>RewardSet(id, name, description, isArchived)</code> 1:N <code>RewardItem</code> (STI ตาม <code>kind</code>)</li>
+          <li><code>RewardSet(id, name, description, isArchived, currentVersionId)</code> 1:N <code>RewardSetVersion(id, setId, version, createdBy/At, changeNote)</code> 1:N <code>RewardItem</code> (STI ตาม <code>kind</code>) — item ผูกกับ version ไม่ใช่ set</li>
           <li>เซตเดียวกันถูกชี้ได้จากหลายที่ แต่ <b>แก้เซตที่ ACTIVE อยู่ต้องมีเวอร์ชัน</b> — <code>RewardGrant</code> เก็บ snapshot ของที่ให้จริง ณ วันนั้น</li>
           <li><b>ประวัติเวอร์ชัน</b>: ดู/เทียบได้ทุกเวอร์ชัน (ใครแก้ เมื่อไร เปลี่ยนอะไร ใช้อยู่ที่ไหน) · ไม่มี rollback เขียนทับ — “ใช้เป็นฐานแก้” สร้างเวอร์ชันใหม่จากเนื้อหาเก่า · ผู้ใช้เลือกอัปเดตทีละรายการ (<code>benefit</code>/<code>RedeemCatalogItem</code>/<code>RaffleCategory</code> เก็บ <code>rewardSetVersionId</code>)</li>
           <li><b>RedeemCatalogItem</b> (แคตตาล็อกแลกพอยท์) ชี้ <code>RewardSet</code> แทนการเก็บประเภท/รายละเอียดรางวัลเอง — เหลือเฉพาะ pointsCost, quota, perCustomerLimit, ช่วงเวลา, audience · ประเภทที่แสดงคำนวณจาก item ในชุด · ชนิด item เพิ่ม <code>CREDIT</code> (เครดิตเงินคืน)</li>
           <li>ขั้นบันไดแคมเปญ / รางวัลลุ้นโชค / ผลตอบแทนโปรเลือก <code>RewardSet</code> ได้ (ตัวเลือกเสริม ยังกรอกเองได้)</li>
           <li><code>valueEstimate</code> ต่อ item ใช้คำนวณต้นทุนเฉลี่ย/งบของลุ้นโชค</li>
+          <li>ผู้ใช้ชุด (<code>benefit</code>, <code>benefit_tier</code>, <code>redeem_catalog_item</code>, <code>raffle_prize</code>) เก็บ <code>rewardSetVersionId</code> · หน้าชุดของรางวัลมีกล่อง “ใครใช้ชุดนี้อยู่ · ใช้เวอร์ชันไหน” และปุ่มอัปเดตทีละรายการ · ชุด 1 รายการสร้างจากหน้าที่เลือกได้ (quick-create) · ที่ที่ตั้งรางวัลเองแบบเดิม (ขั้นแคมเปญ/รางวัลลุ้นโชค “ตั้งรางวัลเอง”) ให้สร้าง RewardSet ชนิด ad-hoc ซ่อนจากรายการ เพื่อให้ pipeline ใช้ทางเดียว</li>
         </ul>
       </div>
     </div>
@@ -160,6 +165,7 @@
                 <li><span class="node"><span class="cn concrete">PointsReward</span><span class="note">AT_GRANT → <code>PointLedger</code> EARN</span></span></li>
                 <li><span class="node"><span class="cn concrete">CouponReward</span><span class="note">AT_GRANT → กระเป๋าคูปอง</span></span></li>
                 <li><span class="node"><span class="cn concrete">TicketReward</span><span class="note">AT_GRANT → <code>RaffleTicket</code></span></span></li>
+                <li><span class="node"><span class="cn concrete">CreditReward</span><span class="note">AT_GRANT → เครดิตเงินคืน (หักตอนชำระ) · มีอายุ (วัน) · ต้องยืนยันว่าใช้ระบบเครดิตโน้ตเดิมหรือสร้าง ledger ใหม่ (D-10)</span></span></li>
                 <li><span class="node"><span class="cn concrete">PhysicalReward</span><span class="note">AT_GRANT → คิวขอรับของ (<code>isNonPos</code> ตั๋วทัวร์ ฯลฯ)</span></span></li>
               </ul></li>
           </ul>
@@ -265,7 +271,10 @@
         <tr><td>โปรเฉพาะร้านยาลูกค้า VIP</td><td>SELECTED + INCLUDE "ร้านยา VIP ปี 69"</td><td>เห็น/ใช้ได้เฉพาะสมาชิกเซต · เพิ่มร้านเข้าเซตแล้วมีผลทันที</td></tr>
         <tr><td>ทุกคนยกเว้นร้านที่ติดหนี้</td><td>SELECTED + INCLUDE "ลูกค้าทั้งหมด" (DYNAMIC) + EXCLUDE "ติดหนี้"</td><td>EXCLUDE ชนะ · ต้องการ DYNAMIC ระยะหลัง หรือแอดมินสร้างเซตทั้งหมดเอง</td></tr>
         <tr><td>คูปองกระดาษ ร่วม 5 ร้าน</td><td>PaperCoupon.stores = เลือกจาก CustomerSet</td><td>ตรวจร้านที่ส่งก้นเบิกว่าอยู่ในเซต · ร้านที่ลงทะเบียนใหม่ตั้งค่า "ทุกร้าน" ได้อัตโนมัติ</td></tr>
-        <tr><td>เซตร้านยาเปิดใหม่ เฉพาะ B2B</td><td>StarterKitOffer + INCLUDE "ประเภท=B2B" (DYNAMIC)</td><td>ลูกค้า B2C ไม่เห็นเมนู · สั่งตรงถูกบล็อก ("ไม่มีสิทธิ์สั่ง" ตามหน้า 06-customer-blocked)</td></tr>
+        <tr><td>เซตร้านยาเปิดใหม่ เฉพาะ B2B</td><td>StarterKitOffer: เงื่อนไข <code>customerType = B2B</code> ตายตัว (ไม่ใช่ CustomerSet) + audience จำกัดเพิ่มได้ (ทุกคน/บางคน)</td><td>B2C เห็นเซตแต่สั่งไม่ได้ ("ไม่มีสิทธิ์สั่ง" ตามหน้า 06-customer-blocked และป้ายบนหน้าแรก) · สั่งตรงถูกบล็อกที่เซิร์ฟเวอร์</td></tr>
+        <tr><td>คูปองกระดาษ</td><td>ไม่มี audience “ใครใช้ได้” · เลือกร้านที่รับ: ทุกร้าน | รายร้าน | CustomerSet</td><td>คุมที่ร้านรับคูปอง ไม่คุมคนถือใบ</td></tr>
+        <tr><td>แคมเปญช่วงเวลาเฉพาะแบรนด์ ราคาเดียวทั้งกลุ่ม</td><td>QuotaCampaign.scopeMode = PRODUCT_SET + priceRule ลด 15%</td><td>สินค้าใหม่ในแบรนด์เข้าแคมเปญเอง · ไม่มีโควตารายตัว ใช้โควตารวม/ต่อร้าน</td></tr>
+        <tr><td>ของรางวัลแลกพอยท์เฉพาะร้าน VIP</td><td>RedeemCatalogItem.rewardSetVersionId + BenefitAudience(ownerType=REDEEM_ITEM)</td><td>ลูกค้านอกกลุ่มไม่เห็นรายการในหน้าแลก · เซิร์ฟเวอร์ปฏิเสธการแลกตรง</td></tr>
         <tr><td>รางวัลชุดเดียว หลายที่</td><td>RewardSet "ชุดต้อนรับ" = คูปอง ฿50 + พอยท์ 100</td><td>ใช้เป็นรางวัลขั้นที่ 1 ของ Ladder, รางวัลลุ้นโชค และของแลกพอยท์พร้อมกัน แก้ที่เดียว</td></tr>
       </tbody>
     </table></div>
@@ -280,7 +289,7 @@
       <thead><tr><th>หน้า</th><th>ผู้ใช้</th><th>Route (เสนอ)</th><th>Class / Service</th><th>Mockup</th><th>Rel.</th></tr></thead>
       <tbody></tbody>
     </table></div>
-    <div class="callout"><span class="lbl">ส่วนประกอบ UI ที่ใช้ซ้ำ (ทำครั้งเดียว)</span><b>AudiencePicker</b> (ทุกคน/บางคน + เลือกเซต + include/exclude) · <b>RewardSetPicker</b> (เลือก/สร้างเซตของรางวัลแบบ inline) · <b>ProductScopePicker</b> · <b>ActivePeriod+Priority</b> · <b>StatusBadge</b> — ทำเป็น component ชุดเดียวใน <span class="mono">cln-pmpc</span> แล้วทุกหน้าตั้งค่าเรียกใช้ ไม่ก็อปกัน</div>
+    <div class="callout"><span class="lbl">ส่วนประกอบ UI ที่ใช้ซ้ำ (ทำครั้งเดียว)</span><b>AudiencePicker</b> (ทุกคน/บางคน + เลือกเซต + include/exclude) · <b>RewardSetPicker</b> (เลือก/สร้างเซตของรางวัลแบบ inline) · <b>ProductSetPicker</b> (เลือกกลุ่มสินค้า รวม/ยกเว้น + จำนวน SKU สด) · <b>ActivePeriod+Priority</b> · <b>StatusBadge</b> — ทำเป็น component ชุดเดียวใน <span class="mono">cln-pmpc</span> แล้วทุกหน้าตั้งค่าเรียกใช้ ไม่ก็อปกัน</div>
   </section>
 
   <!-- 09 -->
@@ -297,6 +306,7 @@
           <li><code>LoyaltyModule</code> — PointsRule, PointLedger, Campaign (Quota/Ladder), AccumulationLedger, ClaimRequest</li>
           <li><code>RaffleModule</code> — Event, Prize, Ticket, Draw (A/B), Audit</li>
           <li><code>StarterKitModule</code></li>
+          <li><code>HomeModule</code> — รวมส่วนของหน้าแรกลูกค้า (Flash, โปร, คูปองที่เก็บได้, แคมเปญ, เซตร้านยา, ลุ้นรางวัล, แลกพอยท์, สถานะของฉัน) เรียก service ของโมดูลอื่นตาม <code>AudienceGuard</code> · แต่ละส่วนมี endpoint ของตัวเอง (โหลดแยก ไม่บล็อกกัน) และส่วนว่างคืน <code>[]</code> เพื่อให้ UI ซ่อนเอง</li>
           <li>Job (processors เดิม): point expiry รายคืน · auto-monthly coupon · quota reservation expiry · alert 80/95%</li>
         </ul>
       </div>
@@ -305,9 +315,10 @@
         <ul>
           <li><code>POST /cart/evaluate</code> → โปร/คูปอง/ค่าส่ง/พอยท์ที่จะได้ (ใช้ซ้ำใน checkout และจำลองตะกร้าของแอดมิน)</li>
           <li><code>GET /me/benefits?kind=</code> → เฉพาะที่ลูกค้าคนนี้มีสิทธิ์</li>
+          <li><code>GET /home/{flash|promotions|coupons|campaigns|starter-kits|raffles|redeem|my-status}</code> → ส่วนของหน้าแรก (guest เรียกได้เฉพาะ flash/promotions) · คืน <code>[]</code> เมื่อว่างหรือนอกกลุ่ม — ข้อมูล Hero/หมวด/ข่าว/แบรนด์ใช้ endpoint เดิมของ pmpc</li>
           <li><code>POST /me/coupons/{id}/collect</code>, <code>POST /cart/coupons {code}</code></li>
           <li><code>POST /me/points/redeem</code>, <code>POST /me/raffles/{id}/draw</code> (idempotency-key)</li>
-          <li><code>/admin/customer-sets</code>, <code>/admin/reward-sets</code>, <code>/admin/product-sets</code>, <code>/admin/benefits/{kind}</code> CRUD + <code>:publish</code> <code>:pause</code></li>
+          <li><code>/admin/customer-sets</code> (+ <code>/:id/members</code>, <code>/:id/import</code> พร้อมรายงานแถว, <code>/import-template</code>), <code>/admin/reward-sets</code> (+ <code>/:id/versions</code>, <code>/:id/versions/:a/diff/:b</code>, <code>/:id/usages</code>, <code>/usages/:ref:upgrade</code>), <code>/admin/product-sets</code> (+ <code>/:id/preview</code> นับ SKU), <code>/admin/benefits/{kind}</code> CRUD + <code>:publish</code> <code>:pause</code></li>
           <li><code>/admin/claims</code> (คิวคำขอ/เบิก), <code>/admin/ledger/points</code>, <code>/admin/raffles/{id}/audit</code></li>
         </ul>
       </div>
@@ -337,7 +348,7 @@
   </section>
 
   <hr class="rule" style="margin-top:50px">
-  <p class="lead" style="font-size:13px">แหล่งอ้างอิง: <span class="mono">pharmaplex-master-system-spec-v2.md</span> §3–§7 · <span class="mono">mockup/assets/registry.js</span> (59 หน้าจอ) · <span class="mono">shared-state.js</span> (ค่าตั้งต้นต้นแบบ) · <span class="mono">pmpc/srv-pmpc/src/models/bundle.entity.ts</span> · แผนงานและ user story อยู่ที่ <a href="requirements.html">requirements.html</a></p>
+  <p class="lead" style="font-size:13px">แหล่งอ้างอิง: <span class="mono">pharmaplex-master-system-spec-v2.md</span> §3–§7 · <span class="mono">mockup/assets/registry.js</span> (61 หน้าจอ) · <span class="mono">shared-state.js</span> (ค่าตั้งต้นต้นแบบ) · <span class="mono">pmpc/srv-pmpc/src/models/bundle.entity.ts</span> · แผนงานและ user story อยู่ที่ <a href="requirements.html">requirements.html</a></p>
 </div>
 
 <script>
@@ -348,13 +359,17 @@
   /* ---------- ER table ---------- */
   var ER = [
     ['customer_set', 'WHO', 'id, name, kind (STATIC|DYNAMIC), filter jsonb, isArchived (ไม่มี purpose)', 'ใหม่'],
-    ['customer_set_member', 'WHO', 'PK(setId, customerId), source, addedBy, addedAt', 'index customerId'],
+    ['customer_set_member', 'WHO', 'PK(setId, customerId), source (MANUAL|IMPORT|RULE), addedBy, addedAt', 'index customerId'],
+    ['customer_set_import_log', 'WHO', 'setId, fileName, rows, passed, duplicate, notFound, nameMismatch, createdBy/At', 'เก็บผลนำเข้าไว้ตรวจย้อนหลัง'],
     ['product_set / product_set_rule', 'WHAT', 'setId, scopeType, scopeValue, effect', 'ใหม่'],
-    ['reward_set / reward_item', 'REWARD', 'item: kind, qty, sku/discount/points/couponId/eventId/title, valueEstimate', 'STI ตาม kind'],
-    ['benefit', 'CORE', 'ฟิลด์ร่วมตามหัวข้อ 02 + kind + คอลัมน์เฉพาะชนิด (nullable)', 'STI root'],
-    ['benefit_audience', 'WHO', 'benefitId, customerSetId, effect', 'ไม่มีแถว = ทุกคน'],
+    ['reward_set', 'REWARD', 'id, name, description, isArchived, currentVersionId', 'ชื่อซ้ำไม่ได้'],
+    ['reward_set_version', 'REWARD', 'setId, version, createdBy/At, changeNote', 'append-only · ไม่เขียนทับ'],
+    ['reward_item', 'REWARD', 'versionId, kind (…|CREDIT), qty, sku/discount/points/couponId/eventId/credit/title, valueEstimate', 'STI ตาม kind'],
+    ['benefit', 'CORE', 'ฟิลด์ร่วมตามหัวข้อ 02 + kind + คอลัมน์เฉพาะชนิด (nullable เช่น scopeMode, productSetId, priceRule, badgeText)', 'STI root'],
+    ['benefit_audience', 'WHO', 'ownerType (BENEFIT|REDEEM_ITEM), ownerId, customerSetId, effect', 'ไม่มีแถว = ทุกคน · PaperCoupon ไม่ใช้'],
     ['benefit_condition', 'WHEN', 'benefitId, kind, productSetId, minQty, minAmount, window...', 'STI Condition'],
-    ['benefit_tier', 'WHEN', 'benefitId, seq, threshold, rewardSetId, quotaTotal, quotaLeft, formSchema', 'GiftSetGroup + Ladder'],
+    ['benefit_tier', 'WHEN', 'benefitId, seq, threshold, rewardSetVersionId, quotaTotal, quotaLeft, formSchema', 'GiftSetGroup + Ladder'],
+    ['quota_campaign_sku', 'WHEN', 'benefitId, skuId, campaignPrice, pointMultiplier, quotaSku', 'ใช้เมื่อ scopeMode = SKU'],
     ['benefit_redemption', 'LEDGER', 'benefitId, customerId, orderId, state (RESERVED|COMMITTED|VOID), snapshot jsonb', 'unique(benefitId, orderId)'],
     ['quota_reservation', 'LEDGER', 'benefitId, skuId, customerId, qty, expiresAt, state', 'job คืนโควตา 15 นาที'],
     ['reward_grant', 'LEDGER', 'customerId, sourceBenefitId, sourceRef, itemSnapshot, deliveryKind, status, expiresAt', 'ทางเดียวที่ AT_GRANT ออกของ'],
@@ -362,10 +377,10 @@
     ['paper_coupon_claim', 'COUPON', 'batchId, storeCustomerId, stubCount, claimedAt, flags, status', 'ธง: ร้านไม่อยู่ในชุด / เกินจำนวนออก / เกินกำหนด'],
     ['sku_point_rate', 'POINTS', 'skuId PK, pointsPerUnit, isEnabled', 'ต่อยอด product_point_settings'],
     ['point_ledger', 'POINTS', 'customerId, lotId, type (EARN|REDEEM|EXPIRE|ADJUST|CLAWBACK), points, remaining, orderId, reason, expiresAt', 'append-only'],
-    ['redeem_catalog_item', 'POINTS', 'name, pointsCost, rewardSetId, stock, isActive', 'ไม่ใช่ Benefit'],
+    ['redeem_catalog_item', 'POINTS', 'name, pointsCost, rewardSetVersionId, quotaTotal, quotaLeft, perCustomerLimit + period (MONTH|YEAR|ALWAYS), openFrom/openTo, isActive', 'ไม่ใช่ Benefit · audience ผ่าน benefit_audience(REDEEM_ITEM)'],
     ['accumulation_ledger', 'CAMPAIGN', 'campaignId, customerId, orderId, amount, type (ADD|REVERSE)', 'แยกจากพอยท์เด็ดขาด'],
     ['claim_request', 'CAMPAIGN', 'kind (TIER|PRIZE), customerId, sourceBenefitId, tierId, formData, status, rejectReason, snapshot', 'คิวขอรับของเดียวทั้งระบบ'],
-    ['raffle_prize', 'RAFFLE', 'eventId, rewardSetId, mode (A|B), weight, stockTotal, stockLeft, valuePerUnit, winners (B)', 'ไม่ถูกรางวัล = แถวพิเศษ'],
+    ['raffle_prize', 'RAFFLE', 'eventId, rewardSetVersionId, mode (A|B), weight, stockTotal, stockLeft, valuePerUnit, winners (B)', 'ไม่ถูกรางวัล = แถวพิเศษ'],
     ['raffle_ticket', 'RAFFLE', 'eventId, customerId, source, sourceRef, expiresAt, status (UNUSED|USED|POOLED|EXPIRED)', 'หน่วยกลางหน่วยเดียว'],
     ['raffle_draw', 'RAFFLE', 'ticketId, prizeId, mode, serverSeedHash, result, createdAt', 'append-only · audit'],
     ['raffle_pool', 'RAFFLE', 'eventId, prizeId, sealedHash, ticketCount, seedRevealed, drawnAt', 'โหมด B: hash ก่อนจับ เปิด seed หลังจับ'],
@@ -378,10 +393,10 @@
 
   /* ---------- pages ---------- */
   var P = [
-    ['เซตลูกค้า: รายการ / สร้าง / นำเข้ารายชื่อ / ดูสมาชิก', 'admin', '/admin/customer-sets', 'CustomerSet', MOCK('foundation/01-admin-customer-sets.html','01') + ' · ' + MOCK('foundation/02-admin-customer-set-editor.html','02'), 'R1', 'foundation'],
-    ['เซตของรางวัล: รายการ / แก้ไขรายการรางวัล', 'admin', '/admin/reward-sets', 'RewardSet', MOCK('foundation/03-admin-reward-sets.html','03-admin-reward-sets'), 'R1', 'foundation'],
-    ['เซตสินค้า (แบรนด์/หมวด/SKU)', 'admin', '/admin/product-sets', 'ProductSet', MOCK('foundation/04-admin-product-sets.html','04-admin-product-sets'), 'R1', 'foundation'],
-    ['หน้าแรกลูกค้า: ภาพรวมการจัดวาง + หน้าแรกจำลอง (Hero, สถานะของฉัน, Flash, หมวด, โปรโมชั่น, คูปอง, แคมเปญ, เซตร้านยา, ลุ้นรางวัล, แลกพอยท์, ข่าว, แบรนด์)', 'customer', '/ (cln-pmpc/app/pages/home.tsx)', 'ต่อยอด home.tsx เดิม', MOCK('home/00-flow.html','00-flow') + ' · ' + MOCK('home/01-customer-home.html','01-customer-home'), 'R2', 'home'],
+    ['กลุ่มลูกค้า: รายการ / สมาชิก / นำเข้าไฟล์ (มี template)', 'admin', '/admin/customer-sets', 'CustomerSet', MOCK('foundation/01-admin-customer-sets.html','01') + ' · ' + MOCK('foundation/02-admin-customer-set-editor.html','02'), 'R1', 'foundation'],
+    ['ชุดของรางวัล: รายการ / แก้ไขรายการรางวัล / ประวัติเวอร์ชัน + เทียบ / ใครใช้ชุดนี้อยู่', 'admin', '/admin/reward-sets', 'RewardSet / RewardSetVersion', MOCK('foundation/03-admin-reward-sets.html','03-admin-reward-sets'), 'R1', 'foundation'],
+    ['กลุ่มสินค้า (แบรนด์/หมวด/SKU รวม-ยกเว้น)', 'admin', '/admin/product-sets', 'ProductSet', MOCK('foundation/04-admin-product-sets.html','04-admin-product-sets'), 'R1', 'foundation'],
+    ['หน้าแรกลูกค้า: ภาพรวมการจัดวาง + หน้าแรกจำลอง (Hero, สถานะของฉัน, Flash, หมวด, โปรโมชั่น, คูปอง, แคมเปญ, เซตร้านยา, ลุ้นรางวัล, แลกพอยท์, ข่าว, แบรนด์)', 'customer', '/ (cln-pmpc/app/pages/home.tsx)', 'ต่อยอด home.tsx เดิม + HomeModule', MOCK('home/00-flow.html','00-flow') + ' · ' + MOCK('home/01-customer-home.html','01-customer-home'), 'R2', 'home'],
     ['ตัวเลือกกลุ่มเป้าหมาย “ทุกคน/บางคน” (component ในทุกหน้าตั้งค่า)', 'admin', '(ฝังในทุกหน้า)', 'BenefitAudience', MOCK('foundation/05-admin-audience-picker.html','05-admin-audience-picker'), 'R1', 'foundation'],
     ['รายการโปรโมชั่น + priority', 'admin', '/admin/promotions', 'Promotion', MOCK('promotion/01-admin-list.html', '01-admin-list'), 'R1', 'promotion'],
     ['สร้าง/แก้ไขโปรโมชั่น', 'admin', '/admin/promotions/:id', 'ItemBundle / GroupThreshold', MOCK('promotion/02-admin-editor.html', '02-admin-editor'), 'R1', 'promotion'],
@@ -412,7 +427,7 @@
     ['รายการ + แก้ไขเซตร้านยา / สั่งแทนลูกค้า', 'admin', '/admin/starter-kits', 'StarterKitOffer', MOCK('starterkit/01-admin-list.html', '01') + ' · ' + MOCK('starterkit/02-admin-editor.html', '02') + ' · ' + MOCK('starterkit/03-admin-order-behalf.html', '03'), 'R3', 'starterkit'],
     ['เลือกเซต / ปรับเซต / ไม่มีสิทธิ์', 'customer', '/starter-kits', 'StarterKitOffer', MOCK('starterkit/04-customer-catalog.html', '04') + ' · ' + MOCK('starterkit/05-customer-builder.html', '05') + ' · ' + MOCK('starterkit/06-customer-blocked.html', '06'), 'R3', 'starterkit']
   ];
-  var GROUPS = { all: 'ทั้งหมด', foundation: 'เซตที่ใช้ซ้ำ', promotion: 'โปรโมชั่น', coupon: 'คูปอง', points: 'พอยท์', campaign: 'แคมเปญ', raffle: 'สุ่มรางวัล', starterkit: 'เซตร้านยา' };
+  var GROUPS = { all: 'ทั้งหมด', home: 'หน้าแรก', foundation: 'กลุ่มและชุดที่ใช้ซ้ำ', promotion: 'โปรโมชั่น', coupon: 'คูปอง', points: 'พอยท์', campaign: 'แคมเปญ', raffle: 'สุ่มรางวัล', starterkit: 'เซตร้านยา' };
   var cur = 'all';
   function renderPages() {
     var rows = P.filter(function (r) { return cur === 'all' || r[6] === cur; });
@@ -438,7 +453,10 @@
     ['D-5', 'ผลการคำนวณ/ลุ้นรางวัลตัดสินที่เซิร์ฟเวอร์เท่านั้น + idempotency-key ต่อออเดอร์/การลุ้น', 'ไม่มีทางเลือก (ข้อกำหนดจาก flow ลุ้นโชค)', '—'],
     ['D-6', 'Cache สมาชิกเซตลูกค้า (Redis มีใน repo อยู่แล้ว) ตามเวอร์ชันของเซต', 'ทางเลือก: query สดทุกครั้ง (พอสำหรับจำนวนลูกค้าหลักพัน)', 'dev lead (ต้องรู้จำนวนลูกค้าจริง)'],
     ['D-7', 'Quota reservation เป็นแถวใน DB + job หมดอายุ (processors เดิม)', 'ทางเลือก: Redis TTL (เร็วกว่าแต่ต้องกระทบยอดกลับ DB)', 'dev lead'],
-    ['D-8', 'ทดสอบ ts-mixin-extended + abstract + @TableInheritance ก่อนล็อกแบบ (spike 1 วัน)', 'fallback: BenefitBase เป็น mixin เฉพาะ StampableEntity', 'dev ที่รับงาน foundation']
+    ['D-8', 'ทดสอบ ts-mixin-extended + abstract + @TableInheritance ก่อนล็อกแบบ (spike 1 วัน)', 'fallback: BenefitBase เป็น mixin เฉพาะ StampableEntity', 'dev ที่รับงาน foundation'],
+    ['D-9', 'BenefitAudience ใช้ ownerType (BENEFIT | REDEEM_ITEM) เพื่อรองรับ “ใครแลกได้” ของรายการแลกพอยท์', 'ทางเลือก: ทำ RedeemCatalogItem เป็น Benefit ชนิดหนึ่ง (กระทบ pipeline)', 'dev lead'],
+    ['D-10', 'เครดิตเงินคืน (CreditReward): ใช้ระบบเครดิตโน้ตเดิมหรือสร้าง credit ledger ใหม่ + อายุเครดิต', 'ทางเลือก: ตัดชนิดเครดิตออกจากรอบแรก', 'dev lead + ฝ่ายบัญชี'],
+    ['D-11', 'หน้าแรก: แต่ละส่วนมี endpoint แยก โหลดขนาน + cache สั้นต่อลูกค้า', 'ทางเลือก: endpoint รวม /home เดียว (ง่ายกว่าแต่ส่วนช้าบล็อกทั้งหน้า)', 'dev lead']
   ];
   document.getElementById('decisions').innerHTML = '<div class="tbl-wrap"><table class="t"><thead><tr><th>#</th><th>ข้อเสนอ</th><th>ทางเลือก</th><th>ใครตัดสิน</th></tr></thead><tbody>' +
     D.map(function (d) { return '<tr><td><span class="badge prop">' + d[0] + '</span></td><td>' + d[1] + '</td><td>' + d[2] + '</td><td>' + d[3] + '</td></tr>'; }).join('') + '</tbody></table></div>';

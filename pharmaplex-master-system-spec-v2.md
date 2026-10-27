@@ -565,6 +565,8 @@ GRAPHIC_DESIGNING ──► Draft 1 ──► WAITING_GRAPHIC_APPROVAL
 ### 7.2 โครงสร้างฐานข้อมูล SQL DDL (PostgreSQL Schema) ของโมดูล 3–6
 
 > **ร่างโครงสร้างใหม่ (PROPOSED, 22 ต.ค. 2569):** DDL ด้านล่างเป็นแบบแยกตารางต่อฟีเจอร์ ซึ่งไม่รองรับ "กลุ่มลูกค้า / ชุดของรางวัล / กลุ่มสินค้า" ที่ใช้ซ้ำข้ามโมดูล ทีม dev เสนอโครงใหม่ที่ใช้ตาราง `benefit` (STI) เป็นราก พร้อม `customer_set`, `product_set`, `reward_set`, `benefit_audience`, `benefit_tier`, `benefit_redemption` และ ledger (`point_ledger`, `accumulation_ledger`, `reward_grant`, `raffle_*`) — รายละเอียดอยู่ใน `dev-architecture.html` และแผน/user story ใน `requirements.html` ตารางในหัวข้อนี้จะถูกแทนเมื่อโครงใหม่ผ่านการยืนยันจาก dev lead และลูกค้า (ยังไม่แก้ DDL จนกว่าจะตกลง)
+>
+> **ปรับตาม mockup (27 ต.ค. 2569):** `customer_set` ไม่มีฟิลด์ `purpose` (ลูกค้า/ร้าน/สาขาอยู่ทะเบียนเดียว) · `benefit_audience` ใช้ `ownerType` (BENEFIT | REDEEM_ITEM) เพราะรายการแลกพอยท์มี “ใครแลกได้” · `reward_set` มีตาราง `reward_set_version` และผู้ใช้ชุดเก็บ `rewardSetVersionId` · `redeem_catalog_item` ชี้ชุดของรางวัลแทนเก็บประเภท/รายละเอียดเอง · แคมเปญโควตามี `scopeMode` (SKU | PRODUCT_SET) · คูปองกระดาษไม่มี audience “ใครใช้ได้” · หน้าแรกลูกค้าใช้ `HomeModule` ดู `dev-architecture.html` หัวข้อ 03/09
 
 ตัวอย่าง DDL ของโมดูลบริการสั่งทำพิเศษในฉบับ v2 ถูกแทนด้วยหัวข้อ 7.1 แล้ว ส่วนที่เหลือยังคงเดิม:
 
