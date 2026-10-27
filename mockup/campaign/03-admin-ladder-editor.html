@@ -80,16 +80,11 @@
       <div class="card"><div class="card-b relative">
         <span class="pin abs">2</span>
         <h6 class="mb16">ขอบเขตสินค้าที่นับยอด</h6>
-        <div class="radio-cards c4">
-          <label class="radio-card"><input type="radio" name="scope" value="all"><span><span class="rc-t">ทุกสินค้า</span></span></label>
-          <label class="radio-card"><input type="radio" name="scope" value="brand" checked><span><span class="rc-t">ตามแบรนด์</span></span></label>
-          <label class="radio-card"><input type="radio" name="scope" value="cat"><span><span class="rc-t">ตามหมวด</span></span></label>
-          <label class="radio-card"><input type="radio" name="scope" value="sku"><span><span class="rc-t">รายสินค้า</span></span></label>
+        <div class="radio-cards c2">
+          <label class="radio-card"><input type="radio" name="scope" value="all"><span><span class="rc-t">ทุกสินค้า</span><span class="rc-d" style="display:block">นับยอดจากทุกสินค้าในออเดอร์</span></span></label>
+          <label class="radio-card"><input type="radio" name="scope" value="set" checked><span><span class="rc-t">เลือกจากกลุ่มสินค้าที่ตั้งไว้</span><span class="rc-d" style="display:block">ใช้กลุ่มจากเมนู กลุ่มและชุดที่ใช้ซ้ำ — มีแบรนด์ / หมวด / SKU และสินค้ายกเว้นครบในกลุ่มเดียว</span></span></label>
         </div>
-        <div class="field mt16"><label>แบรนด์ที่นับยอด</label>
-          <div class="row wrap"><span class="tagx">Blackmores <button>✕</button></span><span class="tagx">Dumex <button>✕</button></span><span class="tagx">Pampers <button>✕</button></span><button class="btn outlined sm">＋ เพิ่มแบรนด์</button></div></div>
-        <div class="field mt16"><label>ยกเว้นสินค้า (ไม่นับยอดแม้อยู่ในแบรนด์ข้างต้น)</label>
-          <div class="row wrap"><span class="tagx ex">นมผงสูตร 3 (ควบคุมราคา) <button>✕</button></span><span class="tagx ex">ยาน้ำแก้ไอ <button>✕</button></span><button class="btn outlined sm">＋ เพิ่มรายการยกเว้น</button></div></div>
+        <div class="mt16" data-reveal="scope=set"><div class="aud"><div class="aud-h"><b>กลุ่มสินค้าที่นับยอด</b><span class="chip soft-info sq">กลุ่มสินค้า</span></div><div class="aud-src">รายชื่อกลุ่มมาจาก <a href="../foundation/04-admin-product-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มสินค้า ↗</a> — แต่ละกลุ่มมีแบรนด์/หมวด/SKU แบบรวม-ยกเว้นอยู่แล้ว ตั้งครั้งเดียวใช้ซ้ำได้ทั้งโปร แคมเปญ พอยท์ และส่งฟรี</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>Blackmores (ยกเว้น 2 รายการ) · 34 SKU</option><option>นมผงทุกตรา · 18 SKU</option><option>สินค้าหนัก (ไม่ร่วมส่งฟรี) · 61 SKU</option></select><span class="n">34 SKU</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/04-admin-product-sets.html">ดู/แก้กติกากลุ่มสินค้า ↗</a><a class="small" href="../foundation/04-admin-product-sets.html">สร้างกลุ่มใหม่ ↗</a></div><div class="aud-sum">สินค้าที่เข้าขอบเขต: <b>34</b> SKU (คำนวณสดจากกติกา — สินค้าใหม่ในแบรนด์/หมวดเข้าเอง) · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div>
         <hr class="divider">
         <div class="stack s8 relative">
           <span class="pin abs" style="top:-18px">3</span>
@@ -263,7 +258,7 @@
   <h6>หมายเหตุ UX</h6>
   <ol>
     <li><span class="pin">1</span><span><b>ปีสัญญา + วันเริ่ม/สิ้นสุด</b> — เลือกปี (พ.ศ.) แล้วระบบเติมวันที่ 1 ม.ค. – 31 ธ.ค. ให้ แก้ได้ · ปีสัญญาเดียวกันสร้างแคมเปญซ้ำไม่ได้ · ยอดสะสมของแต่ละปีแยกกัน ไม่ยกข้ามปี</span></li>
-    <li><span class="pin">2</span><span><b>ขอบเขตสินค้า</b> — ทุกสินค้า / แบรนด์ / หมวด / รายสินค้า + รายการยกเว้น (เช่น สินค้าควบคุมราคา) · แก้ขอบเขตหลังเปิดมีผลกับออเดอร์ใหม่เท่านั้น ยอดเก่าไม่คำนวณย้อนหลัง</span></li>
+    <li><span class="pin">2</span><span><b>ขอบเขตสินค้า</b> — ทุกสินค้า หรือ <b>เลือกจากกลุ่มสินค้าที่ตั้งไว้</b> (รวม/ยกเว้น) ซึ่งกลุ่มสินค้าหนึ่งกลุ่มมีแบรนด์ หมวด รายสินค้า และสินค้ายกเว้นอยู่แล้ว จึงตัดตัวเลือก “ตามแบรนด์ / ตามหมวด / รายสินค้า” และช่องยกเว้นรายตัวเดิมออก · แสดงจำนวน SKU ที่เข้าขอบเขตสด · เปลี่ยนขอบเขตหลังมีลูกค้าสะสมยอดแล้ว มีผลกับยอดที่นับต่อจากนี้ ไม่คำนวณย้อนหลัง</span></li>
     <li><span class="pin">3</span><span><b>กติกาการนับ</b> — "ชำระแล้ว" และ "ไม่รวมค่าส่ง" ล็อกไว้ตามสเปก (แก้ไม่ได้) · ตัวเลือก "หลังหักส่วนลด" และ "หักเมื่อยกเลิก" เปลี่ยนได้ก่อนเปิดแคมเปญเท่านั้น</span></li>
     <li><span class="pin">4</span><span><b>ยอดเกณฑ์สะสม</b> — เป็นยอดรวมสะสมทั้งปี (ไม่ใช่ส่วนต่างจากขั้นก่อน) ต้องไม่ซ้ำกัน · ขั้นที่มีคนถึงแล้วล็อกช่องนี้</span></li>
     <li><span class="pin">5</span><span><b>ประเภทรางวัล</b> — สินค้าในเว็บ (POS, ตัดสต็อก) / ของนอก POS (ตั๋ว เครื่องใช้ไฟฟ้า ใส่รายละเอียดเอง) / คูปอง (ออกเข้ากระเป๋า) / พอยท์ (เติมเข้าบัญชีพอยท์) · เปลี่ยนประเภทแล้วช่องด้านล่างเปลี่ยนตาม</span></li>

@@ -64,8 +64,25 @@
         <div class="mt16"><div class="aud"><div class="aud-h"><b>กลุ่มลูกค้าที่ร่วมแคมเปญได้ * <span class="pin">11</span></b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div><div class="aud-modes"><label class="check"><input type="radio" name="aud" value="all"> ทุกคน</label><label class="check"><input type="radio" name="aud" value="some" checked> บางคน — เลือกจากกลุ่มลูกค้าที่ตั้งไว้</label></div><div class="aud-note" data-reveal="aud=all">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้แคมเปญนี้ได้ ไม่ต้องตั้งอะไรเพิ่ม · ลูกค้านอกกลุ่มจะเห็นราคาปกติ และไม่เห็นป้ายแคมเปญ</div><div class="aud-body" data-reveal="aud=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="../foundation/01-admin-customer-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค และเซตร้านยา</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>ร้านยา VIP ปี 2569 · 38 ราย</option><option>ลูกค้าติดตามหนี้ · 6 ราย</option><option>ร้านร่วมคูปอง NOV80 · 5 ราย</option></select><span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div><div class="aud-sum">ผู้ที่เข้าข่าย: <b>38</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div></div>
       </div></div>
 
+      <!-- ขอบเขตสินค้า -->
+      <div class="card"><div class="card-b">
+        <h6 class="mb16">ขอบเขตสินค้าที่ร่วมแคมเปญ <span class="pin">12</span></h6>
+        <div class="radio-cards c2">
+          <label class="radio-card"><input type="radio" name="qscope" value="sku" checked><span><span class="rc-t">เลือกรายสินค้า (SKU)</span><span class="rc-d" style="display:block">ตั้งราคาแคมเปญ ตัวคูณพอยท์ และโควตาแยกรายตัว</span></span></label>
+          <label class="radio-card"><input type="radio" name="qscope" value="set"><span><span class="rc-t">เลือกจากกลุ่มสินค้าที่ตั้งไว้</span><span class="rc-d" style="display:block">ใช้กลุ่มจากเมนู กลุ่มและชุดที่ใช้ซ้ำ (แบรนด์/หมวด/SKU รวม-ยกเว้น) ราคาตั้งเป็นกติกาเดียวทั้งกลุ่ม</span></span></label>
+        </div>
+        <div class="mt16 hidden" data-reveal="qscope=set">
+          <div class="aud"><div class="aud-h"><b>กลุ่มสินค้าที่ร่วมแคมเปญ</b><span class="chip soft-info sq">กลุ่มสินค้า</span></div><div class="aud-src">รายชื่อกลุ่มมาจาก <a href="../foundation/04-admin-product-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มสินค้า ↗</a> — แต่ละกลุ่มมีแบรนด์/หมวด/SKU แบบรวม-ยกเว้นอยู่แล้ว ตั้งครั้งเดียวใช้ซ้ำได้ทั้งโปร แคมเปญ พอยท์ และส่งฟรี</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>Blackmores (ยกเว้น 2 รายการ) · 34 SKU</option><option>นมผงทุกตรา · 18 SKU</option><option>สินค้าหนัก (ไม่ร่วมส่งฟรี) · 61 SKU</option></select><span class="n">34 SKU</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/04-admin-product-sets.html">ดู/แก้กติกากลุ่มสินค้า ↗</a><a class="small" href="../foundation/04-admin-product-sets.html">สร้างกลุ่มใหม่ ↗</a></div><div class="aud-sum">สินค้าที่เข้าขอบเขต: <b>34</b> SKU (คำนวณสดจากกติกา — สินค้าใหม่ในแบรนด์/หมวดเข้าเอง) · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div>
+          <div class="form-grid mt16">
+            <div class="field"><label>ราคาแคมเปญ *</label><div class="row"><select class="select" style="max-width:150px"><option>ลดเป็น %</option><option>ลดเป็นบาท</option></select><div class="input-adorn" style="flex:1"><input class="input" value="15"><span class="adorn">%</span></div></div><span class="help">ใช้กับทุก SKU ในกลุ่ม · ต้องต่ำกว่าราคาปกติ</span></div>
+            <div class="field"><label>ตัวคูณพอยท์</label><input class="input" value="1"><span class="help">ใช้กับทุก SKU ในกลุ่ม · ×1 = ไม่คูณ</span></div>
+          </div>
+          <div class="alert info mt8" style="font-size:12.5px"><div>โหมดกลุ่มสินค้า: ไม่ตั้งโควตารายสินค้า ใช้ “โควตารวม” และ “โควตาต่อร้านค้า” ด้านล่างอย่างเดียว · สินค้าใหม่ที่เข้ากลุ่มภายหลังเข้าแคมเปญเอง · ต้องการราคา/โควตาแยกรายตัวให้เลือก “รายสินค้า (SKU)”</div></div>
+        </div>
+      </div></div>
+
       <!-- SKU -->
-      <div class="card" style="overflow:hidden">
+      <div class="card" style="overflow:hidden" data-reveal="qscope=sku">
         <div class="card-h"><h6>สินค้าที่ร่วมรายการ (ผูกเฉพาะ SKU)</h6><button class="btn outlined sm">＋ เพิ่ม SKU</button></div>
         <div class="card-b" style="padding-top:12px">
           <div class="table-wrap"><table class="table sku-table">
@@ -189,6 +206,7 @@
     <li><span class="pin">9</span><span><b>มิเตอร์สด</b> — แยก "ขายแล้ว" กับ "พักอยู่" เพื่อให้แอดมินเข้าใจว่าทำไมโควตา "เหลือ" ลดลงทั้งที่ยังไม่มีออเดอร์สำเร็จ</span></li>
     <li><span class="pin">10</span><span><b>3 จังหวะ</b> — สรุปผลต่อระบบที่เกิดอัตโนมัติ ไม่ต้องมีคนกด</span></li>
     <li><span class="pin">11</span><span><b>กลุ่มลูกค้าที่ร่วมแคมเปญ</b> เปลี่ยนจากติ๊กประเภทลูกค้า (B2B สัญญา / B2B ทั่วไป / B2C) เป็นตัวเลือกกลุ่มเป้าหมายเดียวกับทุกหน้า · ถ้าต้องการ “ทุกร้านยา B2B” ให้สร้างกลุ่มลูกค้านำเข้าจากไฟล์ (กลุ่มอัตโนมัติตามประเภทลูกค้าเป็นระยะหลัง FD-7)</span></li>
+    <li><span class="pin">12</span><span><b>ขอบเขตสินค้า</b> เลือกได้ 2 แบบ: รายสินค้า (SKU) แบบเดิม ที่ตั้งราคา/ตัวคูณพอยท์/โควตารายตัวได้ หรือ <b>กลุ่มสินค้าที่ตั้งไว้</b> จากหน้า <a href="../foundation/04-admin-product-sets.html">กลุ่มสินค้า</a> (รวม/ยกเว้น แบรนด์ หมวด SKU) ที่ตั้งราคาเป็นกติกาเดียวทั้งกลุ่ม · โหมดกลุ่มไม่มีโควตารายสินค้า · SKU เดียวกันอยู่ในแคมเปญช่วงเวลาทับกันไม่ได้ ไม่ว่าเข้ามาทางโหมดไหน (ตรวจตอนบันทึก)</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>ลูกค้าอยู่ในช่วงพักโควตา เมื่อชำระสำเร็จภายหลังแอดมินปิดแคมเปญก่อนกำหนด → ยังได้ราคาแคมเปญตามที่พักไว้</li>
