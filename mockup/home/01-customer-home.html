@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หน้าแรกลูกค้า</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+  .viewbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1.5px dashed var(--g400);border-radius:10px;padding:8px 14px;margin-bottom:20px;background:#fff;font-size:12.5px}
+  .viewbar b{color:var(--text2)}
+  .sec{margin-top:36px}
+  .sec-h{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:14px}
+  .sec-h h5{font-size:20px;font-weight:800;margin:0;display:flex;align-items:center;gap:8px}
+  .sec-h .sub{font-size:12.5px;color:var(--text2);margin-top:2px}
+  .more{font-size:13px;font-weight:700;white-space:nowrap}
+  .chip.sq{height:20px;font-size:10.5px;padding:0 7px}
+
+  /* hero (pmpc: autoSlideBaner + banner tiles) */
+  .hero-wrap{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:16px}
+  .slide{border-radius:14px;min-height:300px;background:linear-gradient(120deg,#B32026,#E5533D 60%,#F57C00);color:#fff;padding:32px 36px;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+  .slide .k{font-size:12px;font-weight:700;letter-spacing:.06em;opacity:.9}
+  .slide .t{font-size:32px;font-weight:800;line-height:1.25;margin:6px 0}
+  .slide .d{font-size:14px;opacity:.92;max-width:460px}
+  .slide .btn{background:#fff;color:var(--primary-dark);align-self:flex-start;margin-top:16px}
+  .slide .dots{position:absolute;bottom:14px;left:36px;display:flex;gap:6px}
+  .slide .dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.45)}.slide .dots i.on{background:#fff;width:22px;border-radius:6px}
+  .tiles{display:grid;grid-template-rows:1fr 1fr;gap:16px}
+  .tile{border-radius:14px;padding:18px 20px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--g200);background:linear-gradient(135deg,var(--g100),var(--g200));position:relative}
+  .tile b{font-size:16px}.tile span{font-size:12.5px;color:var(--text2)}
+  .tile .promo-tag{position:absolute;top:10px;right:10px}
+
+  /* status strip */
+  .strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+  .st{background:#fff;border:1px solid var(--g200);border-radius:12px;padding:14px 16px;display:block;color:inherit;text-decoration:none}
+  .st .l{font-size:12px;color:var(--text2)}.st .v{font-size:22px;font-weight:800;margin:2px 0}.st .s{font-size:12px;color:var(--text2)}
+  .st .s.warn{color:#B26A00}
+  .login-cta{display:flex;justify-content:space-between;align-items:center;gap:16px;border:1.5px dashed var(--g400);border-radius:12px;padding:16px 20px;background:var(--g50)}
+
+  /* flash */
+  .flash{border-radius:14px;background:linear-gradient(120deg,#F57C00,#B32026);padding:18px 20px;color:#fff}
+  .flash-h{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+  .flash-h .ft{font-size:22px;font-weight:800}.flash-h .fs{font-size:12.5px;opacity:.92}
+  .timer{display:flex;gap:6px;align-items:center;font-weight:800;font-size:18px}
+  .timer span{background:rgba(0,0,0,.28);border-radius:6px;padding:4px 8px;min-width:38px;text-align:center}.timer i{font-style:normal;opacity:.8}
+  .flash .btn{background:#fff;color:var(--primary-dark)}
+  .product-card .nm{font-weight:700;font-size:13.5px;line-height:1.4}
+  .product-card .hint{font-size:11.5px;color:#B26A00;background:var(--warning-lighter);border-radius:6px;padding:3px 8px}
+  .product-card .img{height:120px}
+  .price s{display:inline}
+
+  /* categories */
+  .cats{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px}
+  .cat{text-align:center;font-size:12.5px;font-weight:600}
+  .cat i{display:block;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--g100),var(--g200));margin:0 auto 6px;border:1px solid var(--g200)}
+
+  .cards3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+  .cards2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .cards4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+  .pcard{background:#fff;border:1px solid var(--g200);border-radius:12px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;height:100%}
+  .pcard h6{font-size:15px;font-weight:700;line-height:1.4;margin:0}
+  .pcard p{font-size:12.5px;color:var(--text2);margin:0}
+  .pcard .ft{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px;color:var(--text2)}
+
+  /* coupon */
+  .cpn{display:grid;grid-template-columns:84px 1fr;background:#fff;border:1px solid var(--g300);border-radius:12px;overflow:hidden}
+  .cpn .a{background:var(--primary-lighter);color:var(--primary-dark);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:20px;border-right:2px dashed var(--g300);padding:8px 4px;text-align:center;line-height:1.2}
+  .cpn .a small{font-size:11px;font-weight:600}
+  .cpn .b{padding:12px 14px;display:flex;flex-direction:column;gap:4px;font-size:12.5px}
+  .cpn .b b{font-size:13.5px}
+
+  .step-mini{display:flex;gap:6px;margin:6px 0}
+  .step-mini i{flex:1;height:8px;border-radius:6px;background:var(--g200)}.step-mini i.done{background:var(--success)}.step-mini i.cur{background:var(--warning)}
+
+  .kit{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+  .raffle{border-radius:14px;background:linear-gradient(120deg,#4527A0,#7E57C2);color:#fff;padding:22px 26px;display:grid;grid-template-columns:1fr auto;gap:20px;align-items:center}
+  .raffle .t{font-size:22px;font-weight:800}.raffle .d{font-size:13px;opacity:.92;margin-top:2px}
+  .raffle .btn{background:#fff;color:#4527A0}
+  .rw{background:#fff;border:1px solid var(--g200);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+  .rw .img{height:90px;background:linear-gradient(135deg,var(--g100),var(--g200))}
+  .rw .b{padding:12px 14px;display:flex;flex-direction:column;gap:6px;font-size:13px;flex:1}
+  .brands{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:12px}
+  .brands span{height:60px;border:1px solid var(--g200);border-radius:10px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--g600)}
+  .news .img{height:110px;background:linear-gradient(135deg,var(--g100),var(--g200))}
+  .news .b{padding:12px 14px;font-size:13px}
+  a.product-card,a.pcard,a.st{color:inherit;text-decoration:none}
+  .lockchip{background:var(--warning-lighter);color:#B26A00}
+</style>
+</head>
+<body data-shell="customer" data-nav="home" data-cust-nav="home">
+<main id="screen">
+
+  <div class="viewbar">
+    <b>จำลองมุมมองลูกค้า:</b>
+    <div class="seg"><button data-view="b2b" class="on">ร้านยา B2B (ล็อกอิน)</button><button data-view="b2c">ลูกค้าทั่วไป B2C (ล็อกอิน)</button><button data-view="guest">ยังไม่ล็อกอิน</button></div>
+    <span class="muted">แถบนี้มีเฉพาะในมอคอัพ — ของจริงระบบดูจากบัญชีและกลุ่มเป้าหมายของลูกค้า <span class="pin" style="margin:0">12</span></span>
+  </div>
+
+  <!-- 1 HERO -->
+  <div class="hero-wrap relative"><span class="pin abs" style="top:-8px">1</span>
+    <div class="slide">
+      <div class="k">PHARMAPLEX · ตุลาคม 2569</div>
+      <div class="t">ราคาพิเศษร้านยา<br>สั่งวันนี้ ส่งฟรีทั่วไทย</div>
+      <div class="d">วิตามินและยาสามัญราคาพิเศษ ตลอดเดือนตุลาคม จำนวนจำกัด</div>
+      <a class="btn" href="../campaign/08-customer-quota-product.html">ดูสินค้าราคาพิเศษ →</a>
+      <div class="dots"><i class="on"></i><i></i><i></i></div>
+    </div>
+    <div class="tiles">
+      <div class="tile"><span class="promo-tag flash">Flash</span><b>Flash Sale 10.10</b><span>ลดสูงสุด 30% · จบ 12 ต.ค.</span></div>
+      <div class="tile"><span class="promo-tag ship">ส่งฟรี</span><b>ส่งฟรีเมื่อซื้อครบ ฿2,000</b><span>ทุกวัน · ยกเว้นสินค้าหนัก</span></div>
+    </div>
+  </div>
+
+  <!-- 2 STATUS STRIP -->
+  <div class="sec" data-views="b2b,b2c"><div class="strip relative"><span class="pin abs" style="top:-8px">2</span>
+    <a class="st" href="../points/04-customer-dashboard.html"><div class="l">พอยท์ของฉัน</div><div class="v">12,450</div><div class="s warn">800 พอยท์หมดอายุใน 30 วัน</div></a>
+    <a class="st" href="../coupon/08-customer-center.html"><div class="l">คูปองพร้อมใช้</div><div class="v">3 ใบ</div><div class="s">ใกล้หมดอายุ 1 ใบ · เก็บเพิ่มได้ 2 ใบ</div></a>
+    <a class="st" href="../campaign/06-customer-ladder.html"><div class="l">ยอดสะสมปี 2569</div><div class="v">฿642,350</div><div class="progress mt8"><i style="width:64%"></i></div><div class="s mt8">อีก ฿357,650 ถึงขั้น 4</div></a>
+    <a class="st" href="../raffle/06-customer-tickets.html"><div class="l">สิทธิ์ลุ้นรางวัล</div><div class="v">6 Tickets</div><div class="s">จับรางวัล 5 ก.พ. 2570</div></a>
+  </div></div>
+  <div class="sec hidden" data-views="guest"><div class="login-cta">
+    <div><b>เข้าสู่ระบบเพื่อดูพอยท์ คูปอง ยอดสะสม และสิทธิ์ลุ้นของคุณ</b><div class="small muted">ราคา โปรโมชั่น และสิทธิพิเศษบางรายการแสดงเฉพาะสมาชิก</div></div>
+    <div class="row"><button class="btn outlined">สมัครสมาชิก</button><button class="btn contained">เข้าสู่ระบบ</button></div>
+  </div></div>
+
+  <!-- 3 FLASH -->
+  <div class="sec"><div class="flash relative"><span class="pin abs" style="top:-8px">3</span>
+    <div class="flash-h">
+      <div><span class="promo-tag flash" style="background:rgba(0,0,0,.28)">Flash Sale</span><div class="ft">Flash Sale 10.10 — ลดสูงสุด 30%</div><div class="fs">เฉพาะกลุ่มสินค้าที่ร่วมรายการ · จบเมื่อหมดเวลาหรือโควตาหมด</div></div>
+      <div class="row" style="gap:16px"><div class="timer"><span>08</span><i>:</i><span>42</span><i>:</i><span>17</span></div><a class="btn sm" href="../promotion/06-customer-list.html">ดูทั้งหมด →</a></div>
+    </div>
+    <div class="product-grid">
+      <a class="product-card" href="../promotion/07-customer-product.html"><div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag flash">Flash −30%</span></div></div><div class="pc-b"><div class="nm">พาราเซตามอล 500 มก.</div><div class="muted xs">กล่อง</div><div class="price">฿32<s>฿45</s></div><div class="hint">เหลือ 420 / 600 กล่อง</div></div></a>
+      <a class="product-card" href="../promotion/07-customer-product.html"><div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag flash">Flash −20%</span></div></div><div class="pc-b"><div class="nm">Blackmores Vitamin C 500 mg</div><div class="muted xs">Blackmores · ขวด</div><div class="price">฿304<s>฿380</s></div><div class="hint">เหลือ 13 ชิ้นในรอบนี้</div></div></a>
+      <a class="product-card" href="../promotion/07-customer-product.html"><div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag flash">Flash −25%</span></div></div><div class="pc-b"><div class="nm">เจลแอลกอฮอล์ 250 มล.</div><div class="muted xs">ขวด</div><div class="price">฿41<s>฿55</s></div><div class="hint">เหลือ 188 / 300 ขวด</div></div></a>
+      <a class="product-card" href="../promotion/07-customer-product.html"><div class="img">ภาพสินค้า<div class="tags"><span class="promo-tag flash">Flash −15%</span></div></div><div class="pc-b"><div class="nm">ถุงมือยาง ไซซ์ M</div><div class="muted xs">กล่อง</div><div class="price">฿102<s>฿120</s></div><div class="hint">โควตากลุ่มนี้หมดแล้ว · ราคาปกติ</div></div></a>
+    </div>
+  </div></div>
+
+  <!-- 4 CATEGORY -->
+  <div class="sec"><div class="sec-h"><h5>หมวดหมู่สินค้า <span class="pin">4</span></h5><a class="more" href="#">ทั้งหมด ›</a></div>
+    <div class="cats"><div class="cat"><i></i>ยาสามัญ</div><div class="cat"><i></i>วิตามิน</div><div class="cat"><i></i>เวชภัณฑ์</div><div class="cat"><i></i>แม่และเด็ก</div><div class="cat"><i></i>ผลิตภัณฑ์ดูแลผิว</div><div class="cat"><i></i>เครื่องมือแพทย์</div><div class="cat"><i></i>อาหารเสริม</div><div class="cat"><i></i>อื่น ๆ</div></div>
+  </div>
+
+  <!-- 5 PROMOTIONS -->
+  <div class="sec"><div class="sec-h"><div><h5>โปรโมชั่นแนะนำ <span class="pin">5</span></h5><div class="sub">ส่วนลดอัตโนมัติ ไม่ต้องใส่โค้ด · เฉพาะที่คุณมีสิทธิ์</div></div><a class="more" href="../promotion/06-customer-list.html">ดูโปรโมชั่นทั้งหมด ›</a></div>
+    <div class="cards3">
+      <a class="pcard" href="../promotion/08-customer-detail.html"><span class="promo-tag">ลด 10%</span><h6>ซื้อ Blackmores Vitamin C ครบ 3 ขวด ลด 10%</h6><p>สูงสุดไม่เกิน ฿150 ต่อบิล</p><div class="ft"><span>ถึง 31 ธ.ค. 2569</span><b style="color:var(--primary)">ดูรายละเอียด</b></div></a>
+      <a class="pcard" href="../promotion/08-customer-detail.html"><span class="promo-tag gift">ของแถม</span><h6>ซื้อนมผงสูตร 3 ครบ 1 ลัง รับขวดนม PP ฟรี</h6><p>เลือกสินค้าได้หลายขนาด รวมกันให้ครบ</p><div class="ft"><span>ถึง 30 พ.ย. 2569</span><b style="color:var(--primary)">ดูรายละเอียด</b></div></a>
+      <a class="pcard" href="../promotion/08-customer-detail.html"><span class="promo-tag ship">ส่งฟรี</span><h6>ซื้อสินค้าแบรนด์ Dumex ครบ ฿2,000 ส่งฟรี</h6><p>ส่งฟรีเฉพาะส่วนของสินค้าที่ร่วมรายการ</p><div class="ft"><span>ถึง 31 ธ.ค. 2569</span><b style="color:var(--primary)">ดูรายละเอียด</b></div></a>
+    </div>
+  </div>
+
+  <!-- 6 COUPONS -->
+  <div class="sec" data-views="b2b,b2c"><div class="sec-h"><div><h5>คูปองที่เก็บได้ <span class="pin">6</span></h5><div class="sub">กดเก็บแล้วใช้ในตะกร้า · คูปองเฉพาะกลุ่มแสดงเมื่อคุณอยู่ในกลุ่มเท่านั้น</div></div><a class="more" href="../coupon/08-customer-center.html">ไปศูนย์คูปอง ›</a></div>
+    <div class="cards3">
+      <div class="cpn"><div class="a">ส่งฟรี<small>ตุลาคม</small></div><div class="b"><b>ส่งฟรีประจำเดือน</b><span>เมื่อซื้อครบ ฿1,000 · ใช้ได้ถึง 31 ต.ค.</span><span class="chip soft-success sq" style="align-self:flex-start">ได้รับอัตโนมัติแล้ว</span></div></div>
+      <div class="cpn"><div class="a">฿100<small>ซื้อครบ ฿1,500</small></div><div class="b"><b>คูปองต้อนรับเดือนใหม่</b><span>เหลือ 320 / 1,000 สิทธิ์ · ถึง 20 ต.ค.</span><button class="btn contained sm" style="align-self:flex-start">เก็บคูปอง</button></div></div>
+      <div class="cpn"><div class="a">10%<small>สูงสุด ฿200</small></div><div class="b"><b>VIPNOV · เฉพาะร้านยา VIP</b><span>ซื้อครบ ฿2,000 · ถึง 30 พ.ย.</span><span class="chip soft-info sq" style="align-self:flex-start">เฉพาะกลุ่มของคุณ</span></div></div>
+    </div>
+  </div>
+
+  <!-- 7 CAMPAIGNS -->
+  <div class="sec" data-views="b2b,b2c"><div class="sec-h"><div><h5>แคมเปญ <span class="pin">7</span></h5><div class="sub">สะสมยอดรับรางวัล และสินค้าราคาพิเศษจำนวนจำกัด</div></div><a class="more" href="../campaign/06-customer-ladder.html">ดูแคมเปญทั้งหมด ›</a></div>
+    <div class="cards2">
+      <a class="pcard" href="../campaign/06-customer-ladder.html"><span class="chip soft-primary sq" style="align-self:flex-start">สะสมยอดรายปี</span><h6>สะสมยอดซื้อรายปี สัญญาปี 2569</h6>
+        <div class="step-mini"><i class="done"></i><i class="done"></i><i class="cur"></i><i></i></div>
+        <p>ถึงขั้น 2 แล้ว · อีก ฿357,650 ถึงขั้น 3 (ทริปญี่ปุ่น 2 ท่าน · เหลือ 17/20 สิทธิ์)</p><div class="ft"><span>ถึง 31 ธ.ค. 2569</span><b style="color:var(--primary)">ดูความคืบหน้า</b></div></a>
+      <a class="pcard" href="../campaign/08-customer-quota-product.html"><span class="chip soft-warning sq" style="align-self:flex-start">ราคาพิเศษ · จำนวนจำกัด</span><h6>Blackmores Vitamin C 500 mg ฿329 <s style="font-weight:400;color:var(--g500);font-size:12px">฿380</s></h6>
+        <div class="progress warn"><i style="width:75%"></i></div>
+        <p>เหลือ 1,240 / 5,000 ชิ้น · ร้านคุณซื้อได้อีก 20 ชิ้น</p><div class="ft"><span>ถึง 31 ต.ค. 2569 23:59</span><b style="color:var(--primary)">ดูสินค้า</b></div></a>
+    </div>
+  </div>
+
+  <!-- 8 STARTER KIT -->
+  <div class="sec" data-views="b2b,b2c"><div class="sec-h"><div><h5>เซตร้านยาเปิดใหม่ <span class="pin">8</span> <span class="chip lockchip sq" data-views="b2c">สั่งได้เฉพาะบัญชีร้านค้า (B2B)</span></h5><div class="sub">ชุดสินค้าเริ่มต้นสำหรับร้านยาที่เพิ่งเปิด ปรับรายการได้</div></div><a class="more" href="../starterkit/04-customer-catalog.html">ดูทุกเซต ›</a></div>
+    <div class="kit">
+      <a class="pcard" href="../starterkit/05-customer-builder.html"><h6>เซตขนาด S</h6><p>ยาสามัญประจำบ้านและเวชภัณฑ์พื้นฐาน · 12 รายการ</p><div class="ft"><span>เริ่มต้น</span><b>฿45,000</b></div></a>
+      <a class="pcard" href="../starterkit/05-customer-builder.html"><h6>เซตขนาด M <span class="chip soft-primary sq">ยอดนิยม</span></h6><p>ครอบคลุมยาสามัญและวิตามิน · 14 รายการ ปรับได้ 6 รายการ</p><div class="ft"><span>เริ่มต้น</span><b>฿89,000</b></div></a>
+      <a class="pcard" href="../starterkit/05-customer-builder.html"><h6>เซตขนาด L</h6><p>ครบทุกหมวดสำหรับร้านขนาดใหญ่ · 20 รายการ</p><div class="ft"><span>เริ่มต้น</span><b>฿150,000</b></div></a>
+    </div>
+  </div>
+
+  <!-- 9 RAFFLE -->
+  <div class="sec" data-views="b2b,b2c"><div class="raffle relative"><span class="pin abs" style="top:-8px">9</span>
+    <div><span class="promo-tag" style="background:rgba(255,255,255,.2)">ลุ้นรางวัล</span><div class="t">ลุ้นโชคต้อนรับปีใหม่ 2570 — ลุ้นทริปญี่ปุ่นและของรางวัลอื่น ๆ</div><div class="d">ซื้อครบ ฿1,000 ได้ 1 สิทธิ์ลุ้น · คุณมี 6 Tickets · ประกาศผล 5 ก.พ. 2570 20:00 น.</div></div>
+    <div style="text-align:right"><a class="btn" href="../raffle/06-customer-tickets.html">ดู Tickets ของฉัน →</a></div>
+  </div></div>
+
+  <!-- 10 POINT REDEEM -->
+  <div class="sec" data-views="b2b,b2c"><div class="sec-h"><div><h5>แลกของรางวัลด้วยพอยท์ <span class="pin">10</span></h5><div class="sub">พอยท์ของคุณ 12,450 · แสดงเฉพาะรายการที่คุณแลกได้</div></div><a class="more" href="../points/05-customer-redeem.html">ดูของรางวัลทั้งหมด ›</a></div>
+    <div class="cards4">
+      <div class="rw"><div class="img"></div><div class="b"><b>คูปองลด ฿50</b><span class="muted">ใช้ได้ 30 วันหลังแลก</span><b style="color:var(--primary)">500 พอยท์</b><button class="btn contained sm">แลก</button></div></div>
+      <div class="rw"><div class="img"></div><div class="b"><b>คูปองส่งฟรี</b><span class="muted">ฟรีค่าส่ง 1 ออเดอร์</span><b style="color:var(--primary)">300 พอยท์</b><button class="btn contained sm">แลก</button></div></div>
+      <div class="rw"><div class="img"></div><div class="b"><b>กระเป๋าผ้า Pharmaplex</b><span class="muted">เหลือ 32 / 50 ชิ้น</span><b style="color:var(--primary)">1,200 พอยท์</b><button class="btn contained sm">แลก</button></div></div>
+      <div class="rw"><div class="img"></div><div class="b"><b>เครดิตเงินคืน ฿300</b><span class="muted">ใช้ได้ 90 วันหลังแลก</span><b style="color:var(--primary)">3,000 พอยท์</b><button class="btn contained sm">แลก</button></div></div>
+    </div>
+  </div>
+
+  <!-- 11 NEWS + BRAND (existing pmpc) -->
+  <div class="sec"><div class="sec-h"><h5>ข่าวสาร <span class="pin">11</span></h5><a class="more" href="#">ทั้งหมด ›</a></div>
+    <div class="cards3">
+      <div class="pcard news" style="padding:0;overflow:hidden"><div class="img"></div><div class="b"><b>ประกาศช่วงเวลาทำการเทศกาลปีใหม่</b><div class="muted xs mt8">12 ต.ค. 2569</div></div></div>
+      <div class="pcard news" style="padding:0;overflow:hidden"><div class="img"></div><div class="b"><b>สินค้าใหม่ประจำเดือนตุลาคม</b><div class="muted xs mt8">8 ต.ค. 2569</div></div></div>
+      <div class="pcard news" style="padding:0;overflow:hidden"><div class="img"></div><div class="b"><b>วิธีสะสมยอดรับรางวัลแคมเปญรายปี</b><div class="muted xs mt8">1 ต.ค. 2569</div></div></div>
+    </div>
+  </div>
+  <div class="sec"><div class="sec-h"><h5>แบรนด์สินค้า</h5><a class="more" href="#">ทั้งหมด ›</a></div>
+    <div class="brands"><span>Blackmores</span><span>Dumex</span><span>Pampers</span><span>Sunlight</span><span>Tiffy</span><span>Vitamin C</span><span>Nestlé</span><span>อื่น ๆ</span></div>
+  </div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>Hero + แบนเนอร์ย่อย</b> โครงเดิมของ pmpc (<span class="mono">autoSlideBaner</span> + <span class="mono">banner</span> ที่แอดมินจัดการในหน้าแบนเนอร์ แยกชุด B2B/ทั่วไป) — ไม่เปลี่ยน ใช้ช่องนี้ชี้ไปโปร/แคมเปญเด่นผ่านลิงก์แบนเนอร์</span></li>
+    <li><span class="pin">2</span><span><b>แถบสถานะของฉัน</b> พอยท์ · คูปอง · ยอดสะสม · สิทธิ์ลุ้น แบบกดไปดูต่อได้ — ไว้ใต้ Hero เพราะเป็นสิ่งที่ลูกค้าประจำอยากเห็นก่อน · ยังไม่ล็อกอินแทนด้วยกล่องชวนเข้าสู่ระบบ · แสดงเตือนพอยท์ใกล้หมดอายุ</span></li>
+    <li><span class="pin">3</span><span><b>Flash Sale</b> ตัวนับเวลา + การ์ดสินค้า 4 ชิ้น (ใช้การ์ดเดียวกับหน้าสินค้า) · แสดงเมื่อมีแคมเปญลดตามวันพิเศษที่กำลังเปิดและลูกค้าอยู่ในกลุ่มเป้าหมาย · สินค้าที่โควตากลุ่มหมดแสดงราคาปกติ · ไม่มี Flash ที่เปิดอยู่ → ซ่อนทั้งส่วน</span></li>
+    <li><span class="pin">4</span><span><b>หมวดหมู่</b> โครงเดิมของ pmpc (swiper หมวด) — ไว้ต่อจากส่วนเร่งด่วนเพื่อให้ลูกค้าที่รู้ว่าจะหาอะไรเข้าหมวดได้ทันที</span></li>
+    <li><span class="pin">5</span><span><b>โปรโมชั่นแนะนำ</b> 3 รายการแรกตามลำดับ priority ที่ลูกค้ามีสิทธิ์ (ผ่านกลุ่มเป้าหมาย) · “ดูทั้งหมด” ไปหน้ารวมโปรโมชั่น</span></li>
+    <li><span class="pin">6</span><span><b>คูปองที่เก็บได้</b> คูปองเก็บเอง/แจกรายเดือนที่ยังเก็บได้ · กดเก็บบนหน้าแรกได้ทันที · คูปองเฉพาะกลุ่มแสดงเมื่อลูกค้าอยู่ในกลุ่ม (ป้าย “เฉพาะกลุ่มของคุณ”) · คูปองกระดาษและโค้ดออนไลน์ไม่แสดงที่นี่ (ไม่ใช่คูปองให้เก็บ)</span></li>
+    <li><span class="pin">7</span><span><b>แคมเปญ</b> 2 การ์ด: สะสมยอดรายปี (ความคืบหน้าของลูกค้า) และแคมเปญราคาพิเศษตามโควตา (เหลือกี่ชิ้น + โควตาของร้าน) · ไม่มีแคมเปญที่ลูกค้าอยู่ในกลุ่ม → ซ่อน</span></li>
+    <li><span class="pin">8</span><span><b>เซตร้านยาเปิดใหม่</b> แสดงให้ B2B สั่งได้ · B2C เห็นแต่มีป้ายว่าสั่งได้เฉพาะบัญชีร้านค้า · ยังไม่ล็อกอินซ่อน</span></li>
+    <li><span class="pin">9</span><span><b>ลุ้นรางวัล</b> แบนเนอร์กิจกรรมที่เปิดอยู่ + จำนวน Tickets ของลูกค้า · ไม่มีกิจกรรมที่เปิดอยู่ → ซ่อน (ระยะ 1 มีเฉพาะโหมดลุ้นทันที)</span></li>
+    <li><span class="pin">10</span><span><b>แลกพอยท์</b> 4 รายการที่ลูกค้าแลกได้ (ตามกลุ่มเป้าหมายของรายการแลก) เรียงจากที่พอยท์พอก่อน · ปุ่มแลกกดได้เมื่อพอยท์พอ ไม่พอแสดงจางพร้อมพอยท์ที่ขาด</span></li>
+    <li><span class="pin">11</span><span><b>ข่าวสารและแบรนด์</b> โครงเดิมของ pmpc — วางท้ายสุดเพราะเป็นเนื้อหาอ่านเล่น</span></li>
+    <li><span class="pin">12</span><span><b>มุมมองที่ต่างกัน</b> ใช้ปุ่มจำลองด้านบนสลับดู: B2B เห็นครบทุกส่วน · B2C ไม่มีสิทธิ์สั่งเซตร้านยา · ยังไม่ล็อกอินเห็นเฉพาะ Hero / Flash / หมวด / โปรโมชั่น / ข่าว / แบรนด์</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li><b>ทุกส่วนซ่อนเองเมื่อไม่มีเนื้อหา</b> (ไม่มีรายการที่เปิดอยู่ หรือลูกค้าไม่อยู่ในกลุ่มเป้าหมายของทุกรายการ) — ไม่แสดงหัวข้อเปล่า ๆ</li>
+    <li>ทุกส่วนตรวจกลุ่มเป้าหมายที่เซิร์ฟเวอร์ ไม่ใช่แค่ซ่อนที่หน้าเว็บ (รายการนอกกลุ่มไม่ถูกส่งมา)</li>
+    <li>ลำดับส่วนตายตัวในรอบแรก (ต้องการให้แอดมินจัดลำดับ/เปิดปิดส่วนเองเป็นระยะหลัง) — ดูแผนผังในหน้า Flow</li>
+    <li>แต่ละส่วนดึงข้อมูลแยก (lazy) ไม่ให้ส่วนที่ช้าบล็อกหน้าแรก · ส่วนที่โหลดอยู่แสดง skeleton</li>
+    <li>มือถือ: การ์ดเรียงแนวนอนเลื่อนได้ (swiper) ตามที่ pmpc ใช้อยู่ · แถบสถานะเป็น 2×2</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+<script>
+(function(){
+  var cur='b2b';
+  function ap(){
+    Array.prototype.forEach.call(document.querySelectorAll('[data-views]'),function(e){
+      var v=e.getAttribute('data-views').split(',');
+      e.classList.toggle('hidden',v.indexOf(cur)<0);
+    });
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('[data-view]');
+    if(!b)return;
+    cur=b.getAttribute('data-view');
+    ap();
+  });
+  ap();
+})();
+</script>
+</body>
+</html>

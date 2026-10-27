@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ภาพรวมหน้าแรกลูกค้า</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+<style>
+  .map{display:grid;grid-template-columns:300px minmax(0,1fr);gap:24px;align-items:start}
+  .wire{border:1.5px solid var(--g300);border-radius:14px;padding:12px;background:#fff;display:flex;flex-direction:column;gap:8px}
+  .wire div{border-radius:8px;padding:8px 10px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .wire .old{background:var(--g100);border:1px solid var(--g300);color:var(--g700)}
+  .wire .new{background:var(--primary-lighter);border:1px solid #F0B9BC;color:var(--primary-dark)}
+  .wire .hot{background:var(--warning-lighter);border:1px solid #F3D08A;color:#8A5200}
+  .wire i{font-style:normal;font-size:10.5px;font-weight:600;opacity:.8}
+  .legend{display:flex;gap:12px;font-size:12px;margin-top:10px;flex-wrap:wrap}
+  .legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+  .legend .a::before{background:var(--g200);border:1px solid var(--g400)}.legend .b::before{background:var(--primary-lighter);border:1px solid #F0B9BC}.legend .c::before{background:var(--warning-lighter);border:1px solid #F3D08A}
+  .table td{vertical-align:top;font-size:12.5px}
+  .table .nm{font-weight:700}
+  .table .s{font-size:11.5px;color:var(--text2);display:block;margin-top:2px}
+</style>
+</head>
+<body data-shell="bare">
+<main id="screen" style="max-width:1320px;margin:0 auto;padding:24px">
+
+  <div class="page-head">
+    <div>
+      <h4>หน้าแรกลูกค้า — ภาพรวมการจัดวาง</h4>
+      <p class="muted">ต่อยอดจากหน้าแรกเดิมของ pmpc (Banner → หมวดหมู่ → ข่าว → แบรนด์) โดยแทรกส่วนของระบบโปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นรางวัล และเซตร้านยา ตามลำดับความเร่งด่วนและความเกี่ยวข้องกับลูกค้า</p>
+    </div>
+    <div class="row"><a class="btn contained" href="01-customer-home.html">ดูหน้าแรกจำลอง</a></div>
+  </div>
+
+  <div class="map">
+    <div>
+      <div class="wire">
+        <div class="old">1 · Hero + แบนเนอร์ย่อย <i>มีอยู่แล้ว</i></div>
+        <div class="new">2 · สถานะของฉัน <i>ใหม่ · ล็อกอิน</i></div>
+        <div class="hot">3 · Flash Sale <i>ใหม่</i></div>
+        <div class="old">4 · หมวดหมู่ <i>มีอยู่แล้ว</i></div>
+        <div class="new">5 · โปรโมชั่นแนะนำ <i>ใหม่</i></div>
+        <div class="new">6 · คูปองที่เก็บได้ <i>ใหม่ · ล็อกอิน</i></div>
+        <div class="new">7 · แคมเปญ <i>ใหม่ · ล็อกอิน</i></div>
+        <div class="new">8 · เซตร้านยาเปิดใหม่ <i>ใหม่ · B2B/B2C</i></div>
+        <div class="new">9 · ลุ้นรางวัล <i>ใหม่ · ล็อกอิน</i></div>
+        <div class="new">10 · แลกพอยท์ <i>ใหม่ · ล็อกอิน</i></div>
+        <div class="old">11 · ข่าวสาร <i>มีอยู่แล้ว</i></div>
+        <div class="old">12 · แบรนด์ <i>มีอยู่แล้ว</i></div>
+      </div>
+      <div class="legend"><span class="a">ของเดิม pmpc</span><span class="b">ส่วนใหม่</span><span class="c">ส่วนเร่งด่วน (มีเวลา)</span></div>
+    </div>
+
+    <div class="card" style="overflow:hidden"><div class="table-wrap"><table class="table">
+      <thead><tr><th>#</th><th>ส่วน</th><th>แสดงอะไร</th><th>ข้อมูลมาจาก</th><th>ใครเห็น</th><th>ซ่อนเมื่อ</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="nm">Hero + แบนเนอร์ย่อย</td><td>สไลด์ใหญ่ + 2 แบนเนอร์ข้าง ลิงก์ไปโปร/แคมเปญเด่น</td><td>โมดูลแบนเนอร์เดิม (แยกชุด B2B / ทั่วไป)</td><td>ทุกคน</td><td>ไม่มีแบนเนอร์ที่เปิด</td></tr>
+        <tr><td>2</td><td class="nm">สถานะของฉัน<span class="s">พอยท์ · คูปอง · ยอดสะสม · Tickets</span></td><td>4 ตัวเลข กดไปดูต่อ + เตือนพอยท์ใกล้หมดอายุ</td><td>สมุดพอยท์ · กระเป๋าคูปอง · ความคืบหน้าแคมเปญ · Tickets</td><td>ล็อกอิน</td><td>ยังไม่ล็อกอิน (แทนด้วยกล่องชวนเข้าสู่ระบบ)</td></tr>
+        <tr><td>3</td><td class="nm">Flash Sale<span class="s">แคมเปญลดตามวันพิเศษ</span></td><td>ตัวนับเวลา + การ์ดสินค้า 4 ชิ้น + ปุ่มดูทั้งหมด</td><td>โปรโมชั่น › แคมเปญลดตามวันพิเศษ (กลุ่มสินค้า + โควตารอบ)</td><td>ทุกคนที่อยู่ในกลุ่มเป้าหมาย</td><td>ไม่มี Flash ที่เปิดอยู่ / ลูกค้านอกกลุ่ม</td></tr>
+        <tr><td>4</td><td class="nm">หมวดหมู่</td><td>ไอคอนหมวด เลื่อนได้</td><td>หมวดสินค้าเดิม</td><td>ทุกคน</td><td>—</td></tr>
+        <tr><td>5</td><td class="nm">โปรโมชั่นแนะนำ</td><td>การ์ด 3 ใบ: ชื่อโปร ผลตอบแทน วันสิ้นสุด</td><td>โปรโมชั่น (Bundle) เรียงตาม priority</td><td>ทุกคนที่อยู่ในกลุ่มเป้าหมาย</td><td>ไม่มีโปรที่มีสิทธิ์</td></tr>
+        <tr><td>6</td><td class="nm">คูปองที่เก็บได้</td><td>คูปอง 3 ใบ พร้อมปุ่มเก็บ / สถานะได้รับแล้ว / ป้ายเฉพาะกลุ่ม</td><td>คูปองเก็บเอง + แจกรายเดือน</td><td>ล็อกอิน ที่อยู่ในกลุ่มเป้าหมาย</td><td>ไม่มีคูปองให้เก็บ</td></tr>
+        <tr><td>7</td><td class="nm">แคมเปญ</td><td>ขั้นบันไดของฉัน + สินค้าราคาพิเศษตามโควตา</td><td>แคมเปญสะสมยอดรายปี · แคมเปญช่วงเวลา+โควตา</td><td>ล็อกอิน ที่อยู่ในกลุ่มเป้าหมาย</td><td>ไม่มีแคมเปญที่เข้าร่วมได้</td></tr>
+        <tr><td>8</td><td class="nm">เซตร้านยาเปิดใหม่</td><td>เซต S / M / L พร้อมราคาเริ่มต้น</td><td>เซตร้านยาเปิดใหม่</td><td>B2B สั่งได้ · B2C เห็นแต่สั่งไม่ได้</td><td>ยังไม่ล็อกอิน / ไม่มีเซตที่เปิดขาย</td></tr>
+        <tr><td>9</td><td class="nm">ลุ้นรางวัล</td><td>แบนเนอร์กิจกรรม + Tickets ของฉัน + วันประกาศผล</td><td>กิจกรรมสุ่มรางวัล</td><td>ล็อกอิน ที่อยู่ในกลุ่มเป้าหมาย</td><td>ไม่มีกิจกรรมที่เปิดอยู่</td></tr>
+        <tr><td>10</td><td class="nm">แลกพอยท์</td><td>ของรางวัล 4 รายการที่แลกได้ เรียงที่พอยท์พอก่อน</td><td>แคตตาล็อกแลกของรางวัลด้วยพอยท์ (ชุดของรางวัล)</td><td>ล็อกอิน ที่อยู่ในกลุ่มเป้าหมายของรายการแลก</td><td>ไม่มีรายการที่แลกได้</td></tr>
+        <tr><td>11</td><td class="nm">ข่าวสาร</td><td>การ์ดข่าว 3 ใบ</td><td>ข่าวสารเดิม</td><td>ทุกคน</td><td>ไม่มีข่าว</td></tr>
+        <tr><td>12</td><td class="nm">แบรนด์</td><td>โลโก้แบรนด์</td><td>แบรนด์เดิม</td><td>ทุกคน</td><td>—</td></tr>
+      </tbody>
+    </table></div></div>
+  </div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>หลักการเรียงลำดับ</b> ของที่มีเวลาจำกัดและมีผลกับเงินลูกค้าอยู่บน (Flash) → สถานะส่วนตัว → ของให้เลือกซื้อ (หมวด โปร) → สิทธิ์ที่ต้องกดเก็บ/ติดตาม (คูปอง แคมเปญ) → สิ่งที่ซื้อครั้งเดียว (เซตร้านยา) → สิทธิพิเศษระยะยาว (ลุ้นรางวัล แลกพอยท์) → เนื้อหาอ่านเล่น (ข่าว แบรนด์)</span></li>
+    <li><span class="pin">2</span><span><b>ใช้ส่วนเดิมของ pmpc ให้มากที่สุด</b> Hero/แบนเนอร์ หมวดหมู่ ข่าว แบรนด์ ไม่ถูกแตะ — ส่วนใหม่แทรกเป็น section เพิ่มใน <span class="mono">home.tsx</span> ด้วยโครงเดียวกัน (หัวข้อ + “ทั้งหมด ›” + swiper/การ์ด)</span></li>
+    <li><span class="pin">3</span><span><b>ส่วนที่ว่างซ่อนเอง</b> ลูกค้าแต่ละคนเห็นหน้าแรกไม่เหมือนกันเพราะกลุ่มเป้าหมาย — ไม่แสดงหัวข้อเปล่า</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ลำดับส่วนตายตัวในรอบแรก — ต้องการให้แอดมินจัดลำดับ/เปิดปิดส่วนในหน้าแรกเองหรือไม่ (ต่อยอดจากหน้าแบนเนอร์)</li>
+    <li>ลูกค้าที่ยังไม่ล็อกอินเห็นโปรโมชั่นและราคา Flash หรือไม่ (ตามนโยบายแสดงราคาของ pmpc ปัจจุบัน)</li>
+    <li>ลูกค้านอกกลุ่มเป้าหมายเห็นรายการในหน้าแรกเป็นแบบล็อก (“เฉพาะกลุ่ม…”) หรือซ่อนเลย (Q-2 — มอคอัพนี้ซ่อน)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

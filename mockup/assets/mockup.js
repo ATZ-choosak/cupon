@@ -91,7 +91,7 @@
       '<span class="logo">Pharmaplex</span><span class="search">ค้นหาสินค้า ชื่อยา แบรนด์…</span>' +
       '<span class="icons"><span class="cart">ตะกร้า<b>3</b></span><span class="avatar">ร</span><span class="small">ร้านยา ทดสอบ จำกัด</span></span>' +
       '</div></div><div class="cust-nav"><div class="bar">' +
-      a('home', 'หน้าแรก', '#') + a('products', 'สินค้า', '#') +
+      a('home', 'หน้าแรก', c('home')) + a('products', 'สินค้า', '#') +
       a('promotion', 'โปรโมชั่น', c('promotion')) + a('coupon', 'คูปอง', c('coupon')) +
       a('points', 'พอยท์', c('points')) + a('campaign', 'แคมเปญ', c('campaign')) +
       a('raffle', 'ลุ้นรางวัล', c('raffle')) + a('starterkit', 'เซตร้านยาเปิดใหม่', c('starterkit')) +
