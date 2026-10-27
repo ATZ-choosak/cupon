@@ -112,18 +112,10 @@
                   <span class="help">แก้ไม่ได้เพราะมีลูกค้าถึงขั้นนี้แล้ว</span></div>
                 <div class="field"><label>ชื่อรางวัล *</label><input class="input" value="เครื่องวัดความดันโลหิตดิจิทัล"></div>
               </div>
-              <div class="field span2"><div class="rs-pick"><div class="rs-h"><b>เลือกรางวัลจากชุดของรางวัล (ไม่บังคับ)</b><span class="chip soft-primary sq">แนะนำ</span></div><div class="row"><select class="select" style="flex:1"><option>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option selected>ชุดต้อนรับ · v2</option><option>ของแถมนมผง · v1</option><option>ทริปญี่ปุ่น 2 ท่าน · v1</option><option>ส่งฟรี 1 ครั้ง · v1</option></select><a class="btn outlined sm" href="../foundation/03-admin-reward-sets.html">จัดการชุดของรางวัล ↗</a></div><div class="rs-items">คูปอง ฿50 × 1 + พอยท์ 100 × 1 · มูลค่าประเมิน ฿60</div><div class="aud-note">เลือกแล้วประเภทและรายละเอียดด้านล่างดึงจากชุด · ไม่เลือก = กรอกรางวัลของขั้นนี้เองด้านล่าง · รางวัลดึงจาก <a href="../foundation/03-admin-reward-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › ชุดของรางวัล</a> — แก้ชุดที่นั่นที่เดียว รายการนี้ยังใช้เวอร์ชันที่เลือกไว้จนกดอัปเดต</div></div></div>
-                <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">5</span>
-                <label>ประเภทรางวัล *</label>
-                <div class="type-opts">
-                  <label class="radio-card"><input type="radio" name="t1" checked><span><span class="rc-t">สินค้าในเว็บ</span><span class="rc-d" style="display:block">สินค้าในคลัง POS</span></span></label>
-                  <label class="radio-card"><input type="radio" name="t1"><span><span class="rc-t">ของนอก POS</span><span class="rc-d" style="display:block">ตั๋ว / ทริป / เครื่องใช้ไฟฟ้า</span></span></label>
-                  <label class="radio-card"><input type="radio" name="t1"><span><span class="rc-t">คูปอง</span><span class="rc-d" style="display:block">ออกเข้ากระเป๋าคูปอง</span></span></label>
-                  <label class="radio-card"><input type="radio" name="t1"><span><span class="rc-t">พอยท์</span><span class="rc-d" style="display:block">เติมพอยท์โบนัส</span></span></label>
-                </div>
-              </div>
+              <div class="field span2"><div class="alert info mb8" style="font-size:12.5px"><div>รางวัลของขั้นนี้ตั้งได้หลายอย่างพร้อมกัน (ของแถม SKU · ส่วนลด/คูปอง · พอยท์ · เครดิต · สิทธิ์ลุ้น · ของนอก POS) — ไม่ต้องเลือกประเภทเดียวหรือเลือกชุดของรางวัลอีกแล้ว</div></div><div data-rwd data-module="campaign" data-ref="l1-t1" data-title="รางวัลของขั้นนี้" data-kinds="gift,points,coupon,credit,entitle,offpos"></div></div>
+                
               <div class="form-grid">
-                <div class="field"><label>เลือกสินค้าในเว็บ *</label><select class="select"><option>เครื่องวัดความดันโลหิตดิจิทัล (SKU BP-D01) · คงคลัง 120</option></select><span class="help">ตัดสต็อก POS ตอนอนุมัติคำขอ</span></div>
+                
                 <div class="field relative"><span class="pin abs" style="left:-14px;top:-14px">6</span>
                   <label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label>
                   <input class="input" value="50" placeholder="ไม่จำกัด"><span class="help">ใช้ไปแล้ว 12 · ลดต่ำกว่า 12 ไม่ได้</span></div>
@@ -154,15 +146,8 @@
                 <div class="field"><label>ยอดเกณฑ์สะสม *</label><div class="input-adorn"><span class="adorn">฿</span><input class="input readonly" value="500,000" readonly></div></div>
                 <div class="field"><label>ชื่อรางวัล *</label><input class="input" value="ทริปสัมมนาเภสัชกรต่างประเทศ 3 วัน 2 คืน"></div>
               </div>
-              <div class="field span2"><div class="rs-pick"><div class="rs-h"><b>เลือกรางวัลจากชุดของรางวัล (ไม่บังคับ)</b><span class="chip soft-primary sq">แนะนำ</span></div><div class="row"><select class="select" style="flex:1"><option>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option selected>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option>ของแถมนมผง · v1</option><option>ทริปญี่ปุ่น 2 ท่าน · v1</option><option>ส่งฟรี 1 ครั้ง · v1</option></select><a class="btn outlined sm" href="../foundation/03-admin-reward-sets.html">จัดการชุดของรางวัล ↗</a></div><div class="rs-items">คูปอง ฿50 × 1 + พอยท์ 100 × 1 · มูลค่าประเมิน ฿60</div><div class="aud-note">เลือกแล้วประเภทและรายละเอียดด้านล่างดึงจากชุด · ไม่เลือก = กรอกรางวัลของขั้นนี้เองด้านล่าง · รางวัลดึงจาก <a href="../foundation/03-admin-reward-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › ชุดของรางวัล</a> — แก้ชุดที่นั่นที่เดียว รายการนี้ยังใช้เวอร์ชันที่เลือกไว้จนกดอัปเดต</div></div></div>
-                <div class="field"><label>ประเภทรางวัล *</label>
-                <div class="type-opts">
-                  <label class="radio-card"><input type="radio" name="t3"><span><span class="rc-t">สินค้าในเว็บ</span><span class="rc-d" style="display:block">สินค้าในคลัง POS</span></span></label>
-                  <label class="radio-card"><input type="radio" name="t3" checked><span><span class="rc-t">ของนอก POS</span><span class="rc-d" style="display:block">ตั๋ว / ทริป / เครื่องใช้ไฟฟ้า</span></span></label>
-                  <label class="radio-card"><input type="radio" name="t3"><span><span class="rc-t">คูปอง</span><span class="rc-d" style="display:block">ออกเข้ากระเป๋าคูปอง</span></span></label>
-                  <label class="radio-card"><input type="radio" name="t3"><span><span class="rc-t">พอยท์</span><span class="rc-d" style="display:block">เติมพอยท์โบนัส</span></span></label>
-                </div>
-              </div>
+              <div class="field span2"><div class="alert info mb8" style="font-size:12.5px"><div>รางวัลของขั้นนี้ตั้งได้หลายอย่างพร้อมกัน (ของแถม SKU · ส่วนลด/คูปอง · พอยท์ · เครดิต · สิทธิ์ลุ้น · ของนอก POS) — ไม่ต้องเลือกประเภทเดียวหรือเลือกชุดของรางวัลอีกแล้ว</div></div><div data-rwd data-module="campaign" data-ref="l1-t2" data-title="รางวัลของขั้นนี้" data-kinds="gift,points,coupon,credit,entitle,offpos"></div></div>
+                
               <div class="form-grid">
                 <div class="field"><label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label><input class="input" value="20" placeholder="ไม่จำกัด"><span class="help">ใช้ไปแล้ว 3 · เหลือ 17</span></div>
                 <div class="field"><label>รายละเอียดของรางวัล (ลูกค้าเห็นบนการ์ด)</label><textarea class="textarea" style="min-height:70px">รวมตั๋วเครื่องบินไป-กลับ ที่พัก 2 คืน และค่าลงทะเบียนสัมมนา ผู้เข้าร่วมต้องมีพาสปอร์ตอายุเหลือ 6 เดือนขึ้นไป</textarea></div>
@@ -195,8 +180,8 @@
               </div>
               <div class="form-grid">
                 <div class="field"><label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label><input class="input" value="" placeholder="ไม่จำกัด"></div>
-                <div class="field span2"><div class="rs-pick"><div class="rs-h"><b>เลือกรางวัลจากชุดของรางวัล (ไม่บังคับ)</b><span class="chip soft-primary sq">แนะนำ</span></div><div class="row"><select class="select" style="flex:1"><option>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option selected>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option>ของแถมนมผง · v1</option><option>ทริปญี่ปุ่น 2 ท่าน · v1</option><option>ส่งฟรี 1 ครั้ง · v1</option></select><a class="btn outlined sm" href="../foundation/03-admin-reward-sets.html">จัดการชุดของรางวัล ↗</a></div><div class="rs-items">คูปอง ฿50 × 1 + พอยท์ 100 × 1 · มูลค่าประเมิน ฿60</div><div class="aud-note">เลือกแล้วประเภทและรายละเอียดด้านล่างดึงจากชุด · ไม่เลือก = กรอกรางวัลของขั้นนี้เองด้านล่าง · รางวัลดึงจาก <a href="../foundation/03-admin-reward-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › ชุดของรางวัล</a> — แก้ชุดที่นั่นที่เดียว รายการนี้ยังใช้เวอร์ชันที่เลือกไว้จนกดอัปเดต</div></div></div>
-                <div class="field"><label>ประเภทรางวัล *</label><select class="select"><option>ของนอก POS</option></select></div>
+                <div class="field span2"><div class="alert info mb8" style="font-size:12.5px"><div>รางวัลของขั้นนี้ตั้งได้หลายอย่างพร้อมกัน (ของแถม SKU · ส่วนลด/คูปอง · พอยท์ · เครดิต · สิทธิ์ลุ้น · ของนอก POS) — ไม่ต้องเลือกประเภทเดียวหรือเลือกชุดของรางวัลอีกแล้ว</div></div><div data-rwd data-module="campaign" data-ref="l1-t3" data-title="รางวัลของขั้นนี้" data-kinds="gift,points,coupon,credit,entitle,offpos"></div></div>
+                
               </div>
               <div class="hint unl"><b>ไม่จำกัดสิทธิ์</b> — ทุกคนที่ถึงยอดกดขอได้เสมอ เหมาะกับรางวัลที่ทีมงานคัดเลือก/จับรางวัลกันเองนอกระบบ ลูกค้าจะเห็น "ไม่จำกัดสิทธิ์ — ทีมงานคัดเลือก" และควรอธิบายวิธีคัดเลือกในรายละเอียดด้านล่าง</div>
               <div class="field"><label>รายละเอียดของรางวัล (แอดมินเขียนเอง) *</label><textarea class="textarea" style="min-height:70px">จำนวนจำกัด ทีมงานจะติดต่อคัดเลือกผู้โชคดีด้วยการจับรางวัลภายใน 30 วันหลังสิ้นสุดแคมเปญ และแจ้งรายละเอียดการเดินทางภายหลัง</textarea></div>
@@ -261,7 +246,7 @@
     <li><span class="pin">2</span><span><b>ขอบเขตสินค้า</b> — ทุกสินค้า หรือ <b>เลือกจากกลุ่มสินค้าที่ตั้งไว้</b> (รวม/ยกเว้น) ซึ่งกลุ่มสินค้าหนึ่งกลุ่มมีแบรนด์ หมวด รายสินค้า และสินค้ายกเว้นอยู่แล้ว จึงตัดตัวเลือก “ตามแบรนด์ / ตามหมวด / รายสินค้า” และช่องยกเว้นรายตัวเดิมออก · แสดงจำนวน SKU ที่เข้าขอบเขตสด · เปลี่ยนขอบเขตหลังมีลูกค้าสะสมยอดแล้ว มีผลกับยอดที่นับต่อจากนี้ ไม่คำนวณย้อนหลัง</span></li>
     <li><span class="pin">3</span><span><b>กติกาการนับ</b> — "ชำระแล้ว" และ "ไม่รวมค่าส่ง" ล็อกไว้ตามสเปก (แก้ไม่ได้) · ตัวเลือก "หลังหักส่วนลด" และ "หักเมื่อยกเลิก" เปลี่ยนได้ก่อนเปิดแคมเปญเท่านั้น</span></li>
     <li><span class="pin">4</span><span><b>ยอดเกณฑ์สะสม</b> — เป็นยอดรวมสะสมทั้งปี (ไม่ใช่ส่วนต่างจากขั้นก่อน) ต้องไม่ซ้ำกัน · ขั้นที่มีคนถึงแล้วล็อกช่องนี้</span></li>
-    <li><span class="pin">5</span><span><b>ประเภทรางวัล</b> — สินค้าในเว็บ (POS, ตัดสต็อก) / ของนอก POS (ตั๋ว เครื่องใช้ไฟฟ้า ใส่รายละเอียดเอง) / คูปอง (ออกเข้ากระเป๋า) / พอยท์ (เติมเข้าบัญชีพอยท์) · เปลี่ยนประเภทแล้วช่องด้านล่างเปลี่ยนตาม</span></li>
+    <li><span class="pin">5</span><span><b>รางวัลของขั้น</b> <span class="chip soft-primary sq">เปลี่ยน</span> แทน “ประเภทรางวัล” แบบเลือกอย่างเดียว — ใช้ component ผลตอบแทนเดียวกับทุกโมดูล เพิ่มได้หลายรายการต่อขั้น: ของแถม SKU (เลือกจากสินค้าในระบบ) · พอยท์ · คูปอง · เครดิตเงินคืน · สิทธิ์ลุ้น · ของนอก POS (พิมพ์ข้อความ) · เก็บแยกตามขั้น ติดธง <span class="mono">source_module = campaign</span> · <b>แก้ได้จริง</b> ไปลองปลดล็อก/ขอรับที่<a href="../simulator/03-state.html">สถานะลูกค้าของจำลอง</a></span></li>
     <li><span class="pin">6</span><span><b>จำนวนสิทธิ์</b> — เว้นว่าง = ไม่จำกัด · ใส่น้อย = "คนแรกที่ถึง" · ใต้ช่องมีข้อความอธิบายผลต่อลูกค้าเปลี่ยนตามค่าที่กรอก · ลดต่ำกว่าที่ถูกกดไปแล้วไม่ได้</span></li>
     <li><span class="pin">7</span><span><b>ตัวสร้างฟอร์ม</b> — เพิ่มช่องได้ 4 ชนิด (ข้อความ / เบอร์โทร / ตัวเลือก / แนบไฟล์) ตั้งจำเป็น/ไม่จำเป็น และลากเรียงลำดับได้ · ฟอร์มเดียวต่อขั้น ใช้กับทุกคนที่ปลดล็อก · สูงสุด 10 ช่อง</span></li>
     <li><span class="pin">8</span><span><b>แก้แคมเปญที่เปิดอยู่</b> — จำกัดสิทธิ์แก้ไขเพื่อไม่ให้ลูกค้าที่ถึงเกณฑ์ไปแล้วเสียสิทธิ์ (ดูกล่องเตือน)</span></li>
@@ -283,5 +268,6 @@
   </ul></div>
 </section>
 <script src="../assets/mockup.js"></script>
+<script src="../assets/pmp-core.js"></script><script src="../assets/reward.js"></script>
 </body>
 </html>

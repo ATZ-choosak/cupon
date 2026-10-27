@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>คูปองออนไลน์ + ประวัติการใช้</title>
+<title>คูปองออนไลน์: โค้ดส่วนลด</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
 <style>
@@ -72,9 +72,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
       <hr class="divider">
       <div class="form-sec">
         <h6>ข้อยกเว้นและการใช้ร่วม</h6>
-        <div class="field"><label>ยกเว้นสินค้า / หมวด</label>
-          <div class="row wrap"><span class="chip outline">นมผงสูตร 3 ✕</span><span class="chip outline">หมวด: ยาควบคุมพิเศษ ✕</span><select class="select" style="max-width:240px"><option>＋ เพิ่มสินค้า/หมวด…</option></select></div>
-        </div>
+        <div class="field"><label>ข้อยกเว้น <span class="pin">9</span></label><div class="aud"><div class="aud-h"><b>ข้อยกเว้น — กลุ่มสินค้าที่ไม่ร่วมคูปองนี้</b><span class="chip soft-info sq">กลุ่มสินค้า</span></div><div class="aud-src">รายชื่อกลุ่มมาจาก <a href="../foundation/04-admin-product-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มสินค้า ↗</a> — แต่ละกลุ่มมีแบรนด์/หมวด/SKU แบบรวม-ยกเว้นอยู่แล้ว ตั้งครั้งเดียวใช้ซ้ำได้ทั้งโปร แคมเปญ พอยท์ และส่งฟรี</div><div class="aud-row"><span class="chip soft-error">ยกเว้น</span><select class="select"><option>Blackmores (ยกเว้น 2 รายการ) · 34 SKU</option><option>นมผงทุกตรา · 18 SKU</option><option selected>สินค้าหนัก (ไม่ร่วมส่งฟรี) · 61 SKU</option></select><span class="n">61 SKU</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่มที่ยกเว้น</button><a class="small" href="../foundation/04-admin-product-sets.html">ดู/แก้กติกากลุ่มสินค้า ↗</a><a class="small" href="../foundation/04-admin-product-sets.html">สร้างกลุ่มใหม่ ↗</a></div><div class="aud-sum">สินค้าที่ถูกยกเว้น: <b>34</b> SKU (คำนวณสดจากกติกา — สินค้าใหม่ในแบรนด์/หมวดเข้าเอง) · ยกเว้นชนะรวมเสมอ · ไม่ตั้งกลุ่ม = ไม่มีข้อยกเว้น (ใช้กับทุกสินค้า)</div></div><div class="help mt8" style="margin-bottom:6px">ยกเว้นเฉพาะรายสินค้าเพิ่มได้: <span class="chip outline">นมผงสูตร 3 (ลัง) ✕</span> <span class="chip outline">ผ้าอ้อมเด็ก ✕</span> <select class="select" style="max-width:200px;min-height:32px;padding:4px 8px"><option>＋ เพิ่มสินค้า/หมวด…</option></select></div></div>
         <div class="grid g2 mt16">
           <div class="field"><label>เงื่อนไขการใช้ร่วม <span class="pin">5</span></label>
             <label class="switch"><input type="checkbox" checked> ใช้ร่วมกับโปรโมชั่นได้</label>
@@ -100,6 +98,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
 
   <div class="card"><div class="card-b">
     <h6 class="mb8">ทดลองใช้โค้ด — เช็กสิทธิ์สด <span class="pin">7</span></h6>
+    <div class="alert info" style="font-size:12.5px"><div>อยากทดสอบด้วยตะกร้าจริง (สินค้า โปร พอยท์ ครบวงจร)? ใช้ <a href="../simulator/02-cart.html"><b>จำลองตะกร้า</b></a> — ใส่โค้ดแล้วเห็นลำดับตรวจและผลลัพธ์จริง</div></div>
     <div class="stack s12">
       <div class="field"><label>ลูกค้า</label><select class="select"><option>ร้านยา ทดสอบ จำกัด</option></select></div>
       <div class="field"><label>โค้ด</label><input class="input mono" value="SAVE100"></div>
@@ -124,6 +123,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
     <li><span class="pin">5</span><span>เงื่อนไขการใช้ร่วม: ร่วมโปรโมชั่นไม่ได้ = ไม่คิดคูปองกับรายการที่จับคู่โปรแล้ว · ร่วมคูปองอื่นไม่ได้ = ต้องเป็นใบเดียวในบิล</span></li>
     <li><span class="pin">6</span><span>ประวัติการใช้: อนุมัติ = เขียว / ถูกบล็อก = แดงพร้อมเหตุผลที่ตรงกับข้อความที่ลูกค้าเห็นตอนเช็คเอาต์</span></li>
     <li><span class="pin">7</span><span>ทดลองใช้โค้ด จำลองลูกค้า+ยอดตะกร้า แล้วแสดงลำดับการตรวจพร้อมจุดที่ติด — ไม่บันทึกประวัติจริง</span></li>
+    <li><span class="pin">9</span><span><b>ข้อยกเว้น</b> <span class="chip soft-primary sq">ใหม่</span> เลือกจาก <a href="../foundation/04-admin-product-sets.html">กลุ่มสินค้า</a> ที่ตั้งไว้ (แบรนด์/หมวด/SKU แบบรวม-ยกเว้น) ได้ — ไม่ต้องกรอกซ้ำ และยังเพิ่มยกเว้นรายสินค้าได้ · สินค้าที่ติดข้อยกเว้นไม่ถูกนับเข้าขั้นต่ำและไม่ได้ส่วนลด</span></li>
     <li><span class="pin">8</span><span><b>กลุ่มลูกค้า</b> ใช้ตัวเลือกเดียวกับทุกหน้า — “บางคน” เลือกจากกลุ่มลูกค้าที่ตั้งไว้ (รวม/ยกเว้น) · ลูกค้านอกกลุ่มกรอกโค้ดจะได้ข้อความ “โค้ดนี้ใช้ไม่ได้กับบัญชีของคุณ” · ลำดับตรวจโค้ดคงเดิม (พบโค้ด → ช่วงเวลา → กลุ่มลูกค้า → ยอดขั้นต่ำ)</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>

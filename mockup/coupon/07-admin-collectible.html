@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>คูปองเก็บเอง / แจกรายเดือน / ลูกค้าใหม่</title>
+<title>คูปองออนไลน์: เก็บเอง / แจกรายเดือน</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
 <style>
@@ -39,20 +39,20 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
 .pv-h{font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px;display:flex;justify-content:space-between}
 </style>
 </head>
-<body data-shell="admin" data-nav="coupon" data-crumb="โปรโมชั่นและสิทธิพิเศษ / คูปอง / เก็บเอง-รายเดือน-ลูกค้าใหม่">
+<body data-shell="admin" data-nav="coupon" data-crumb="โปรโมชั่นและสิทธิพิเศษ / คูปอง / ออนไลน์ / เก็บเอง-รายเดือน">
 <main id="screen">
 
 <div class="page-head">
-  <div><h4>คูปองเก็บเอง / แจกรายเดือน / ลูกค้าใหม่</h4><p class="muted">ตั้งเงื่อนไขส่วนลดครั้งเดียว แล้วเลือกวิธีให้สิทธิ์ — ลูกค้าเห็นในกระเป๋าคูปองเดียวกัน</p></div>
-  <div class="row"><button class="btn contained">＋ สร้างคูปองใหม่</button></div>
+  <div><h4>คูปองออนไลน์ — เก็บเอง / แจกรายเดือน</h4><p class="muted">ตั้งเงื่อนไขส่วนลดครั้งเดียว แล้วเลือกวิธีให้สิทธิ์ — ลูกค้าเห็นในกระเป๋าคูปองเดียวกัน</p></div>
+  <div class="row"><a class="btn outlined" href="06-admin-online.html">โค้ดส่วนลด (กรอกโค้ด) →</a><button class="btn contained">＋ สร้างคูปองใหม่</button></div>
 </div>
+<div class="alert info mb16"><div><b>คูปองลูกค้าใหม่ ย้ายไปเป็นโปรโมชั่นแล้ว</b> — ตั้งเป็นโปรโมชั่นที่ติ๊ก “เฉพาะลูกค้าใหม่ (ยังไม่เคยสั่งซื้อ)” ที่ <a href="../promotion/02-admin-editor.html">โปรโมชั่น › เงื่อนไขของลูกค้า</a> (ตัวอย่าง: ลูกค้าใหม่ ซื้อครบ ฿5,000 ลด ฿300 + สิทธิ์ลุ้น) · คูปองออนไลน์จึงมี 3 แบบ: <b>โค้ดส่วนลด</b> · <b>เก็บเอง</b> · <b>แจกรายเดือน</b></div></div>
 
 <div class="card"><div class="card-b" id="tabsWrap">
   <div class="tabs relative" data-tabs>
     <span class="pin">1</span>
-    <button class="on" data-tab="manual">เก็บเอง (เหมือน Shopee)</button>
-    <button data-tab="monthly">แจกอัตโนมัติรายเดือน</button>
-    <button data-tab="newcust">ลูกค้าใหม่</button>
+    <button class="on" data-tab="manual">เก็บเอง — ลูกค้ากดเก็บในศูนย์คูปอง</button>
+    <button data-tab="monthly">แจกรายเดือน — ระบบแจกวันที่ 1 อัตโนมัติ</button>
   </div>
 
   <!-- ========== เก็บเอง ========== -->
@@ -66,7 +66,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
           <div class="field"><label>มูลค่าส่วนลด</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="100"></div></div>
           <div class="field"><label>ลดสูงสุดไม่เกิน (เมื่อเลือก %)</label><div class="input-adorn"><span class="adorn">฿</span><input class="input readonly" placeholder="ใช้เมื่อเลือก %" readonly></div></div>
           <div class="field"><label>ยอดซื้อขั้นต่ำ</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="1,500"></div></div>
-          <div class="field span2"><label>ยกเว้นสินค้า / หมวด</label><div class="chiprow row wrap" style="gap:6px"><span class="xchip">นมผงสูตร 3 (ลัง) <i style="font-style:normal">✕</i></span><span class="xchip">ผ้าอ้อมเด็ก <i style="font-style:normal">✕</i></span><select class="select" style="max-width:200px;min-height:32px;padding:4px 8px"><option>＋ เพิ่มสินค้า/หมวด…</option></select></div></div>
+          <div class="field span2"><label>ข้อยกเว้น <span class="pin">9</span></label><div class="aud"><div class="aud-h"><b>ข้อยกเว้น — กลุ่มสินค้าที่ไม่ร่วมคูปองนี้</b><span class="chip soft-info sq">กลุ่มสินค้า</span></div><div class="aud-src">รายชื่อกลุ่มมาจาก <a href="../foundation/04-admin-product-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มสินค้า ↗</a> — แต่ละกลุ่มมีแบรนด์/หมวด/SKU แบบรวม-ยกเว้นอยู่แล้ว ตั้งครั้งเดียวใช้ซ้ำได้ทั้งโปร แคมเปญ พอยท์ และส่งฟรี</div><div class="aud-row"><span class="chip soft-error">ยกเว้น</span><select class="select"><option>Blackmores (ยกเว้น 2 รายการ) · 34 SKU</option><option>นมผงทุกตรา · 18 SKU</option><option selected>สินค้าหนัก (ไม่ร่วมส่งฟรี) · 61 SKU</option></select><span class="n">61 SKU</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่มที่ยกเว้น</button><a class="small" href="../foundation/04-admin-product-sets.html">ดู/แก้กติกากลุ่มสินค้า ↗</a><a class="small" href="../foundation/04-admin-product-sets.html">สร้างกลุ่มใหม่ ↗</a></div><div class="aud-sum">สินค้าที่ถูกยกเว้น: <b>34</b> SKU (คำนวณสดจากกติกา — สินค้าใหม่ในแบรนด์/หมวดเข้าเอง) · ยกเว้นชนะรวมเสมอ · ไม่ตั้งกลุ่ม = ไม่มีข้อยกเว้น (ใช้กับทุกสินค้า)</div></div><div class="help mt8" style="margin-bottom:6px">ยกเว้นเฉพาะรายสินค้าเพิ่มได้: <span class="chip outline">นมผงสูตร 3 (ลัง) ✕</span> <span class="chip outline">ผ้าอ้อมเด็ก ✕</span> <select class="select" style="max-width:200px;min-height:32px;padding:4px 8px"><option>＋ เพิ่มสินค้า/หมวด…</option></select></div></div>
           <div class="field"><label>จำนวนสิทธิ์ทั้งหมด (ว่าง = ไม่จำกัด) <span class="pin">3</span></label><input class="input" value="500"><span class="help">เก็บแล้ว 380 · เหลือ 120</span></div>
           <div class="field"><label>จำกัดต่อคน (ว่าง = ไม่จำกัด)</label><input class="input" value="1"></div>
           <div class="field"><label>เริ่มเก็บได้</label><input class="input" type="date" value="2026-10-15"></div>
@@ -110,7 +110,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
           <div class="field span2"><label>ชื่อสิทธิ์ *</label><input class="input" value="ส่งฟรีประจำเดือน เมื่อซื้อครบ ฿1,000"></div>
           <div class="field"><label>ประเภทส่วนลด</label><div class="seg"><button class="on">ส่งฟรี</button><button>ลดราคาคงที่</button><button>ลดเปอร์เซ็นต์</button></div></div>
           <div class="field"><label>ยอดซื้อขั้นต่ำ</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="1,000"></div></div>
-          <div class="field span2"><label>ยกเว้นสินค้า / หมวด</label><div class="chiprow row wrap" style="gap:6px"><span class="xchip">นมผงสูตร 3 (ลัง) <i style="font-style:normal">✕</i></span><span class="xchip">ผ้าอ้อมเด็ก <i style="font-style:normal">✕</i></span><select class="select" style="max-width:200px;min-height:32px;padding:4px 8px"><option>＋ เพิ่มสินค้า/หมวด…</option></select></div></div>
+          <div class="field span2"><label>ข้อยกเว้น <span class="pin">9</span></label><div class="aud"><div class="aud-h"><b>ข้อยกเว้น — กลุ่มสินค้าที่ไม่ร่วมคูปองนี้</b><span class="chip soft-info sq">กลุ่มสินค้า</span></div><div class="aud-src">รายชื่อกลุ่มมาจาก <a href="../foundation/04-admin-product-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มสินค้า ↗</a> — แต่ละกลุ่มมีแบรนด์/หมวด/SKU แบบรวม-ยกเว้นอยู่แล้ว ตั้งครั้งเดียวใช้ซ้ำได้ทั้งโปร แคมเปญ พอยท์ และส่งฟรี</div><div class="aud-row"><span class="chip soft-error">ยกเว้น</span><select class="select"><option>Blackmores (ยกเว้น 2 รายการ) · 34 SKU</option><option>นมผงทุกตรา · 18 SKU</option><option selected>สินค้าหนัก (ไม่ร่วมส่งฟรี) · 61 SKU</option></select><span class="n">61 SKU</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่มที่ยกเว้น</button><a class="small" href="../foundation/04-admin-product-sets.html">ดู/แก้กติกากลุ่มสินค้า ↗</a><a class="small" href="../foundation/04-admin-product-sets.html">สร้างกลุ่มใหม่ ↗</a></div><div class="aud-sum">สินค้าที่ถูกยกเว้น: <b>34</b> SKU (คำนวณสดจากกติกา — สินค้าใหม่ในแบรนด์/หมวดเข้าเอง) · ยกเว้นชนะรวมเสมอ · ไม่ตั้งกลุ่ม = ไม่มีข้อยกเว้น (ใช้กับทุกสินค้า)</div></div><div class="help mt8" style="margin-bottom:6px">ยกเว้นเฉพาะรายสินค้าเพิ่มได้: <span class="chip outline">นมผงสูตร 3 (ลัง) ✕</span> <span class="chip outline">ผ้าอ้อมเด็ก ✕</span> <select class="select" style="max-width:200px;min-height:32px;padding:4px 8px"><option>＋ เพิ่มสินค้า/หมวด…</option></select></div></div>
           <div class="field"><label>วันที่ออกสิทธิ์ในแต่ละเดือน</label><select class="select"><option selected>วันที่ 1</option><option>วันที่ 5</option><option>วันที่ 15</option><option>… (1–28)</option></select><span class="help">ระบบออกให้ลูกค้าทุกคนอัตโนมัติ — ไม่ต้องกดรับ</span></div>
           <div class="field"><label>จำนวนสิทธิ์ทั้งหมด / ต่อคน</label><input class="input readonly" value="ไม่จำกัด · 1 สิทธิ์/คน/เดือน" readonly></div>
         </div>
@@ -138,59 +138,29 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
     </div>
   </div>
 
-  <!-- ========== ลูกค้าใหม่ ========== -->
-  <div data-panel="newcust">
-    <div class="pn">
-      <div class="stack">
-        <div class="alert info"><div><div class="a-title">คูปองต้อนรับลูกค้าใหม่</div>ออกให้อัตโนมัติเมื่อลูกค้าสมัคร/ยืนยันบัญชี และ "ยังไม่เคยสั่งซื้อ" · ใช้ได้ครั้งเดียวต่อบัญชี</div></div>
-        <div class="form-grid">
-          <div class="field span2"><label>ชื่อสิทธิ์</label><input class="input" value="คูปองต้อนรับลูกค้าใหม่"></div>
-          <div class="field"><label>ยอดซื้อขั้นต่ำ</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="5,000"></div></div>
-          <div class="field"><label>ส่วนลดต้อนรับ</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="300"></div></div>
-          <div class="field"><label>ออกสิทธิ์เมื่อ <span class="pin">7</span></label>
-            <div class="radio-cards c2"><label class="radio-card"><input type="radio" name="issue"><span><span class="rc-t">สมัครสมาชิก</span></span></label><label class="radio-card"><input type="radio" name="issue" checked><span><span class="rc-t">ยืนยันบัญชีสำเร็จ</span></span></label></div></div>
-          <div class="field"><label>อายุสิทธิ์ (นับจากวันที่ออก)</label><div class="input-adorn"><input class="input" value="30"><span class="adorn">วัน</span></div></div>
-          <div class="field span2"><label>ยกเว้นสินค้า / หมวด</label><div class="chiprow row wrap" style="gap:6px"><span class="xchip">นมผงสูตร 3 (ลัง) <i style="font-style:normal">✕</i></span><span class="xchip">ผ้าอ้อมเด็ก <i style="font-style:normal">✕</i></span><select class="select" style="max-width:200px;min-height:32px;padding:4px 8px"><option>＋ เพิ่มสินค้า/หมวด…</option></select></div></div>
-        </div>
-        <div class="field"><label>กติกาตายตัว</label><div class="lock"><span class="chip lg">ล็อก</span> ใช้ได้ <b>ครั้งเดียวต่อบัญชี</b> · เฉพาะบัญชีที่ยังไม่เคยสั่งซื้อ (ตรวจจากประวัติคำสั่งซื้อ) · ไม่มีโควตารวม</div></div>
-        <div class="grid g2"><div class="field"><label>เงื่อนไขการใช้ร่วม</label>
-  <label class="switch"><input type="checkbox" checked> ใช้ร่วมกับโปรโมชั่นได้</label>
-  <label class="switch"><input type="checkbox" > ใช้ร่วมกับคูปองอื่นได้</label>
-</div><div></div></div>
-      </div>
-      <div class="stack s12" style="position:sticky;top:16px">
-        <div><div class="pv-h"><span>มุมมองลูกค้าใหม่ในกระเป๋า</span></div>
-          <div class="ticket"><div class="t-main"><b>คูปองต้อนรับลูกค้าใหม่</b><div class="small muted">ซื้อครบ ฿5,000 · ใช้ได้ถึง 11 พ.ย. 69 (30 วัน)</div></div>
-            <div class="t-stub"><span class="t-val">฿300</span><button class="btn contained sm">ใช้</button></div></div>
-        </div>
-        <div class="soft small"><b>ลูกค้าเดิมเห็นอะไร</b><br>บัญชีที่เคยสั่งซื้อแล้วจะไม่มีคูปองนี้ในกระเป๋า และไม่มีในศูนย์คูปอง</div>
-        <div class="stat"><div class="l">สถิติ</div><div class="v" style="font-size:18px">ออกแล้ว 42 · ใช้แล้ว 17 · หมดอายุ 6</div></div>
-      </div>
-    </div>
-  </div>
 </div></div>
 
 </main>
 <section class="ux-notes">
   <h6>หมายเหตุ UX</h6>
   <ol>
-    <li><span class="pin">1</span><span>สามแท็บ = สามวิธีให้สิทธิ์ ใช้ชุดฟิลด์ส่วนลดเดียวกัน ต่างกันที่ "วิธีรับ" · ใบหนึ่งอยู่ได้แท็บเดียว</span></li>
+    <li><span class="pin">1</span><span>สองแท็บ = สองวิธีให้สิทธิ์ ใช้ชุดฟิลด์ส่วนลดเดียวกัน ต่างกันที่ "วิธีรับ" · ใบหนึ่งอยู่ได้แท็บเดียว</span></li>
     <li><span class="pin">2</span><span>รูปแบบการแจกเลือกต่อใบ (กดรับเอง / แจกอัตโนมัติรายเดือน) — สร้างได้หลายใบพร้อมกัน เช่น ใบเก็บเอง + ใบรายเดือน</span></li>
     <li><span class="pin">3</span><span>จำนวนสิทธิ์ทั้งหมด = โควตารวม ตัดทันทีเมื่อลูกค้ากดเก็บ (แสดง "เหลือ n / ทั้งหมด" ให้ลูกค้าเห็น) · ว่าง = ไม่จำกัด</span></li>
     <li><span class="pin">4</span><span>การหมดอายุของสิทธิ์ที่เก็บแล้ว: วันที่คงที่ / N วันหลังเก็บ / สิ้นเดือนที่เก็บ — ช่องกรอกเปลี่ยนตามตัวเลือก</span></li>
     <li><span class="pin">5</span><span>ตัวอย่างฝั่งลูกค้าอัปเดตสดตามค่าที่ตั้ง ทั้งในศูนย์คูปอง (ก่อนเก็บ) และกระเป๋า (หลังเก็บ)</span></li>
     <li><span class="pin">6</span><span>แถบรายเดือน: ใช้แล้ว / พร้อมใช้ / รอวันที่ 1 — หมดอายุล็อกที่สิ้นเดือนเดียวกันเสมอ</span></li>
-    <li><span class="pin">7</span><span>ลูกค้าใหม่: ออกอัตโนมัติเมื่อสมัคร/ยืนยันบัญชี ตรวจ "ยังไม่เคยสั่งซื้อ" และใช้ได้ครั้งเดียวต่อบัญชี (ล็อก)</span></li>
+    <li><span class="pin">7</span><span><b>ลูกค้าใหม่</b> ไม่ใช่คูปองแล้ว — ใช้ “โปรโมชั่น + เฉพาะลูกค้าใหม่” แทน (ตรวจจากประวัติคำสั่งซื้อ ไม่มีออเดอร์มาก่อน) จึงรวมของแถม/พอยท์/สิทธิ์ลุ้นกับส่วนลดได้</span></li>
+    <li><span class="pin">9</span><span><b>ข้อยกเว้น</b> <span class="chip soft-primary sq">ใหม่</span> เลือกจาก <a href="../foundation/04-admin-product-sets.html">กลุ่มสินค้า</a> ที่ตั้งไว้ + ยกเว้นรายสินค้าได้ ทั้งเก็บเองและแจกรายเดือน</span></li>
     <li><span class="pin">8</span><span><b>กลุ่มลูกค้าเป้าหมาย</b> ทั้งแบบเก็บเอง และแบบแจกอัตโนมัติรายเดือน ใช้ตัวเลือกเดียวกับทุกหน้า · แจกรายเดือน: ระบบออกสิทธิ์ให้เฉพาะสมาชิกกลุ่ม ณ วันที่ออกสิทธิ์ (สมาชิกใหม่ที่เข้ากลุ่มกลางเดือนได้รอบถัดไป) · แบบเก็บเอง: คนนอกกลุ่มไม่เห็นคูปองในศูนย์คูปอง</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>ลูกค้าเก็บซ้ำเกิน "ต่อคน" ไม่ได้ — ปุ่มเปลี่ยนเป็น "เก็บแล้ว"; สิทธิ์ที่เก็บแล้วไม่หายถ้าแอดมินปิดการแจกภายหลัง</li>
     <li>แก้เงื่อนไขส่วนลดของใบที่มีคนเก็บแล้ว: ใบที่เก็บไปแล้วใช้ค่าเดิมตอนเก็บ (snapshot) ยกเว้น "เงื่อนไขใช้ร่วม" ที่อ่านจากต้นทางสด</li>
     <li>แจกรายเดือน: ไม่ทบข้ามเดือน ไม่ใช้ = หมดสิทธิ์ · ออกให้เฉพาะบัญชีที่ใช้งานอยู่</li>
-    <li>ลูกค้าใหม่ที่ยังไม่ยืนยันบัญชี จะยังไม่ได้รับคูปองจนกว่ายืนยัน</li>
   </ul></div>
   <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
-    <li>อายุคูปองลูกค้าใหม่ (ข้อเสนอ 30 วันนับจากวันที่ออก) และจะออกเมื่อ "สมัคร" หรือ "ยืนยันบัญชี"</li>
+    <li>ลูกค้าใหม่ที่เคยได้ “คูปองลูกค้าใหม่” ในแบบเดิม — ย้ายเป็นโปรโมชั่นลูกค้าใหม่ และคูปองที่ออกไปแล้วยังใช้ได้จนหมดอายุ</li>
     <li>ลูกค้าที่สมัครกลางเดือนจะได้สิทธิ์รายเดือนของเดือนนั้นทันทีหรือไม่ (ข้อเสนอ: ได้ทันที หมดสิ้นเดือน)</li>
     <li>เพดานจำนวนสิทธิ์/วันที่ของคูปองเก็บเอง "ไม่จำกัด" อนุญาตหรือไม่ — ข้อเสนอให้บังคับกรอกโควตารวมเพื่อกันงบบาน</li>
   </ul></div>

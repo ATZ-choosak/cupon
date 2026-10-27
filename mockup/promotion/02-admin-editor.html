@@ -32,6 +32,8 @@
   .prev-card{border:1px solid var(--g200);border-radius:12px;padding:14px;background:#fff;box-shadow:var(--z1)}
   .lock{opacity:.55}
   .chip.sq{height:20px;font-size:10.5px;padding:0 7px}
+  .subsec{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:13.5px}
+  .subsec-n{width:22px;height:22px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:800;display:inline-flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body data-shell="admin" data-nav="promotion" data-crumb="โปรโมชั่นและสิทธิพิเศษ / โปรโมชั่น / แก้ไข">
@@ -43,7 +45,7 @@
       <h4>โปรโมชั่น</h4>
       <p class="muted">หน้านี้แสดง dialog "แก้ไขโปรโมชั่น" ตอนเปิดอยู่ (ถ้ากด "สร้างโปรโมชั่น" ชื่อ dialog เป็น "สร้างโปรโมชั่น" และฟอร์มว่างตามค่าเริ่มต้น)</p>
     </div>
-    <div class="row"><a class="btn outlined primary" href="05-admin-simulator.html">ทดสอบในจำลองตะกร้า →</a></div>
+    <div class="row"><a class="btn outlined primary" href="../simulator/02-cart.html">ทดสอบในจำลองตะกร้า →</a></div>
   </div>
 
   <div class="backdrop"><div class="dialog xl">
@@ -64,18 +66,13 @@
               <div class="field"><label>คำอธิบาย</label><textarea class="textarea" rows="2">วิตามินซีเสริมภูมิคุ้มกัน ช่วงเปลี่ยนฤดู ซื้อครบรับส่วนลดทันที</textarea></div>
               <div class="field"><label>เงื่อนไข *</label><textarea class="textarea" rows="2">ซื้อ Blackmores Vitamin C 500 mg (ขวดหรือกล่อง) รวมกันครบ 3 ขวด รับส่วนลด 10% สูงสุดไม่เกิน ฿150 ต่อบิล</textarea><span class="help">อธิบายเงื่อนไขสำหรับโปรโมชั่นนี้ — ข้อความนี้แสดงบนการ์ดของลูกค้า</span></div>
               <div class="form-grid">
-                <div class="field"><label>โควต้าต่อลูกค้า</label><input class="input is-err" value="0"><span class="err">ต้องไม่น้อยกว่า 1 — เว้นว่างไว้หากไม่ต้องการจำกัดโควต้า</span></div>
-                <div class="field"><label>ลำดับความสำคัญ</label><input class="input readonly" value="#5 (ปรับด้วยการลากในหน้ารายการ)" readonly><span class="help">เว้นการตั้งตัวเลขเอง เหมือน Bundle เดิม</span></div>
+                <div class="field"><label>โควต้าทั้งหมด (ทุกคนรวมกัน) <span class="chip soft-primary sq">ใหม่</span> <span class="pin">11</span></label><div class="input-adorn"><input class="input" value="50"><span class="adorn">สิทธิ์</span></div><span class="help">เช่น โปรนี้มีแค่ 50 ออเดอร์ · เว้นว่าง = ไม่จำกัด · ใช้แล้ว 27 / เหลือ 23 · หมดแล้วโปรเปลี่ยนเป็น “หมดโควต้า” เอง</span></div>
+                <div class="field"><label>โควต้าต่อลูกค้า</label><input class="input is-err" value="0"><span class="err">ต้องไม่น้อยกว่า 1 — เว้นว่างไว้หากไม่ต้องการจำกัดโควต้า</span><span class="help">ใช้ร่วมกับโควต้าทั้งหมดได้ เช่น ทั้งหมด 50 สิทธิ์ และคนละไม่เกิน 2</span></div>
                 <div class="field"><label>วันที่เริ่มต้น *</label><input class="input" value="1 ต.ค. 2569"></div>
                 <div class="field"><label>วันที่สิ้นสุด *</label><input class="input" value="31 ธ.ค. 2569"></div>
               </div>
               <label class="switch"><input type="checkbox" checked> ใช้งาน</label>
               <div class="alert warning" style="font-size:12.5px"><div>ไม่สามารถบันทึกโปรโมชั่นนี้เป็นใช้งานอยู่ได้หากไม่มีรายการที่ต้องมีและผลตอบแทนอย่างน้อย 1 รายการ</div></div>
-              <div>
-                <label class="switch"><input type="checkbox"> ตรวจสอบหน่วยสินค้าอย่างเข้มงวด <span style="color:var(--g600)">ⓘ</span></label>
-                <div class="tip">เมื่อเปิดใช้งาน: เฉพาะหน่วยสินค้าที่ตรงกันเท่านั้นที่ถือว่าตรงเงื่อนไข
-เมื่อปิดใช้งาน: หน่วยสินค้าที่แตกต่างกันของสินค้าเดียวกันสามารถตรงเงื่อนไขได้หากจำนวนเทียบเท่ากัน</div>
-              </div>
             </div>
           </div>
           <hr class="divider" style="margin:0">
@@ -89,7 +86,8 @@
 
           <!-- 2 scope + required items -->
           <div class="form-sec">
-            <div class="sec-h"><h6>เงื่อนไขและสินค้าที่ต้องมี <span class="chip soft-primary sq">ใหม่: ขอบเขต</span></h6></div>
+            <div class="sec-h"><h6>เงื่อนไขและสินค้าที่ต้องมี <span class="chip soft-primary sq">จัดกลุ่มใหม่</span> <span class="pin">12</span></h6></div>
+            <div class="subsec"><span class="subsec-n">A</span><b>ประเภทเงื่อนไข</b></div>
             <div class="form-grid mb16">
               <div class="field"><label>ประเภทเงื่อนไข</label>
                 <select class="select" name="ctype"><option value="qty" selected>ตามจำนวน</option><option value="amt">ตามจำนวนเงินรวม</option></select>
@@ -97,7 +95,7 @@
               <div class="field" data-reveal="ctype=amt"><label>จำนวนเงินรวม *</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="1,000"></div><span class="help">จำนวนเงินขั้นต่ำที่ต้องการสำหรับโปรโมชั่นนี้</span></div>
             </div>
 
-            <div class="label mb8" style="display:flex;align-items:center;gap:6px">ขอบเขตสินค้าที่นับเข้าเงื่อนไข <span class="chip soft-primary sq">ใหม่</span> <span class="pin">2</span></div>
+            <div class="subsec"><span class="subsec-n">B</span><b>ขอบเขตสินค้าที่นับเข้าเงื่อนไข</b> <span class="pin">2</span></div>
             <div class="radio-cards c4">
               <label class="radio-card"><input type="radio" name="scope" value="items" checked><span><span class="rc-t">เลือกรายสินค้า/หน่วย</span><span class="rc-d" style="display:block">แบบ Bundle เดิม · เลือกทีละหน่วย</span></span></label>
               <label class="radio-card"><input type="radio" name="scope" value="brand"><span><span class="rc-t">ทั้งแบรนด์</span><span class="rc-d" style="display:block">เช่น Blackmores ทุกสินค้า</span></span></label>
@@ -114,7 +112,7 @@
 
             <!-- scope = items -->
             <div data-reveal="scope=items" class="mt16">
-              <div class="sec-h"><h6 style="font-size:14px">สินค้าที่ต้องมี</h6><button class="btn outlined sm">＋ เพิ่มสินค้าที่ต้องมี</button></div>
+              <div class="subsec"><span class="subsec-n">C</span><b>สินค้าที่ต้องมี</b><button class="btn outlined sm" style="margin-left:auto">＋ เพิ่มสินค้าที่ต้องมี</button></div>
 
               <div class="itemcard">
                 <div class="itemcard-h"><span class="t"><span class="handle">⋮⋮</span>สินค้าที่ต้องมี #1</span><button class="x-btn">−</button></div>
@@ -165,56 +163,34 @@
                 <div class="field span2"><label>ยกเว้นรายสินค้า</label><div class="row wrap"><span class="chip outline">เข็มฉีดยา (กล่อง) ✕</span><button class="btn outlined sm">＋ เพิ่มรายการยกเว้น</button></div></div>
               </div>
             </div>
+
+            <div class="subsec mt24"><span class="subsec-n">D</span><b>ตรวจสอบหน่วยสินค้า</b> <span class="chip soft-primary sq">ย้ายมาไว้ที่นี่</span></div>
+            <label class="switch"><input type="checkbox" name="strict"> ตรวจสอบหน่วยสินค้าอย่างเข้มงวด <span style="color:var(--g600)">ⓘ</span></label>
+            <div class="tip">เมื่อเปิดใช้งาน: เฉพาะหน่วยสินค้าที่ตรงกันเท่านั้นที่ถือว่าตรงเงื่อนไข (ซื้อ “กล่อง” ไม่นับเป็น “ขวด”)
+เมื่อปิดใช้งาน: หน่วยสินค้าที่แตกต่างกันของสินค้าเดียวกันสามารถตรงเงื่อนไขได้หากจำนวนเทียบเท่ากัน (1 กล่อง = 6 ขวด)</div>
+
+            <div class="subsec mt24"><span class="subsec-n">E</span><b>เงื่อนไขของลูกค้า</b> <span class="chip soft-primary sq">ใหม่</span> <span class="pin">13</span></div>
+            <label class="switch"><input type="checkbox" name="newonly"> เฉพาะลูกค้าใหม่ — บัญชีที่ยังไม่เคยมีคำสั่งซื้อมาก่อนเลย</label>
+            <div class="help mt8">ใช้แทน “คูปองลูกค้าใหม่” เดิม · ตรวจจากประวัติคำสั่งซื้อของบัญชีตอนจัดตะกร้า · ใช้ร่วมกับ “กลุ่มเป้าหมาย” ด้านบนได้ (ต้องผ่านทั้งสองข้อ)</div>
           </div>
           <hr class="divider" style="margin:0">
 
           <!-- 3 reward -->
           <div class="form-sec">
-            <div class="sec-h"><h6>ผลตอบแทน <span class="chip soft-primary sq">ใหม่</span> <span class="pin">4</span></h6></div>
-            <div class="radio-cards c4">
-              <label class="radio-card"><input type="radio" name="rw" value="gift"><span><span class="rc-t">ของแถม</span><span class="rc-d" style="display:block">ซื้อครบแล้วรับสินค้าฟรี</span></span></label>
-              <label class="radio-card"><input type="radio" name="rw" value="disc" checked><span><span class="rc-t">ส่วนลด</span><span class="rc-d" style="display:block">ลดเป็นบาทหรือ %</span></span></label>
-              <label class="radio-card"><input type="radio" name="rw" value="ship"><span><span class="rc-t">ฟรีค่าจัดส่ง</span><span class="rc-d" style="display:block">ไม่เสียค่าส่ง</span></span></label>
-              <label class="radio-card"><input type="radio" name="rw" value="set"><span><span class="rc-t">ชุดของรางวัล</span><span class="rc-d" style="display:block">เลือกจากที่ตั้งไว้ (ได้หลายอย่างพร้อมกัน)</span></span></label>
-            </div>
-            <div data-reveal="rw=set" class="mt16"><div class="rs-pick"><div class="rs-h"><b>ชุดของรางวัลที่ได้เมื่อซื้อครบ</b></div><div class="row"><select class="select" style="flex:1"><option>— เลือกจากชุดของรางวัลที่ตั้งไว้ —</option><option selected>ของแถมนมผง · v1</option><option>ของแถมนมผง · v1</option><option>ทริปญี่ปุ่น 2 ท่าน · v1</option><option>ส่งฟรี 1 ครั้ง · v1</option></select><a class="btn outlined sm" href="../foundation/03-admin-reward-sets.html">จัดการชุดของรางวัล ↗</a></div><div class="rs-items">ของแถม (SKU) ขวดนม PP 240ml × 1 · มูลค่าประเมิน ฿45</div><div class="aud-note">รางวัลดึงจาก <a href="../foundation/03-admin-reward-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › ชุดของรางวัล</a> — แก้ชุดที่นั่นที่เดียว รายการนี้ยังใช้เวอร์ชันที่เลือกไว้จนกดอัปเดต</div></div></div>
-
-            <div data-reveal="rw=disc" class="mt16 stack">
-              <div class="row wrap">
-                <label class="check"><input type="radio" name="dtype" value="baht"> ลดเป็นบาท (฿)</label>
-                <label class="check"><input type="radio" name="dtype" value="pct" checked> ลดเป็นเปอร์เซ็นต์ (%)</label>
-              </div>
-              <div class="form-grid">
-                <div class="field"><label data-reveal="dtype=pct">ส่วนลด (%) *</label><label data-reveal="dtype=baht" class="hidden">ส่วนลด (บาท) *</label><div class="input-adorn"><input class="input" value="10"><span class="adorn">%</span></div></div>
-                <div class="field" data-reveal="dtype=pct"><label>ลดสูงสุดไม่เกิน</label><div class="input-adorn"><span class="adorn">฿</span><input class="input" value="150"></div><span class="help">เว้นว่าง = ไม่จำกัดเพดาน</span></div>
-              </div>
-              <div class="alert info" style="font-size:12.5px"><div>ส่วนลดคิดเฉพาะสินค้าที่เข้าเงื่อนไขของโปรนี้ (ในที่นี้ Vitamin C ที่นับครบ 3 ขวด) — ไม่ใช่ทั้งบิล · ราคาฐานคือราคาหลัง Flash Sale (ถ้ามี)</div></div>
-            </div>
-
-            <div data-reveal="rw=gift" class="mt16 stack">
-              <div class="sec-h" style="margin:0"><h6 style="font-size:14px">สินค้าฟรี</h6><button class="btn outlined sm">＋ เพิ่มสินค้าฟรี</button></div>
-              <div class="itemcard" style="margin:0">
-                <div class="itemcard-h"><span class="t"><span class="handle">⋮⋮</span>สินค้าฟรี #1</span><button class="x-btn">−</button></div>
-                <div class="stack">
-                  <div class="field"><label>จำนวน</label><input class="input" value="1"></div>
-                  <div class="field"><label>หน่วยสินค้า</label><input class="input" value="BT-PP01 ขวดนม PP - ชิ้น"></div>
-                  <span class="help">สต็อกคงเหลือ 0 ชิ้น — ระบบจะปิดโปรชั่วคราวและแจ้งเตือนเมื่อสต็อกของแถมหมด</span>
-                </div>
-              </div>
-            </div>
-
-            <div data-reveal="rw=ship" class="mt16">
-              <div class="alert info" style="font-size:12.5px"><div>ฟรีค่าจัดส่งเฉพาะส่วนของสินค้าที่เข้าเงื่อนไขของโปรนี้ (ไม่ใช่ทั้งบิล) — ไม่มีฟิลด์เพิ่มเติม</div></div>
-            </div>
+            <div class="sec-h"><h6>ผลตอบแทน <span class="chip soft-primary sq">รวมได้หลายอย่าง</span> <span class="pin">4</span></h6></div>
+            <div class="alert info mb16" style="font-size:12.5px"><div>ไม่ต้องเลือกแค่ “ของแถม / ส่วนลด / ฟรีค่าจัดส่ง” อย่างเดียวอีกแล้ว — เพิ่มได้หลายรายการพร้อมกัน เช่น <b>ส่วนลด 10% + ของแถม 1 ชิ้น + 50 พอยท์</b> · ใช้ component เดียวกับพอยท์ แคมเปญ และสุ่มรางวัล แต่เก็บแยกตามโมดูล (ไม่ต้องไปสร้าง “ชุดของรางวัล” ที่อื่นก่อน) · <b>ลองกดเพิ่ม/แก้ได้จริง</b> ค่าที่แก้จะไปปรากฏใน<a href="../simulator/02-cart.html">จำลองตะกร้า</a>ทันที</div></div>
+            <div data-rwd data-module="promotion" data-ref="p5" data-title="ผลตอบแทนเมื่อเข้าเงื่อนไข" data-kinds="gift,disc,ship,points,coupon,credit,entitle,offpos"></div>
+            <div class="help mt8">ส่วนลดคิดเฉพาะสินค้าที่เข้าเงื่อนไขของโปรนี้ (ในที่นี้ Vitamin C ที่นับครบ 3 ขวด) ไม่ใช่ทั้งบิล · ราคาฐานคือราคาหลัง Flash Sale/โปรที่ลูกค้าเลือกก่อนหน้า · ฟรีค่าจัดส่ง/ของแถม/พอยท์/คูปอง/เครดิต/สิทธิ์ลุ้นได้เมื่อชำระเงินสำเร็จ</div>
           </div>
           <hr class="divider" style="margin:0">
 
           <!-- 5 stack -->
           <div class="form-sec">
-            <div class="sec-h"><h6>ใช้ร่วมกับสิทธิ์อื่น <span class="chip soft-primary sq">ใหม่</span> <span class="pin">5</span></h6></div>
+            <div class="sec-h"><h6>ใช้ร่วมกับสิทธิ์อื่น <span class="chip soft-primary sq">แทน priority</span> <span class="pin">5</span></h6></div>
+            <div class="alert info mb16" style="font-size:12.5px"><div>ไม่มีลำดับ priority แล้ว — ถ้าตะกร้าเข้าโปรได้มากกว่า 1 รายการ <b>ลูกค้าเลือกเองเป็นการ์ด</b> ตัวเลือก “ใช้ร่วมกับโปรโมชั่นอื่นได้” ด้านล่างเป็นตัวกำหนดว่าเมื่อลูกค้าเลือกโปรนี้แล้ว โปรไหนจะถูกทำเป็นสีเทา (เลือกพร้อมกันไม่ได้) · <a href="09-customer-cart.html">ดูหน้าตะกร้าฝั่งลูกค้า →</a></div></div>
             <div class="card flat" style="border:1px solid var(--g200)"><div class="card-b" style="padding:4px 16px">
               <div class="stack-row"><div><b>ใช้ร่วมกับคูปองได้</b><div class="d">นโยบายร่วม: อนุญาต · ปิดได้เฉพาะโปรนี้ = คูปองไม่ลดซ้ำกับสินค้าที่โปรนี้จับคู่แล้ว</div></div><div class="seg"><button class="on">ได้</button><button>ไม่ได้</button></div></div>
-              <div class="stack-row"><div><b>ใช้ร่วมกับโปรโมชั่นอื่นได้</b><div class="d">นโยบายร่วม: อนุญาต · โปรอื่นที่ใช้สินค้าคนละรายการยังได้ตามปกติ</div></div><div class="seg"><button class="on">ได้</button><button>ไม่ได้</button></div></div>
+              <div class="stack-row"><div><b>ใช้ร่วมกับโปรโมชั่นอื่นได้</b><div class="d">ได้ = ลูกค้าเลือกกดโปรนี้คู่กับโปรอื่นได้ · ไม่ได้ = เลือกโปรนี้แล้วโปรอื่นที่เข้าเงื่อนไขอยู่จะเป็นสีเทาพร้อมเหตุผล (และกลับกัน)</div></div><div class="seg"><button class="on">ได้</button><button>ไม่ได้</button></div></div>
               <div class="stack-row lock"><div><b>ใช้ร่วมกับการชำระด้วยพอยท์ได้</b><div class="d" style="color:var(--error-dark)">นโยบายร่วมปิดอยู่ — เปิดเฉพาะโปรนี้ไม่ได้ (แก้ที่ตั้งค่านโยบายร่วม)</div></div><div class="seg"><button>ได้</button><button class="on">ไม่ได้</button></div></div>
             </div></div>
           </div>
@@ -263,7 +239,7 @@
 
           <div class="alert warning relative" style="font-size:12.5px">
             <span class="pin abs">8</span>
-            <div><div class="a-title">สินค้าทับซ้อนกับโปรอื่น</div>Blackmores Vitamin C อยู่ในขอบเขตของ <b>#1 ซื้อ Blackmores ครบ ฿1,000</b> ซึ่งมี priority สูงกว่า ถ้าตะกร้าเข้าทั้งสองโปร ระบบใช้ #1 โปรนี้จะไม่ถูกใช้ <a href="05-admin-simulator.html">ลองในจำลองตะกร้า →</a></div>
+            <div><div class="a-title">โปรที่ชนกับโปรนี้</div>โปรนี้ตั้ง “ใช้ร่วมกับโปรอื่นไม่ได้” → ถ้าลูกค้าเลือกโปรนี้ โปรเหล่านี้จะเป็นสีเทา: <b>#1 ซื้อ Blackmores ครบ ฿1,000</b> (สินค้าซ้ำกัน) · <b>วันพิเศษ 10.27 ลด 10%</b> · ลูกค้าเห็นเหตุผลบนการ์ด <a href="../simulator/02-cart.html">ลองในจำลองตะกร้า →</a></div>
           </div>
         </aside>
       </div>
@@ -279,16 +255,19 @@
 <section class="ux-notes">
   <h6>หมายเหตุ UX</h6>
   <ol>
-    <li><span class="pin">1</span><span><b>ข้อมูลพื้นฐาน</b> ใช้ฟิลด์เดิมของเซตของแถมทุกตัว (ชื่อ คำอธิบาย เงื่อนไข โควต้า วันที่ ใช้งาน ตรวจหน่วยอย่างเข้มงวด) · ตรวจแบบ inline ใต้ช่อง (ตัวอย่างโควต้า = 0 ขึ้นขอบแดง) · กด Enter ในฟอร์มเท่ากับบันทึก (หน่วงกันกดซ้ำ 0.5 วินาที) · ลำดับความสำคัญเป็นแบบอ่านอย่างเดียว ปรับที่หน้ารายการ</span></li>
+    <li><span class="pin">1</span><span><b>ข้อมูลพื้นฐาน</b> ใช้ฟิลด์เดิมของเซตของแถม (ชื่อ คำอธิบาย เงื่อนไข โควต้า วันที่ ใช้งาน) · ตรวจหน่วยอย่างเข้มงวดย้ายไปอยู่หัวข้อ “เงื่อนไขและสินค้าที่ต้องมี” · ไม่มีลำดับความสำคัญ · ตรวจแบบ inline ใต้ช่อง (ตัวอย่างโควต้า = 0 ขึ้นขอบแดง) · กด Enter ในฟอร์มเท่ากับบันทึก (หน่วงกันกดซ้ำ 0.5 วินาที)</span></li>
     <li><span class="pin">2</span><span><b>ขอบเขตสินค้า</b> <span class="chip soft-primary sq">ใหม่</span> ค่าเริ่มต้น = "เลือกรายสินค้า/หน่วย" (พฤติกรรมเดิมทั้งหมด) · เลือกแบรนด์/หมวดแล้วช่อง "สินค้าที่ต้องมี" ถูกแทนที่ด้วยตัวเลือกแบรนด์/หมวด + ยกเว้นรายสินค้า · เปลี่ยนขอบเขตหลังกรอกแล้ว ระบบถามยืนยันก่อนล้างรายการเดิม</span></li>
     <li><span class="pin">3</span><span><b>ตัวเลือก (OR)</b> หลายตัวเลือกในรายการเดียว = ลูกค้าเลือกตัวใดก็ได้ รวมกันให้ครบ "จำนวนที่ต้องการ" · เพิ่มตัวเลือกใหม่ไม่ได้ถ้ามีตัวเลือกที่ยังว่างอยู่ (toast "กรุณาเติมข้อมูลตัวเลือกให้ครบถ้วน…") · ลากเรียงลำดับตัวเลือกได้</span></li>
-    <li><span class="pin">4</span><span><b>ผลตอบแทน</b> <span class="chip soft-primary sq">ใหม่</span> เลือกได้ 1 อย่างต่อโปร · สลับแล้วข้อมูลของแบบเดิมถูกเก็บไว้ในฟอร์มจนกว่าจะบันทึก (กลับมาเลือกได้ไม่หาย) · ส่วนลด % ตั้งเพดานบาทได้</span></li>
+    <li><span class="pin">4</span><span><b>ผลตอบแทน</b> <span class="chip soft-primary sq">เปลี่ยน</span> รวมได้หลายอย่างในโปรเดียว: ของแถม SKU · ส่วนลด (บาท/% + เพดาน) · ฟรีค่าจัดส่ง · พอยท์ · คูปอง · เครดิตเงินคืน · สิทธิ์ลุ้น · ของรางวัลนอก POS — component เดียวกับทุกโมดูล แต่ละโมดูลเก็บชุดของตัวเอง (flag <span class="mono">source_module</span>) ไม่มีหน้า “ชุดของรางวัล” กลางแล้ว</span></li>
     <li><span class="pin">5</span><span><b>ใช้ร่วมกับสิทธิ์อื่น</b> <span class="chip soft-primary sq">ใหม่</span> ค่าเริ่มต้นตามนโยบายร่วมของระบบ โปรนี้ "ปิด" ให้เข้มกว่าได้ แต่ "เปิด" เกินนโยบายร่วมไม่ได้ (แถวสีจางพร้อมเหตุผล)</span></li>
     <li><span class="pin">6</span><span><b>ตัวอย่างที่ลูกค้าเห็น</b> เปลี่ยนตามฟอร์มทันที (ชื่อ เงื่อนไข ช่วงวันที่ ผลตอบแทน แท็กบนการ์ดสินค้า) ใช้ component เดียวกับหน้า 06 — เห็นสถานะ "ยังไม่เริ่มต้น/ใช้งาน" ตามวันที่กรอก</span></li>
     <li><span class="pin">7</span><span><b>ฟิลด์ที่เปลี่ยนตามตัวเลือก</b> แผงสรุปให้ทีมพัฒนาและลูกค้าเห็นภาพรวมว่าแต่ละตัวเลือกเปิดฟิลด์อะไร โดยไม่ต้องคลิกทดลองทีละแบบ</span></li>
-    <li><span class="pin">8</span><span><b>เตือนสินค้าทับซ้อน</b> ตรวจตอนเปิดฟอร์มและเมื่อเปลี่ยนขอบเขต: ถ้าสินค้าอยู่ในขอบเขตของโปรที่ priority สูงกว่า จะแสดงชื่อโปรนั้นและลิงก์ไปจำลองตะกร้า — เป็นคำเตือน ไม่บล็อกการบันทึก</span></li>
+    <li><span class="pin">8</span><span><b>เตือนโปรที่ชนกัน</b> แทนการเตือน priority เดิม: บอกว่าถ้าลูกค้าเลือกโปรนี้ โปรไหนจะถูกเทา — ลูกค้าเลือกเองในตะกร้า</span></li>
     <li><span class="pin">9</span><span><b>กลุ่มเป้าหมาย</b> <span class="chip soft-primary sq">ใหม่</span> ทุกโปรมีช่อง “ใครใช้สิทธิ์นี้ได้” — ทุกคน (ค่าเริ่มต้น) หรือบางคนโดยเลือกจาก <a href="../foundation/01-admin-customer-sets.html">กลุ่มลูกค้า</a> ที่ตั้งไว้ (รวม/ยกเว้น) · แสดงจำนวนผู้เข้าข่ายสด · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงบันทึกเป็นใช้งานได้ · ตัวอย่างหน้านี้แสดงสถานะ “บางคน”</span></li>
-    <li><span class="pin">10</span><span><b>กลุ่มสินค้า / ชุดของรางวัล</b> ขอบเขตสินค้ามีตัวเลือก “กลุ่มสินค้าที่ตั้งไว้” และผลตอบแทนมีตัวเลือก “ชุดของรางวัล” — ทั้งสองดึงจากเมนู <a href="../foundation/00-flow.html">กลุ่มและชุดที่ใช้ซ้ำ</a> ไม่ต้องกรอกซ้ำ · ผลตอบแทนแบบเดิม (ของแถม/ส่วนลด/ฟรีค่าส่ง) ยังใช้ได้</span></li>
+    <li><span class="pin">10</span><span><b>กลุ่มสินค้า</b> ขอบเขตสินค้ามีตัวเลือก “กลุ่มสินค้าที่ตั้งไว้” จาก <a href="../foundation/04-admin-product-sets.html">กลุ่มสินค้า</a> ไม่ต้องกรอกซ้ำ</span></li>
+    <li><span class="pin">11</span><span><b>โควต้าทั้งหมด</b> <span class="chip soft-primary sq">ใหม่</span> จำกัดจำนวนสิทธิ์รวมของโปร (นับเป็นออเดอร์) แยกจากโควต้าต่อลูกค้า — ใช้คู่กันได้ เช่น 50 สิทธิ์ คนละไม่เกิน 2 · ตัดตอนชำระสำเร็จ · เต็มแล้วสถานะ “หมดโควต้า”</span></li>
+    <li><span class="pin">12</span><span><b>จัดกลุ่มเงื่อนไข</b> A ประเภท · B ขอบเขต · C สินค้าที่ต้องมี · D ตรวจหน่วยสินค้า · E เงื่อนไขลูกค้า — อยู่โซนเดียวกัน</span></li>
+    <li><span class="pin">13</span><span><b>เฉพาะลูกค้าใหม่</b> <span class="chip soft-primary sq">ใหม่</span> แทน “คูปองลูกค้าใหม่” — โปรโมชั่นที่ติ๊กข้อนี้ใช้ได้เฉพาะบัญชีที่ไม่เคยสั่งซื้อ</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>บันทึกเป็นใช้งานได้เมื่อมี "สินค้าที่ต้องมี"/ขอบเขต และผลตอบแทนครบ (ของแถมต้องมีสินค้าฟรีอย่างน้อย 1 รายการ) — บันทึกเป็นไม่ใช้งานได้เสมอ</li>
@@ -297,9 +276,10 @@
     <li>โปรเดิม (Bundle) เปิดแล้วเห็นขอบเขต = เลือกรายสินค้า, ผลตอบแทน = ของแถม, ใช้ร่วม = ตามนโยบายร่วม</li>
   </ul></div>
   <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
-    <li>โปร "เลือกรายสินค้า" ที่สินค้าซ้ำกับโปรแบบแบรนด์/หมวดที่ priority สูงกว่า ให้แพ้ทั้งโปร (ค่าเริ่มต้น) หรือแพ้เฉพาะสินค้าที่ชนกัน</li>
+    <li>ลูกค้าเลือกโปรเองเมื่อเข้าเงื่อนไขหลายโปร — ต้องการให้ระบบ “แนะนำ” ชุดที่ประหยัดสุดล่วงหน้า (ติ๊กไว้ให้) หรือไม่ติ๊กอะไรเลย</li>
     <li>ของแถมได้พอยท์หรือไม่ (ค่าเริ่มต้น = 0 พอยท์ เพราะราคา ฿0)</li>
   </ul></div>
 </section>
 <script src="../assets/mockup.js"></script>
+<script src="../assets/pmp-core.js"></script><script src="../assets/reward.js"></script>
 </body></html>

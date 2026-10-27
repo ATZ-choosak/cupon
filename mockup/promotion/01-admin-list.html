@@ -1,27 +1,23 @@
 <!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>รายการโปรโมชั่น (ลำดับ priority)</title>
+<title>รายการโปรโมชั่น</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
 <style>
   table.table{font-size:12.5px}
-  .table td,.table th{padding:10px 7px}
-  .table th:nth-child(1),.table td:nth-child(1),.table th:nth-child(2),.table td:nth-child(2){padding-left:3px;padding-right:3px}
-  .table th:nth-child(1){width:26px}
-  .table th:nth-child(4){min-width:250px}
-  .table td:nth-child(7),.table td:nth-child(8),.table th:nth-child(7),.table th:nth-child(8){white-space:nowrap}
+  .table td,.table th{padding:10px 8px}
+  .table th:nth-child(2){min-width:260px}
+  .table td:nth-child(5),.table td:nth-child(6),.table th:nth-child(5),.table th:nth-child(6){white-space:nowrap}
   .table .nm{font-weight:700}
   .table .sub{font-size:11.5px;color:var(--text2);margin-top:2px;font-weight:400}
-  .table tr.child td{background:var(--g50)}
-  .table tr.child td:first-child{box-shadow:inset 3px 0 0 var(--primary-light)}
-  .table tr.paused td{background:#FFFBFB}
-  .table tr.sel td{background:var(--primary-lighter)}
   .chip.sq{height:20px;font-size:10.5px;padding:0 7px}
   .rw{display:flex;gap:4px;flex-wrap:wrap}
-  .exp{display:inline-flex;width:20px;height:20px;border-radius:6px;border:1px solid var(--g300);align-items:center;justify-content:center;font-size:11px;margin-right:6px;background:#fff;cursor:pointer}
-  .bulk{display:flex;align-items:center;gap:10px;background:var(--primary-lighter);border:1px solid var(--primary-light);border-radius:8px;padding:6px 12px;font-size:12.5px}
-  .used b{font-variant-numeric:tabular-nums}
   .acts{white-space:nowrap}
   .acts .btn{padding:4px 5px;min-height:30px}
+  .tabs button{white-space:nowrap}
+  .qbar{height:6px;border-radius:3px;background:var(--g200);overflow:hidden;margin-top:4px;min-width:90px}
+  .qbar i{display:block;height:100%;background:var(--primary)}
+  .qbar.full i{background:var(--error)}
+  .tabs{overflow-x:auto}
 </style>
 </head>
 <body data-shell="admin" data-nav="promotion" data-crumb="โปรโมชั่นและสิทธิพิเศษ / โปรโมชั่น">
@@ -30,146 +26,49 @@
   <div class="page-head">
     <div>
       <h4>โปรโมชั่น</h4>
-      <p class="muted">จัดการโปรโมชั่นแบบเงื่อนไข (ของแถม / ส่วนลด / ฟรีค่าจัดส่ง) และการลดตามวันพิเศษ</p>
+      <p class="muted">จัดการโปรโมชั่นตามเงื่อนไข และลดตามวันพิเศษ — ผลตอบแทนผสมได้หลายอย่าง (ของแถม ส่วนลด ฟรีค่าส่ง พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ของนอก POS)</p>
     </div>
     <div class="row">
-      <a class="btn outlined" href="05-admin-simulator.html">จำลองตะกร้า</a>
+      <a class="btn outlined" href="../simulator/02-cart.html">จำลองตะกร้า (โมดูลใหม่)</a>
       <a class="btn contained" href="02-admin-editor.html">＋ สร้างโปรโมชั่น</a>
     </div>
   </div>
 
   <div class="alert info mb16"><div>
-    หมายเหตุ: หากมีหลายโปรโมชั่นที่ตรงเงื่อนไข ระบบจะเลือกใช้ตามลำดับความสำคัญ เช่น ถ้าโปรโมชั่นที่ตรงเงื่อนไขมีลำดับความสำคัญเป็น #1 และ #2 ระบบจะเลือกใช้โปรโมชั่นที่ลำดับความสำคัญเป็น #1 ก่อนเสมอ
-    <div class="small mt8"><span class="chip soft-primary sq">ใหม่</span> โปรแบบแบรนด์/หมวดที่แย่งกลุ่มสินค้าเดียวกัน ชนะเพียง 1 โปรที่ priority สูงสุด ไม่บวกซ้อน และผลตอบแทนคิดเฉพาะรายการที่เข้าเงื่อนไข ไม่ใช่ทั้งบิล</div>
+    <b>ไม่มีลำดับความสำคัญ (priority) แล้ว</b> — ถ้าตะกร้าของลูกค้าเข้าเงื่อนไขหลายโปร ลูกค้าเลือกเองเป็นการ์ดในตะกร้า ระบบทำโปรที่ใช้ร่วมกันไม่ได้เป็นสีเทาให้ · กำหนด “ใช้ร่วมกับโปรอื่นได้/ไม่ได้” ที่หน้าแก้ไขแต่ละโปร
+    <div class="small mt8">ข้อมูลในตารางด้านล่างดึงจากชุดเดียวกับ<a href="../simulator/01-config.html">ตั้งค่าจำลอง</a> — กดเปิด/ปิด ทำซ้ำ ลบ ได้จริง และสถานะคำนวณจากวันที่จำลอง <b id="nowLbl"></b></div>
   </div></div>
 
   <div class="card" style="overflow:hidden">
     <div class="card-b" style="padding-bottom:0">
-      <div class="tabs" data-tabs style="margin-bottom:0">
-        <button class="on" data-tab="bundle">โปรโมชั่นเงื่อนไข (Bundle) <span class="chip sq" style="margin-left:6px">8</span></button>
-        <button data-tab="flash">ลดตามวันพิเศษ <span class="chip sq" style="margin-left:6px">4</span> <span class="chip soft-primary sq">ใหม่</span></button>
-      </div>
+      <div class="tabs" data-tabs id="tabs" style="margin-bottom:0"></div>
     </div>
-
-    <!-- ===== tab 1: bundle-style promotions ===== -->
-    <div data-panel="bundle" class="on">
-      <div class="table-toolbar">
-        <div class="row" style="flex:1">
-          <input class="input" style="max-width:300px" placeholder="ค้นหา">
-          <select class="select" style="max-width:190px"><option>ประเภทผลตอบแทน: ทั้งหมด</option><option>ของแถม</option><option>ส่วนลด</option><option>ฟรีค่าจัดส่ง</option></select>
-          <select class="select" style="max-width:160px"><option>สถานะ: ทั้งหมด</option><option>ใช้งาน</option><option>ยังไม่เริ่มต้น</option><option>หมดอายุ</option><option>ไม่ใช้งาน</option></select>
-        </div>
-        <div class="bulk"><span class="pin" style="margin:0">4</span><b>เลือกแล้ว 2 รายการ</b><button class="btn outlined sm">เปิดใช้งาน</button><button class="btn outlined sm">ปิดใช้งาน</button><button class="btn text sm grey">ล้างที่เลือก</button></div>
+    <div class="table-toolbar">
+      <div class="row" style="flex:1">
+        <input class="input" id="q" style="max-width:300px" placeholder="ค้นหาชื่อโปร">
+        <select class="select" id="fk" style="max-width:210px"><option value="">ผลตอบแทน: ทั้งหมด</option><option value="gift">มีของแถม</option><option value="disc">มีส่วนลด</option><option value="ship">มีฟรีค่าส่ง</option><option value="points">มีพอยท์</option><option value="coupon">มีคูปอง</option><option value="credit">มีเครดิต</option><option value="entitle">มีสิทธิ์ลุ้น</option><option value="offpos">มีของนอก POS</option></select>
       </div>
-      <div class="table-wrap"><table class="table">
-        <thead><tr>
-          <th style="width:26px"><input type="checkbox" style="accent-color:var(--primary)"></th>
-          <th style="width:22px"></th>
-          <th style="width:78px">ลำดับความสำคัญ <span class="pin">1</span></th>
-          <th>ชื่อ</th>
-          <th>ประเภทผลตอบแทน <span class="pin">2</span></th>
-          <th>สถานะ <span class="pin">5</span></th>
-          <th>วันที่เริ่มต้น</th>
-          <th>วันที่สิ้นสุด</th>
-          <th>ใช้ไปแล้ว <span class="pin">3</span></th>
-          <th>การดำเนินการ <span class="pin">6</span></th>
-        </tr></thead>
-        <tbody>
-          <tr class="sel">
-            <td><input type="checkbox" checked style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#1</b></td>
-            <td><div class="nm">ซื้อ Blackmores ครบ ฿1,000 ลด ฿100</div><div class="sub">แบรนด์ Blackmores · ยกเว้น 2 รายการ · ตามยอดเงินรวม</div></td>
-            <td><div class="rw"><span class="chip soft-primary">ส่วนลด ฿</span></div></td>
-            <td><span class="chip success">ใช้งาน</span></td><td>1 ต.ค. 2569</td><td>31 ธ.ค. 2569</td>
-            <td class="used"><b>112</b> ครั้ง<div class="sub">โควต้า/คน: ไม่จำกัด</div></td>
-            <td class="acts"><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ลบ</button></td>
-          </tr>
-
-          <tr>
-            <td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#2</b></td>
-            <td><div class="nm">ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์</div><div class="sub">เลือกรายสินค้า/หน่วย · ตามจำนวน</div></td>
-            <td><div class="rw"><span class="chip soft-success">ของแถม</span></div></td>
-            <td><span class="chip success">ใช้งาน</span></td><td>1 ต.ค. 2569</td><td>31 ธ.ค. 2569</td>
-            <td class="used"><b>17</b> ครั้ง<div class="sub">โควต้า/คน: 3</div></td>
-            <td class="acts"><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ลบ</button></td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#3</b></td>
-            <td><div class="nm">ซื้อเวชภัณฑ์ครบ ฿2,000 ส่งฟรี</div><div class="sub">หมวดเวชภัณฑ์ · ตามยอดเงินรวม · ฟรีเฉพาะรายการที่เข้าเงื่อนไข</div></td>
-            <td><div class="rw"><span class="chip soft-info">ส่งฟรี</span></div></td>
-            <td><span class="chip success">ใช้งาน</span></td><td>1 ต.ค. 2569</td><td>31 ธ.ค. 2569</td>
-            <td class="used"><b>64</b> ครั้ง<div class="sub">โควต้า/คน: ไม่จำกัด</div></td>
-            <td class="acts"><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ลบ</button></td>
-          </tr>
-          <tr class="sel">
-            <td><input type="checkbox" checked style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#4</b></td>
-            <td><div class="nm">ซื้อ Blackmores Vitamin C ครบ 3 ขวด ลด 10%</div><div class="sub">เลือกรายสินค้า/หน่วย · ลดสูงสุดไม่เกิน ฿150 · <span style="color:#B26A00">ทับซ้อนกับ #1 (สินค้าเดียวกัน)</span></div></td>
-            <td><div class="rw"><span class="chip soft-primary">ส่วนลด %</span></div></td>
-            <td><span class="chip success">ใช้งาน</span></td><td>1 ต.ค. 2569</td><td>31 ธ.ค. 2569</td>
-            <td class="used"><b>27</b> ครั้ง<div class="sub">โควต้า/คน: 2</div></td>
-            <td class="acts"><a class="btn text sm" href="02-admin-editor.html">แก้ไข</a><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ลบ</button></td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#5</b></td>
-            <td><div class="nm">ซื้อ Dumex ครบ 10 กระป๋อง แถมถุงมือยาง 1 กล่อง</div><div class="sub">แบรนด์ Dumex · ตามจำนวน · จำกัด 1 ชุด/บิล</div></td>
-            <td><div class="rw"><span class="chip soft-success">ของแถม</span></div></td>
-            <td><span class="chip success">ใช้งาน</span></td><td>1 ต.ค. 2569</td><td>31 ธ.ค. 2569</td>
-            <td class="used"><b>41</b> ครั้ง<div class="sub">โควต้า/คน: 1</div></td>
-            <td class="acts"><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ลบ</button></td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#6</b></td>
-            <td><div class="nm">ซื้อ Pampers ครบ 3 แพ็ค แถมเจลแอลกอฮอล์ 2 ขวด</div><div class="sub">แบรนด์ Pampers · ตามจำนวน</div></td>
-            <td><div class="rw"><span class="chip soft-success">ของแถม</span></div></td>
-            <td><span class="chip warning">ยังไม่เริ่มต้น</span></td><td>1 พ.ย. 2569</td><td>30 พ.ย. 2569</td>
-            <td class="used"><b>0</b> ครั้ง<div class="sub">โควต้า/คน: ไม่จำกัด</div></td>
-            <td class="acts"><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ลบ</button></td>
-          </tr>
-          <tr>
-            <td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#7</b></td>
-            <td><div class="nm">ซื้อ Pampers ครบ ฿2,000 ลด ฿150</div><div class="sub">แบรนด์ Pampers · ตามยอดเงินรวม</div></td>
-            <td><div class="rw"><span class="chip soft-primary">ส่วนลด ฿</span></div></td>
-            <td><span class="chip error">หมดอายุ</span></td><td>1 ก.ย. 2569</td><td>30 ก.ย. 2569</td>
-            <td class="used"><b>203</b> ครั้ง<div class="sub">โควต้า/คน: ไม่จำกัด</div></td>
-            <td class="acts"><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ลบ</button></td>
-          </tr>
-          <tr class="paused">
-            <td><input type="checkbox" style="accent-color:var(--primary)"></td><td class="drag">⋮⋮</td><td><b>#8</b></td>
-            <td><div class="nm">ซื้อผ้าอ้อมเด็กครบ 2 แพ็ค แถมขวดนม PP 1 ชิ้น</div><div class="sub" style="color:var(--error-dark)">ปิดชั่วคราวอัตโนมัติ: ขวดนม PP หมดสต็อก (12 ต.ค. 2569 09:14) — เติมสต็อกแล้วกดเปิดใช้งาน</div></td>
-            <td><div class="rw"><span class="chip soft-success">ของแถม</span></div></td>
-            <td><span class="chip">ไม่ใช้งาน</span><div style="margin-top:4px"><span class="chip soft-error sq">ปิดชั่วคราว · ของแถมหมด</span></div></td><td>1 ต.ค. 2569</td><td>31 ธ.ค. 2569</td>
-            <td class="used"><b>8</b> ครั้ง<div class="sub">โควต้า/คน: ไม่จำกัด</div></td>
-            <td class="acts"><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ทำซ้ำ</button><button class="btn text sm grey">ลบ</button></td>
-          </tr>
-        </tbody>
-      </table></div>
-      <div class="pager"><span>แถวต่อหน้า 100</span><span>1–8 จาก 8</span></div>
+      <a class="btn outlined sm" href="04-admin-flash.html">จัดการแคมเปญลดตามวันพิเศษ (Flash)</a>
     </div>
-
-    <!-- ===== tab 2: flash ===== -->
-    <div data-panel="flash">
-      <div class="table-toolbar">
-        <input class="input" style="max-width:300px" placeholder="ค้นหาแคมเปญ">
-        <a class="btn contained sm" href="04-admin-flash.html">＋ สร้างแคมเปญลดตามวันพิเศษ</a>
-      </div>
-      <div class="table-wrap"><table class="table">
-        <thead><tr><th>ชื่อแคมเปญ</th><th>ช่วงเวลา</th><th>เกิดซ้ำ</th><th>กลุ่มสินค้า / ส่วนลด</th><th>ขายไปแล้ว / โควตา</th><th>สถานะ</th><th>การดำเนินการ</th></tr></thead>
-        <tbody>
-          <tr><td><div class="nm">Flash Sale 10.10</div></td><td>10 ต.ค. 2569 00:00 – 12 ต.ค. 2569 23:59</td><td>ทุกปี (วันเดิม)</td><td>ยาสามัญ 30% · วิตามิน 20% · เวชภัณฑ์ 10%</td><td class="num">1,199 / 1,800</td><td><span class="chip success">กำลังจัดอยู่</span></td><td class="acts"><a class="btn text sm" href="04-admin-flash.html">แก้ไข</a><button class="btn text sm grey">ลบ</button></td></tr>
-          <tr><td><div class="nm">11.11 วันช้อปปิ้ง</div></td><td>11 พ.ย. 2569 00:00 – 11 พ.ย. 2569 23:59</td><td>ทุกปี (วันเดิม)</td><td>วิตามิน 25% · ผ้าอ้อมและนม 15%</td><td class="num">0 / 1,200</td><td><span class="chip warning">ตั้งเวลาไว้</span></td><td class="acts"><button class="btn text sm">แก้ไข</button><button class="btn text sm grey">ลบ</button></td></tr>
-          <tr><td><div class="nm">สงกรานต์ ล้างสต็อกยาสามัญ</div></td><td>13 เม.ย. 2569 – 15 เม.ย. 2569</td><td>ครั้งเดียว</td><td>ยาสามัญ 40%</td><td class="num">900 / 900</td><td><span class="chip">จบแล้ว · หมดโควตา</span></td><td class="acts"><button class="btn text sm">ดู</button><button class="btn text sm grey">ทำซ้ำ</button></td></tr>
-          <tr><td><div class="nm">วันแม่ ลดสินค้าแม่และเด็ก</div></td><td>12 ส.ค. 2569 – 14 ส.ค. 2569</td><td>ทุกปี (วันเดิม)</td><td>ผ้าอ้อมและนม 20%</td><td class="num">640 / 1,000</td><td><span class="chip">จบแล้ว · หมดเวลา</span></td><td class="acts"><button class="btn text sm">ดู</button><button class="btn text sm grey">ทำซ้ำ</button></td></tr>
-        </tbody>
-      </table></div>
-    </div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr>
+        <th style="width:26px"></th><th>ชื่อ</th><th>ผลตอบแทน (ผสมได้) <span class="pin">1</span></th><th>สถานะ <span class="pin">2</span></th>
+        <th>วันที่เริ่ม – สิ้นสุด</th><th>โควต้าทั้งหมด <span class="pin">3</span></th><th>ต่อคน</th><th>การดำเนินการ <span class="pin">4</span></th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <div class="pager"><span id="cnt"></span></div>
   </div>
 
-  <h6 class="mt24 mb8">สถานะ: กดลบ <span class="pin">7</span></h6>
-  <div class="grid g2">
-    <div class="backdrop" style="padding:24px 16px"><div class="dialog sm">
-      <div class="dialog-h">ลบโปรโมชั่น<button class="x">✕</button></div>
-      <div class="dialog-b">คุณแน่ใจหรือไม่ว่าต้องการลบโปรโมชั่นนี้?<div class="soft mt8 small"><b>#7 ซื้อ Pampers ครบ ฿2,000 ลด ฿150</b><br>มีประวัติการใช้สิทธิ์ 203 ครั้ง — ประวัติและออเดอร์เดิมไม่ถูกลบ</div></div>
-      <div class="dialog-f"><button class="btn text grey">ไม่</button><button class="btn contained">ใช่</button></div>
-    </div></div>
+  <div class="card mt24" style="overflow:hidden" id="flashCard">
+    <div class="card-b"><b>แคมเปญลดตามวันพิเศษ (Flash Sale) <span class="pin">5</span></b> <span class="muted small">— ตั้งส่วนลดตามกลุ่มสินค้า + โควตารอบ จัดการที่หน้าเฉพาะ</span></div>
+    <div class="table-wrap"><table class="table">
+      <thead><tr><th>ชื่อแคมเปญ</th><th>ช่วงเวลา</th><th>เกิดซ้ำ</th><th>กลุ่มสินค้า / ส่วนลด</th><th>ขายไปแล้ว / โควตา</th><th>สถานะ</th><th></th></tr></thead>
+      <tbody>
+        <tr><td><div class="nm">Flash Sale 10.10</div></td><td>10 ต.ค. – 12 ต.ค. 2569</td><td>ทุกปี</td><td>ยาสามัญ 30% · วิตามิน 20% · เวชภัณฑ์ 10%</td><td class="num">1,199 / 1,800</td><td><span class="chip">จบแล้ว</span></td><td class="acts"><a class="btn text sm" href="04-admin-flash.html">ดู</a></td></tr>
+        <tr><td><div class="nm">11.11 วันช้อปปิ้ง</div></td><td>11 พ.ย. 2569</td><td>ทุกปี</td><td>วิตามิน 25% · ผ้าอ้อมและนม 15%</td><td class="num">0 / 1,200</td><td><span class="chip warning">ยังไม่เริ่ม</span></td><td class="acts"><a class="btn text sm" href="04-admin-flash.html">แก้ไข</a></td></tr>
+      </tbody>
+    </table></div>
   </div>
 
 </main>
@@ -177,24 +76,63 @@
 <section class="ux-notes">
   <h6>หมายเหตุ UX</h6>
   <ol>
-    <li><span class="pin">1</span><span><b>ลำดับความสำคัญ</b> เรียงจากบนลงล่าง #1 = สูงสุด ลากที่จับ ⋮⋮ เพื่อสลับ ระบบบันทึกทันทีและแสดง toast "อัปเดตลำดับโปรโมชั่นสำเร็จ" (เหมือน Bundle เดิม) · เลข # คือตำแหน่งในรายการ ไม่ใช่ค่าที่พิมพ์เอง · ขณะกรอง/ค้นหาจะลากไม่ได้ (กันสลับผิดตำแหน่ง)</span></li>
-    <li><span class="pin">2</span><span><b>ประเภทผลตอบแทน</b> <span class="chip soft-primary sq">ใหม่</span> chip สีบอกชนิด: ของแถม / ส่วนลด (฿ หรือ %) / ส่งฟรี · กรองได้จาก dropdown ด้านบน</span></li>
-    <li><span class="pin">3</span><span><b>ใช้ไปแล้ว</b> <span class="chip soft-primary sq">ใหม่</span> จำนวนครั้งที่ลูกค้ารับสิทธิ์ทั้งหมด (นับจากออเดอร์ที่ยืนยันแล้ว) ใต้ตัวเลขคือโควต้า/คน ที่ตั้งไว้ · กดตัวเลขเพื่อดูประวัติ (ออเดอร์ ลูกค้า วันที่)</span></li>
-    <li><span class="pin">4</span><span><b>เปิด/ปิดใช้งานหลายรายการ</b> <span class="chip soft-primary sq">ใหม่</span> ติ๊กแถวแล้วแถบนี้ปรากฏ · เปิดใช้งานแถวที่ยังไม่มีสินค้าที่ต้องมีหรือผลตอบแทนไม่ได้ ระบบข้ามแถวนั้นและแจ้งรายชื่อที่ข้าม</span></li>
-    <li><span class="pin">5</span><span><b>สถานะ</b> คำนวณจากวันที่ + สวิตช์ใช้งาน (เหมือนเดิม): ใช้งาน / ยังไม่เริ่มต้น / หมดอายุ / ไม่ใช้งาน · ป้ายแดงเสริม "ปิดชั่วคราว · ของแถมหมด" ที่ระบบตั้งให้เอง พร้อมเวลา และไม่เปิดคืนเอง</span></li>
-    <li><span class="pin">6</span><span><b>การดำเนินการ</b> แก้ไข / ทำซ้ำ <span class="chip soft-primary sq">ใหม่</span> / ลบ · ทำซ้ำสร้างสำเนา "(สำเนา)" สถานะไม่ใช้งาน วางท้ายสุดของลำดับ · แก้ไขโปรที่ถูกใช้แล้วมีผลกับตะกร้าใหม่เท่านั้น</span></li>
-    <li><span class="pin">7</span><span><b>ยืนยันลบ</b> ใช้ dialog เดิม ใช่/ไม่ · ถ้ามีประวัติการใช้สิทธิ์ แสดงจำนวนใน dialog และแนะนำให้ "ปิดใช้งาน" แทน</span></li>
+    <li><span class="pin">1</span><span><b>ผลตอบแทน</b> <span class="chip soft-primary sq">เปลี่ยน</span> โปรหนึ่งโปรมีหลายผลตอบแทนพร้อมกันได้ แสดงเป็น chip ต่อชนิด (ของแถม ส่วนลด ฟรีค่าส่ง พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ของนอก POS) · กรองได้ตามชนิดที่มีอยู่ในโปร</span></li>
+    <li><span class="pin">2</span><span><b>แท็บสถานะ</b> <span class="chip soft-primary sq">ใหม่</span> โปรโมชั่นตามเงื่อนไข · ลดตามวันพิเศษ · ยังไม่เริ่ม · หมดอายุ · ไม่ใช้งาน · หมดโควต้า — แท็บ 1–2 แสดงโปรที่กำลังใช้งาน ส่วนแท็บที่เหลือแสดงตามสถานะ (นับจากวันที่ + สวิตช์ + โควต้า)</span></li>
+    <li><span class="pin">3</span><span><b>โควต้าทั้งหมด</b> <span class="chip soft-primary sq">ใหม่</span> ใช้แล้ว / ทั้งหมด (ทุกคนรวมกัน) + แถบความคืบหน้า · เต็มแล้วเปลี่ยนเป็น “หมดโควต้า” เอง และเลือกไม่ได้ในตะกร้า · คอลัมน์ “ต่อคน” คือโควต้าต่อลูกค้า</span></li>
+    <li><span class="pin">4</span><span><b>การดำเนินการ</b> แก้ไข / เปิด-ปิดใช้งาน / ทำซ้ำ / ลบ ทำงานจริงกับข้อมูลตั้งค่าจำลอง · ทำซ้ำสร้าง “(สำเนา)” สถานะไม่ใช้งาน · ไม่มีการลากเรียงลำดับ</span></li>
+    <li><span class="pin">5</span><span><b>ลดตามวันพิเศษ (Flash)</b> ยังเป็นหน้าเฉพาะ (กลุ่มสินค้า + โควตารอบ) ราคา Flash ถูกคิดก่อนโปรเงื่อนไข</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
-    <li>แท็บ "ลดตามวันพิเศษ" ใช้ข้อมูลคนละชุดกับโปรเงื่อนไข ไม่มีลำดับ priority — ราคาลด Flash ถูกคิดก่อน แล้วจึงตรวจโปรเงื่อนไข</li>
-    <li>แถวที่หมดอายุ/ยังไม่เริ่มยังลากเรียงได้ (เพื่อเตรียมลำดับก่อนถึงวันเริ่ม)</li>
-    <li>สิทธิ์จัดการ: ROLE_MARKETING, ROLE_PRODUCT (เหมือนหน้าเซตของแถมเดิม) — บทบาทอื่นเห็นข้อความ "คุณไม่มีสิทธิ์เข้าถึง"</li>
-    <li>โปรเดิมที่เป็นเซตของแถมอยู่แล้ว ถูกย้ายเข้ารายการนี้ตามเดิม (ผลตอบแทน = ของแถม ขอบเขต = เลือกรายสินค้า) ไม่ต้องตั้งค่าใหม่</li>
-  </ul></div>
-  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
-    <li>ลบโปรที่มีประวัติใช้สิทธิ์แล้ว: ค่าเริ่มต้น = ซ่อนจากรายการและเก็บประวัติไว้ (soft delete) หรือห้ามลบ ให้ปิดใช้งานอย่างเดียว</li>
-    <li>โปรที่ระบบปิดชั่วคราวเพราะของแถมหมด: เปิดคืนอัตโนมัติเมื่อมีสต็อก หรือให้แอดมินกดเปิดเอง (ค่าเริ่มต้น = แอดมินเปิดเอง)</li>
+    <li>ลำดับ priority ถูกถอดออกทั้งระบบ: ลูกค้าเลือกโปรเอง · ระบบเทาโปรที่ใช้ร่วมกันไม่ได้ · ถ้าเลือกอยู่แล้วโปรชนกัน ระบบสลับให้ตามที่ลูกค้ากด</li>
+    <li>สิทธิ์จัดการ: ROLE_MARKETING, ROLE_PRODUCT — บทบาทอื่นเห็นข้อความ “คุณไม่มีสิทธิ์เข้าถึง”</li>
+    <li>โปรเดิมที่เป็นเซตของแถม (Bundle) ถูกย้ายเข้ารายการนี้ ผลตอบแทน = ของแถม ขอบเขต = เลือกรายสินค้า</li>
+    <li>ลบโปรที่มีประวัติใช้สิทธิ์: ซ่อนจากรายการ เก็บประวัติไว้ (soft delete)</li>
   </ul></div>
 </section>
 <script src="../assets/mockup.js"></script>
+<script src="../assets/pmp-core.js"></script>
+<script>
+(function () {
+  var PMP = window.PMP, tab = 'cond', qEl, fk;
+  var TABS = [['cond', 'โปรโมชั่นตามเงื่อนไข'], ['special', 'ลดตามวันพิเศษ'], ['upcoming', 'ยังไม่เริ่ม'], ['expired', 'หมดอายุ'], ['inactive', 'ไม่ใช้งาน'], ['exhausted', 'หมดโควต้า']];
+  var CHIP = { gift: 'soft-success', disc: 'soft-primary', ship: 'soft-info', points: 'soft-warning', coupon: 'soft-info', credit: 'soft-success', entitle: 'soft-primary', offpos: '' };
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
+  function dm(iso) { var m = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'], p = iso.split('-'); return (+p[2]) + ' ' + m[+p[1] - 1] + ' ' + (+p[0] + 543); }
+  function inTab(p, t, now) {
+    var st = PMP.status(p, now);
+    if (t === 'cond') return st === 'running' && p.kind === 'cond';
+    if (t === 'special') return st === 'running' && p.kind === 'special';
+    return st === t;
+  }
+  function render() {
+    var cfg = PMP.cfg(), now = cfg.now; document.getElementById('nowLbl').textContent = '(' + dm(now) + ')';
+    var tabsEl = document.getElementById('tabs');
+    tabsEl.innerHTML = TABS.map(function (t) { var n = cfg.promos.filter(function (p) { return inTab(p, t[0], now); }).length; return '<button data-tabkey="' + t[0] + '" class="' + (tab === t[0] ? 'on' : '') + '">' + t[1] + ' <span class="chip sq" style="margin-left:4px">' + n + '</span></button>'; }).join('');
+    var q = qEl.value.trim(), k = fk.value;
+    var list = cfg.promos.filter(function (p) { return inTab(p, tab, now) && (!q || p.name.indexOf(q) > -1) && (!k || PMP.rewardsOf('promotion', p.id).some(function (i) { return i.k === k; })); });
+    document.getElementById('rows').innerHTML = list.length ? list.map(function (p) {
+      var items = PMP.rewardsOf('promotion', p.id), st = PMP.status(p, now), pct = p.quotaTotal ? Math.min(100, Math.round(p.used / p.quotaTotal * 100)) : 0;
+      var chipSt = { running: 'success', upcoming: 'warning', expired: 'error', inactive: '', exhausted: 'error' }[st];
+      return '<tr><td></td><td><div class="nm">' + esc(p.name) + '</div><div class="sub">' + (p.kind === 'special' ? 'ลดตามวันพิเศษ' : (p.ctype === 'qty' ? 'ตามจำนวน ' + p.min : 'ตามยอดเงิน ' + PMP.util.baht(p.min))) + (p.aud === 'new' ? ' · เฉพาะลูกค้าใหม่' : '') + (p.strict ? ' · ตรวจหน่วยเข้มงวด' : '') + ' · ' + (p.stackPromo ? 'ใช้ร่วมโปรอื่นได้' : 'ใช้ร่วมโปรอื่นไม่ได้') + '</div></td>' +
+        '<td><div class="rw">' + (items.length ? items.map(function (i) { return '<span class="chip ' + CHIP[i.k] + '" title="' + esc(PMP.describe(i, cfg)) + '">' + PMP.kindLabel[i.k] + '</span>'; }).join('') : '<span class="chip error">ยังไม่มีผลตอบแทน</span>') + '</div><div class="sub">' + esc(items.map(function (i) { return PMP.describe(i, cfg); }).join(' + ')) + '</div></td>' +
+        '<td><span class="chip ' + chipSt + '">' + PMP.statusLabel[st] + '</span></td><td>' + dm(p.start) + '<br>– ' + dm(p.end) + '</td>' +
+        '<td><b>' + p.used + '</b> / ' + (p.quotaTotal || '∞') + '<div class="qbar' + (pct >= 100 ? ' full' : '') + '"><i style="width:' + pct + '%"></i></div></td><td>' + (p.perCust || '∞') + '</td>' +
+        '<td class="acts"><a class="btn text sm" href="02-admin-editor.html" data-lsel-promo="' + p.id + '">แก้ไข</a><button class="btn text sm grey" data-act="tog" data-id="' + p.id + '">' + (p.active ? 'ปิดใช้งาน' : 'เปิดใช้งาน') + '</button><button class="btn text sm grey" data-act="dup" data-id="' + p.id + '">ทำซ้ำ</button><button class="btn text sm grey" data-act="del" data-id="' + p.id + '">ลบ</button></td></tr>';
+    }).join('') : '<tr><td colspan="8" class="center muted" style="padding:28px">ไม่มีโปรโมชั่นในแท็บนี้</td></tr>';
+    document.getElementById('cnt').textContent = 'แสดง ' + list.length + ' จาก ' + cfg.promos.length + ' รายการ';
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest && e.target.closest('[data-tabkey]');
+    if (t) { tab = t.getAttribute('data-tabkey'); render(); e.stopPropagation(); return; }
+    var a = e.target.closest && e.target.closest('[data-act]'); if (!a) return;
+    var cfg = PMP.cfg(), id = a.getAttribute('data-id'), i = cfg.promos.map(function (p) { return p.id; }).indexOf(id), p = cfg.promos[i], act = a.getAttribute('data-act');
+    if (act === 'tog') p.active = !p.active;
+    if (act === 'dup') { var c = PMP.util.clone(p); c.id = PMP.util.uid('p'); c.name += ' (สำเนา)'; c.active = false; c.used = 0; PMP.saveRewards('promotion', c.id, PMP.rewardsOf('promotion', id)); cfg.promos.push(c); }
+    if (act === 'del') { if (!confirm('ลบโปรโมชั่น “' + p.name + '” ? (ประวัติการใช้สิทธิ์ยังเก็บไว้)')) return; cfg.promos.splice(i, 1); }
+    PMP.saveCfg(cfg); render();
+  });
+  function boot() { qEl = document.getElementById('q'); fk = document.getElementById('fk'); qEl.addEventListener('input', render); fk.addEventListener('change', render); render(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { setTimeout(boot, 0); }); else setTimeout(boot, 0);
+})();
+</script>
 </body></html>

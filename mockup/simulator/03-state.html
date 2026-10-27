@@ -1,0 +1,155 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>สิทธิ์ & ผลลัพธ์ของลูกค้า</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><link rel="stylesheet" href="../assets/sim.css"><script src="../assets/registry.js"></script>
+</head>
+<body data-shell="bare">
+<main id="screen">
+<div class="sim-wrap">
+  <div class="page-head" style="margin-bottom:16px">
+    <div><h4>สิทธิ์ & ผลลัพธ์ของลูกค้า</h4>
+      <p class="muted">สิ่งที่ลูกค้ามีและทำได้จริงหลังซื้อ: ศูนย์คูปอง · พอยท์และการแลก · แคมเปญ (โควตา/ขั้นบันได) · ลุ้นโชค · คิวรับของ · ประวัติออเดอร์ — ทุกปุ่มทำงานจริงกับข้อมูลจำลอง ผลตอบแทนที่ได้มาจาก component ที่ตั้งไว้ในแต่ละโมดูล</p></div>
+  </div>
+  <div id="stats" class="st-grid"></div>
+  <div class="cfg-tabs" id="tabs"></div>
+  <div id="pane"></div>
+</div>
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX / ลอจิก</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ศูนย์คูปอง</b> คูปอง “เก็บเอง” กดเก็บเข้ากระเป๋า (1 คน 1 ใบ ตัดโควตารวม) · “แจกรายเดือน” ปุ่มแอดมินจำลองการแจกวันที่ 1 ให้ทุกคนในกลุ่มเป้าหมาย · “โค้ดส่วนลด” ไม่ต้องเก็บ กรอกที่ตะกร้า</span></li>
+    <li><span class="pin">2</span><span><b>แลกพอยท์</b> หักพอยท์แล้วให้ผลตอบแทนตาม component ของรายการนั้นทันที (คูปองเข้ากระเป๋า เครดิตเข้าบัญชี สิทธิ์ลุ้นเข้า Tickets ของนอก POS เข้าคิว)</span></li>
+    <li><span class="pin">3</span><span><b>แคมเปญ</b> ขั้นบันไดปลดล็อกเมื่อยอดสะสมถึง กดขอรับแล้วได้ผลตอบแทนของขั้นนั้น · แคมเปญโควตาแสดงโควตาคงเหลือและสิทธิ์ต่อคน</span></li>
+    <li><span class="pin">4</span><span><b>ลุ้นโชค</b> โหมด A ลุ้นทันที (ผลสุ่มตามน้ำหนัก+สต็อก แล้วส่งผลตอบแทนของรางวัลนั้น) · โหมด B ใส่สิทธิ์ลงกองแล้วแอดมินกดจับ (แสดง seed และรหัสยืนยัน)</span></li>
+  </ol>
+</section>
+<script src="../assets/mockup.js"></script>
+<script src="../assets/pmp-core.js"></script><script src="../assets/sim-ui.js"></script>
+<script>
+(function () {
+  var PMP = window.PMP, U = PMP.util, B = U.baht, E = SIM.esc, tab = 'wallet', last = null, pStore = 's1', pPaper = 'pp1', kitSel = 'kt1', kitQty = {};
+  var TABS = [['wallet', 'กระเป๋า & ศูนย์คูปอง'], ['points', 'พอยท์ & แลกของรางวัล'], ['camp', 'แคมเปญ'], ['raffle', 'ลุ้นโชค'], ['queue', 'คิวรับของ'], ['orders', 'ประวัติออเดอร์'], ['claims', 'คำขอรับรางวัล (แอดมิน)'], ['paper', 'คูปองกระดาษ (ร้าน/เบิกเงิน)'], ['kit', 'เซตร้านยาเปิดใหม่']];
+  function me() { return PMP.state().customers[SIM.custId()]; }
+  function res(r) { last = r; }
+  function pane() {
+    var cfg = PMP.cfg(), st = PMP.state(), cs = me(), cid = SIM.custId(), h = '', now = cfg.now;
+    var tk = Object.keys(cs.tickets).reduce(function (a, k) { return a + cs.tickets[k]; }, 0);
+    document.getElementById('stats').innerHTML = [['พอยท์', cs.points.toLocaleString()], ['เครดิตเงินคืน', B(cs.credit)], ['คูปองพร้อมใช้', cs.wallet.filter(function (w) { return !w.used; }).length], ['สิทธิ์ลุ้น', tk], ['ออเดอร์', cs.orders]].map(function (x) { return '<div class="st-stat"><div class="l">' + x[0] + '</div><div class="v">' + x[1] + '</div></div>'; }).join('');
+    document.getElementById('tabs').innerHTML = TABS.map(function (t) { return '<button data-t="' + t[0] + '" class="' + (tab === t[0] ? 'on' : '') + '">' + t[1] + '</button>'; }).join('');
+    function box(t) { return t ? '<div class="st-res">' + t + '</div>' : ''; }
+    if (tab === 'wallet') {
+      var cl = cfg.coupons.filter(function (k) { return k.kind !== 'code'; });
+      h += '<div class="sim-card"><h6>ศูนย์คูปอง</h6><p class="sub">คูปองออนไลน์ 2 แบบที่ต้องมีในกระเป๋า: เก็บเอง (กดเก็บ) และแจกรายเดือน (ระบบแจกวันที่ 1) · โค้ดส่วนลดกรอกที่ตะกร้า</p>';
+      cl.forEach(function (k) {
+        var s = PMP.status(k, now), have = cs.wallet.some(function (w) { return w.couponId === k.id; });
+        h += '<div class="st-row"><div><b>' + E(k.code) + '</b> · ' + E(k.name) + '<div class="s">' + (k.kind === 'collect' ? 'เก็บเอง' : 'แจกรายเดือน') + ' · ' + PMP.statusLabel[s] + ' · ' + (k.quotaTotal ? 'เหลือ ' + (k.quotaTotal - k.used) + '/' + k.quotaTotal : 'ไม่จำกัด') + (k.min ? ' · ขั้นต่ำ ' + B(k.min) : '') + '</div></div>' +
+          (k.kind === 'collect' ? '<button class="btn ' + (have ? 'outlined' : 'contained') + ' sm" data-collect="' + k.id + '"' + (have || s !== 'running' ? ' disabled' : '') + '>' + (have ? 'เก็บแล้ว' : 'เก็บ') + '</button>' : '<span class="chip ' + (have ? 'success' : '') + '">' + (have ? 'ได้รับแล้ว' : 'รอแจกวันที่ 1') + '</span>') + '</div>';
+      });
+      h += '<div class="row mt16"><button class="btn outlined sm" id="issueM" type="button">แอดมิน: แจกคูปองรายเดือนตอนนี้ (จำลองวันที่ 1)</button></div></div>';
+      h += '<div class="sim-card"><h6>กระเป๋าคูปอง</h6>' + (cs.wallet.length ? cs.wallet.map(function (w) { var k = cfg.coupons.filter(function (x) { return x.id === w.couponId; })[0]; return '<div class="st-row"><div><b>' + E(k.code) + '</b> · ' + E(k.name) + '<div class="s">ได้จาก ' + E(w.src) + '</div></div><span class="chip ' + (w.used ? '' : 'success') + '">' + (w.used ? 'ใช้แล้ว' : 'พร้อมใช้') + '</span></div>'; }).join('') : '<div class="muted small">ว่าง</div>') + '<a class="btn contained sm mt16" href="02-cart.html">ไปใช้ในตะกร้า →</a></div>';
+    }
+    if (tab === 'points') {
+      h += '<div class="sim-card"><h6>แคตตาล็อกแลกของรางวัลด้วยพอยท์ <span class="chip soft-primary sq">ผลตอบแทนจาก component</span></h6><p class="sub">คุณมี ' + cs.points.toLocaleString() + ' พอยท์</p>';
+      cfg.catalog.forEach(function (it) {
+        var items = PMP.rewardsOf('points', it.id);
+        h += '<div class="st-row"><div><b>' + E(it.name) + '</b> <span class="chip soft-warning">' + it.pts + ' พอยท์</span><div class="s">ได้รับ: ' + E(items.map(function (i) { return PMP.describe(i, cfg); }).join(' + ') || '— ยังไม่ตั้งผลตอบแทน —') + ' · เหลือ ' + it.stock + '</div></div><button class="btn contained sm" data-redeem="' + it.id + '"' + (cs.points < it.pts || !it.active || it.stock < 1 ? ' disabled' : '') + '>แลก</button></div>';
+      });
+      h += box(last && last.kind === 'redeem' ? last.html : '') + '</div>';
+      h += '<div class="sim-card"><h6>สมุดพอยท์</h6>' + (cs.ledger.length ? cs.ledger.slice(0, 15).map(function (l) { return '<div class="st-row"><span>' + E(l.why) + '<div class="s">' + l.d + '</div></span><b style="color:' + (l.t.charAt(0) === '+' ? 'var(--success-dark)' : 'var(--error-dark)') + '">' + l.t + '</b></div>'; }).join('') : '<div class="muted small">ยังไม่มีรายการ</div>') + '</div>';
+    }
+    if (tab === 'camp') {
+      h += '<div class="sim-card"><h6>แคมเปญช่วงเวลา + โควตา</h6>';
+      cfg.quota.forEach(function (q) { var p = PMP.product(q.sku), s = PMP.status(q, now); h += '<div class="st-row"><div><b>' + E(q.name) + '</b><div class="s">' + PMP.statusLabel[s] + ' · ' + E(p.name) + ' ' + B(p.price) + ' → ' + B(q.special) + ' · โควตาเหลือ ' + (q.quotaTotal - q.used) + '/' + q.quotaTotal + ' · คุณซื้อไปแล้ว ' + (cs.quotaUse[q.id] || 0) + '/' + q.perCust + '</div></div><a class="btn outlined sm" href="02-cart.html">ไปซื้อ</a></div>'; });
+      h += '</div>';
+      cfg.ladders.forEach(function (L) {
+        var lv = cs.ladder[L.id] || { spent: 0, unlocked: [], claimed: [] }, top = L.tiers[L.tiers.length - 1].at, s = PMP.status(L, now);
+        h += '<div class="sim-card"><h6>' + E(L.name) + ' <span class="chip ' + (s === 'running' ? 'success' : '') + '">' + PMP.statusLabel[s] + '</span></h6><p class="sub">ยอดสะสมของคุณ <b>' + B(lv.spent) + '</b> · ไม่ยกยอดข้ามปี · แยกจากพอยท์</p><div class="st-bar"><i style="width:' + Math.min(100, lv.spent / top * 100) + '%"></i></div>';
+        L.tiers.forEach(function (t) {
+          var un = lv.unlocked.indexOf(t.id) > -1, cl = lv.claimed.indexOf(t.id) > -1, items = PMP.rewardsOf('campaign', L.id + '-' + t.id);
+          h += '<div class="st-tier' + (un ? ' ok' : '') + '"><div style="flex:1"><b>' + E(t.name) + '</b><div class="s small muted">รางวัล: ' + E(items.map(function (i) { return PMP.describe(i, cfg); }).join(' + ') || '—') + (t.cap ? ' · สิทธิ์เหลือ ' + (t.cap - (t.used || 0)) + '/' + t.cap : '') + '</div></div>' + (cl ? '<span class="chip success">รับแล้ว</span>' : un ? '<div style="min-width:270px">' + PMP.formFields(t).map(function (f, fi) { return '<input class="input" data-ans="' + L.id + '|' + t.id + '|' + fi + '" placeholder="' + E(f.label) + (f.req ? ' *' : '') + '" style="margin-bottom:4px;min-height:32px">'; }).join('') + '<button class="btn contained sm" data-claim="' + L.id + '|' + t.id + '">ส่งคำขอรับสิทธิ์</button></div>' : '<span class="chip">ขาดอีก ' + B(t.at - lv.spent) + '</span>') + '</div>';
+        });
+        h += box(last && last.kind === 'claim' ? last.html : '') + '</div>';
+      });
+    }
+    if (tab === 'raffle') {
+      cfg.raffles.forEach(function (f) {
+        var s = PMP.status(f, now), n = cs.tickets[f.id] || 0, pool = (st.shared.rafflePool[f.id] || {}), mine = pool[cid] || 0, tot = Object.keys(pool).reduce(function (a, k) { return a + pool[k]; }, 0) + f.poolOthers;
+        h += '<div class="sim-card"><h6>' + E(f.name) + ' <span class="chip ' + (s === 'running' ? 'success' : '') + '">' + PMP.statusLabel[s] + '</span></h6><p class="sub">ได้สิทธิ์จากยอดซื้อทุก ' + B(f.perBaht) + ' + ผลตอบแทนจากโปร/แลกพอยท์/ขั้นแคมเปญ · สิทธิ์ของคุณ <b>' + n + '</b> ใบ</p>';
+        h += '<div class="row" style="gap:8px;flex-wrap:wrap"><button class="btn contained" data-drawa="' + f.id + '"' + (n < 1 ? ' disabled' : '') + '>โหมด A · ลุ้นทันที (ใช้ 1 สิทธิ์)</button>' +
+          '<button class="btn outlined" data-pool="' + f.id + '"' + (n < 1 ? ' disabled' : '') + '>โหมด B · ใส่ 1 สิทธิ์ลงกอง</button><button class="btn outlined" data-drawb="' + f.id + '">แอดมิน: จับรางวัลโหมด B</button></div>';
+        h += '<div class="small muted mt8">กองโหมด B: ทั้งหมด ' + tot + ' สิทธิ์ (ของคุณ ' + mine + ') · รหัสยืนยันกอง <span class="mono">' + U.fnv(tot + ':' + f.id) + '</span></div>';
+        h += '<div class="cfg-sec">รางวัลและโอกาส (น้ำหนัก)</div>';
+        var tw = f.prizes.reduce(function (a, z) { return a + z.weight; }, 0);
+        f.prizes.forEach(function (z) { var items = PMP.rewardsOf('raffle', z.id), used = st.shared.prizeUsed[z.id] || 0; h += '<div class="st-row"><div><b>' + E(z.name) + '</b><div class="s">' + E(items.map(function (i) { return PMP.describe(i, cfg); }).join(' + ') || '—') + ' · คงเหลือ ' + (z.stock - used) + '/' + z.stock + '</div></div><span>' + (z.weight / tw * 100).toFixed(1) + '%</span></div>'; });
+        h += box(last && last.kind === 'raffle' ? last.html : '') + '</div>';
+        if (cs.draws.length) h += '<div class="sim-card"><h6>ประวัติการลุ้นของฉัน</h6>' + cs.draws.map(function (d) { return '<div class="st-row"><div><b>' + E(d.prize) + '</b><div class="s">' + E(d.f) + ' · ' + d.d + ' · ' + E(d.out.join(', ')) + '</div></div></div>'; }).join('') + '</div>';
+      });
+    }
+    if (tab === 'queue') {
+      h += '<div class="sim-card"><h6>คิวรับของ (ของแถมจริง / ของนอก POS)</h6><p class="sub">ของที่ต้องจัดส่งหรือส่งมอบจริง — ทีมงานกด “ส่งมอบแล้ว” เมื่อเสร็จ</p>' + (cs.queue.length ? cs.queue.map(function (q) { return '<div class="st-row"><div><b>' + E(q.text) + ' × ' + q.qty + '</b><div class="s">จาก ' + E(q.src) + ' · ' + q.d + '</div></div>' + (q.status === 'ส่งมอบแล้ว' ? '<span class="chip success">ส่งมอบแล้ว</span>' : '<button class="btn outlined sm" data-deliver="' + q.id + '">แอดมิน: ส่งมอบแล้ว</button>') + '</div>'; }).join('') : '<div class="muted small">ยังไม่มี</div>') + '</div>';
+    }
+    if (tab === 'orders') {
+      var mine2 = st.orders.filter(function (o) { return o.customerId === cid; });
+      h += '<div class="sim-card"><h6>ประวัติออเดอร์</h6>' + (mine2.length ? mine2.map(function (o) { return '<div style="padding:10px 0;border-bottom:1px solid var(--g200)"><div class="row between"><b>' + o.no + '</b><span>ยอดชำระ <b>' + B(o.total) + '</b></span></div><div class="small muted">' + o.d + ' · สินค้า ' + B(o.subtotal) + ' · โปร −' + B(o.promoDisc) + (o.coupon ? ' · คูปอง ' + E(o.coupon) + ' −' + B(o.couponDisc) : '') + ' · ส่ง ' + B(o.shipping) + (o.pointsDisc ? ' · พอยท์ −' + B(o.pointsDisc) : '') + '</div><ul class="st-log">' + o.effects.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ul></div>'; }).join('') : '<div class="muted small">ยังไม่มีออเดอร์ — ไปชำระที่ <a href="02-cart.html">ตะกร้า</a></div>') + '</div>';
+    }
+    if (tab === 'claims') {
+      var cl = st.claims || [];
+      h += '<div class="sim-card"><h6>คิวคำขอรับรางวัล (แคมเปญขั้นบันได)</h6><p class="sub">ลูกค้ากรอกฟอร์มของขั้น → คำขอเข้าคิว “รอตรวจ” → ทีมงานอนุมัติ (ส่งรางวัลตาม component) หรือปฏิเสธ (ต้องใส่เหตุผล คืนสิทธิ์ให้ขั้นนั้น)</p>' + (cl.length ? cl.map(function (c) {
+        var cu = PMP.customers.filter(function (x) { return x.id === c.cid; })[0];
+        return '<div class="st-row"><div><b>' + E(c.name) + '</b> · ' + E(cu.name) + '<div class="s">' + c.d + ' · ' + c.labels.map(function (l, i) { return E(l) + ': ' + E(c.answers[i] || '-'); }).join(' · ') + (c.reason ? ' · เหตุผลที่ปฏิเสธ: ' + E(c.reason) : '') + '</div></div>' + (c.status === 'รอตรวจ' ? '<div class="row" style="gap:6px"><button class="btn contained sm" data-cact="approve|' + c.id + '">อนุมัติ</button><button class="btn outlined sm" data-cact="reject|' + c.id + '">ปฏิเสธ</button></div>' : '<span class="chip ' + (c.status === 'ปฏิเสธ' ? 'error' : 'success') + '">' + c.status + '</span>') + '</div>';
+      }).join('') : '<div class="muted small">ยังไม่มีคำขอ — ไปปลดล็อกขั้นที่แท็บ “แคมเปญ”</div>') + box(last && last.kind === 'cact' ? last.html : '') + '</div>';
+    }
+    if (tab === 'paper') {
+      h += '<div class="sim-card"><h6>ตรวจสอบคูปองกระดาษ (ลูกค้า) — ใช้ที่ร้านไหนได้</h6><p class="sub">คูปองกระดาษใช้ที่หน้าร้านเท่านั้น ไม่มีช่อง “ใครใช้ได้” · เลือกร้านเพื่อดูชุดที่รับ</p><select class="select" id="pStoreSel" style="max-width:360px">' + PMP.stores.map(function (u) { return '<option value="' + u.id + '"' + (u.id === pStore ? ' selected' : '') + '>' + E(u.name) + '</option>'; }).join('') + '</select>';
+      cfg.paper.forEach(function (c) { var ok = PMP.paperAccepts(c, pStore); h += '<div class="st-row"><div><b>' + E(c.code) + '</b> · ' + E(c.name) + '<div class="s">ลด ' + B(c.value) + ' เมื่อซื้อครบ ' + B(c.min) + ' · ' + E(c.back || '') + '</div></div><span class="chip ' + (ok ? 'success' : 'error') + '">' + (ok ? 'ร้านนี้ใช้ได้' : 'ร้านนี้ใช้ไม่ได้') + '</span></div>'; });
+      h += '</div><div class="sim-card"><h6>ร้านส่งก้นคูปองเข้ามาเบิก</h6><p class="sub">จำลองร้านส่งก้นคูปอง — ระบบนับและตรวจธงอัตโนมัติ (ร้านไม่ได้ร่วมชุด / เกินใบสูงสุดต่อร้าน / เกินจำนวนที่ออก)</p><div class="row" style="gap:8px;flex-wrap:wrap"><select class="select" id="pPaperSel" style="max-width:300px">' + cfg.paper.map(function (c) { return '<option value="' + c.id + '"' + (c.id === pPaper ? ' selected' : '') + '>' + E(c.code + ' · ' + c.name) + '</option>'; }).join('') + '</select><input class="input" id="pStubs" type="number" min="1" placeholder="จำนวนก้น" style="width:130px"><button class="btn contained" id="pSub" type="button">ส่งเบิก (ร้านที่เลือกด้านบน)</button></div>' + box(last && last.kind === 'paper' ? last.html : '') + '</div>';
+      h += '<div class="sim-card"><h6>คิวเบิกเงินร้าน/สาขา (แอดมิน)</h6><p class="sub">เบิกเงิน = จำนวนก้นที่นับได้ × มูลค่า · ต้องตรวจนับก่อนจ่าย</p>' + ((st.paperClaims || []).length ? st.paperClaims.map(function (c) {
+        var pp = cfg.paper.filter(function (x) { return x.id === c.ppId; })[0], su = PMP.stores.filter(function (x) { return x.id === c.storeId; })[0];
+        return '<div class="st-row"><div><b>' + E(su.name) + '</b> · ' + E(pp.code) + ' · ส่ง ' + c.stubs + ' ก้น' + (c.counted != null ? ' · นับได้ ' + c.counted : '') + ' · <b>' + B(c.amount) + '</b><div class="s">' + c.d + (c.flags.length ? ' · <span style="color:var(--error-dark)">ธง: ' + E(c.flags.join(' / ')) + '</span>' : '') + '</div></div>' +
+          (c.status === 'รอตรวจนับ' ? '<div class="row" style="gap:6px"><input class="input" data-pcn="' + c.id + '" type="number" placeholder="นับได้" style="width:90px;min-height:32px"><button class="btn contained sm" data-pcact="count|' + c.id + '">บันทึกนับ</button><button class="btn text sm grey" data-pcact="reject|' + c.id + '">ปฏิเสธ</button></div>' : c.status === 'ตรวจนับแล้ว' ? '<button class="btn contained sm" data-pcact="pay|' + c.id + '">บันทึกจ่ายเงิน</button>' : '<span class="chip ' + (c.status === 'ปฏิเสธ' ? 'error' : 'success') + '">' + c.status + '</span>') + '</div>';
+      }).join('') : '<div class="muted small">ยังไม่มีคำขอเบิก</div>') + '</div>';
+    }
+    if (tab === 'kit') {
+      var kit = cfg.kits.filter(function (k) { return k.id === kitSel; })[0] || cfg.kits[0], cu0 = PMP.customers.filter(function (x) { return x.id === cid; })[0];
+      var qs = {}; kit.items.forEach(function (it, i) { qs[i] = kitQty[kit.id + '.' + i] != null ? kitQty[kit.id + '.' + i] : it.qty; });
+      var kc = PMP.kitCalc(kit, qs), canB2B = kit.aud !== 'B2B' || cu0.type === 'B2B';
+      h += '<div class="sim-card"><h6>เซตร้านยาเปิดใหม่ — ปรับรายการแล้วเห็นราคาสดทันที</h6><select class="select" id="kitSelSel" style="max-width:320px">' + cfg.kits.map(function (k) { return '<option value="' + k.id + '"' + (k.id === kit.id ? ' selected' : '') + '>' + E(k.name) + '</option>'; }).join('') + '</select>';
+      if (!canB2B) h += '<div class="sim-err">เซตนี้สั่งได้เฉพาะลูกค้า B2B — บัญชีนี้ (B2C) เห็นรายการแต่สั่งไม่ได้</div>';
+      kc.lines.forEach(function (l, i) { h += '<div class="st-row"><div><b>' + E(l.p.name) + '</b> ' + (l.it.req ? '<span class="chip soft-primary">บังคับ ≥ ' + l.it.min + '</span>' : '<span class="chip">ทางเลือก</span>') + '<div class="s">' + B(l.p.price) + ' / ' + l.p.unit + (cfg.stock[l.it.sku] != null ? ' · สต็อก ' + cfg.stock[l.it.sku] : '') + '</div></div><div class="row" style="gap:10px"><input class="input" type="number" min="0" data-kq="' + kit.id + '.' + i + '" value="' + l.q + '" style="width:90px;min-height:32px"><b style="min-width:80px;text-align:right">' + B(l.amt) + '</b></div></div>'; });
+      h += '<div class="st-row"><span>รวม · ส่วนลดเซต ' + kit.disc + '%</span><span><s class="muted">' + B(kc.sub) + '</s> <b style="font-size:17px">' + B(kc.total) + '</b></span></div>';
+      if (kc.errs.length) h += '<div class="sim-err">' + E(kc.errs.join(' · ')) + '</div>';
+      if (kc.blocked.length) h += '<div class="sim-err">สินค้าบังคับ/รายการหมด: ' + E(kc.blocked.join(' · ')) + ' — ปรับจำนวนหรือรอเติมสต็อก</div>';
+      h += '<div class="row mt16" style="gap:8px"><button class="btn contained" data-kitorder="self"' + (canB2B ? '' : ' disabled') + '>สั่งซื้อเซตนี้</button><button class="btn outlined" data-kitorder="behalf"' + (canB2B ? '' : ' disabled') + '>แอดมิน/เซลล์: สั่งแทนลูกค้านี้</button></div>' + box(last && last.kind === 'kit' ? last.html : '') + '</div>';
+      h += '<div class="sim-card"><h6>คำสั่งซื้อเซต</h6>' + ((st.kitOrders || []).filter(function (o) { return o.cid === cid; }).map(function (o) { return '<div class="st-row"><div><b>' + o.no + '</b> · ' + E(o.kit) + ' · ' + B(o.total) + '<div class="s">' + o.d + ' · สั่งโดย ' + E(o.by) + ' · ' + E(o.lines.join(', ')) + ' · +' + o.pts + ' พอยท์</div></div></div>'; }).join('') || '<div class="muted small">ยังไม่มี</div>') + '</div>';
+    }
+    document.getElementById('pane').innerHTML = h;
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('button,a'); if (!t) return;
+    var cid = SIM.custId(), a;
+    if ((a = t.getAttribute('data-t'))) { tab = a; last = null; pane(); return; }
+    if ((a = t.getAttribute('data-collect'))) { var r = PMP.collect(cid, a); SIM.toast(r.error || 'เก็บคูปองเข้ากระเป๋าแล้ว', !!r.error); pane(); return; }
+    if (t.id === 'issueM') { var n = PMP.issueMonthly(); SIM.toast('แจกคูปองรายเดือนให้ลูกค้า ' + n + ' ราย', false); pane(); return; }
+    if ((a = t.getAttribute('data-redeem'))) { var r2 = PMP.redeem(cid, a); if (r2.error) SIM.toast(r2.error, true); else { last = { kind: 'redeem', html: '<b>แลกสำเร็จ — ได้รับ</b><ul class="st-log">' + r2.out.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ul>' }; SIM.toast('แลกสำเร็จ'); } pane(); return; }
+    if ((a = t.getAttribute('data-claim'))) { var p = a.split('|'), ans = [].slice.call(document.querySelectorAll('[data-ans^="' + p[0] + '|' + p[1] + '|"]')).map(function (x) { return x.value; }), r3 = PMP.claimTier(cid, p[0], p[1], ans); if (r3.error) SIM.toast(r3.error, true); else { last = { kind: 'claim', html: '<b>ขอรับสิทธิ์สำเร็จ — ได้รับ</b><ul class="st-log">' + r3.out.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ul>' }; SIM.toast('ขอรับสิทธิ์สำเร็จ'); } pane(); return; }
+    if ((a = t.getAttribute('data-drawa'))) { var r4 = PMP.drawA(cid, a); if (r4.error) SIM.toast(r4.error, true); else last = { kind: 'raffle', html: '<b>🎉 ผลลุ้น: ' + E(r4.prize.name) + '</b> <span class="small muted">(โอกาส ' + r4.odds + '%)</span><ul class="st-log">' + r4.out.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ul>' }; pane(); return; }
+    if ((a = t.getAttribute('data-pool'))) { var r5 = PMP.enterPool(cid, a, 1); SIM.toast(r5.error || 'ใส่สิทธิ์ลงกองแล้ว', !!r5.error); pane(); return; }
+    if ((a = t.getAttribute('data-drawb'))) { var r6 = PMP.drawB(a); last = { kind: 'raffle', html: '<b>จับรางวัลโหมด B แล้ว</b><ul class="st-log"><li>seed: <span class="mono">' + r6.seed + '</span></li><li>กองทั้งหมด ' + r6.total + ' สิทธิ์ · ตำแหน่งที่จับได้ #' + r6.idx + '</li><li>ผู้ชนะ: ' + (r6.winner.indexOf('other-') === 0 ? 'ผู้เข้าร่วมรายอื่น (' + r6.winner + ')' : '<b>' + E(PMP.customers.filter(function (c) { return c.id === r6.winner; })[0].name) + '</b> (ได้รางวัลใหญ่เข้าคิว/บัญชี)') + '</li></ul>' }; pane(); return; }
+    if ((a = t.getAttribute('data-cact'))) { var ca = a.split('|'), rs = ca[0] === 'reject' ? prompt('เหตุผลที่ปฏิเสธ (ต้องระบุ)') : null, rc = PMP.claimAct(ca[1], ca[0], rs); if (rc.error) SIM.toast(rc.error, true); else last = { kind: 'cact', html: '<b>ดำเนินการแล้ว</b><ul class="st-log">' + rc.out.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ul>' }; pane(); return; }
+    if (t.id === 'pSub') { var rp = PMP.paperClaim(pPaper, pStore, +document.getElementById('pStubs').value); if (rp.error) SIM.toast(rp.error, true); else last = { kind: 'paper', html: rp.flags.length ? '<b>ส่งเบิกแล้ว — มีธงเตือน:</b><ul class="st-log">' + rp.flags.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ul>' : '<b>ส่งเบิกแล้ว — ไม่มีธง รอตรวจนับ</b>' }; pane(); return; }
+    if ((a = t.getAttribute('data-pcact'))) { var pa = a.split('|'), inp = document.querySelector('[data-pcn="' + pa[1] + '"]'), rq = PMP.paperAct(pa[1], pa[0], inp ? +inp.value : null); if (rq.error) SIM.toast(rq.error, true); else SIM.toast('บันทึกแล้ว'); pane(); return; }
+    if ((a = t.getAttribute('data-kitorder'))) { var kq = {}, kit2 = PMP.cfg().kits.filter(function (k) { return k.id === kitSel; })[0]; kit2.items.forEach(function (it, i) { var v = kitQty[kit2.id + '.' + i]; kq[i] = v != null ? v : it.qty; }); var rk = PMP.kitOrder(cid, kitSel, kq, a === 'behalf' ? 'แอดมิน (สั่งแทน)' : 'ลูกค้า'); if (rk.error) SIM.toast(rk.error, true); else { last = { kind: 'kit', html: '<b>สั่งสำเร็จ ' + rk.order.no + '</b> · ' + B(rk.order.total) + ' · ได้พอยท์ ' + rk.order.pts }; kitQty = {}; } pane(); return; }
+    if ((a = t.getAttribute('data-deliver'))) { var st = PMP.state(); Object.keys(st.customers).forEach(function (k) { st.customers[k].queue.forEach(function (q) { if (q.id === a) q.status = 'ส่งมอบแล้ว'; }); }); PMP.saveState(st); SIM.toast('บันทึกส่งมอบแล้ว'); pane(); return; }
+  });
+  document.addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.id === 'pStoreSel') { pStore = t.value; pane(); }
+    if (t.id === 'pPaperSel') pPaper = t.value;
+    if (t.id === 'kitSelSel') { kitSel = t.value; pane(); }
+    if (t.getAttribute && t.getAttribute('data-kq')) { kitQty[t.getAttribute('data-kq')] = Math.max(0, +t.value || 0); pane(); }
+  });
+  SIM.onReady(function () { var h = location.hash.replace('#', ''); if (TABS.some(function (t) { return t[0] === h; })) tab = h; SIM.mount('state', function () { last = null; pane(); }); pane(); });
+})();
+</script>
+</body></html>

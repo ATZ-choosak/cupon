@@ -12,13 +12,22 @@ window.MOCKUP = {
       ]
     },
     {
-      slug: 'foundation', no: '00', title: 'กลุ่มและชุดที่ใช้ซ้ำ',
-      desc: 'กลุ่มลูกค้า · ชุดของรางวัล · กลุ่มสินค้า · ตัวเลือก “ทุกคน/บางคน” — ตั้งครั้งเดียว ใช้ได้ทั้งโปรโมชั่น คูปอง พอยท์ แคมเปญ สุ่มรางวัล เซตร้านยา',
+      slug: 'simulator', no: 'S', title: 'จำลองระบบครบวงจร',
+      desc: 'จำลองตะกร้าแบบจบวงจรสำหรับสาธิตลูกค้า: ตั้งค่าโปร/คูปอง/พอยท์/แคมเปญ/สุ่มรางวัลได้จริง → ตะกร้า (ลูกค้าเลือกโปรเอง) → ชำระ → ผลเกิดจริง (ตัดโควตา พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ยอดสะสม) — ลอจิกอยู่ใน assets/pmp-core.js',
       screens: [
-        { file: '00-flow.html', title: 'ภาพรวม Flow กลุ่ม/ชุดที่ใช้ซ้ำ', role: 'both' },
+        { file: '00-flow.html', title: 'ภาพรวมจำลองระบบครบวงจร', role: 'both' },
+        { file: '01-config.html', title: 'ตั้งค่าจำลอง (โปร คูปอง พอยท์ แคมเปญ สุ่มรางวัล)', role: 'admin' },
+        { file: '02-cart.html', title: 'ตะกร้า / ชำระเงิน (ลูกค้าเลือกโปรเอง)', role: 'customer' },
+        { file: '03-state.html', title: 'สิทธิ์ & ผลลัพธ์ของลูกค้า', role: 'customer' }
+      ]
+    },
+    {
+      slug: 'foundation', no: '00', title: 'กลุ่มและชุดที่ใช้ซ้ำ',
+      desc: 'กลุ่มลูกค้า · กลุ่มสินค้า · ตัวเลือก “ทุกคน/บางคน” — ตั้งครั้งเดียว ใช้ได้ทั้งโปรโมชั่น คูปอง พอยท์ แคมเปญ สุ่มรางวัล เซตร้านยา (ผลตอบแทนตั้งในแต่ละโมดูลด้วย component กลาง)',
+      screens: [
+        { file: '00-flow.html', title: 'ภาพรวม Flow กลุ่มที่ใช้ซ้ำ', role: 'both' },
         { file: '01-admin-customer-sets.html', title: 'กลุ่มลูกค้า: รายการ', role: 'admin' },
         { file: '02-admin-customer-set-editor.html', title: 'กลุ่มลูกค้า: สมาชิก + นำเข้า', role: 'admin' },
-        { file: '03-admin-reward-sets.html', title: 'ชุดของรางวัล', role: 'admin' },
         { file: '04-admin-product-sets.html', title: 'กลุ่มสินค้า (แบรนด์/หมวด/SKU)', role: 'admin' },
         { file: '05-admin-audience-picker.html', title: 'ตัวเลือกกลุ่มเป้าหมาย “ทุกคน/บางคน” (ใช้ทุกหน้าตั้งค่า)', role: 'admin' }
       ]
@@ -28,28 +37,27 @@ window.MOCKUP = {
       desc: 'แนวคิดเดียวกับ "เซตของแถม (Bundle)" ที่ใช้งานอยู่ใน pmpc — ขยายผลตอบแทนเป็นของแถม / ส่วนลด / ฟรีค่าจัดส่ง',
       screens: [
         { file: '00-flow.html', title: 'ภาพรวม Flow โปรโมชั่น', role: 'both' },
-        { file: '01-admin-list.html', title: 'รายการโปรโมชั่น (ลำดับ priority)', role: 'admin' },
+        { file: '01-admin-list.html', title: 'รายการโปรโมชั่น (6 แท็บสถานะ ไม่มี priority)', role: 'admin' },
         { file: '02-admin-editor.html', title: 'สร้าง/แก้ไขโปรโมชั่น', role: 'admin' },
         { file: '04-admin-flash.html', title: 'แคมเปญลดตามวันพิเศษ', role: 'admin' },
-        { file: '05-admin-simulator.html', title: 'จำลองตะกร้า ตรวจโปรที่ชนะ', role: 'admin' },
         { file: '06-customer-list.html', title: 'หน้ารวมโปรโมชั่น', role: 'customer' },
         { file: '07-customer-product.html', title: 'การ์ดสินค้า + หน้าสินค้าที่มีโปร', role: 'customer' },
         { file: '08-customer-detail.html', title: 'รายละเอียดโปร + เลือกสินค้า', role: 'customer' },
-        { file: '09-customer-cart.html', title: 'ตะกร้า: โปรที่ได้รับ', role: 'customer' }
+        { file: '09-customer-cart.html', title: 'ตะกร้า: การ์ดเลือกโปร (กดสลับได้)', role: 'customer' }
       ]
     },
     {
       slug: 'coupon', no: '02', title: 'คูปอง',
-      desc: 'คูปองกระดาษ (หน้า-หลัง ไม่สั่งพิมพ์) · คูปองออนไลน์ · คูปองเก็บเอง/แจกรายเดือน · คูปองลูกค้าใหม่',
+      desc: 'คูปองกระดาษ (หน้า-หลัง ไม่สั่งพิมพ์) · คูปองออนไลน์ 3 แบบ: โค้ดส่วนลด / เก็บเอง / แจกรายเดือน (ลูกค้าใหม่ย้ายไปเป็นโปรโมชั่น)',
       screens: [
         { file: '00-flow.html', title: 'ภาพรวม Flow คูปอง', role: 'both' },
-        { file: '01-admin-hub.html', title: 'ภาพรวมคูปอง 4 แบบ', role: 'admin' },
+        { file: '01-admin-hub.html', title: 'ภาพรวมคูปอง 2 กลุ่ม (กระดาษ / ออนไลน์)', role: 'admin' },
         { file: '02-admin-paper-list.html', title: 'คูปองกระดาษ: รายการชุด', role: 'admin' },
         { file: '03-admin-paper-editor.html', title: 'สร้างชุดคูปองกระดาษ (หน้า/หลัง/สาขา/สิทธิ์)', role: 'admin' },
         { file: '04-admin-paper-preview.html', title: 'ตัวอย่างคูปองกระดาษ หน้า-หลัง', role: 'admin' },
         { file: '05-admin-paper-claims.html', title: 'คิวเบิกเงินร้าน/สาขา (นับก้นคูปอง)', role: 'admin' },
-        { file: '06-admin-online.html', title: 'คูปองออนไลน์ + ประวัติการใช้', role: 'admin' },
-        { file: '07-admin-collectible.html', title: 'คูปองเก็บเอง / แจกรายเดือน / ลูกค้าใหม่', role: 'admin' },
+        { file: '06-admin-online.html', title: 'คูปองออนไลน์: โค้ดส่วนลด + ประวัติการใช้', role: 'admin' },
+        { file: '07-admin-collectible.html', title: 'คูปองออนไลน์: เก็บเอง / แจกรายเดือน', role: 'admin' },
         { file: '08-customer-center.html', title: 'ศูนย์คูปอง + กระเป๋าคูปอง', role: 'customer' },
         { file: '09-customer-cart-coupon.html', title: 'ใช้คูปองในตะกร้า/เช็คเอาต์', role: 'customer' },
         { file: '10-customer-paper-info.html', title: 'ตรวจสอบคูปองกระดาษ (สาขาที่ใช้ได้)', role: 'customer' }

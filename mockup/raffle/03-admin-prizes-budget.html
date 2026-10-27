@@ -67,7 +67,7 @@
     <!-- A table -->
     <div class="card" style="overflow:hidden">
       <div class="card-h" style="padding-bottom:12px"><h6><span class="mode a">A</span> รางวัลโหมดลุ้นทันที<span class="ph p1">ระยะ 1</span></h6>
-        <div class="row"><button class="btn outlined primary sm">＋ เพิ่มรางวัลจากชุดของรางวัล <span class="pin">10</span></button><button class="btn text sm grey">＋ ตั้งรางวัลเอง</button></div></div>
+        <div class="row"><a class="btn outlined primary sm" href="#prizeRwd">＋ เพิ่ม/แก้ผลตอบแทนของรางวัล <span class="pin">10</span></a></div></div>
       <div class="table-wrap"><table class="table">
         <thead><tr>
           <th>รางวัล</th><th>ประเภท</th><th>โหมด</th>
@@ -97,7 +97,7 @@
     <!-- B table -->
     <div class="card" style="overflow:hidden">
       <div class="card-h" style="padding-bottom:12px"><h6><span class="mode b">B</span> รางวัลโหมดจับตามรอบ — จับพร้อมกัน 20 ธ.ค. 2569 20:00 น.<span class="ph p3">ระยะ 3</span></h6>
-        <div class="row"><button class="btn outlined primary sm">＋ เพิ่มรางวัลจากชุดของรางวัล <span class="pin">10</span></button><button class="btn text sm grey">＋ ตั้งรางวัลเอง</button></div></div>
+        <div class="row"><a class="btn outlined primary sm" href="#prizeRwd">＋ เพิ่ม/แก้ผลตอบแทนของรางวัล <span class="pin">10</span></a></div></div>
       <div class="table-wrap"><table class="table">
         <thead><tr><th>รางวัล</th><th>ประเภท</th><th>โหมด</th><th class="num relative">น้ำหนัก<span class="pin">6</span></th><th class="num">จำนวนผู้ได้รับ</th><th class="num">มูลค่า/ชิ้น</th><th class="num">งบรวมที่จอง</th><th></th></tr></thead>
         <tbody>
@@ -153,6 +153,12 @@
     </div>
 
   </div>
+<div class="card mt24" id="prizeRwd"><div class="card-b">
+  <div class="row between mb8"><h6>ตั้งผลตอบแทนของรางวัล <span class="chip soft-primary sq">component ใหม่</span></h6>
+    <div class="row"><span class="small muted">รางวัล</span><select class="select" id="prizeSel" style="min-width:260px"></select></div></div>
+  <div class="small muted mb16">เลือกรางวัลจากกิจกรรม “ลุ้นโชคปลายปี 2569” แล้วเพิ่ม/แก้ผลตอบแทน — ค่าจะถูกใช้ตอนลูกค้าลุ้นเจอรางวัลนี้จริงในจำลอง</div>
+  <div id="prizeBox" data-rwd data-module="raffle" data-ref="z2" data-title="ลูกค้าจะได้เมื่อถูกรางวัลนี้" data-kinds="gift,points,coupon,credit,entitle,offpos"></div>
+</div></div>
 </main>
 
 <section class="ux-notes">
@@ -167,7 +173,7 @@
     <li><span class="pin">7</span><span>ตัวคุมงบ: เพดานต่อรอบ/ต่อวัน, เพดานการถูกรางวัลต่อคน (แยกของทั่วไปกับรางวัลใหญ่), เพดานสิทธิ์สะสมต่อคน — ค่า "เมื่อชนเพดานงบ" ต้องเลือกให้ชัดเพราะกระทบประสบการณ์ลูกค้า</span></li>
     <li><span class="pin">8</span><span>การันตีของปลอบใจ: นับพลาดติดกันต่อคนต่อกิจกรรม ถึง N ครั้งการลุ้นครั้งถัดไปได้ของปลอบใจแน่นอน; ลูกค้าเห็นตัวนับในหน้าลุ้น (หน้า 07)</span></li>
     <li><span class="pin">9</span><span>จำลอง 10,000 ครั้งเป็นค่าคาดหวัง (น้ำหนัก × 10,000) ไม่ใช่การสุ่มจริง — ใช้ดูว่ารางวัลไหนจะหมดก่อน และเส้นเพดานงบจะชนที่ครั้งที่เท่าไร; "จำลองซ้ำ" สุ่มด้วยเมล็ดใหม่เพื่อดูความแกว่ง</span></li>
-    <li><span class="pin">10</span><span><b>เพิ่มรางวัลจากชุดของรางวัล</b> เลือกชุดที่ตั้งไว้ใน <a href="../foundation/03-admin-reward-sets.html">กลุ่มและชุดที่ใช้ซ้ำ</a> (คูปอง ส่งฟรี พอยท์ ของแถม ทริป ฯลฯ) แล้วกรอกเฉพาะน้ำหนัก/จำนวนจำกัด/โหมด — ประเภทและมูลค่า/ชิ้นดึงจากชุด (มูลค่าประเมิน) · “ตั้งรางวัลเอง” ยังใช้ได้สำหรับรางวัลที่ใช้ครั้งเดียว</span></li>
+    <li><span class="pin">10</span><span><b>ผลตอบแทนของแต่ละรางวัล</b> <span class="chip soft-primary sq">เปลี่ยน</span> ไม่มี “เพิ่มรางวัลจากชุดของรางวัล” แล้ว — ตั้งตรงนี้ด้วย component ผลตอบแทนเดียวกับทุกโมดูล (พอยท์ · คูปอง · ของแถม SKU · เครดิต · สิทธิ์ลุ้น · ของนอก POS) เพิ่มได้หลายอย่างต่อรางวัล เก็บแยกตามรางวัล ติดธง <span class="mono">source_module = raffle</span> · ลองลุ้นจริงที่<a href="../simulator/03-state.html">สถานะลูกค้าของจำลอง</a></span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>แก้น้ำหนัก/จำนวนระหว่างเปิดกิจกรรม: มีผลกับการลุ้นครั้งถัดไปเท่านั้น และทุกการแก้บันทึกเป็นเวอร์ชันพร้อมผู้แก้ (นำไปแสดงใน snapshot ของหน้าบันทึกการลุ้น)</li>
@@ -183,5 +189,17 @@
   </ul></div>
 </section>
 <script src="../assets/mockup.js"></script>
+<script src="../assets/pmp-core.js"></script><script src="../assets/reward.js"></script>
+<script>
+(function(){
+  function init(){
+    var cfg=PMP.cfg(), f=cfg.raffles[0], sel=document.getElementById('prizeSel'), box=document.getElementById('prizeBox');
+    if(!sel||!f) return;
+    sel.innerHTML=f.prizes.map(function(z){return '<option value="'+z.id+'">'+z.name+' (น้ำหนัก '+z.weight+')</option>';}).join('');
+    sel.value='z2'; sel.onchange=function(){ box.setAttribute('data-ref',sel.value); PMP.Reward.render(box); };
+  }
+  setTimeout(init,50);
+})();
+</script>
 </body>
 </html>

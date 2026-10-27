@@ -61,12 +61,13 @@
       group('การจัดการสินค้า', plain('บริการอื่นๆ') + plain('สินค้า') + plain('กลุ่มสินค้า') + plain('แบรนด์สินค้า') + plain('กลุ่มชื่อสามัญ'), false) +
       group('โปรโมชั่นและสิทธิพิเศษ',
         item('foundation', 'กลุ่มและชุดที่ใช้ซ้ำ', 'ใหม่') +
-        item('promotion', 'โปรโมชั่น', 'ต่อยอดเซตของแถม') +
+        item('promotion', 'โปรโมชั่น', 'ผลตอบแทนผสมได้') +
         item('coupon', 'คูปอง', 'ใหม่') +
         item('points', 'พอยท์', 'ใหม่') +
         item('campaign', 'แคมเปญ', 'ใหม่') +
         item('raffle', 'สุ่มรางวัล', 'ใหม่') +
-        item('starterkit', 'เซตร้านยาเปิดใหม่', 'ใหม่'), true) +
+        item('starterkit', 'เซตร้านยาเปิดใหม่', 'ใหม่') +
+        item('simulator', 'จำลองตะกร้า (ครบวงจร)', 'ใหม่'), true) +
       group('คำสั่งซื้อและการขาย', plain('คำสั่งซื้อ') + plain('คำสั่งซื้อบริการสั่งทำ') + plain('การเคลมสินค้า'), false) +
       group('ลูกค้าและการสนับสนุน', plain('ลูกค้า') + plain('เครดิตโน้ต') + plain('รีวิว'), false) +
       group('การจัดส่งและโลจิสติกส์', plain('ค่าจัดส่ง') + plain('รอบการจัดส่ง'), false) +
@@ -118,6 +119,48 @@
     if (bar) document.body.insertAdjacentHTML('afterbegin', bar);
     wireInteractions();
     updateReveal();
+    if (inModule && slug !== 'simulator') loadLive(function () { setTimeout(livePanel, 250); });
+  }
+  function loadScript(src, cb) { var e = document.createElement('script'); e.src = base + 'assets/' + src; e.onload = cb; e.onerror = cb; document.head.appendChild(e); }
+  function loadLive(cb) {
+    function two() { if (window.PMP_LIVE) return cb(); loadScript('live.js', cb); }
+    if (window.PMP) two(); else loadScript('pmp-core.js', two);
+  }
+
+  /* ---------- live panel: every module page gets a working view wired to the simulator data (localStorage) ---------- */
+  var LIVE = {
+    'promotion/02-admin-editor.html': ['config', 'promos:ppromo', 'แก้ไขโปรโมชั่นจริง'],
+    'promotion/04-admin-flash.html': ['config', 'flash', 'Flash Sale จริง'], 'promotion/06-customer-list.html': ['cart', '', 'โปรที่ลูกค้าเลือกได้'],
+    'promotion/07-customer-product.html': ['cart', '', 'หยิบสินค้า + ดูโปร'], 'promotion/08-customer-detail.html': ['cart', '', 'เลือกสินค้า + โปร'], 'promotion/09-customer-cart.html': ['cart', '', 'ตะกร้า/ชำระเงินจริง'],
+    'coupon/01-admin-hub.html': ['config', 'coupons', 'คูปองออนไลน์ทั้งหมด'], 'coupon/06-admin-online.html': ['config', 'coupons', 'แก้โค้ดส่วนลดจริง'], 'coupon/07-admin-collectible.html': ['config', 'coupons', 'แก้คูปองเก็บเอง/รายเดือนจริง'],
+    'coupon/08-customer-center.html': ['state', 'wallet', 'ศูนย์คูปองจริง'], 'coupon/09-customer-cart-coupon.html': ['cart', '', 'ใช้คูปองในตะกร้าจริง'],
+    'points/01-admin-rules.html': ['config', 'points', 'ตัวคูณพอยท์จริง'], 'points/02-admin-catalog.html': ['config', 'points', 'แคตตาล็อกแลกจริง'], 'points/03-admin-ledger.html': ['state', 'points', 'สมุดพอยท์ลูกค้าจริง'],
+    'points/04-customer-dashboard.html': ['state', 'points', 'พอยท์ของฉันจริง'], 'points/05-customer-redeem.html': ['state', 'points', 'แลกพอยท์จริง'], 'points/06-customer-earn-preview.html': ['cart', '', 'พอยท์ที่จะได้จริง'],
+    'campaign/01-admin-list.html': ['config', 'camp', 'แคมเปญทั้งหมด'], 'campaign/02-admin-quota-editor.html': ['config', 'camp', 'แคมเปญโควตาจริง'], 'campaign/03-admin-ladder-editor.html': ['config', 'camp', 'แคมเปญขั้นบันไดจริง'],
+    'campaign/04-admin-claims.html': ['state', 'claims', 'คิวคำขอรับรางวัลจริง (อนุมัติ/ปฏิเสธ)'], 'campaign/05-admin-progress.html': ['state', 'camp', 'ความคืบหน้าจริง'], 'campaign/06-customer-ladder.html': ['state', 'camp', 'ขั้นบันไดของฉันจริง'],
+    'campaign/07-customer-claim-form.html': ['state', 'camp', 'ขอรับสิทธิ์จริง'], 'campaign/08-customer-quota-product.html': ['cart', '', 'ซื้อสินค้าโควตาจริง'],
+    'raffle/01-admin-list.html': ['config', 'raffle', 'กิจกรรมทั้งหมด'], 'raffle/02-admin-editor.html': ['config', 'raffle', 'ตั้งกิจกรรมจริง'], 'raffle/03-admin-prizes-budget.html': ['config', 'raffle', 'รางวัล/น้ำหนักจริง'],
+    'raffle/04-admin-draw-run.html': ['state', 'raffle', 'จับรางวัลโหมด B จริง'], 'raffle/05-admin-audit.html': ['state', 'raffle', 'บันทึกการลุ้นจริง'],
+    'raffle/06-customer-tickets.html': ['state', 'raffle', 'สิทธิ์ลุ้นของฉันจริง'], 'raffle/07-customer-instant-draw.html': ['state', 'raffle', 'ลุ้นทันทีจริง'], 'raffle/08-customer-scheduled.html': ['state', 'raffle', 'จับตามรอบจริง'], 'raffle/09-customer-history.html': ['state', 'raffle', 'ประวัติการลุ้นจริง'],
+    'coupon/02-admin-paper-list.html': ['config', 'paper', 'ชุดคูปองกระดาษจริง'], 'coupon/03-admin-paper-editor.html': ['config', 'paper', 'สร้าง/แก้ชุดคูปองกระดาษจริง'], 'coupon/04-admin-paper-preview.html': ['config', 'paper', 'ข้อมูลชุดคูปองกระดาษ'],
+    'coupon/05-admin-paper-claims.html': ['state', 'paper', 'คิวเบิกเงินร้านจริง (นับก้น/จ่าย)'], 'coupon/10-customer-paper-info.html': ['state', 'paper', 'ตรวจสอบร้านที่ใช้คูปองกระดาษได้จริง'],
+    'starterkit/01-admin-list.html': ['config', 'kits', 'เซตร้านยาทั้งหมด'], 'starterkit/02-admin-editor.html': ['config', 'kits', 'สร้าง/แก้เซตจริง'], 'starterkit/03-admin-order-behalf.html': ['state', 'kit', 'สั่งแทนลูกค้าจริง'],
+    'starterkit/04-customer-catalog.html': ['state', 'kit', 'เลือกเซตจริง'], 'starterkit/05-customer-builder.html': ['state', 'kit', 'ปรับเซต + ราคาสุทธิสดจริง'], 'starterkit/06-customer-blocked.html': ['state', 'kit', 'สินค้าบังคับหมด/B2C สั่งไม่ได้ (ลองลดสต็อก)'],
+    'foundation/01-admin-customer-sets.html': ['config', 'csets', 'กลุ่มลูกค้าจริง'], 'foundation/02-admin-customer-set-editor.html': ['config', 'csets', 'สมาชิก + นำเข้าจริง'],
+    'foundation/04-admin-product-sets.html': ['config', 'general', 'กลุ่มสินค้าที่ใช้อยู่จริง'],
+    'home/01-customer-home.html': ['state', 'wallet', 'สถานะของฉันจริง']
+  };
+  function livePanel() {
+    var key = slug + '/' + file, L = LIVE[key];
+    if (!L || /[?&]embed=1/.test(location.search) || document.body.getAttribute('data-hydrated')) return;
+    var page = { config: '01-config.html', cart: '02-cart.html', state: '03-state.html' }[L[0]];
+    var hash = L[1].replace('ppromo', 'p5');
+    var src = base + 'simulator/' + page + '?embed=1' + (hash ? '#' + hash : '');
+    var host = document.querySelector('.admin-content') || document.querySelector('.cust-main') || document.getElementById('screen');
+    if (!host) return;
+    var h = '<details class="live-panel" open><summary><b>▶ ใช้งานจริง</b> · ' + L[2] + '<span class="live-note">เชื่อมกับข้อมูลจำลองชุดเดียวกับโมดูล “จำลองระบบครบวงจร” — กดปุ่มได้จริง ผลมีทันที</span><a class="live-full" href="' + src.replace('?embed=1', '') + '" target="_blank">เปิดเต็มจอ ↗</a></summary>' +
+      '<iframe src="' + src + '" class="live-frame" title="live"></iframe></details>';
+    host.insertAdjacentHTML('afterbegin', h);
   }
 
   /* ---------- interactions ---------- */

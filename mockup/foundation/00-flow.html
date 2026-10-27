@@ -19,10 +19,9 @@
   <div class="page-head">
     <div>
       <h4>กลุ่มและชุดที่ใช้ซ้ำ — ภาพรวม Flow</h4>
-      <p class="muted">ตั้ง “ใคร / สินค้าอะไร / ได้อะไร” ครั้งเดียวแล้วเลือกใช้ในทุกหน้าตั้งค่า — ถ้าตั้งเป็น “ทุกคน” ไม่ต้องสร้างกลุ่มเลย</p>
+      <p class="muted">ตั้ง “ใคร / สินค้าอะไร” ครั้งเดียวแล้วเลือกใช้ในทุกหน้าตั้งค่า — ถ้าตั้งเป็น “ทุกคน” ไม่ต้องสร้างกลุ่มเลย · “ได้อะไร” (ผลตอบแทน) ตั้งในแต่ละโมดูลเองด้วย component กลางที่ผสมได้หลายอย่าง</p>
     </div>
     <div class="row">
-      <a class="btn outlined" href="03-admin-reward-sets.html">ชุดของรางวัล</a>
       <a class="btn outlined" href="04-admin-product-sets.html">กลุ่มสินค้า</a>
       <a class="btn outlined" href="05-admin-audience-picker.html">ดูตัวเลือกกลุ่มเป้าหมาย</a>
       <a class="btn contained" href="01-admin-customer-sets.html">เริ่มจากกลุ่มลูกค้า</a>
@@ -34,18 +33,16 @@
       <a class="node adm" href="01-admin-customer-sets.html"><b><span class="sn">1</span>สร้างกลุ่มลูกค้า</b><small>ลูกค้า/ร้าน/สาขา — เลือกจากรายชื่อลงทะเบียน หรือนำเข้าไฟล์ (มี template)</small></a>
       <div class="gap">+</div>
       <a class="node adm" href="04-admin-product-sets.html"><b><span class="sn">2</span>สร้างกลุ่มสินค้า</b><small>แบรนด์ / หมวด / SKU (รวม-ยกเว้น)</small></a>
-      <div class="gap">+</div>
-      <a class="node adm" href="03-admin-reward-sets.html"><span class="pin">1</span><b><span class="sn">3</span>สร้างชุดของรางวัล</b><small>ของแถม ส่วนลด ส่งฟรี พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ของนอก POS · มีประวัติเวอร์ชัน</small></a>
       <div class="gap">→</div>
-      <a class="node adm" href="05-admin-audience-picker.html"><span class="pin">2</span><b><span class="sn">4</span>ไปตั้งโปร/คูปอง/แคมเปญ</b><small>ทุกหน้าตั้งค่ามีช่อง “ใครใช้สิทธิ์นี้ได้” (ทุกคน/บางคน+กลุ่ม) และ “ชุดของรางวัล” ให้เลือกจากที่ตั้งไว้</small></a>
+      <a class="node adm" href="05-admin-audience-picker.html"><span class="pin">2</span><b><span class="sn">3</span>ไปตั้งโปร/คูปอง/แคมเปญ</b><small>ทุกหน้าตั้งค่ามีช่อง “ใครใช้สิทธิ์นี้ได้” (ทุกคน/บางคน+กลุ่ม) และ “ขอบเขตสินค้า” จากกลุ่มสินค้า · ส่วน “ผลตอบแทน” ตั้งในหน้าของแต่ละโมดูลด้วย component กลาง ไม่มีหน้าชุดของรางวัลแยกแล้ว</small></a>
     </div></div>
 
     <div class="lane"><div class="lane-h"><div>ระบบ<div class="small muted" style="font-weight:400">ตรวจ · บันทึก</div></div></div><div class="lane-b">
-      <div class="node sys"><span class="pin">3</span><b>ตรวจก่อนเผยแพร่</b><small>“บางคน” ต้องมีกลุ่ม include ≥ 1 · ชุดรางวัลต้องมีรายการ</small></div>
+      <div class="node sys"><span class="pin">3</span><b>ตรวจก่อนเผยแพร่</b><small>“บางคน” ต้องมีกลุ่ม include ≥ 1 · ผลตอบแทนต้องมีอย่างน้อย 1 รายการ</small></div>
       <div class="gap">→</div>
       <div class="node sys"><span class="pin">4</span><b>ตะกร้า / รายการของลูกค้า</b><small>ทุกคน → ผ่านทันที · บางคน → ตรวจสมาชิกกลุ่ม (exclude ชนะ)</small></div>
       <div class="gap">→</div>
-      <div class="node end"><b>บันทึกการใช้สิทธิ์</b><small>เก็บ snapshot ของรางวัล ณ วันที่ได้ แก้ชุดทีหลังไม่ย้อนแก้</small></div>
+      <div class="node end"><b>บันทึกการใช้สิทธิ์</b><small>เก็บ snapshot ผลตอบแทน ณ วันที่ได้ แก้ทีหลังไม่ย้อนแก้</small></div>
     </div></div>
   </div>
 
@@ -53,7 +50,7 @@
 <section class="ux-notes">
   <h6>หมายเหตุ UX</h6>
   <ol>
-    <li><span class="pin">1</span><span><b>ชุดของรางวัลหนึ่งชุด ใช้ได้หลายที่</b> เป็นรางวัลขั้นบันได แลกพอยท์ รางวัลลุ้นโชค และผลตอบแทนโปรโมชั่น — แก้ที่เดียว (ดูกติกาเวอร์ชันในหน้าชุดของรางวัล)</span></li>
+    <li><span class="pin">1</span><span><b>ไม่มีหน้า “ชุดของรางวัล” กลางแล้ว</b> แนวคิดเดิม (รางวัลผสมกันเป็นชุดได้) ยังอยู่ แต่ย้ายเป็น <b>component ผลตอบแทน</b> ที่ฝังในหน้าของแต่ละโมดูล (โปรโมชั่น พอยท์ แคมเปญ สุ่มรางวัล) — เก็บแยกตามโมดูล ติดธง <span class="mono">source_module</span> ไม่ต้องไปสร้างชุดก่อนแล้วกลับมาเลือก</span></li>
     <li><span class="pin">2</span><span><b>ตัวเลือกกลุ่มเป้าหมายเป็น component เดียว</b> ทุกหน้าตั้งค่าใช้ตัวเดียวกัน ไม่มีช่องเลือกรายชื่อแยกของใครของมัน</span></li>
     <li><span class="pin">3</span><span><b>ตรวจก่อนเผยแพร่</b> ข้อความ error บอกชัดว่าขาดอะไร และเก็บเป็นร่างได้ตลอด</span></li>
     <li><span class="pin">4</span><span><b>ตรวจที่เซิร์ฟเวอร์เสมอ</b> ไม่พึ่งแค่การซ่อนปุ่มฝั่งลูกค้า</span></li>

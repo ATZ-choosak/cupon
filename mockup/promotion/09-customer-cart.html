@@ -32,6 +32,18 @@
   .msg.warn{background:var(--warning-lighter);color:#663C00;border:1px solid #FFD180}
   .msg.info{background:var(--g50);color:var(--g800);border:1px solid var(--g300)}
   .msg ul{margin:6px 0 0;padding-left:16px;display:grid;gap:6px}
+  .pcards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .pcard{border:1.5px solid var(--g300);border-radius:12px;padding:12px 14px;cursor:pointer;background:#fff;transition:.15s;position:relative}
+  .pcard:hover{border-color:var(--primary-light)}
+  .pcard.sel{border-color:var(--primary);background:var(--primary-lighter)}
+  .pcard.dim{background:var(--g100);border-color:var(--g300);color:var(--g500);cursor:not-allowed;filter:grayscale(1)}
+  .pcard.dim .promo-tag{background:var(--g200);color:var(--g600)}
+  .pc-h{display:flex;gap:10px;align-items:flex-start}
+  .pc-g{margin-top:8px;font-size:12.5px}
+  .pc-w{margin-top:6px;font-size:11.5px;color:var(--text2)}
+  .pcard.dim .pc-w{color:var(--error-dark);font-weight:700}
+  .tick{width:20px;height:20px;border-radius:50%;border:2px solid var(--g400);flex:none;margin-top:1px}
+  .pcard.sel .tick{background:var(--primary);border-color:var(--primary);box-shadow:inset 0 0 0 3px #fff}
 </style>
 </head>
 <body data-shell="customer" data-cust-nav="promotion">
@@ -63,40 +75,31 @@
           <b style="min-width:70px;text-align:right;color:var(--primary-dark)">−฿100</b></div>
       </div></div>
 
-      <!-- applied promos -->
+      <!-- choose promos -->
       <div class="card"><div class="card-b relative">
         <span class="pin abs">3</span>
-        <div class="row between mb16"><h6 style="font-size:16px">โปรโมชั่นที่ได้รับ (2)</h6><a class="small" href="06-customer-list.html">ดูโปรโมชั่นทั้งหมด →</a></div>
-
-        <div class="applied">
-          <div class="h"><div><span class="promo-tag gift">ของแถม</span> <span class="t">นมผงสูตร 3 ซื้อเยอะ แถมเยอะ</span>
-            <div class="small muted mt8">ขั้น 1 (นมผงสูตร 3 รวม 4 ลัง) · ได้ เจลแอลกอฮอล์ 1 ขวด</div></div></div>
-          <div class="nudge relative"><span class="pin abs" style="left:auto;right:-8px;top:-10px">4</span>
-            <div style="flex:1"><b>เพิ่มนมผงสูตร 3 อีก 1 ลัง</b> รับขั้น 2: ผ้าอ้อมเด็ก 1 แพ็ค (ได้ขั้นสูงสุดที่ถึงขั้นเดียว แทนเจลแอลกอฮอล์)
-              <div class="progress"><i style="width:80%"></i></div></div>
-            <button class="btn contained sm">เพิ่ม 1 ลัง</button></div>
+        <div class="row between mb8"><h6 style="font-size:16px">โปรโมชั่นที่ใช้ได้กับตะกร้านี้ (4)</h6><a class="small" href="06-customer-list.html">ดูโปรโมชั่นทั้งหมด →</a></div>
+        <p class="small muted mb16">เลือกได้เองว่าจะใช้โปรไหน — ถ้ากดโปรหนึ่งแล้วใช้ร่วมกับโปรอื่นไม่ได้ โปรนั้นจะเป็นสีเทาพร้อมบอกเหตุผล กดโปรที่เลือกอีกครั้งเพื่อยกเลิก แล้วโปรที่เทาจะกลับมาเลือกได้</p>
+        <div class="pcards" id="pcards">
+          <div class="pcard sel" data-id="a" data-no="b,d"><div class="pc-h"><span class="tick"></span><div><b>นมผงสูตร 3 ซื้อเยอะ แถมเยอะ</b><div class="small muted">ขั้น 1 · นมผงสูตร 3 รวม 4 ลัง</div></div></div><div class="pc-g"><span class="promo-tag gift">ของแถม</span> เจลแอลกอฮอล์ 1 ขวด <span class="promo-tag">ฟรีค่าส่ง</span> <span class="promo-tag">+50 พอยท์</span></div><div class="pc-w">ใช้ร่วมกับโปรอื่นได้ ยกเว้น ข และ ง</div></div>
+          <div class="pcard" data-id="b" data-no="a"><div class="pc-h"><span class="tick"></span><div><b>ซื้อ Vitamin C ครบ 3 ขวด ลด 10%</b><div class="small muted">Vitamin C 8 ขวด ≥ 3 ขวด</div></div></div><div class="pc-g"><span class="promo-tag">ลด 10% (สูงสุด ฿150)</span> ≈ −฿150</div><div class="pc-w">ใช้ร่วมกับโปรอื่นไม่ได้</div></div>
+          <div class="pcard" data-id="c" data-no=""><div class="pc-h"><span class="tick"></span><div><b>ซื้อ Blackmores ครบ ฿1,000 ลด 5%</b><div class="small muted">Blackmores ฿2,432 ≥ ฿1,000</div></div></div><div class="pc-g"><span class="promo-tag">ลด 5% (สูงสุด ฿200)</span> ≈ −฿122</div><div class="pc-w">ใช้ร่วมกับโปรอื่นได้</div></div>
+          <div class="pcard" data-id="d" data-no="a,b"><div class="pc-h"><span class="tick"></span><div><b>วันพิเศษ 10.27 ลดทั้งร้าน 10%</b><div class="small muted">ทั้งตะกร้า</div></div></div><div class="pc-g"><span class="promo-tag">ลด 10% (สูงสุด ฿500)</span> ≈ −฿500</div><div class="pc-w">ใช้ร่วมกับโปรอื่นไม่ได้</div></div>
         </div>
-
-        <div class="applied">
-          <div class="h"><div><span class="promo-tag">ส่วนลด</span> <span class="t">ซื้อ Blackmores ครบ ฿1,000 ลด ฿100</span>
-            <div class="small muted mt8">Blackmores ฿2,432 ≥ ฿1,000 · ลด ฿100 ต่อบิล (คิดเฉพาะสินค้า Blackmores)</div></div></div>
-        </div>
-      </div></div>
-
-      <!-- messages -->
-      <div class="card"><div class="card-b">
-        <div class="relative">
-          <div class="msg warn"><span class="pin" style="margin:0">6</span><div>
-            <b>ขวดนม PP หมดชั่วคราว</b> — โปร "ซื้อผ้าอ้อมเด็กครบ 2 แพ็ค แถมขวดนม PP 1 ชิ้น" หยุดชั่วคราวเพราะของแถมหมด จึงไม่ได้ของแถมในบิลนี้
-            <div class="small mt8">ยอดชำระไม่เปลี่ยนแปลง และระบบจะไม่ชดเชยเป็นส่วนลดอัตโนมัติ — เมื่อโปรกลับมาเปิด ระบบจะแสดงในตะกร้าให้เอง</div></div></div>
-        </div>
-        <div class="msg info relative"><span class="pin" style="margin:0">5</span><div>
-          <b>โปรที่ผ่านเงื่อนไข แต่ไม่ถูกใช้ในตะกร้านี้ (2)</b>
-          <ul>
-            <li>โปร "ซื้อนมผงสูตร 3 คู่ขวดนม PP แถมเจลแอลกอฮอล์" ไม่ถูกใช้ เพราะโปร "นมผงสูตร 3 ซื้อเยอะ แถมเยอะ" มีลำดับสูงกว่า (ใช้นมผงสูตร 3 ชุดเดียวกัน)</li>
-            <li>โปร "ซื้อ Blackmores Vitamin C ครบ 3 ขวด ลด 10%" ไม่ถูกใช้ เพราะโปร "ซื้อ Blackmores ครบ ฿1,000 ลด ฿100" มีลำดับสูงกว่า</li>
-          </ul>
-          <div class="small muted mt8">ระบบเลือกสิทธิ์ที่ได้ประโยชน์ตามลำดับความสำคัญให้อัตโนมัติ ไม่ต้องกดเลือกเอง</div></div></div>
+        <div class="small muted mt8" id="pcmsg">เลือกอยู่ 1 โปร</div>
+        <div class="msg info relative mt16"><span class="pin" style="margin:0">5</span><div>
+          <b>ยังไม่เข้าเงื่อนไข (แสดงเป็นสีเทา)</b>
+          <ul><li>“ซื้อผ้าอ้อมครบ 2 แพ็ค ลด ฿60” — <span class="muted">โควต้าทั้งหมดของโปรหมดแล้ว</span></li>
+          <li>“ลูกค้าใหม่ ซื้อครบ ฿5,000 ลด ฿300” — <span class="muted">เฉพาะลูกค้าใหม่ที่ยังไม่เคยสั่งซื้อ</span></li></ul>
+        </div></div>
+        <div class="msg warn relative mt16"><span class="pin" style="margin:0">6</span><div>
+          <b>ขวดนม PP หมดชั่วคราว</b> — ถ้าเลือกโปรที่แถมขวดนม PP ระบบจะแจ้งก่อนว่าของแถมหมด ไม่บล็อกการชำระเงิน
+        </div></div>
+        <div class="nudge relative mt16"><span class="pin abs" style="left:auto;right:-8px;top:-10px">4</span>
+          <div style="flex:1"><b>เพิ่มนมผงสูตร 3 อีก 1 ลัง</b> เพื่อรับโปรขั้นถัดไป
+            <div class="progress"><i style="width:80%"></i></div></div>
+          <button class="btn contained sm">เพิ่ม 1 ลัง</button></div>
+        <div class="alert info mt16" style="font-size:12.5px"><div>อยากลองคำนวณจริงจากการตั้งค่า? ไปที่ <a href="../simulator/02-cart.html"><b>จำลองตะกร้าแบบครบวงจร</b></a> — เลือกลูกค้า ใส่สินค้า เลือกการ์ดโปร ใส่คูปอง ใช้พอยท์ แล้วกดชำระ ผลมีจริงทั้งโควต้า พอยท์ คูปอง แคมเปญ และสิทธิ์ลุ้น</div></div>
       </div></div>
     </div>
 
@@ -132,9 +135,9 @@
   <ol>
     <li><span class="pin">1</span><span><b>บรรทัดของแถม</b> พื้นเขียว ป้าย "ของแถม ฟรี" ราคาแสดงว่า "ฟรี" · จำนวนล็อก ลูกค้าแก้/ลบเองไม่ได้ (จำนวนมาจากโปร) — เมื่อลูกค้าลดสินค้าที่ต้องมี ของแถมหายไปเองพร้อม toast "ของแถมถูกนำออก เพราะไม่เข้าเงื่อนไขแล้ว" · ของแถมแสดงมูลค่าไว้เป็นข้อมูล ไม่รวมในยอด</span></li>
     <li><span class="pin">2</span><span><b>บรรทัดส่วนลด</b> แยกเป็นบรรทัดพื้นแดงอ่อน บอกโปรและฐานที่คำนวณ (เฉพาะสินค้าที่เข้าเงื่อนไข ไม่ใช่ทั้งบิล) · ได้ส่วนลดครั้งเดียวต่อบิล ไม่ว่าซื้อเกินเงื่อนไขกี่เท่า</span></li>
-    <li><span class="pin">3</span><span><b>โปรโมชั่นที่ได้รับ</b> การ์ดต่อโปรที่ถูกใช้ แสดงสิ่งที่ได้และเหตุที่ได้ · เรียงตามลำดับ priority · ลูกค้าไม่เห็นเลข priority</span></li>
+    <li><span class="pin">3</span><span><b>การ์ดเลือกโปร</b> <span class="chip soft-primary sq">เปลี่ยน</span> ไม่มี priority และไม่เลือกให้อัตโนมัติ — ทุกโปรที่ตะกร้าเข้าเงื่อนไขขึ้นเป็นการ์ด ลูกค้ากดเลือก/ยกเลิกเอง · กดแล้วโปรที่ใช้ร่วมกันไม่ได้เป็นสีเทาพร้อมเหตุผล (“ใช้ร่วมกับ … ไม่ได้”) กดยกเลิกแล้วกลับมาเลือกได้ · การ์ดบอกผลตอบแทนทุกอย่างที่จะได้ (ส่วนลด ของแถม ฟรีค่าส่ง พอยท์ …) <b>ลองกดการ์ดได้จริง</b></span></li>
     <li><span class="pin">4</span><span><b>ข้อความชวนซื้อเพิ่ม</b> "เพิ่มอีก N …" แสดงเมื่อใกล้ถึงขั้น/ยอดถัดไป (ขาดไม่เกิน 1 ขั้นหรือ 30% ของเงื่อนไข) · ปุ่มเพิ่มจำนวนที่ขาดให้ทันที · ถ้าเปลี่ยนโปรที่ได้ (ขั้น 1 → ขั้น 2) บอกว่าของแถมเดิมจะถูกแทน</span></li>
-    <li><span class="pin">5</span><span><b>โปรที่ไม่ถูกใช้</b> แจ้งแบบข้อความสั้นว่าโปร Z ไม่ถูกใช้ เพราะโปร X ลำดับสูงกว่า — เพื่อไม่ให้ลูกค้าสงสัยว่าทำไมไม่ได้ · แสดงเฉพาะโปรที่ผ่านเงื่อนไขครบแต่แพ้ (ไม่แสดงโปรที่ลูกค้าไม่ได้เข้าใกล้เลย)</span></li>
+    <li><span class="pin">5</span><span><b>ยังไม่เข้าเงื่อนไข</b> โปรที่เห็นแต่ใช้ไม่ได้ (โควต้าทั้งหมดเต็ม · ต้องเป็นลูกค้าใหม่ · โควต้าต่อคนเต็ม) แสดงสีเทาท้ายรายการพร้อมเหตุผล ไม่เปิดให้กด</span></li>
     <li><span class="pin">6</span><span><b>ของแถมหมดสต็อก</b> ค่าเริ่มต้นที่เสนอ: โปรถูกปิดชั่วคราวตามกติกา → บรรทัดของแถมขึ้นเทา ขีดฆ่า ป้าย "หมดชั่วคราว" และข้อความอธิบาย · ไม่แปลงเป็นส่วนลดอัตโนมัติ · ไม่บล็อกการชำระเงิน</span></li>
     <li><span class="pin">7</span><span><b>สรุปยอดแยกกลุ่ม</b> ส่วนลดโปรโมชั่น (และ Flash) อยู่แยกจากส่วนลดคูปองและการใช้พอยท์ เพื่อให้ตรวจสอบง่ายและสอดคล้องลำดับการคิดเงิน: Flash → โปรโมชั่น → คูปอง → ส่ง → พอยท์ · แต่ละบรรทัดมีคำอธิบายย่อยบอกที่มา</span></li>
     <li><span class="pin">8</span><span><b>ยอดที่ประหยัด</b> รวม Flash + โปรโมชั่น (ไม่รวมมูลค่าของแถม และคูปองที่ยังไม่ใช้) · ปุ่มชำระเงินพาไปหน้าเช็คเอาต์เดิม ซึ่งคำนวณโปรซ้ำอีกครั้งที่เซิร์ฟเวอร์</span></li>
@@ -142,15 +145,16 @@
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>คำนวณใหม่ทุกครั้งที่จำนวนเปลี่ยน · สถานะโหลด: แสดงบรรทัดสรุปเป็น skeleton ไม่แสดงตัวเลขเก่า</li>
     <li>ถ้าสต็อกของแถมไม่พอสำหรับจำนวนที่ต้องให้ (เช่น ต้องให้ 3 ชิ้นแต่เหลือ 2) ระบบให้เท่าที่มีและแจ้งข้อความ "ของแถมเหลือเพียง N ชิ้น"</li>
-    <li>โควต้าต่อลูกค้าเต็ม: โปรไม่ถูกคิดและแสดงในกลุ่ม "ไม่ถูกใช้" พร้อมเหตุผล "โควต้าเต็มแล้ว"</li>
+    <li>โควต้าต่อลูกค้าเต็ม หรือโควต้าทั้งหมดของโปรเต็ม: โปรแสดงเป็นสีเทา พร้อมเหตุผล “โควต้าเต็มแล้ว” เลือกไม่ได้</li>
     <li>ยกเลิกออเดอร์/คืนสินค้าภายหลัง ไม่เรียกคืนของแถมหรือส่วนลดที่ใช้ไปแล้ว (นโยบายร่วม)</li>
   </ul></div>
   <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
     <li><b>ของแถมหมดสต็อกตอนลูกค้ามีโปรในตะกร้า:</b> ค่าเริ่มต้นในมอคอัพ = ไม่ให้ของแถม ไม่ชดเชย แจ้งข้อความ · ทางเลือก: แปลงเป็นส่วนลดเท่ามูลค่าของแถม (เช่น ฿60 — ต้องเพิ่มฟิลด์ "มูลค่าชดเชย" ในโปร) หรือให้ลูกค้าเลือกของแถมอื่นในโปรเดียวกัน</li>
     <li>แสดง "โปรที่ไม่ถูกใช้" ให้ลูกค้าเห็นหรือไม่ (ค่าเริ่มต้น = แสดงเฉพาะที่ผ่านเงื่อนไขครบ)</li>
-    <li>ลูกค้าเลือกไม่ใช้โปรบางตัวได้หรือไม่ (ค่าเริ่มต้น = ไม่ได้ ระบบเลือกให้)</li>
+    <li>ระบบควรติ๊ก “ชุดที่ประหยัดสุด” ไว้ให้ก่อนหรือไม่ (ค่าเริ่มต้นในมอคอัพ = ติ๊กให้ 1 โปรแรก ลูกค้าเปลี่ยนได้)</li>
     <li>แสดงมูลค่าของแถมในสรุปยอดและในยอด "ประหยัดไปแล้ว" หรือไม่ (ค่าเริ่มต้น = แสดงมูลค่าในบรรทัด ไม่รวมในยอดประหยัด)</li>
   </ul></div>
 </section>
 <script src="../assets/mockup.js"></script>
+
 </body></html>

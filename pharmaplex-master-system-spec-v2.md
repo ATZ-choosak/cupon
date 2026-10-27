@@ -739,3 +739,15 @@ CREATE TABLE starter_kit_items (
 | 2-7 | `spec/assets/ux/medicine-ziplock-bag_0.png` | ส่วนเงื่อนไขและปุ่มดำเนินการต่อ |
 
 ภาพตัวอย่างหน้าเว็บของสินค้าอื่น (ถุงหูหิ้วพลาสติก, ม่านบังยา, สติ๊กเกอร์) อยู่ในโฟลเดอร์ `spec/assets/ux/` ใช้ประกอบได้เมื่อต้องการ
+
+> **ปรับใหญ่ตาม mockup (27 ต.ค. 2569 รอบที่ 2):** (1) ยกเลิก `RewardSet`/`RewardSetVersion` กลาง → `RewardGroup(sourceModule, ownerType, ownerId)` + `RewardItem` 8 ชนิด (GIFT_SKU · DISCOUNT · FREE_SHIPPING · POINTS · COUPON · CREDIT · ENTITLEMENT · OFF_POS) ตั้งด้วย component เดียวในแต่ละโมดูล (2) โปรโมชั่น: ตัด `priority` ลูกค้าเลือกโปรเอง · เพิ่ม `globalLimit` (โควต้าทั้งหมด) คู่ `perCustomerLimit` · `strictUnit` อยู่กลุ่มเงื่อนไข · `newCustomerOnly` แทนคูปองลูกค้าใหม่ (3) คูปองเหลือ PaperCoupon + OnlineCoupon (CODE · COLLECTIBLE · MONTHLY) ข้อยกเว้นเลือกจาก ProductSet ได้ (4) สุ่มรางวัล: ตัด “เพิ่มรางวัลจากชุดของรางวัล” และเช็คลิสต์ “กฎหมาย/ภาษี” (ผ่านการตรวจแล้ว) (5) โมดูลจำลองครบวงจร `mockup/simulator/` + ลอจิก `mockup/assets/pmp-core.js` — DDL ยังไม่ปรับ ให้ถือ `dev-architecture.html` เป็นหลัก
+
+> **รอบที่ 3 (27 ต.ค. 2569):** โมดูลจำลองครอบคลุม Flash Sale · คูปองกระดาษ (ส่งก้น/นับ/จ่าย) · เซตร้านยา · กลุ่มลูกค้า · ฟอร์มรับสิทธิ์แคมเปญ + คิวอนุมัติ และทุกหน้า mockup ของโมดูลเหล่านี้มีกล่อง “ใช้งานจริง” — ลอจิกอ้างอิงอยู่ที่ `mockup/assets/pmp-core.js`
+
+> **รอบที่ 4:** หน้า mockup หลักทำงานจริงด้วย UI เดิม (live.js) — ดู README
+
+> **รอบที่ 5:** หน้าตั้งค่า/แก้ไขหลักผูกกับข้อมูลจริงด้วย UI เดิม (live.js) — ดู README
+
+> **รอบที่ 6:** ตัวสร้างแคมเปญขั้นบันได ตะกร้า กติกาพอยท์ ฯลฯ ทำงานจริงด้วย UI เดิม — ดู README
+
+> **รอบที่ 7:** ทุกหน้า mockup ของโมดูลที่จำลองทำงานจริงด้วย UI เดิม (live.js) — ดู README

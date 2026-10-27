@@ -1,0 +1,222 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตั้งค่าจำลอง (แอดมิน)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><link rel="stylesheet" href="../assets/sim.css"><script src="../assets/registry.js"></script>
+</head>
+<body data-shell="bare">
+<main id="screen">
+<div class="sim-wrap">
+  <div class="page-head" style="margin-bottom:12px">
+    <div><h4>ตั้งค่าจำลอง — ฝั่งแอดมิน</h4>
+      <p class="muted">แก้โปรโมชั่น คูปอง พอยท์ แคมเปญ ลุ้นโชค ได้จริงในหน้านี้ (บันทึกอัตโนมัติ) แล้วไปลองที่ <a href="02-cart.html">② ตะกร้า</a> · ผลตอบแทนทุกชนิดใช้ component เดียวกับหน้าแอดมินจริงของแต่ละโมดูล ค่าที่แก้ในหน้าโมดูล (เช่น <a href="../promotion/02-admin-editor.html">แก้ไขโปรโมชั่น</a>, <a href="../points/02-admin-catalog.html">แคตตาล็อกแลกพอยท์</a>) จะมาปรากฏที่นี่ด้วย</p></div>
+  </div>
+  <div class="cfg-tabs" id="tabs"></div>
+  <div id="pane"></div>
+</div>
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX / ลอจิก</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>บันทึกอัตโนมัติ</b> ทุกช่องบันทึกทันที (เก็บในเบราว์เซอร์นี้) · ปุ่ม “รีเซ็ตทั้งหมด” ด้านบนคืนค่าเริ่มต้น</span></li>
+    <li><span class="pin">2</span><span><b>component ผลตอบแทนเดียว</b> ของแถม SKU · ส่วนลด (บาท/% + เพดาน) · ฟรีค่าจัดส่ง · พอยท์ · คูปอง · เครดิตเงินคืน · สิทธิ์ลุ้น · ของรางวัลนอก POS — ใช้ในโปรโมชั่น พอยท์ แคมเปญ สุ่มรางวัล แต่ละที่เก็บชุดของตัวเอง (flag source_module)</span></li>
+    <li><span class="pin">3</span><span><b>วันที่จำลอง</b> เปลี่ยนที่แถบบนได้ เพื่อทดสอบโปรที่ยังไม่เริ่ม/หมดอายุ/วันพิเศษ</span></li>
+  </ol>
+</section>
+<script src="../assets/mockup.js"></script>
+<script src="../assets/pmp-core.js"></script><script src="../assets/reward.js"></script><script src="../assets/sim-ui.js"></script>
+<script>
+(function () {
+  var PMP = window.PMP, U = PMP.util, E = SIM.esc, B = U.baht;
+  var cfg, tab = 'general', open = {};
+  function AUDX(noNew) {
+    var a = [['all', 'ทุกคน']]; if (!noNew) a.push(['new', 'เฉพาะลูกค้าใหม่ (ไม่เคยสั่งซื้อ)']); a.push(['B2B', 'เฉพาะ B2B'], ['B2C', 'เฉพาะ B2C']);
+    cfg.csets.forEach(function (c) { a.push(['set:' + c.id, 'กลุ่มลูกค้า: ' + c.name]); }); return a;
+  }
+  var TABS = [['general', 'ทั่วไป & กลุ่มสินค้า'], ['promos', 'โปรโมชั่น'], ['coupons', 'คูปอง'], ['points', 'พอยท์'], ['camp', 'แคมเปญ'], ['raffle', 'สุ่มรางวัล'], ['flash', 'Flash Sale'], ['paper', 'คูปองกระดาษ'], ['kits', 'เซตร้านยาเปิดใหม่'], ['csets', 'กลุ่มลูกค้า']];
+  function get(p) { return p.split('.').reduce(function (a, k) { return a[k]; }, cfg); }
+  function set(p, v) { var ks = p.split('.'), l = ks.pop(); ks.reduce(function (a, k) { return a[k]; }, cfg)[l] = v; }
+  function F(label, path, type, o) {
+    o = o || {}; var v = get(path), cls = 'f' + (o.w ? ' w' + o.w : ''), h = '<label class="' + cls + '"><span>' + label + '</span>';
+    if (type === 'select') h += '<select class="select" data-path="' + path + '" data-ty="s">' + o.opts.map(function (x) { return '<option value="' + x[0] + '"' + (String(v) === String(x[0]) ? ' selected' : '') + '>' + E(x[1]) + '</option>'; }).join('') + '</select>';
+    else h += '<input class="input" data-path="' + path + '" data-ty="' + (type === 'number' ? 'n' : 't') + '" type="' + type + '" value="' + E(v) + '">';
+    return h + '</label>';
+  }
+  function SW(label, path) { return '<label><input type="checkbox" data-path="' + path + '" data-ty="b"' + (get(path) ? ' checked' : '') + '> ' + label + '</label>'; }
+  function scopeUI(path) {
+    var sc = get(path), h = F('ขอบเขตสินค้า', path + '.mode', 'select', { opts: [['all', 'ทุกสินค้า'], ['skus', 'เลือกรายสินค้า'], ['pset', 'กลุ่มสินค้าที่ตั้งไว้']] });
+    if (sc.mode === 'pset') h += F('กลุ่มสินค้า', path + '.ref', 'select', { opts: cfg.psets.map(function (p) { return [p.id, p.name]; }) });
+    if (sc.mode === 'skus') h += '<div class="f w3"><span>สินค้า</span><div class="cfg-chk">' + PMP.products.map(function (p) { return '<label><input type="checkbox" data-arr="' + path + '.ref" data-val="' + p.sku + '"' + ((sc.ref || []).indexOf(p.sku) > -1 ? ' checked' : '') + '> ' + E(p.sku) + '</label>'; }).join('') + '</div></div>';
+    return h;
+  }
+  function item(key, title, chip, body, del) {
+    return '<div class="cfg-item' + (open[key] ? ' open' : '') + '" data-k="' + key + '"><div class="hd" data-toggle="' + key + '"><b>' + E(title) + '</b>' + chip + '<span class="muted small">▾</span></div><div class="bd">' + body + (del ? '<div class="row end mt16"><button class="btn text sm grey" data-del="' + del + '" type="button">ลบรายการนี้</button></div>' : '') + '</div></div>';
+  }
+  function stChip(o) { var s = PMP.status(o, cfg.now); return '<span class="chip ' + ({ running: 'success', upcoming: 'warning', expired: 'error', exhausted: 'error', inactive: '' }[s]) + '">' + PMP.statusLabel[s] + '</span>'; }
+  function rw(module, ref, kinds, title) { return '<div class="cfg-sec">' + title + '</div><div data-rwd data-module="' + module + '" data-ref="' + ref + '" data-kinds="' + kinds + '" data-title="' + title + '"></div>'; }
+
+  function render() {
+    cfg = PMP.cfg(); var h = '';
+    document.getElementById('tabs').innerHTML = TABS.map(function (t) { return '<button data-t="' + t[0] + '" class="' + (tab === t[0] ? 'on' : '') + '">' + t[1] + '</button>'; }).join('');
+    if (tab === 'general') {
+      h += '<div class="sim-card"><h6>ตั้งค่ากลาง</h6><div class="cfg-g">' + F('วันที่จำลอง', 'now', 'date') + F('ค่าจัดส่งมาตรฐาน (฿)', 'shipping.fee', 'number') + F('ส่งฟรีเมื่อยอดสินค้า ≥ (฿)', 'shipping.freeOver', 'number') + F('1 พอยท์ = (฿) ตอนชำระ', 'pay.ptBaht', 'number') + F('ใช้พอยท์ชำระได้สูงสุด (% ของยอดสินค้า)', 'pay.maxPct', 'number') + F('พอยท์หมดอายุใน (วัน)', 'points.expiryDays', 'number') + '</div></div>';
+      h += '<div class="sim-card"><h6>กลุ่มสินค้า (ใช้ซ้ำในโปร คูปอง แคมเปญ พอยท์)</h6><p class="sub">ตั้งจริงที่ <a href="../foundation/04-admin-product-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มสินค้า</a> — ในจำลองแสดงกติกาของแต่ละกลุ่มเพื่อให้เลือกใช้</p>' +
+        cfg.psets.map(function (p) { var m = PMP.products.filter(function (x) { return PMP.inScope(cfg, { mode: 'pset', ref: p.id }, x); }); return '<div class="st-row"><div><b>' + E(p.name) + '</b><div class="s">รวม: ' + E(p.brands.concat(p.cats, p.skus).join(', ') || '—') + (p.exclude.length ? ' · ยกเว้น: ' + E(p.exclude.join(', ')) : '') + '</div></div><span class="chip">' + m.length + ' SKU</span></div>'; }).join('') + '</div>';
+      h += '<div class="sim-card"><h6>สินค้าในระบบจำลอง</h6>' + PMP.products.map(function (p) { return '<div class="st-row"><div>' + E(p.sku) + ' · ' + E(p.name) + '<div class="s">' + p.brand + ' · ' + p.cat + ' · พอยท์/หน่วย ' + p.pts + ' · 1 ' + p.unit + ' = ' + p.factor + ' หน่วยฐาน</div></div><label class="f" style="width:130px;font-size:11px">สต็อก (ว่าง = ไม่จำกัด)<input class="input" type="number" data-path="stock.' + p.sku + '" data-ty="n" value="' + (cfg.stock[p.sku] == null ? '' : cfg.stock[p.sku]) + '" style="min-height:30px;padding:2px 8px"></label><b>' + B(p.price) + '</b></div>'; }).join('') + '</div>';
+    }
+    if (tab === 'promos') {
+      cfg.promos.forEach(function (p, i) {
+        var P = 'promos.' + i, items = PMP.rewardsOf('promotion', p.id);
+        var body = '<div class="cfg-g">' + F('ชื่อโปรโมชั่น', P + '.name', 'text', { w: 3 }) + F('ประเภท', P + '.kind', 'select', { opts: [['cond', 'โปรโมชั่นตามเงื่อนไข'], ['special', 'ลดตามวันพิเศษ']] }) + F('เริ่ม', P + '.start', 'date') + F('สิ้นสุด', P + '.end', 'date') +
+          F('โควต้าทั้งหมด (0 = ไม่จำกัด)', P + '.quotaTotal', 'number') + F('ใช้ไปแล้ว', P + '.used', 'number') + F('โควต้าต่อลูกค้า (0 = ไม่จำกัด)', P + '.perCust', 'number') +
+          F('ใครใช้ได้', P + '.aud', 'select', { opts: AUDX() }) + F('เงื่อนไข', P + '.ctype', 'select', { opts: [['qty', 'ตามจำนวน'], ['amt', 'ตามจำนวนเงินรวม']] }) + F(p.ctype === 'qty' ? 'จำนวนขั้นต่ำ' : 'ยอดเงินขั้นต่ำ (฿)', P + '.min', 'number') + scopeUI(P + '.scope') + '</div>' +
+          '<div class="cfg-sw">' + SW('เปิดใช้งาน', P + '.active') + SW('ตรวจหน่วยสินค้าเข้มงวด', P + '.strict') + SW('ใช้ร่วมกับโปรอื่นได้', P + '.stackPromo') + SW('ใช้ร่วมกับคูปองได้', P + '.stackCoupon') + SW('ใช้ร่วมกับการชำระด้วยพอยท์ได้', P + '.stackPoints') + '</div>' +
+          rw('promotion', p.id, 'gift,disc,ship,points,coupon,credit,entitle,offpos', 'ผลตอบแทน');
+        h += item('p' + p.id, p.name, stChip(p) + '<span class="chip soft-primary">' + items.length + ' ผลตอบแทน</span>', body, 'promos|' + i);
+      });
+      h += '<button class="btn contained" id="addPromo" type="button">＋ เพิ่มโปรโมชั่น</button>';
+    }
+    if (tab === 'coupons') {
+      cfg.coupons.forEach(function (k, i) {
+        var K = 'coupons.' + i;
+        var body = '<div class="cfg-g">' + F('โค้ด', K + '.code', 'text') + F('ชื่อคูปอง', K + '.name', 'text', { w: 2 }) + F('แบบ (วิธีให้สิทธิ์)', K + '.kind', 'select', { opts: [['code', 'โค้ดส่วนลด (กรอกโค้ด)'], ['collect', 'เก็บเอง (ลูกค้ากดเก็บ)'], ['monthly', 'แจกรายเดือน (ระบบแจก)']] }) +
+          F('เริ่ม', K + '.start', 'date') + F('สิ้นสุด', K + '.end', 'date') + F('โควต้าทั้งหมด (0 = ไม่จำกัด)', K + '.quotaTotal', 'number') + F('ใช้ไปแล้ว', K + '.used', 'number') + F('ต่อคน (0 = ไม่จำกัด)', K + '.perCust', 'number') + F('ใครใช้ได้', K + '.aud', 'select', { opts: AUDX(true) }) +
+          F('ชนิดส่วนลด', K + '.dtype', 'select', { opts: [['baht', 'ลดเป็นบาท'], ['pct', 'ลดเป็น %'], ['ship', 'ฟรีค่าจัดส่ง']] }) + F('มูลค่า (บาท หรือ %)', K + '.value', 'number') + F('ลดสูงสุด (฿) เมื่อเป็น %', K + '.cap', 'number') + F('ยอดซื้อขั้นต่ำ (฿)', K + '.min', 'number') + scopeUI(K + '.scope') +
+          '<div class="f w3"><span>ข้อยกเว้น — เลือกจากกลุ่มสินค้า</span><div class="cfg-chk">' + cfg.psets.map(function (p) { return '<label><input type="checkbox" data-arr="' + K + '.except" data-val="' + p.id + '"' + (k.except.indexOf(p.id) > -1 ? ' checked' : '') + '> ' + E(p.name) + '</label>'; }).join('') + '</div></div></div>' +
+          '<div class="cfg-sw">' + SW('เปิดใช้งาน', K + '.active') + SW('ใช้ร่วมกับโปรโมชั่นได้', K + '.stackPromo') + SW('ใช้ร่วมกับการชำระด้วยพอยท์ได้', K + '.stackPoints') + '</div>';
+        h += item('k' + k.id, k.code + ' · ' + k.name, stChip(k) + '<span class="chip soft-info">' + { code: 'โค้ดส่วนลด', collect: 'เก็บเอง', monthly: 'แจกรายเดือน' }[k.kind] + '</span>', body, 'coupons|' + i);
+      });
+      h += '<button class="btn contained" id="addCoupon" type="button">＋ เพิ่มคูปองออนไลน์</button><div class="small muted mt8">คูปองลูกค้าใหม่ไม่มีแล้ว — ตั้งเป็นโปรโมชั่น “เฉพาะลูกค้าใหม่” · คูปองกระดาษใช้ที่ร้าน ไม่อยู่ในตะกร้าออนไลน์</div>';
+    }
+    if (tab === 'points') {
+      h += '<div class="sim-card"><h6>ตัวคูณพอยท์ช่วงแคมเปญ</h6><p class="sub">พอยท์ = Σ(จำนวน × พอยท์ต่อหน่วย × ตัวคูณ) · ตัวคูณซ้อนกันคือ “บวก” (×1.5 + ×2 = ×2.5)</p>';
+      cfg.points.mults.forEach(function (m, i) { var M = 'points.mults.' + i; h += '<div class="cfg-item open"><div class="bd" style="display:block;border:0"><div class="cfg-g">' + F('ชื่อ', M + '.name', 'text', { w: 2 }) + F('เริ่ม', M + '.start', 'date') + F('สิ้นสุด', M + '.end', 'date') + F('ตัวคูณ', M + '.mult', 'number') + scopeUI(M + '.scope') + '</div><div class="row end"><button class="btn text sm grey" data-del="mults|' + i + '" type="button">ลบ</button></div></div></div>'; });
+      h += '<button class="btn outlined sm" id="addMult" type="button">＋ เพิ่มตัวคูณ</button></div>';
+      h += '<div class="sim-card"><h6>แคตตาล็อกแลกของรางวัลด้วยพอยท์</h6><p class="sub">ผลตอบแทนของแต่ละรายการตั้งด้วย component (ไม่มีชุดของรางวัลกลางแล้ว)</p>';
+      cfg.catalog.forEach(function (c, i) {
+        var C = 'catalog.' + i;
+        var body = '<div class="cfg-g">' + F('ชื่อรายการ', C + '.name', 'text', { w: 2 }) + F('พอยท์ที่ใช้', C + '.pts', 'number') + F('โควตารวม (คงเหลือ)', C + '.stock', 'number') + '</div><div class="cfg-sw">' + SW('เปิดใช้งาน', C + '.active') + '</div>' + rw('points', c.id, 'gift,points,coupon,credit,entitle,offpos', 'ผลตอบแทนเมื่อแลก');
+        h += item('c' + c.id, c.name, '<span class="chip soft-warning">' + c.pts + ' พอยท์</span><span class="chip soft-primary">' + PMP.rewardsOf('points', c.id).length + ' ผลตอบแทน</span>', body, 'catalog|' + i);
+      });
+      h += '<button class="btn outlined sm" id="addCat" type="button">＋ เพิ่มรายการแลก</button></div>';
+    }
+    if (tab === 'camp') {
+      h += '<div class="sim-card"><h6>แคมเปญช่วงเวลา + โควตา (ราคาพิเศษ)</h6>';
+      cfg.quota.forEach(function (q, i) {
+        var Q = 'quota.' + i;
+        h += item('q' + q.id, q.name, stChip(q), '<div class="cfg-g">' + F('ชื่อแคมเปญ', Q + '.name', 'text', { w: 2 }) + F('สินค้า', Q + '.sku', 'select', { opts: PMP.products.map(function (p) { return [p.sku, p.sku + ' · ' + p.name]; }) }) + F('ราคาพิเศษ (฿)', Q + '.special', 'number') + F('โควตารวม', Q + '.quotaTotal', 'number') + F('ใช้ไปแล้ว', Q + '.used', 'number') + F('ต่อคน', Q + '.perCust', 'number') + F('เริ่ม', Q + '.start', 'date') + F('สิ้นสุด', Q + '.end', 'date') + F('ใครเข้าร่วมได้', Q + '.aud', 'select', { opts: AUDX(true) }) + '</div><div class="cfg-sw">' + SW('เปิดใช้งาน', Q + '.active') + '</div>', 'quota|' + i);
+      });
+      h += '<button class="btn outlined sm" id="addQuota" type="button">＋ เพิ่มแคมเปญโควตา</button></div>';
+      h += '<div class="sim-card"><h6>แคมเปญสะสมยอดรายปี (ขั้นบันได)</h6>';
+      cfg.ladders.forEach(function (L, i) {
+        var P = 'ladders.' + i;
+        var body = '<div class="cfg-g">' + F('ชื่อแคมเปญ', P + '.name', 'text', { w: 2 }) + F('เริ่ม', P + '.start', 'date') + F('สิ้นสุด', P + '.end', 'date') + F('ใครเข้าร่วมได้', P + '.aud', 'select', { opts: AUDX(true) }) + scopeUI(P + '.scope') + '</div><div class="cfg-sw">' + SW('เปิดใช้งาน', P + '.active') + '</div>';
+        L.tiers.forEach(function (t, j) {
+          var T = P + '.tiers.' + j;
+          body += '<div class="cfg-sec">ขั้นที่ ' + (j + 1) + '</div><div class="cfg-g">' + F('ชื่อขั้น', T + '.name', 'text', { w: 2 }) + F('ยอดเกณฑ์สะสม (฿)', T + '.at', 'number') + F('จำนวนสิทธิ์ (0 = ไม่จำกัด)', T + '.cap', 'number') + '<label class="f w3"><span>ฟอร์มขอข้อมูลตอนรับสิทธิ์ (บรรทัดละ 1 ช่อง ใส่ * ท้ายถ้าจำเป็น)</span><textarea class="textarea" data-path="' + T + '.formText" data-ty="t" rows="3">' + E(t.formText || '') + '</textarea></label></div>' + rw('campaign', L.id + '-' + t.id, 'gift,points,coupon,credit,entitle,offpos', 'รางวัลของขั้นนี้') + '<div class="row end"><button class="btn text sm grey" data-del="tiers|' + i + '|' + j + '" type="button">ลบขั้นนี้</button></div>';
+        });
+        body += '<button class="btn outlined sm" data-addtier="' + i + '" type="button">＋ เพิ่มขั้น</button>';
+        h += item('l' + L.id, L.name, stChip(L) + '<span class="chip soft-primary">' + L.tiers.length + ' ขั้น</span>', body, 'ladders|' + i);
+      });
+      h += '</div>';
+    }
+    if (tab === 'raffle') {
+      cfg.raffles.forEach(function (f, i) {
+        var Fp = 'raffles.' + i;
+        var body = '<div class="cfg-g">' + F('ชื่อกิจกรรม', Fp + '.name', 'text', { w: 2 }) + F('เริ่ม', Fp + '.start', 'date') + F('สิ้นสุด', Fp + '.end', 'date') + F('ได้ 1 สิทธิ์ทุกยอดซื้อ (฿)', Fp + '.perBaht', 'number') + F('โหมดหลัก', Fp + '.mode', 'select', { opts: [['A', 'A · ลุ้นทันที'], ['B', 'B · จับตามรอบ']] }) + F('ผู้เข้าร่วมอื่นในกอง B (สมมติ)', Fp + '.poolOthers', 'number') + '</div><div class="cfg-sw">' + SW('เปิดใช้งาน', Fp + '.active') + '</div>';
+        f.prizes.forEach(function (z, j) {
+          var Z = Fp + '.prizes.' + j;
+          body += '<div class="cfg-sec">รางวัลที่ ' + (j + 1) + '</div><div class="cfg-g">' + F('ชื่อรางวัล', Z + '.name', 'text', { w: 2 }) + F('น้ำหนัก (โอกาส)', Z + '.weight', 'number') + F('จำนวนจำกัด', Z + '.stock', 'number') + '</div>' + rw('raffle', z.id, 'gift,points,coupon,credit,entitle,offpos', 'ผลตอบแทนของรางวัลนี้') + '<div class="row end"><button class="btn text sm grey" data-del="prizes|' + i + '|' + j + '" type="button">ลบรางวัล</button></div>';
+        });
+        body += '<button class="btn outlined sm" data-addprize="' + i + '" type="button">＋ เพิ่มรางวัล</button>';
+        h += item('f' + f.id, f.name, stChip(f), body, null);
+      });
+    }
+    if (tab === 'csets') {
+      cfg.csets.forEach(function (c, i) {
+        var C = 'csets.' + i;
+        h += item('cs' + c.id, c.name, '<span class="chip soft-info">' + (c.members.length + c.extra) + ' ราย</span>', '<div class="cfg-g">' + F('ชื่อกลุ่ม', C + '.name', 'text', { w: 2 }) + F('หมายเหตุ', C + '.note', 'text') + F('สมาชิกอื่น (นอกจำลอง) จำนวน', C + '.extra', 'number') + '</div><div class="cfg-sec">สมาชิกในจำลอง</div><div class="cfg-chk">' + PMP.customers.map(function (u) { return '<label><input type="checkbox" data-arr="' + C + '.members" data-val="' + u.id + '"' + (c.members.indexOf(u.id) > -1 ? ' checked' : '') + '> ' + E(u.name) + '</label>'; }).join('') + '</div><div class="cfg-sec">นำเข้าจากรายการรหัสลูกค้า (วางทีละบรรทัด: c-b2b / c-new / c-b2c)</div><textarea class="textarea" data-import="' + i + '" rows="3" placeholder="c-b2b&#10;c-new"></textarea><button class="btn outlined sm mt8" data-doimport="' + i + '" type="button">นำเข้า</button><div class="small muted mt8">ใช้กลุ่มนี้เป็น “ใครใช้ได้” ในโปร/คูปอง/แคมเปญ ได้ที่ช่องกลุ่มเป้าหมาย (exclude/include แบบหลายกลุ่มอยู่ในดีไซน์จริง จำลองใช้กลุ่มเดียวต่อรายการ)</div>', 'csets|' + i);
+      });
+      h += '<button class="btn contained" id="addCset" type="button">＋ เพิ่มกลุ่มลูกค้า</button>';
+    }
+    if (tab === 'flash') {
+      cfg.flash.forEach(function (f, i) {
+        var P = 'flash.' + i, body = '<div class="cfg-g">' + F('ชื่อแคมเปญ', P + '.name', 'text', { w: 2 }) + F('เริ่ม', P + '.start', 'date') + F('สิ้นสุด', P + '.end', 'date') + F('โควตารอบ (ชิ้น, 0 = ไม่จำกัด)', P + '.quota', 'number') + F('ขายแล้ว', P + '.used', 'number') + '</div><div class="cfg-sw">' + SW('เปิดใช้งาน', P + '.active') + '</div><div class="cfg-sec">กลุ่มสินค้า + % ส่วนลด</div>';
+        f.rules.forEach(function (r, j) { body += '<div class="cfg-g">' + F('กลุ่มสินค้า', P + '.rules.' + j + '.ps', 'select', { opts: cfg.psets.map(function (p) { return [p.id, p.name]; }) }) + F('ลด (%)', P + '.rules.' + j + '.pct', 'number') + '<div class="f"><span>&nbsp;</span><button class="btn text sm grey" data-del="rules|' + i + '|' + j + '" type="button">ลบกติกา</button></div></div>'; });
+        body += '<button class="btn outlined sm mt8" data-addrule="' + i + '" type="button">＋ เพิ่มกลุ่มสินค้า</button>';
+        h += item('fl' + f.id, f.name, stChip({ active: f.active, start: f.start, end: f.end, quotaTotal: f.quota, used: f.used }), body, 'flash|' + i);
+      });
+      h += '<button class="btn contained" id="addFlash" type="button">＋ เพิ่ม Flash Sale</button><div class="small muted mt8">Flash คิดก่อนโปรโมชั่น (ราคาฐานของโปรคือราคาหลัง Flash) · สินค้าที่ได้ราคาแคมเปญโควตาแล้วไม่ซ้อน Flash</div>';
+    }
+    if (tab === 'paper') {
+      cfg.paper.forEach(function (c, i) {
+        var P = 'paper.' + i;
+        var body = '<div class="cfg-g">' + F('รหัสชุด', P + '.code', 'text') + F('ชื่อ', P + '.name', 'text', { w: 2 }) + F('มูลค่าส่วนลด (฿/ใบ)', P + '.value', 'number') + F('ยอดซื้อขั้นต่ำ (฿)', P + '.min', 'number') + F('จำนวนที่ออก (ใบ)', P + '.issued', 'number') + F('ใบสูงสุดต่อร้าน', P + '.maxPerStore', 'number') + F('กำหนดส่งก้นเบิก (วัน)', P + '.payDays', 'number') + F('ข้อความหลังคูปอง (≤160 ตัวอักษร)', P + '.back', 'text', { w: 3 }) + F('ร้านที่ร่วมรายการ', P + '.stores.mode', 'select', { opts: [['all', 'ทุกร้านที่ลงทะเบียน'], ['pick', 'เลือกเฉพาะร้าน']] }) + '</div>';
+        if (c.stores.mode === 'pick') body += '<div class="cfg-sec">เลือกร้าน</div><div class="cfg-chk">' + PMP.stores.map(function (u) { return '<label><input type="checkbox" data-arr="' + P + '.stores.ids" data-val="' + u.id + '"' + (c.stores.ids.indexOf(u.id) > -1 ? ' checked' : '') + '> ' + E(u.name) + '</label>'; }).join('') + '</div>';
+        body += '<div class="cfg-sw">' + SW('เปิดใช้งาน', P + '.active') + '</div><div class="small muted mt8">คูปองกระดาษไม่มี “ใครใช้ได้” — ระบบไม่ได้สั่งพิมพ์ ทีมการตลาดพิมพ์และแจกเอง · ส่งก้นเบิกที่แท็บ “คูปองกระดาษ” ของหน้าสิทธิ์ & ผลลัพธ์</div>';
+        h += item('pp' + c.id, c.code + ' · ' + c.name, '<span class="chip ' + (c.active ? 'success' : '') + '">' + (c.active ? 'ใช้งาน' : 'ปิด') + '</span><span class="chip soft-info">' + (c.stores.mode === 'all' ? 'ทุกร้าน' : c.stores.ids.length + ' ร้าน') + '</span>', body, 'paper|' + i);
+      });
+      h += '<button class="btn contained" id="addPaper" type="button">＋ สร้างชุดคูปองกระดาษ</button>';
+    }
+    if (tab === 'kits') {
+      cfg.kits.forEach(function (k, i) {
+        var P = 'kits.' + i, body = '<div class="cfg-g">' + F('ชื่อเซต', P + '.name', 'text', { w: 2 }) + F('ส่วนลดเซต (%)', P + '.disc', 'number') + F('ใครสั่งได้', P + '.aud', 'select', { opts: [['all', 'ทุกคน'], ['B2B', 'เฉพาะ B2B (ค่าเริ่มต้น)']] }) + '</div><div class="cfg-sec">รายการสินค้าในเซต</div>';
+        k.items.forEach(function (it, j) { var I = P + '.items.' + j; body += '<div class="cfg-g">' + F('สินค้า', I + '.sku', 'select', { opts: PMP.products.map(function (p) { return [p.sku, p.sku + ' · ' + p.name]; }) }) + F('จำนวนตั้งต้น', I + '.qty', 'number') + F('ขั้นต่ำ (สินค้าบังคับ)', I + '.min', 'number') + '<div class="f"><span>&nbsp;</span><div class="cfg-sw" style="margin:0">' + SW('สินค้าบังคับ', I + '.req') + '<button class="btn text sm grey" data-del="kitem|' + i + '|' + j + '" type="button">ลบ</button></div></div></div>'; });
+        body += '<button class="btn outlined sm mt8" data-additem="' + i + '" type="button">＋ เพิ่มสินค้าในเซต</button>';
+        h += item('kt' + k.id, k.name, '<span class="chip soft-info">' + k.items.length + ' รายการ</span><span class="chip">' + (k.aud === 'B2B' ? 'B2B' : 'ทุกคน') + '</span>', body, 'kits|' + i);
+      });
+      h += '<button class="btn contained" id="addKit" type="button">＋ สร้างเซตร้านยา</button><div class="small muted mt8">สต็อกสินค้าตั้งที่แท็บ “ทั่วไป & กลุ่มสินค้า” — สินค้าบังคับที่สต็อกไม่พอ = สั่งเซตไม่ได้</div>';
+    }
+    document.getElementById('pane').innerHTML = h;
+    if (PMP.Reward) PMP.Reward.init();
+  }
+  function persist() { PMP.saveCfg(cfg); }
+  document.addEventListener('input', function (e) {
+    var t = e.target, p = t.getAttribute && t.getAttribute('data-path'); if (!p) return;
+    var ty = t.getAttribute('data-ty'), v = ty === 'n' ? Number(t.value) : ty === 'b' ? t.checked : t.value;
+    if (/^stock\./.test(p) && t.value === '') { delete cfg.stock[p.slice(6)]; persist(); return; }
+    set(p, v); persist();
+  });
+  document.addEventListener('change', function (e) {
+    var t = e.target; if (!t.getAttribute) return;
+    var arr = t.getAttribute('data-arr');
+    if (arr) { var a = get(arr) || []; var v = t.getAttribute('data-val'), i = a.indexOf(v); if (t.checked && i < 0) a.push(v); if (!t.checked && i > -1) a.splice(i, 1); set(arr, a); persist(); return; }
+    var p = t.getAttribute('data-path'); if (!p) return;
+    if (/\.(mode|ctype|kind|dtype|active|name|code|aud|start|end|req|sku)$/.test(p) || p === 'now') { if (/scope\.mode$/.test(p)) { var sp = p.replace('.mode', ''); set(sp + '.ref', t.value === 'skus' ? [] : t.value === 'pset' ? cfg.psets[0].id : null); persist(); } render(); }
+  });
+  document.addEventListener('click', function (e) {
+    var t = e.target; var tg = t.closest && t.closest('[data-toggle]');
+    if (t.closest && t.closest('[data-t]')) { tab = t.closest('[data-t]').getAttribute('data-t'); render(); return; }
+    var del = t.closest && t.closest('[data-del]');
+    if (del) {
+      var d = del.getAttribute('data-del').split('|'), k = d[0], i = +d[1];
+      if (!confirm('ลบรายการนี้?')) return;
+      if (k === 'rules') cfg.flash[i].rules.splice(+d[2], 1); else if (k === 'kitem') cfg.kits[i].items.splice(+d[2], 1); else if (k === 'tiers') cfg.ladders[i].tiers.splice(+d[2], 1); else if (k === 'prizes') cfg.raffles[i].prizes.splice(+d[2], 1); else if (k === 'mults') cfg.points.mults.splice(i, 1); else cfg[k].splice(i, 1);
+      persist(); render(); return;
+    }
+    if (tg) { var key = tg.getAttribute('data-toggle'); open[key] = !open[key]; tg.parentElement.classList.toggle('open', !!open[key]); return; }
+    var id = t.id, at;
+    if (id === 'addCset') { var sid = U.uid('cs'); cfg.csets.push({ id: sid, name: 'กลุ่มลูกค้าใหม่', members: [], extra: 0, note: '' }); open['cs' + sid] = true; persist(); render(); return; }
+    if (id === 'addFlash') { var fid = U.uid('fl'); cfg.flash.push({ id: fid, name: 'Flash Sale ใหม่', start: cfg.now, end: PMP.addDays(cfg.now, 1), active: true, quota: 50, used: 0, rules: [{ ps: cfg.psets[0].id, pct: 10 }] }); open['fl' + fid] = true; persist(); render(); return; }
+    if (id === 'addPaper') { var pid2 = U.uid('pp'); cfg.paper.push({ id: pid2, code: 'NEW' + pid2.slice(2, 5).toUpperCase(), name: 'คูปองกระดาษชุดใหม่', value: 50, min: 500, issued: 500, maxPerStore: 100, stores: { mode: 'all', ids: [] }, active: true, payDays: 30, back: '' }); open['pp' + pid2] = true; persist(); render(); return; }
+    if (id === 'addKit') { var kid2 = U.uid('kt'); cfg.kits.push({ id: kid2, name: 'เซตร้านยาใหม่', disc: 5, aud: 'B2B', items: [{ sku: 'PAR-500', qty: 20, min: 10, req: true }] }); open['kt' + kid2] = true; persist(); render(); return; }
+    if ((at = t.getAttribute && t.getAttribute('data-addrule')) != null) { cfg.flash[+at].rules.push({ ps: cfg.psets[0].id, pct: 10 }); persist(); render(); return; }
+    if ((at = t.getAttribute && t.getAttribute('data-additem')) != null) { cfg.kits[+at].items.push({ sku: 'BM-VC500', qty: 1, min: 0, req: false }); persist(); render(); return; }
+    if ((at = t.getAttribute && t.getAttribute('data-doimport')) != null) { var ta = document.querySelector('[data-import="' + at + '"]'), n = 0; (ta.value || '').split(/\s+/).filter(Boolean).forEach(function (cid) { if (PMP.customers.some(function (u) { return u.id === cid; }) && cfg.csets[+at].members.indexOf(cid) < 0) { cfg.csets[+at].members.push(cid); n++; } else if (!PMP.customers.some(function (u) { return u.id === cid; })) { cfg.csets[+at].extra++; n++; } }); persist(); render(); SIM.toast('นำเข้าแล้ว ' + n + ' รายการ'); return; }
+    if (id === 'addPromo') { var pid = U.uid('p'); cfg.promos.push({ id: pid, name: 'โปรโมชั่นใหม่', kind: 'cond', start: cfg.now, end: PMP.addDays(cfg.now, 60), active: true, quotaTotal: 100, used: 0, perCust: 2, aud: 'all', ctype: 'amt', min: 1000, scope: { mode: 'all', ref: null }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true }); PMP.saveRewards('promotion', pid, [{ k: 'disc', mode: 'baht', value: 100, cap: 0 }]); open['p' + pid] = true; persist(); render(); return; }
+    if (id === 'addCoupon') { var kid = U.uid('k'); cfg.coupons.push({ id: kid, code: 'NEW' + kid.slice(1, 4).toUpperCase(), name: 'คูปองใหม่', kind: 'code', start: cfg.now, end: PMP.addDays(cfg.now, 60), active: true, quotaTotal: 100, used: 0, perCust: 1, aud: 'all', dtype: 'baht', value: 50, cap: 0, min: 500, scope: { mode: 'all', ref: null }, except: [], stackPromo: true, stackPoints: true }); open['k' + kid] = true; persist(); render(); return; }
+    if (id === 'addMult') { cfg.points.mults.push({ id: U.uid('m'), name: 'ตัวคูณใหม่', start: cfg.now, end: PMP.addDays(cfg.now, 30), mult: 2, scope: { mode: 'all', ref: null } }); persist(); render(); return; }
+    if (id === 'addCat') { var cid = U.uid('r'); cfg.catalog.push({ id: cid, name: 'รายการแลกใหม่', pts: 200, stock: 50, active: true, aud: 'all' }); PMP.saveRewards('points', cid, [{ k: 'points', pts: 50 }]); open['c' + cid] = true; persist(); render(); return; }
+    if (id === 'addQuota') { var qid = U.uid('q'); cfg.quota.push({ id: qid, name: 'แคมเปญราคาพิเศษใหม่', start: cfg.now, end: PMP.addDays(cfg.now, 14), active: true, sku: 'BM-VC500', special: 350, quotaTotal: 30, used: 0, perCust: 5, holdMin: 15, aud: 'all' }); open['q' + qid] = true; persist(); render(); return; }
+    if ((at = t.getAttribute && t.getAttribute('data-addtier')) != null) { var L = cfg.ladders[+at], tid = 't' + (L.tiers.length + 1) + U.uid('').slice(0, 2); L.tiers.push({ id: tid, at: (L.tiers.length ? L.tiers[L.tiers.length - 1].at : 0) + 20000, name: 'ขั้นใหม่', cap: 0 }); PMP.saveRewards('campaign', L.id + '-' + tid, [{ k: 'points', pts: 100 }]); persist(); render(); return; }
+    if ((at = t.getAttribute && t.getAttribute('data-addprize')) != null) { var f = cfg.raffles[+at], zid = U.uid('z'); f.prizes.push({ id: zid, name: 'รางวัลใหม่', weight: 10, stock: 50 }); PMP.saveRewards('raffle', zid, [{ k: 'points', pts: 100 }]); persist(); render(); return; }
+  });
+  document.addEventListener('rwd:change', function () { /* reward edits are already persisted; just refresh the badge counts lazily */ });
+  SIM.onReady(function () {
+    var m = location.hash.replace('#', '').split(':');
+    if (m[0] && TABS.some(function (t) { return t[0] === m[0]; })) tab = m[0];
+    if (m[1]) { var pre = { promos: 'p', coupons: 'k', points: 'c', camp: 'l', raffle: 'f', flash: 'fl', paper: 'pp', kits: 'kt', csets: 'cs' }[m[0]] || ''; open[pre + m[1]] = true; }
+    SIM.mount('config', function () { render(); }); render();
+  });
+})();
+</script>
+</body></html>

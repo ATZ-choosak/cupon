@@ -1,0 +1,173 @@
+<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>จำลองตะกร้า ครบวงจร</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><link rel="stylesheet" href="../assets/sim.css"><script src="../assets/registry.js"></script>
+</head>
+<body data-shell="bare">
+<main id="screen">
+<div class="sim-wrap">
+  <div class="page-head" style="margin-bottom:16px">
+    <div><h4>ตะกร้า / ชำระเงิน — ฝั่งลูกค้า</h4>
+      <p class="muted">คำนวณจริงจากค่าที่ตั้งใน <a href="01-config.html">① ตั้งค่า</a>: ราคาแคมเปญโควตา → โปรโมชั่นที่ลูกค้าเลือก → คูปอง → ค่าส่ง → พอยท์/เครดิต แล้วกด “ชำระเงิน” เพื่อให้ผลเกิดจริง (ตัดโควตา ให้พอยท์ คูปอง สิทธิ์ลุ้น ยอดสะสมแคมเปญ) ไปดูต่อที่ <a href="03-state.html">③ สิทธิ์ & ผลลัพธ์</a></p></div>
+  </div>
+  <div class="sim-grid">
+    <div>
+      <div class="sim-card"><h6>1 · เลือกสินค้าใส่ตะกร้า</h6><p class="sub">กด + / − ได้เลย · ราคาแสดงคือราคาปกติ (ถ้ามีแคมเปญราคาพิเศษ จะขึ้นในตะกร้า)</p><div class="sim-prods" id="prods"></div></div>
+      <div class="sim-card"><h6>2 · ตะกร้าของคุณ</h6><div id="lines"></div></div>
+      <div class="sim-card"><h6>3 · โปรโมชั่นที่ใช้ได้ — เลือกเอง <button class="btn outlined sm" id="best" type="button" style="margin-left:auto">เลือกชุดที่ประหยัดสุดให้</button></h6>
+        <p class="sub">กดการ์ดเพื่อเลือก/ยกเลิก · โปรที่ใช้ร่วมกับโปรที่เลือกไว้ไม่ได้จะเป็นสีเทาพร้อมเหตุผล · ผลตอบแทนผสมได้ (ส่วนลด ของแถม พอยท์ คูปอง …)</p>
+        <div class="sim-pcards" id="pcards"></div></div>
+      <div class="sim-card"><h6>4 · คูปอง</h6><p class="sub">กรอกโค้ด (ลองใส่ SAVE100 / FREESHIP) หรือเลือกจากกระเป๋าคูปอง</p>
+        <div class="sim-cp"><input class="input" id="code" placeholder="เช่น SAVE100" style="max-width:220px;text-transform:uppercase"><button class="btn contained sm" id="applyCode" type="button">ใช้โค้ด</button><button class="btn text sm grey" id="clearCode" type="button">ล้างคูปอง</button></div>
+        <div id="couponMsg"></div><div class="sim-wal" id="wallet"></div></div>
+      <div class="sim-card"><h6>5 · พอยท์ / เครดิตเงินคืน</h6><div id="payBox"></div></div>
+    </div>
+    <div class="sim-sticky">
+      <div class="sim-card sim-sum"><h6>สรุปคำสั่งซื้อ</h6><div id="sum"></div>
+        <button class="btn contained lg block mt16" id="pay" type="button">ชำระเงิน (จำลอง)</button>
+        <div class="small muted mt8 center">กดแล้วผลมีจริงในข้อมูลจำลอง · ล้างได้ด้วยปุ่ม “รีเซ็ตทั้งหมด” ด้านบน</div></div>
+    </div>
+  </div>
+</div>
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX / ลอจิก</h6>
+  <ol>
+    <li><span class="pin">1</span><span><b>ลำดับคิดเงินเดียวกับระบบจริง</b> ราคาแคมเปญโควตา → โปรโมชั่น (ลูกค้าเลือก) → คูปอง → ค่าจัดส่ง → ชำระด้วยพอยท์/เครดิต · แต่ละขั้นคิดต่อจากยอดที่เหลือ และแสดงลำดับการตัดสิน (trace) ให้ตรวจ</span></li>
+    <li><span class="pin">2</span><span><b>ไม่มี priority</b> ทุกโปรที่เข้าเงื่อนไขเป็นการ์ด ลูกค้าเลือกเอง · “ใช้ร่วมกับโปรอื่นได้/ไม่ได้” ตั้งที่ตัวโปร · เลือกแล้วโปรที่ชนเป็นสีเทา กดยกเลิกแล้วกลับมาเลือกได้</span></li>
+    <li><span class="pin">3</span><span><b>โควต้า 2 ชั้น</b> โควต้าทั้งหมด (ทุกคนรวม) และโควต้าต่อคน — ตัดตอนชำระสำเร็จ · เต็มแล้วโปรเป็นสีเทา “โควต้าเต็ม”</span></li>
+    <li><span class="pin">4</span><span><b>ผลตอบแทนหลายอย่าง</b> ส่วนลด/ของแถม/ฟรีค่าส่งเกิดในบิลทันที · พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ของนอก POS ได้หลังชำระสำเร็จ (ดูกล่อง “หลังชำระ คุณจะได้”)</span></li>
+    <li><span class="pin">5</span><span><b>ข้อยกเว้นของคูปอง</b> เลือกจากกลุ่มสินค้า (เช่น COLLECT-NOV ไม่นับสินค้าหนัก) — ระบบบอกว่ารายการไหนไม่ถูกนับ</span></li>
+    <li><span class="pin">6</span><span><b>ตรวจหน่วยสินค้าเข้มงวด</b> โปรที่เปิดสวิตช์นี้ (เช่น ซื้อนมผงครบ 2 กระป๋อง) นับเฉพาะหน่วยเดียวกัน ส่วนโปรที่ปิด 1 กล่อง Vitamin C = 6 ขวด</span></li>
+  </ol>
+  <div class="rules"><b>ลองเล่น (สคริปต์สาธิต)</b><ul>
+    <li>ลูกค้า “ร้านยา ทดสอบ จำกัด” ใส่ Vitamin C ขวด ×3 → โปร 10% ขึ้นให้เลือก · ใส่ Dumex ×2 → โปรแถมขวดนม+ส่งฟรี+50 พอยท์ ขึ้น แล้วลองเลือกทั้งสองโปร (ใช้ร่วมกันไม่ได้ → เทา)</li>
+    <li>เปลี่ยนลูกค้าเป็น “ร้านยาเปิดใหม่” + ซื้อครบ ฿5,000 → โปรลูกค้าใหม่ขึ้น (ได้ส่วนลด ฿300 + สิทธิ์ลุ้น)</li>
+    <li>เปลี่ยนวันที่จำลองเป็น 2026-10-28 → โปรวันพิเศษ 10.27 หายไป · เปลี่ยนเป็น 2026-12-05 → โปรเข็มฉีดยาที่ยังไม่เริ่มเริ่มใช้งาน</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+<script src="../assets/pmp-core.js"></script><script src="../assets/sim-ui.js"></script>
+<script>
+(function () {
+  var PMP = window.PMP, U = PMP.util, B = U.baht, E = SIM.esc;
+  var cart = U.rd('pmpc.sim.cart', {}), sel = U.rd('pmpc.sim.sel', { promos: [], couponRef: null, usePoints: 0, useCredit: false });
+  var CHIP = { gift: 'soft-success', disc: 'soft-primary', ship: 'soft-info', points: 'soft-warning', coupon: 'soft-info', credit: 'soft-success', entitle: 'soft-primary', offpos: '' };
+  function save() { U.wr('pmpc.sim.cart', cart); U.wr('pmpc.sim.sel', sel); }
+  function cartArr() { return Object.keys(cart).filter(function (k) { return cart[k] > 0; }).map(function (k) { return { sku: k, qty: cart[k] }; }); }
+  function opts() { return { customerId: SIM.custId(), promoIds: sel.promos, couponRef: sel.couponRef, usePoints: sel.usePoints, useCredit: sel.useCredit }; }
+  function qtyHtml(sku) { return '<span class="sim-qty"><button type="button" data-q="-1" data-sku="' + sku + '">−</button><span>' + (cart[sku] || 0) + '</span><button type="button" data-q="1" data-sku="' + sku + '">+</button></span>'; }
+  var R;
+  function render() {
+    var cfg = PMP.cfg(), cs = PMP.state().customers[SIM.custId()];
+    // drop selections that are no longer valid
+    R = PMP.price(cartArr(), opts());
+    var okIds = R.eligible.filter(function (c) { return c.ok; }).map(function (c) { return c.p.id; });
+    var cleaned = sel.promos.filter(function (id) { return okIds.indexOf(id) > -1; });
+    if (cleaned.length !== sel.promos.length) { sel.promos = cleaned; R = PMP.price(cartArr(), opts()); }
+    document.getElementById('prods').innerHTML = PMP.products.map(function (p) {
+      return '<div class="sim-prod"><div class="n">' + E(p.name) + '</div><div class="m">' + p.sku + ' · ' + p.brand + ' · พอยท์ ' + p.pts + '/' + p.unit + '</div><div class="row between"><span class="p">' + B(p.price) + '</span>' + qtyHtml(p.sku) + '</div></div>';
+    }).join('');
+    var lines = R.lines.map(function (l) {
+      var q = l.quota ? '<span class="chip soft-warning sq" style="height:20px;font-size:10.5px;padding:0 7px">ราคาพิเศษ ' + B(l.quota.special) + ' × ' + l.quota.n + '</span>' : '';
+      return '<div class="sim-line"><div><div class="nm">' + E(l.p.name) + ' ' + q + '</div><div class="pr">' + B(l.base) + ' × ' + l.qty + '</div></div>' + qtyHtml(l.sku) + '<b>' + B(l.amount) + '</b></div>';
+    }).join('');
+    R.gifts.forEach(function (g) { var p = PMP.product(g.sku); lines += '<div class="sim-line gift"><div><div class="nm">' + E(p.name) + ' <span class="chip soft-success" style="height:20px;font-size:10.5px;padding:0 7px">ของแถม</span></div><div class="pr">จาก ' + E(g.from) + '</div></div><span class="small">× ' + g.qty + '</span><b style="color:var(--success-darker)">ฟรี</b></div>'; });
+    document.getElementById('lines').innerHTML = lines || '<div class="muted small" style="padding:14px 0">ตะกร้าว่าง — เลือกสินค้าด้านบน</div>';
+
+    // promo cards
+    var chosen = R.eligible.filter(function (c) { return sel.promos.indexOf(c.p.id) > -1; });
+    var pc = R.eligible.map(function (c) {
+      var p = c.p, items = PMP.rewardsOf('promotion', p.id), on = sel.promos.indexOf(p.id) > -1, cls = 'sim-pc', why = '', clash = null;
+      if (!c.ok) { cls += ' off'; why = c.why; }
+      else if (!on) { clash = chosen.filter(function (o) { return !PMP.compat(p, o.p); })[0]; if (clash) { cls += ' dim'; why = 'เลือกไม่ได้ — ใช้ร่วมกับ “' + clash.p.name + '” ไม่ได้'; } }
+      else cls += ' sel';
+      if (!why) why = p.stackPromo ? 'ใช้ร่วมกับโปรอื่นได้' : 'ใช้ร่วมกับโปรอื่นไม่ได้';
+      var left = p.quotaTotal ? (p.quotaTotal - p.used) : null;
+      return '<div class="' + cls + '" data-p="' + p.id + '"><div class="h"><span class="tick"></span><div><b style="font-size:13px">' + E(p.name) + '</b><div class="qn">โควต้าทั้งหมดเหลือ ' + (left == null ? 'ไม่จำกัด' : left + '/' + p.quotaTotal) + ' · ต่อคน ' + (p.perCust ? (p.perCust - (cs.promoUse[p.id] || 0)) + '/' + p.perCust : 'ไม่จำกัด') + (p.strict ? ' · ตรวจหน่วยเข้มงวด' : '') + '</div></div></div>' +
+        '<div class="g">' + items.map(function (i) { return '<span class="chip ' + CHIP[i.k] + '" title="' + E(PMP.describe(i, cfg)) + '">' + E(PMP.describe(i, cfg)) + '</span>'; }).join('') + '</div><div class="w">' + E(why) + '</div></div>';
+    }).join('');
+    // running promos that the cart doesn't touch
+    document.getElementById('pcards').innerHTML = pc || '<div class="muted small">ไม่มีโปรโมชั่นที่เปิดอยู่ ณ วันที่จำลองนี้</div>';
+    // exhausted/upcoming hints
+    var hid = cfg.promos.filter(function (p) { return PMP.status(p, cfg.now) !== 'running'; });
+    if (hid.length) document.getElementById('pcards').insertAdjacentHTML('beforeend', '<div class="small muted" style="grid-column:1/-1">ไม่แสดง: ' + hid.map(function (p) { return E(p.name) + ' (' + PMP.statusLabel[PMP.status(p, cfg.now)] + ')'; }).join(' · ') + '</div>');
+
+    // coupons
+    document.getElementById('couponMsg').innerHTML = R.couponErr ? '<div class="sim-err">' + E(R.couponErr) + '</div>' : (R.coupon ? '<div class="sim-ok">ใช้คูปอง ' + E(R.coupon.code) + ' — ' + (R.coupon.ship ? 'ฟรีค่าจัดส่ง' : 'ลด ' + B(R.coupon.discount)) + (R.coupon.excluded.length ? '<br><span class="small">ไม่นับ (ติดข้อยกเว้น): ' + E(R.coupon.excluded.join(', ')) + '</span>' : '') + '</div>' : '');
+    document.getElementById('wallet').innerHTML = cs.wallet.length ? cs.wallet.map(function (w) {
+      var k = cfg.coupons.filter(function (x) { return x.id === w.couponId; })[0];
+      var on = sel.couponRef && sel.couponRef.type === 'wallet' && sel.couponRef.value === w.id;
+      return '<div class="sim-wl' + (on ? ' sel' : '') + (w.used ? ' used' : '') + '" data-w="' + w.id + '"><span><b>' + E(k ? k.code : '?') + '</b> · ' + E(k ? k.name : '') + '<br><span class="small muted">ได้จาก ' + E(w.src) + '</span></span><span class="chip ' + (w.used ? '' : 'soft-success') + '">' + (w.used ? 'ใช้แล้ว' : (on ? 'เลือกอยู่' : 'ใช้')) + '</span></div>';
+    }).join('') : '<div class="small muted">กระเป๋าคูปองว่าง — ไปเก็บ/แลกได้ที่ <a href="03-state.html">③ สิทธิ์ & ผลลัพธ์</a></div>';
+
+    // pay box
+    var maxP = R.pointsMax;
+    document.getElementById('payBox').innerHTML =
+      '<div class="row between"><span>พอยท์คงเหลือ <b>' + cs.points.toLocaleString() + '</b> (1 พอยท์ = ' + B(cfg.pay.ptBaht) + ' · ใช้ได้ไม่เกิน ' + cfg.pay.maxPct + '% ของยอดสินค้า)</span></div>' +
+      (R.pointsBlocked ? '<div class="sim-err">ใช้พอยท์ชำระไม่ได้ — “' + E(R.pointsBlocked) + '” ไม่อนุญาตให้ใช้ร่วมกับการชำระด้วยพอยท์</div>' :
+        '<div class="row mt8"><input type="range" id="ptRange" min="0" max="' + maxP + '" value="' + R.pointsUsed + '" style="flex:1"><input class="input" id="ptNum" type="number" min="0" max="' + maxP + '" value="' + R.pointsUsed + '" style="width:100px"><span class="small muted">สูงสุด ' + maxP + '</span></div>') +
+      '<div class="row between mt16"><span>เครดิตเงินคืนคงเหลือ <b>' + B(cs.credit) + '</b></span><label class="switch"><input type="checkbox" id="useCredit"' + (sel.useCredit ? ' checked' : '') + (cs.credit ? '' : ' disabled') + '> ใช้เครดิต</label></div>';
+
+    // summary
+    var s = '<div class="r"><span>ยอดสินค้า<small>' + R.lines.reduce(function (a, l) { return a + l.qty; }, 0) + ' ชิ้น</small></span><span>' + B(R.lines.reduce(function (a, l) { return a + l.qty * l.base; }, 0)) + '</span></div>';
+    var qd = R.lines.reduce(function (a, l) { return a + (l.qty * l.base - l.gross); }, 0);
+    if (qd > 0) s += '<div class="r d"><span>ส่วนลดแคมเปญราคาพิเศษ</span><b>−' + B(qd) + '</b></div>';
+    R.promoApplied.forEach(function (p) { s += '<div class="r d"><span>โปร: ' + E(p.name) + '<small>' + E(p.items.join(' + ')) + (p.notes.length ? ' · ' + E(p.notes.join(', ')) : '') + '</small></span><b>' + (p.discount ? '−' + B(p.discount) : '—') + '</b></div>'; });
+    if (R.coupon) s += '<div class="r d"><span>คูปอง ' + E(R.coupon.code) + '</span><b>' + (R.coupon.ship ? 'ส่งฟรี' : '−' + B(R.coupon.discount)) + '</b></div>';
+    s += '<div class="r"><span>ค่าจัดส่ง<small>' + (R.shipFree ? 'ฟรีจากโปร/คูปอง' : (R.shipping === 0 && R.subtotal ? 'ฟรี — ยอดถึง ' + B(cfg.shipping.freeOver) : 'ฟรีเมื่อยอดสินค้า ≥ ' + B(cfg.shipping.freeOver))) + '</small></span><span>' + (R.shipping ? B(R.shipping) : 'ฟรี') + '</span></div>';
+    if (R.pointsUsed) s += '<div class="r d"><span>ใช้พอยท์ ' + R.pointsUsed + '</span><b>−' + B(R.pointsDisc) + '</b></div>';
+    if (R.creditUsed) s += '<div class="r d"><span>ใช้เครดิตเงินคืน</span><b>−' + B(R.creditUsed) + '</b></div>';
+    s += '<div class="r t"><span>ยอดสุทธิ</span><span>' + B(R.total) + '</span></div>';
+    // earn
+    var e = [];
+    if (R.earnBase) e.push('<li>พอยท์ <b>+' + R.earnBase.toLocaleString() + '</b>' + (R.earnMultNote.length ? ' (ตัวคูณแคมเปญ: ' + E(R.earnMultNote.join(', ')) + ')' : '') + '</li>');
+    R.grants.forEach(function (g) { e.push('<li>' + E(PMP.describe(g.it, cfg)) + (g.mult > 1 ? ' × ' + g.mult : '') + ' <span class="muted">(จาก ' + E(g.from) + ')</span></li>'); });
+    Object.keys(R.ticketsBuy).forEach(function (fid) { var f = cfg.raffles.filter(function (x) { return x.id === fid; })[0]; e.push('<li>สิทธิ์ลุ้น <b>+' + R.ticketsBuy[fid] + '</b> จากยอดซื้อ (ทุก ' + B(f.perBaht) + ') · ' + E(f.name) + '</li>'); });
+    Object.keys(R.ladderAdd).forEach(function (lid) { var L = cfg.ladders.filter(function (x) { return x.id === lid; })[0], lv = cs.ladder[lid] || { spent: 0 }; if (R.ladderAdd[lid] > 0) e.push('<li>ยอดสะสมแคมเปญ “' + E(L.name) + '” ' + B(lv.spent) + ' → <b>' + B(lv.spent + R.ladderAdd[lid]) + '</b></li>'); });
+    s += '<div class="sim-earn"><b>หลังชำระ คุณจะได้</b>' + (e.length ? '<ul style="margin:6px 0 0;padding-left:18px">' + e.join('') + '</ul>' : '<div class="small muted mt8">ยังไม่มีสิทธิ์เพิ่ม</div>') + '</div>';
+    s += '<details class="sim-trace"' + (R.trace.length ? ' open' : '') + '><summary><b>ลำดับการตัดสิน (trace)</b></summary><ol>' + (R.trace.map(function (t) { return '<li>' + E(t) + '</li>'; }).join('') || '<li>ยังไม่มีกฎที่ทำงาน</li>') + '</ol></details>';
+    document.getElementById('sum').innerHTML = s;
+    document.getElementById('pay').disabled = !R.lines.length;
+    save();
+  }
+  document.addEventListener('click', function (e) {
+    var q = e.target.closest('[data-q]'), pc = e.target.closest('.sim-pc'), w = e.target.closest('.sim-wl');
+    if (q) { var sku = q.getAttribute('data-sku'); cart[sku] = Math.max(0, (cart[sku] || 0) + (+q.getAttribute('data-q'))); render(); return; }
+    if (pc && !pc.classList.contains('dim') && !pc.classList.contains('off')) { var id = pc.getAttribute('data-p'), i = sel.promos.indexOf(id); if (i > -1) sel.promos.splice(i, 1); else sel.promos.push(id); render(); return; }
+    if (pc && pc.classList.contains('dim')) { SIM.toast(pc.querySelector('.w').textContent, true); return; }
+    if (w && !w.classList.contains('used')) { var wid = w.getAttribute('data-w'); sel.couponRef = (sel.couponRef && sel.couponRef.value === wid) ? null : { type: 'wallet', value: wid }; render(); return; }
+  });
+  document.addEventListener('input', function (e) {
+    if (e.target.id === 'ptRange' || e.target.id === 'ptNum') { sel.usePoints = Math.max(0, +e.target.value || 0); render(); }
+  });
+  document.addEventListener('change', function (e) { if (e.target.id === 'useCredit') { sel.useCredit = e.target.checked; render(); } });
+  function bind() {
+    document.getElementById('applyCode').onclick = function () { var v = document.getElementById('code').value.trim(); if (!v) { SIM.toast('กรอกโค้ดก่อน', true); return; } sel.couponRef = { type: 'code', value: v }; render(); };
+    document.getElementById('clearCode').onclick = function () { sel.couponRef = null; document.getElementById('code').value = ''; render(); };
+    document.getElementById('best').onclick = function () {
+      var ok = R.eligible.filter(function (c) { return c.ok; }), best = null, bestTotal = 1e12, n = ok.length;
+      for (var m = 0; m < (1 << n); m++) {
+        var ids = [], good = true;
+        for (var i = 0; i < n && good; i++) if (m & (1 << i)) { for (var j = 0; j < ids.length; j++) if (!PMP.compat(ok[i].p, ok[ids[j]].p)) good = false; ids.push(i); }
+        if (!good) continue;
+        var o = opts(); o.promoIds = ids.map(function (i) { return ok[i].p.id; });
+        var r = PMP.price(cartArr(), o), val = r.total - (r.earnBase * 0.5);
+        if (val < bestTotal) { bestTotal = val; best = o.promoIds; }
+      }
+      sel.promos = best || []; render(); SIM.toast(sel.promos.length ? 'เลือกชุดที่จ่ายน้อยสุดให้แล้ว (' + sel.promos.length + ' โปร)' : 'ไม่มีโปรที่ช่วยประหยัดในตะกร้านี้');
+    };
+    document.getElementById('pay').onclick = function () {
+      var res = PMP.checkout(cartArr(), opts());
+      if (res.error) { SIM.toast(res.error, true); return; }
+      var o = res.order; cart = {}; sel = { promos: [], couponRef: null, usePoints: 0, useCredit: false }; save(); render();
+      var box = document.createElement('div'); box.className = 'backdrop on'; box.style.cssText = 'position:fixed;inset:0;z-index:80;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center';
+      box.innerHTML = '<div class="dialog md" style="max-width:520px;width:92%"><div class="dialog-h">ชำระเงินสำเร็จ · ' + o.no + '<button class="x" type="button">✕</button></div><div class="dialog-b"><div class="sim-ok" style="margin:0 0 10px">ยอดชำระ <b>' + B(o.total) + '</b></div><b>สิ่งที่เกิดขึ้นจริงในระบบ</b><ul class="st-log">' + o.effects.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ul></div><div class="dialog-f"><a class="btn outlined" href="03-state.html">ดูสิทธิ์ & ผลลัพธ์ →</a><button class="btn contained" type="button">ปิด</button></div></div>';
+      box.onclick = function (ev) { if (ev.target === box || ev.target.tagName === 'BUTTON') box.remove(); };
+      document.body.appendChild(box);
+    };
+  }
+  SIM.onReady(function () { SIM.mount('cart', function () { sel.promos = []; sel.couponRef = null; sel.usePoints = 0; sel.useCredit = false; render(); }); bind(); render(); });
+})();
+</script>
+</body></html>
