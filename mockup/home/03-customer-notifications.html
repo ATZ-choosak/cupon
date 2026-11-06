@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ศูนย์แจ้งเตือน</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+</head>
+<body data-shell="customer" data-cust-nav="home">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>ศูนย์แจ้งเตือน</h4>
+      <p class="muted">เรื่องที่ควรรู้เกี่ยวกับพอยท์ คูปอง โปรโมชั่น แคมเปญ และสุ่มรางวัลของคุณ</p>
+    </div>
+    <div class="row"></div>
+  </div>
+  <div class="stack" id="nfBody"></div>
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>กระดิ่ง “แจ้งเตือน” บนแถบด้านบนทุกหน้าแสดงจำนวนที่ยังไม่อ่าน กดแล้วมาที่หน้านี้</span></li>
+    <li><span class="pin">2</span><span>แท็บ ทั้งหมด / ยังไม่อ่าน + ตัวกรองตามเรื่อง + ปุ่มอ่านทั้งหมด</span></li>
+    <li><span class="pin">3</span><span>เรียงตามความเร่งด่วน (แดง → เหลือง → เขียว → ฟ้า) · กด “ดู” ไปยังหน้าที่เกี่ยวข้องและทำเครื่องหมายว่าอ่านแล้ว</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>เนื้อหาและช่วงวันเตือนมาจาก “ตั้งค่าแจ้งเตือนลูกค้า” ของ admin</li>
+    <li>เหตุการณ์ที่ไม่เกี่ยวกับลูกค้าคนนั้น (นอกกลุ่มเป้าหมาย) จะไม่แสดง</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

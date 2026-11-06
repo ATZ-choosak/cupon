@@ -40,7 +40,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
 .pf-chips span.no{border-color:var(--error);color:var(--error-dark)}
 .pf-foot{margin-top:auto;font-size:10.5px;color:var(--g700);border-top:1px solid var(--g300);padding-top:6px}
 .pcs .stub{width:22%;padding:8px;gap:5px}
-.pcs .qrbox{width:62px;height:62px}
+.pcs .barcode{width:104px;height:44px}
 .pcs .stub .cd{font-family:ui-monospace,Consolas,monospace;font-weight:800;font-size:13px}
 .pcs .stub .tr{font-size:9.5px;color:var(--g700);line-height:1.35}
 .pb-main{position:absolute;left:0;top:0;bottom:0;width:78%;padding:18px 14px 8px 24px;display:flex;flex-direction:column}
@@ -66,10 +66,10 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
 
 <div class="page-head">
   <div><h4>ตัวอย่างคูปองกระดาษ — <span class="mono-b" style="font-size:17px">NOV80</span> <span class="chip warning">ร่าง</span></h4><p class="muted">บูทสัมมนาเภสัช พ.ย. 69 · ฿80/ใบ · ซื้อครบ ฿600 · 1,500 ใบ · ใช้ได้ถึง 31 ม.ค. 2570</p></div>
-  <div class="row"><a class="btn outlined" href="03-admin-paper-editor.html">← กลับไปแก้ไข</a><button class="btn outlined primary relative">คัดลอกข้อความหลังคูปอง <span class="pin">6</span></button><a class="btn contained" href="02-admin-paper-list.html">เผยแพร่ชุด</a></div>
+  <div class="row"><a class="btn outlined" href="03-admin-paper-editor.html">← กลับไปแก้ไข</a><a class="btn contained" href="02-admin-paper-list.html">เผยแพร่ชุด</a></div>
 </div>
 
-<div class="alert info mb16 relative"><span class="pin" style="margin-right:8px">1</span><div><div class="a-title">ระบบไม่ได้สั่งพิมพ์ให้</div>หน้านี้เป็นตัวอย่างหน้า-หลังสำหรับตรวจความถูกต้องเท่านั้น — ทีมการตลาดจะพิมพ์และแจกหน้างานเอง ระบบไม่มีปุ่มสั่งพิมพ์ ไม่ส่งไฟล์เข้าโรงพิมพ์ และไม่ออกเลขใบรายใบ</div></div>
+<div class="alert info mb16 relative"><span class="pin" style="margin-right:8px">1</span><div><div class="a-title">ตั้งค่าแล้วส่งออกไฟล์ให้โรงพิมพ์ได้</div>ระบบไม่ได้สั่งพิมพ์เอง — เมื่อชุดพร้อม ไปที่ <a href="11-admin-paper-print.html"><b>ส่งออกไฟล์สั่งพิมพ์</b></a> เพื่อดาวน์โหลดไฟล์พิมพ์ส่งโรงพิมพ์ · ทีมการตลาดแจกหน้างานเอง ระบบนำรายชื่อร้านที่เลือกไปตรวจเมื่อร้านส่งก้นคูปองเข้ามาเบิก</div></div>
 
 <div style="display:grid;grid-template-columns:678px minmax(0,1fr);gap:16px;align-items:start" class="mb16">
   <div class="card"><div class="card-b">
@@ -79,10 +79,10 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
     <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
     <div class="big">฿80</div>
     <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿600</div>
-    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span>1 ใบ/บิล</span></div>
     <div class="pf-foot">ใช้ได้ถึง 31 ม.ค. 2570 · บูทสัมมนาเภสัช พ.ย. 69</div>
   </div>
-  <div class="stub"><div class="qrbox"></div><div class="cd">NOV80</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  <div class="stub"><div class="stub-in"><div class="barcode"></div><div class="cd">NOV80</div><div class="tr">✂ ก้นคูปอง · ร้านฉีกเก็บไว้เบิก</div></div></div>
   
     <span class="pin pp" style="left:6px;top:20px">A</span>
     <span class="pin pp" style="left:4px;top:56px">B</span>
@@ -97,16 +97,16 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
       <div>
         <h6>ใช้ได้ที่ร้าน/สาขา</h6>
         <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาสุขใจ สาขาลาดพร้าว</li><li>ร้านยาสุขใจ สาขาบางนา</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
-        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div></div>
       </div>
       <div>
         <h6>สิทธิ์และเงื่อนไข</h6>
-        <ul><li>ซื้อครบ ฿600 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 พ.ย. 2569 – 31 ม.ค. 2570</li></ul>
+        <ul class="nm"><li>ซื้อครบ ฿600 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 พ.ย. 2569 – 31 ม.ค. 2570</li></ul>
       </div>
     </div>
     <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
   </div>
-  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  <div class="stub"><div class="stub-in"><div class="cd" style="font-size:11px">ก้นคูปอง</div></div></div>
   
     <span class="pin pp" style="left:-1px;top:40px">G</span>
     <span class="pin pp" style="left:-1px;top:178px">H</span>
@@ -120,10 +120,10 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
     <h6 class="mb8">คำอธิบายองค์ประกอบที่พิมพ์ <span class="pin">3</span></h6>
     <div class="stack s8">
       <div class="label">ด้านหน้า</div>
-      <div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">A</span><div><b>หัวคูปอง</b><div class="small muted">ชื่อแบรนด์ + คำว่า "คูปองส่วนลด" (คงที่ทุกชุด)</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">B</span><div><b>มูลค่าส่วนลด</b><div class="small muted">ตัวเลขบาทต่อใบ ดึงจาก "มูลค่าต่อใบ" ของชุด</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">C</span><div><b>เงื่อนไขย่อ</b><div class="small muted">ยอดซื้อขั้นต่ำ · ใช้ที่ร้านที่ร่วมรายการ · ✘ ออนไลน์ · ใบ/บิล</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">D</span><div><b>รหัสชุด</b><div class="small muted">รหัสเดียวกันทุกใบ — ร้านใช้กรอก/สแกนที่ POS และเขียนบนก้น</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">E</span><div><b>ก้นคูปอง</b><div class="small muted">ส่วนที่ร้านฉีกเก็บไว้ส่งเบิก (รอยประ ~22% ด้านขวา)</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">F</span><div><b>QR สำหรับ POS</b><div class="small muted">สแกนเข้าระบบ POS ของร้านได้ (ไม่ใช่ลิงก์ให้ลูกค้าใช้ออนไลน์)</div></div></div>
+      <div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">A</span><div><b>หัวคูปอง</b><div class="small muted">ชื่อแบรนด์ + คำว่า "คูปองส่วนลด" (คงที่ทุกชุด)</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">B</span><div><b>มูลค่าส่วนลด</b><div class="small muted">ตัวเลขบาทต่อใบ ดึงจาก "มูลค่าต่อใบ" ของชุด</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">C</span><div><b>เงื่อนไขย่อ</b><div class="small muted">ยอดซื้อขั้นต่ำ · ใช้ที่ร้านที่ร่วมรายการ · ใบ/บิล</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">D</span><div><b>รหัสชุด</b><div class="small muted">รหัสเดียวกันทุกใบ — ร้านใช้กรอก/สแกนที่ POS และเขียนบนก้น</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">E</span><div><b>ก้นคูปอง</b><div class="small muted">ส่วนที่ร้านฉีกเก็บไว้ส่งเบิก (รอยประ ~22% ด้านขวา)</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">F</span><div><b>บาร์โค้ดที่ก้นคูปอง</b><div class="small muted">รหัสชุด เหมือนกันทุกใบ — แคชเชียร์สแกนที่ POS และผู้ตรวจสแกนนับก้น (ไม่มีเลขรันนิ่งรายใบ)</div></div></div>
       <div class="sep" style="margin:6px 0"></div>
       <div class="label">ด้านหลัง</div>
-      <div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">G</span><div><b>ร้าน/สาขาที่ใช้ได้</b><div class="small muted">รายชื่อจากขั้น ② · ถ้าเลือก "ทุกร้าน" จะพิมพ์จำนวนร้าน + ที่ดูรายชื่อล่าสุด</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">H</span><div><b>ช่องทางที่ใช้ได้</b><div class="small muted">บรรทัด ✔/✘ ชัดเจน: หน้าร้าน/POS และออนไลน์</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">I</span><div><b>สิทธิ์และเงื่อนไข</b><div class="small muted">ขั้นต่ำ · ใบ/บิล · ใช้ร่วมโปร/คูปอง/พอยท์ · สินค้ายกเว้น · ใครใช้ได้ · ไม่ทอนเงินสด · วันที่ใช้ได้</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">J</span><div><b>ข้อความเพิ่มเติม</b><div class="small muted">ไม่เกิน 160 ตัวอักษร (พื้นที่พิมพ์จำกัด)</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">K</span><div><b>ก้นคูปอง (ด้านหลัง)</b><div class="small muted">บอกร้านว่าต้องเก็บก้นและส่งเบิกภายในกี่วัน</div></div></div>
+      <div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">G</span><div><b>ร้าน/สาขาที่ใช้ได้</b><div class="small muted">รายชื่อจากขั้น ② · ถ้าเลือก "ทุกร้าน" จะพิมพ์จำนวนร้าน + ที่ดูรายชื่อล่าสุด</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">H</span><div><b>ช่องทางที่ใช้ได้</b><div class="small muted">ใช้ที่หน้าร้าน/POS ของร้านที่ร่วมรายการ</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">I</span><div><b>สิทธิ์และเงื่อนไข</b><div class="small muted">เงื่อนไขเป็นข้อ ๆ ที่แอดมินเพิ่มเอง · ไม่ทอนเงินสด · วันที่ใช้ได้</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">J</span><div><b>หมายเหตุท้ายบัตร</b><div class="small muted">ตัวอักษรเล็ก ≤ 240 ตัวอักษร (แก้ได้ในหน้าตั้งค่า)</div></div></div><div class="row top" style="gap:10px"><span class="pin" style="margin:2px 0 0">K</span><div><b>ก้นคูปอง (ด้านหลัง)</b><div class="small muted">ด้านหลังของก้น ไม่มีข้อความ (ไม่พิมพ์ระยะเวลาส่งก้นเบิก)</div></div></div>
     </div>
   </div></div>
 </div>
@@ -136,10 +136,10 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
     <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
     <div class="big">฿80</div>
     <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿600</div>
-    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span>1 ใบ/บิล</span></div>
     <div class="pf-foot">ใช้ได้ถึง 31 ม.ค. 2570 · บูทสัมมนาเภสัช พ.ย. 69</div>
   </div>
-  <div class="stub"><div class="qrbox"></div><div class="cd">NOV80</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  <div class="stub"><div class="stub-in"><div class="barcode"></div><div class="cd">NOV80</div><div class="tr">✂ ก้นคูปอง · ร้านฉีกเก็บไว้เบิก</div></div></div>
   
     <span class="pin pp" style="left:6px;top:20px">A</span>
     <span class="pin pp" style="left:4px;top:56px">B</span>
@@ -155,16 +155,16 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
       <div>
         <h6>ใช้ได้ที่ร้าน/สาขา</h6>
         <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาสุขใจ สาขาลาดพร้าว</li><li>ร้านยาสุขใจ สาขาบางนา</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
-        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div></div>
       </div>
       <div>
         <h6>สิทธิ์และเงื่อนไข</h6>
-        <ul><li>ซื้อครบ ฿600 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 พ.ย. 2569 – 31 ม.ค. 2570</li></ul>
+        <ul class="nm"><li>ซื้อครบ ฿600 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 พ.ย. 2569 – 31 ม.ค. 2570</li></ul>
       </div>
     </div>
     <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
   </div>
-  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  <div class="stub"><div class="stub-in"><div class="cd" style="font-size:11px">ก้นคูปอง</div></div></div>
   
     <span class="pin pp" style="left:-1px;top:40px">G</span>
     <span class="pin pp" style="left:-1px;top:178px">H</span>
@@ -181,8 +181,8 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
     <dl class="kv">
       <dt>ขนาดใบ</dt><dd>21 × 9.5 ซม. (แนวนอน) · ตัดตก 3 มม.</dd>
       <dt>ก้นคูปอง</dt><dd>กว้าง 22% ของใบ (≈ 4.6 ซม.) · รอยประฉีกได้</dd>
-      <dt>QR สำหรับ POS</dt><dd>ไม่เล็กกว่า 1.8 × 1.8 ซม. ทดสอบสแกนก่อนพิมพ์</dd>
-      <dt>ตัวอักษรหลังใบ</dt><dd>ไม่เล็กกว่า 7 pt · ข้อความเพิ่มเติม ≤ 160 ตัวอักษร</dd>
+      <dt>บาร์โค้ดที่ก้นคูปอง</dt><dd>รหัสชุด (เหมือนกันทุกใบ) · ความสูงไม่ต่ำกว่า 1 ซม. ทดสอบสแกนก่อนพิมพ์</dd>
+      <dt>ตัวอักษรหลังใบ</dt><dd>ไม่เล็กกว่า 7 pt · หมายเหตุท้ายบัตร ≤ 240 ตัวอักษร</dd>
       <dt>ข้อความที่ระบบสร้าง</dt><dd>หัวใบ/ร้านที่ใช้ได้/เงื่อนไข ดึงจากการตั้งค่า — ห้ามแก้เองในไฟล์พิมพ์</dd>
     </dl>
     <div class="legal mt16">ตัวเลขข้างต้นเป็นคำแนะนำให้ทีมการตลาด — ระบบไม่ตรวจไฟล์พิมพ์</div>
@@ -193,9 +193,9 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
       <label class="check"><input type="checkbox" checked> ข้อมูลชุดครบ (รหัส/มูลค่า/ขั้นต่ำ/จำนวน)</label>
       <label class="check"><input type="checkbox" checked> รายชื่อร้านด้านหลังตรงกับที่ลงทะเบียน (5 แห่ง)</label>
       <label class="check"><input type="checkbox" checked> วันหมดอายุ (31 ม.ค. 2570) หลังวันเริ่ม (1 พ.ย. 2569)</label>
-      <label class="check"><input type="checkbox" checked> ช่องทาง: ✘ ออนไลน์ ตรงกับนโยบาย</label>
+      
       <label class="check"><input type="checkbox"> ตรวจตัวสะกดชื่อสาขา/ข้อความเพิ่มเติม โดยฝ่ายการตลาด</label>
-      <label class="check"><input type="checkbox"> ทดสอบสแกน QR ที่เครื่อง POS 1 สาขา</label>
+      <label class="check"><input type="checkbox"> ทดสอบสแกนบาร์โค้ดที่เครื่อง POS 1 สาขา</label>
     </div>
     <div class="warn-box mt16">เหลือ 2 ข้อที่ต้องตรวจเอง — เผยแพร่ชุดได้ แต่ควรครบก่อนส่งทีมการตลาดพิมพ์</div>
   </div></div>
@@ -205,16 +205,15 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
 <section class="ux-notes">
   <h6>หมายเหตุ UX</h6>
   <ol>
-    <li><span class="pin">1</span><span>ข้อความย้ำชัดว่าระบบไม่ได้สั่งพิมพ์ — ไม่มีปุ่มสั่งพิมพ์/ส่งโรงพิมพ์/ดาวน์โหลดไฟล์พิมพ์ในหน้านี้ ทีมการตลาดพิมพ์เองจากข้อมูลที่เห็น</span></li>
+    <li><span class="pin">1</span><span>แจ้งว่าระบบไม่ได้สั่งพิมพ์เอง — แต่มีลิงก์ไป “ส่งออกไฟล์สั่งพิมพ์” เพื่อดาวน์โหลดไฟล์ส่งโรงพิมพ์</span></li>
     <li><span class="pin">2</span><span>คูปองแบบพลิกได้ (คลิกพลิกหน้า ↔ หลัง) ขนาดเท่าของจริงที่ 100% ใช้ตรวจข้อความทีละด้าน</span></li>
     <li><span class="pin">3</span><span>ตัวอักษร A–K บนใบคือจุดอ้างอิงถึงรายการอธิบาย — ใช้ตอนคุยกับทีมการตลาดว่า "จุด G ต้องตรงกับรายชื่อร้าน"</span></li>
     <li><span class="pin">4</span><span>ข้อกำหนดขนาดพิมพ์เป็นคำแนะนำ (21 × 9.5 ซม. ก้นคูปอง 22%) ระบบไม่ตรวจไฟล์ของทีมการตลาด</span></li>
     <li><span class="pin">5</span><span>เช็กลิสต์ 4 ข้อแรกระบบติ๊กให้จากข้อมูลที่ตรวจได้ · 2 ข้อท้ายเป็นของคนตรวจเอง (ไม่บล็อกการเผยแพร่)</span></li>
-    <li><span class="pin">6</span><span>ปุ่มคัดลอกข้อความหลังคูปอง (ร้าน/ช่องทาง/เงื่อนไข/หมายเหตุ) เป็นข้อความธรรมดา ให้ทีมการตลาดนำไปวางในไฟล์ออกแบบ</span></li>
+      <li><span class="pin">9</span><span><b>หน้าคูปองของฟรี</b> <span class="chip soft-primary sq">ใหม่</span> เมื่อสิทธิ์เป็นของแถม/บริการฟรี ด้านหน้าแสดง “แลก … ฟรี” แทนมูลค่าเงิน ไม่มีขั้นต่ำ · ด้านหลังแสดงรายชื่อร้านพาร์ทเนอร์และสาขา</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>ตัวอย่างสร้างจากค่าที่ตั้งในหน้า "สร้างชุด" เสมอ — แก้ค่าแล้วตัวอย่างเปลี่ยนตาม ไม่มีการแก้ข้อความบนตัวอย่างโดยตรง</li>
-    <li>ถ้าชุดมี "ใช้ออนไลน์" เปิด บรรทัด H จะเป็น ✔ และต้องมีข้อความเงื่อนไขโควตาต่อบัญชีเพิ่มในหลังใบ</li>
     <li>ถ้ารายชื่อร้านยาวเกินพื้นที่ (เกิน ~6 ร้าน) หลังใบจะแสดง "ร้านที่ร่วมรายการ 12 แห่ง ดูรายชื่อที่ pharmaplex.co.th/coupon" แทนการพิมพ์ทุกชื่อ</li>
     <li>ชุดที่เผยแพร่แล้วดูตัวอย่างได้เสมอ แต่แก้รหัส/มูลค่าไม่ได้ — ต้อง "ทำซ้ำชุด" เป็นรหัสใหม่</li>
   </ul></div>

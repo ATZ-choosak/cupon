@@ -86,13 +86,8 @@
         </div>
         <div class="mt16" data-reveal="scope=set"><div class="aud"><div class="aud-h"><b>กลุ่มสินค้าที่นับยอด</b><span class="chip soft-info sq">กลุ่มสินค้า</span></div><div class="aud-src">รายชื่อกลุ่มมาจาก <a href="../foundation/04-admin-product-sets.html">กลุ่มและชุดที่ใช้ซ้ำ › กลุ่มสินค้า ↗</a> — แต่ละกลุ่มมีแบรนด์/หมวด/SKU แบบรวม-ยกเว้นอยู่แล้ว ตั้งครั้งเดียวใช้ซ้ำได้ทั้งโปร แคมเปญ พอยท์ และส่งฟรี</div><div class="aud-row"><span class="chip soft-success">รวม</span><select class="select"><option selected>Blackmores (ยกเว้น 2 รายการ) · 34 SKU</option><option>นมผงทุกตรา · 18 SKU</option><option>สินค้าหนัก (ไม่ร่วมส่งฟรี) · 61 SKU</option></select><span class="n">34 SKU</span><button class="btn text sm grey" type="button">✕</button></div><div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="../foundation/04-admin-product-sets.html">ดู/แก้กติกากลุ่มสินค้า ↗</a><a class="small" href="../foundation/04-admin-product-sets.html">สร้างกลุ่มใหม่ ↗</a></div><div class="aud-sum">สินค้าที่เข้าขอบเขต: <b>34</b> SKU (คำนวณสดจากกติกา — สินค้าใหม่ในแบรนด์/หมวดเข้าเอง) · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div></div>
         <hr class="divider">
-        <div class="stack s8 relative">
-          <span class="pin abs" style="top:-18px">3</span>
-          <label class="check"><input type="checkbox" checked disabled> นับจากออเดอร์ที่<b>ชำระเงินสำเร็จแล้ว</b>เท่านั้น <span class="chip">ล็อก</span></label>
-          <label class="check"><input type="checkbox" checked disabled> <b>ไม่รวมค่าจัดส่ง</b> <span class="chip">ล็อก</span></label>
-          <label class="check"><input type="checkbox" checked> นับหลังหักส่วนลดโปรโมชั่นและคูปองแล้ว</label>
-          <label class="check"><input type="checkbox" checked> หักยอดคืนเมื่อออเดอร์ถูกยกเลิก / คืนสินค้า</label>
-        </div>
+        <div class="soft small relative"><span class="pin abs" style="top:-18px">3</span><b>กติกาการนับยอด (ตายตัว — ไม่มีให้ตั้งค่า)</b>
+          <ul style="margin:6px 0 0;padding-left:18px;line-height:1.7"><li>นับจากออเดอร์ที่ชำระเงินสำเร็จแล้วเท่านั้น</li><li>ไม่รวมค่าจัดส่ง</li><li>นับหลังหักส่วนลดโปรโมชั่นและคูปองแล้ว</li><li>ยกเลิกออเดอร์ / คืนสินค้า = หักยอดคืนเสมอ (อ่านจากฟิลด์ยอดสะสมที่เก็บไว้ที่รายการสินค้าในออเดอร์)</li></ul></div>
       </div></div>
 
       <!-- ขั้นรางวัล -->
@@ -122,7 +117,7 @@
               </div>
               <div class="hint">ตั้งจำนวนน้อย = ใครถึงเกณฑ์แล้วกดขอก่อนได้ก่อน · ลูกค้าเห็น <b>"เหลือ 38/50 สิทธิ์"</b></div>
               <div class="fb">
-                <div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์ (ลูกค้าทุกคนที่ปลดล็อกขั้นนี้เห็นฟอร์มเดียวกัน)</div>
+                <div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์ (ลูกค้าทุกคนที่ปลดล็อกขั้นนี้เห็นฟอร์มเดียวกัน)</div><div class="small muted mb8">ถ้าไม่เพิ่มช่องข้อมูลเลย = ลูกค้ากด “รับรางวัล” ได้ทันที ระบบอนุมัติและส่งรางวัลให้อัตโนมัติ ไม่เข้าคิวตรวจ (เหมาะกับพอยท์ คูปอง เครดิตเงินคืน สิทธิ์ลุ้น) — รางวัลที่เป็นสิ่งของควรมีฟอร์มที่อยู่จัดส่ง</div>
                 <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>ข้อความ</option></select><input class="input" value="ที่อยู่จัดส่ง"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button></div>
                 <button class="btn text sm">＋ เพิ่มช่องข้อมูล</button>
               </div>
@@ -153,7 +148,7 @@
                 <div class="field"><label>รายละเอียดของรางวัล (ลูกค้าเห็นบนการ์ด)</label><textarea class="textarea" style="min-height:70px">รวมตั๋วเครื่องบินไป-กลับ ที่พัก 2 คืน และค่าลงทะเบียนสัมมนา ผู้เข้าร่วมต้องมีพาสปอร์ตอายุเหลือ 6 เดือนขึ้นไป</textarea></div>
               </div>
               <div class="fb relative"><span class="pin abs">7</span>
-                <div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์ (ลูกค้าทุกคนที่ปลดล็อกขั้นนี้เห็นฟอร์มเดียวกัน)</div>
+                <div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์ (ลูกค้าทุกคนที่ปลดล็อกขั้นนี้เห็นฟอร์มเดียวกัน)</div><div class="small muted mb8">ถ้าไม่เพิ่มช่องข้อมูลเลย = ลูกค้ากด “รับรางวัล” ได้ทันที ระบบอนุมัติและส่งรางวัลให้อัตโนมัติ ไม่เข้าคิวตรวจ (เหมาะกับพอยท์ คูปอง เครดิตเงินคืน สิทธิ์ลุ้น) — รางวัลที่เป็นสิ่งของควรมีฟอร์มที่อยู่จัดส่ง</div>
                 <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>ข้อความ</option><option>เบอร์โทร</option><option>ตัวเลือก</option><option>แนบไฟล์</option></select><input class="input" value="ชื่อผู้เดินทางตามพาสปอร์ต"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button>
                   <div class="sub">ตัวอักษรอังกฤษเท่านั้น · ข้อความช่วยใต้ช่อง: "ตรงตามที่ปรากฏในพาสปอร์ต"</div></div>
                 <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>เบอร์โทร</option></select><input class="input" value="เบอร์ติดต่อ"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button>
@@ -186,7 +181,7 @@
               <div class="hint unl"><b>ไม่จำกัดสิทธิ์</b> — ทุกคนที่ถึงยอดกดขอได้เสมอ เหมาะกับรางวัลที่ทีมงานคัดเลือก/จับรางวัลกันเองนอกระบบ ลูกค้าจะเห็น "ไม่จำกัดสิทธิ์ — ทีมงานคัดเลือก" และควรอธิบายวิธีคัดเลือกในรายละเอียดด้านล่าง</div>
               <div class="field"><label>รายละเอียดของรางวัล (แอดมินเขียนเอง) *</label><textarea class="textarea" style="min-height:70px">จำนวนจำกัด ทีมงานจะติดต่อคัดเลือกผู้โชคดีด้วยการจับรางวัลภายใน 30 วันหลังสิ้นสุดแคมเปญ และแจ้งรายละเอียดการเดินทางภายหลัง</textarea></div>
               <div class="fb">
-                <div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์</div>
+                <div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์</div><div class="small muted mb8">ถ้าไม่เพิ่มช่องข้อมูลเลย = ลูกค้ากด “รับรางวัล” ได้ทันที ระบบอนุมัติและส่งรางวัลให้อัตโนมัติ ไม่เข้าคิวตรวจ (เหมาะกับพอยท์ คูปอง เครดิตเงินคืน สิทธิ์ลุ้น) — รางวัลที่เป็นสิ่งของควรมีฟอร์มที่อยู่จัดส่ง</div>
                 <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>ข้อความ</option></select><input class="input" value="ชื่อผู้เดินทางตามพาสปอร์ต"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button></div>
                 <div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>เบอร์โทร</option></select><input class="input" value="เบอร์ติดต่อ"><label class="check"><input type="checkbox" checked> จำเป็น</label><button class="iconbtn">✕</button></div>
               </div>
@@ -206,7 +201,7 @@
         <div class="alert-row"><label class="switch"><input type="checkbox" checked></label><div><b>ยอดถึง 95% ของขั้นถัดไป</b><div class="small muted">"เกือบถึงแล้ว! อีกเพียง ฿{เหลือ} ปลดล็อก {ชื่อรางวัล}"</div></div><div class="input-adorn"><input class="input" value="95"><span class="adorn">%</span></div></div>
         <div class="alert-row"><label class="switch"><input type="checkbox" checked></label><div><b>ก่อนสัญญาหมด</b><div class="small muted">"สัญญาสะสมยอดของคุณจะสิ้นสุดในอีก {N} วัน ยอดสะสมจะรีเซ็ตเป็น ฿0"</div></div><div class="input-adorn"><input class="input" value="30"><span class="adorn">วัน</span></div></div>
         <div class="row wrap mt8"><span class="label">ช่องทางส่ง:</span>
-          <label class="check"><input type="checkbox" checked> LINE</label><label class="check"><input type="checkbox" checked> อีเมล</label><label class="check"><input type="checkbox" checked> แจ้งเตือนในเว็บ</label></div>
+          <span class="chip soft-info sq">แจ้งเตือนในเว็บ (กระดิ่ง + ศูนย์แจ้งเตือน)</span> <a class="small" href="../home/02-admin-notifications.html">ตั้งค่าแจ้งเตือนลูกค้าทั้งระบบ →</a></div>
       </div></div>
     </div>
 
@@ -250,7 +245,7 @@
     <li><span class="pin">6</span><span><b>จำนวนสิทธิ์</b> — เว้นว่าง = ไม่จำกัด · ใส่น้อย = "คนแรกที่ถึง" · ใต้ช่องมีข้อความอธิบายผลต่อลูกค้าเปลี่ยนตามค่าที่กรอก · ลดต่ำกว่าที่ถูกกดไปแล้วไม่ได้</span></li>
     <li><span class="pin">7</span><span><b>ตัวสร้างฟอร์ม</b> — เพิ่มช่องได้ 4 ชนิด (ข้อความ / เบอร์โทร / ตัวเลือก / แนบไฟล์) ตั้งจำเป็น/ไม่จำเป็น และลากเรียงลำดับได้ · ฟอร์มเดียวต่อขั้น ใช้กับทุกคนที่ปลดล็อก · สูงสุด 10 ช่อง</span></li>
     <li><span class="pin">8</span><span><b>แก้แคมเปญที่เปิดอยู่</b> — จำกัดสิทธิ์แก้ไขเพื่อไม่ให้ลูกค้าที่ถึงเกณฑ์ไปแล้วเสียสิทธิ์ (ดูกล่องเตือน)</span></li>
-    <li><span class="pin">9</span><span><b>การแจ้งเตือน</b> — 80% / 95% ของยอดเกณฑ์ขั้นถัดไป และ N วันก่อนสัญญาหมด · เลือก LINE / อีเมล / ในเว็บ · ตัวแปรในข้อความใช้ {…} · ลูกค้าที่ปลดล็อกทุกขั้นแล้วไม่ได้รับ 80/95%</span></li>
+    <li><span class="pin">9</span><span><b>การแจ้งเตือน</b> — 80% / 95% ของยอดเกณฑ์ขั้นถัดไป และ N วันก่อนสัญญาหมด · ส่งเป็นแจ้งเตือนในเว็บเท่านั้น · เปิด/ปิดตรงนี้ผูกกับ “ตั้งค่าแจ้งเตือนลูกค้า” · ตัวแปรในข้อความใช้ {…} · ลูกค้าที่ปลดล็อกทุกขั้นแล้วไม่ได้รับ 80/95%</span></li>
     <li><span class="pin">10</span><span><b>ตัวอย่างสด</b> — เปลี่ยนค่าทางซ้ายแล้วแผงนี้อัปเดตทันที ใช้ยอดตัวอย่าง ฿642,350 เพื่อให้เห็นทุกสถานะ (ผ่านแล้ว/ขั้นปัจจุบัน/ล็อก)</span></li>
     <li><span class="pin">11</span><span><b>กลุ่มเป้าหมาย + ชุดของรางวัล</b> แคมเปญขั้นบันไดใช้ตัวเลือก “ทุกคน / บางคน” เดียวกับทุกหน้า และแต่ละขั้นเลือก “ชุดของรางวัล” จากเมนูกลุ่มและชุดที่ใช้ซ้ำได้ (หรือกรอกรางวัลของขั้นเองเหมือนเดิม) · ขั้นที่มีลูกค้าถึงแล้วเปลี่ยนชุดไม่ได้ ต้องเพิ่มขั้นใหม่</span></li>
   </ol>

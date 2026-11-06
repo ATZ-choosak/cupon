@@ -40,7 +40,7 @@
     <div class="lane"><div class="lane-h"><div>แอดมิน<small>ตั้งค่า</small></div></div><div class="lane-b">
       <a class="node adm" href="02-admin-editor.html"><span class="pin no">1</span><b>สร้างโปร</b>เลือกขอบเขตสินค้า ผลตอบแทน<span class="tolink">02 · 03 · 04 →</span></a><div class="gap">→</div>
       <a class="node adm" href="../simulator/02-cart.html"><span class="pin no">2</span><b>จำลองตะกร้า</b>ตรวจโปรที่ทับซ้อนก่อนเปิด<span class="tolink">05 →</span></a><div class="gap">→</div>
-      <a class="node adm" href="01-admin-list.html"><span class="pin no">3</span><b>ดูสถานะ/โควต้า</b>6 แท็บ: เงื่อนไข · วันพิเศษ · ยังไม่เริ่ม · หมดอายุ · ไม่ใช้งาน · หมดโควต้า<span class="tolink">01 →</span></a><div class="gap">→</div>
+      <a class="node adm" href="01-admin-list.html"><span class="pin no">3</span><b>ดูสถานะ/โควต้า</b>เลือกแบบ (ตามเงื่อนไข / Flash Sale) แล้วดูแท็บ ใช้งานอยู่ · ยังไม่เริ่ม · หมดอายุ · ปิด<span class="tolink">01 →</span></a><div class="gap">→</div>
       <a class="node adm" href="01-admin-list.html"><span class="pin no">4</span><b>เปิดใช้งาน</b>ตามช่วงวันที่ + กลุ่มลูกค้า<span class="tolink">01 →</span></a>
       <div class="col sp"></div><div class="col sp"></div>
       <a class="node warn" href="01-admin-list.html"><span class="pin no">12</span><b>รับแจ้งเตือน</b>เติมสต็อกของแถม แล้วเปิดโปรอีกครั้ง<span class="tolink">01 →</span></a>
@@ -133,7 +133,7 @@
     <li><span class="pin">7</span><span><b>เลือกโปร</b> ลูกค้ากดการ์ดเลือก/ยกเลิกเอง — โปรที่ใช้ร่วมกันไม่ได้เป็นสีเทาพร้อมเหตุผล · ดูของจริงได้ที่ <a href="../simulator/00-flow.html">โมดูลจำลองตะกร้า</a></span></li>
     <li><span class="pin">8</span><span><b>คำนวณ</b> ผลตอบแทนอิงเฉพาะบรรทัดที่เข้าเงื่อนไข · ให้ผลตอบแทน 1 ชุดต่อบิล (ต่อออเดอร์ที่เข้าเงื่อนไข)</span></li>
     <li><span class="pin">9</span><span><b>ตรวจโควตา/สต็อก</b> ถ้าโควต้าต่อคนเต็ม โปรไม่ถูกใช้ (ปุ่มหน้าลูกค้าแสดง "โควต้าเต็มแล้ว") · ถ้าของแถมไม่พอสำหรับชุดที่ได้ ระบบให้เท่าที่สต็อกพอ ถ้าเหลือ 0 ไปข้อ 11</span></li>
-    <li><span class="pin">10</span><span><b>บันทึกการใช้สิทธิ์</b> เกิดตอนออเดอร์ยืนยัน/ชำระสำเร็จ ไม่ใช่ตอนใส่ตะกร้า — จึงไม่ต้องมีการพักโควตา (ต่างจากแคมเปญโควตา)</span></li>
+    <li><span class="pin">10</span><span><b>บันทึกการใช้สิทธิ์</b> เกิดตอนออเดอร์ยืนยัน/ชำระสำเร็จ ไม่ใช่ตอนใส่ตะกร้า — จึงไม่ต้องมีการพักโควตา</span></li>
     <li><span class="pin">11</span><span><b>ของแถมหมดสต็อก</b> ระบบปิดโปรชั่วคราวทันที ตะกร้าที่มีโปรนี้อยู่จะไม่ได้ของแถมและแสดงข้อความอธิบาย (หน้า 09)</span></li>
     <li><span class="pin">12</span><span><b>รับแจ้งเตือน</b> แอดมินเห็นป้ายแดง "ปิดชั่วคราว: ของแถมหมด" ที่แถวโปรในหน้ารายการ (หน้า 01) เติมสต็อกแล้วกดเปิดใช้งานเอง</span></li>
   </ol>

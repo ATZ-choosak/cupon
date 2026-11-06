@@ -54,7 +54,7 @@
           <div class="relative"><span class="pin abs" style="left:auto;right:-8px">2</span>
             <div class="soft stack s8"><b class="small">แจ้งเตือนเมื่อพร้อมสั่ง</b>
               <label class="check"><input type="checkbox" checked> อีเมล ร้านยา ทดสอบ จำกัด</label>
-              <label class="check"><input type="checkbox" checked> LINE และแจ้งเตือนในเว็บ</label>
+              <label class="check"><input type="checkbox" checked> แจ้งเตือนในเว็บ</label>
               <button class="btn outlined primary sm">แจ้งเตือนเมื่อพร้อม</button></div></div>
           <div class="relative"><span class="pin abs" style="left:auto;right:-8px">3</span>
             <button class="btn outlined block">ติดต่อทีมขาย (เซลล์ staff1)</button></div>
@@ -127,7 +127,7 @@
           <div>
             <div class="label mb8">เลือกวิธีแก้ <span class="pin">7</span></div>
             <div class="radio-cards c2">
-              <label class="radio-card"><input type="radio" name="fix" checked><span><span class="rc-t">รอเติมสต็อก แล้วแจ้งเตือน</span><span class="rc-d" style="display:block">เก็บเซตไว้ในตะกร้า ส่งอีเมล/LINE เมื่อพร้อมสั่ง คาดว่า 18 ต.ค. 2569</span></span></label>
+              <label class="radio-card"><input type="radio" name="fix" checked><span><span class="rc-t">รอเติมสต็อก แล้วแจ้งเตือน</span><span class="rc-d" style="display:block">เก็บเซตไว้ในตะกร้า แจ้งเตือนในเว็บเมื่อพร้อมสั่ง คาดว่า 18 ต.ค. 2569</span></span></label>
               <label class="radio-card"><input type="radio" name="fix"><span><span class="rc-t">เปลี่ยนเป็นเซตขนาด S</span><span class="rc-d" style="display:block">สต็อกพร้อมส่ง ราคาเริ่มต้น ฿12,400 · ตรวจรายการอีกครั้งก่อนยืนยัน</span></span></label>
               <label class="radio-card"><input type="radio" name="fix"><span><span class="rc-t">ให้ทีมขายช่วยจัดการ</span><span class="rc-d" style="display:block">เซลล์จะติดต่อกลับ และสั่งแทนให้เมื่อมีของ ราคาเท่าเดิม</span></span></label>
               <label class="radio-card"><input type="radio" name="fix"><span><span class="rc-t">ลบเซตออกจากตะกร้า</span><span class="rc-d" style="display:block">สินค้าอื่นในตะกร้าไม่ถูกกระทบ</span></span></label>
@@ -151,7 +151,7 @@
   <h6>หมายเหตุ UX</h6>
   <ol>
     <li><span class="pin">1</span><span>บอกสาเหตุให้เจาะจงที่สุด: ชื่อสินค้า จำนวนที่ต้องการ vs คงเหลือ และวันที่คาดว่าจะมี (จากข้อมูลสต็อก/จัดซื้อ) — ไม่ใช้ข้อความกลางว่า "สั่งไม่ได้"</span></li>
-    <li><span class="pin">2</span><span>"แจ้งเตือนเมื่อพร้อม": ลูกค้าเลือกช่องทาง (อีเมล/LINE/ในเว็บ) · ส่งครั้งเดียวเมื่อเซตกลับเป็น "ขาย" แล้วตัดการสมัครอัตโนมัติ · แสดงสถานะ "สมัครรับแจ้งเตือนแล้ว" แทนปุ่ม</span></li>
+    <li><span class="pin">2</span><span>"แจ้งเตือนเมื่อพร้อม": ลูกค้าเลือกช่องทาง (ในเว็บ/อีเมล) · ส่งครั้งเดียวเมื่อเซตกลับเป็น "ขาย" แล้วตัดการสมัครอัตโนมัติ · แสดงสถานะ "สมัครรับแจ้งเตือนแล้ว" แทนปุ่ม</span></li>
     <li><span class="pin">3</span><span>ติดต่อทีมขาย: ใช้เซลล์ที่ผูกกับบัญชีลูกค้า (staff1) ถ้าไม่มีให้ใช้ช่องทางกลาง · เซลล์สั่งแทนได้เมื่อเซตพร้อมเท่านั้น</span></li>
     <li><span class="pin">4</span><span>ทางเลือกหมดระหว่างที่ลูกค้าเลือกอยู่: แถบเหลืองบอก + สวิตช์ล็อกปิด + แสดงราคาก่อน/หลัง ไม่ปล่อยให้ราคาเปลี่ยนเงียบ ๆ · สั่งเซตได้ต่อ</span></li>
     <li><span class="pin">5</span><span>ไม่ใช่ B2B: ปุ่มหลักคือ "ขออัปเกรดเป็นบัญชีร้านค้า" · ปุ่มใส่ตะกร้ากดไม่ได้ · แสดงขั้นตอน 3 ขั้นให้เห็นว่าเสร็จเมื่อไหร่ · ใช้ข้อความเดียวกันนี้เมื่อเซลล์พยายามสั่งแทนบัญชี B2C</span></li>

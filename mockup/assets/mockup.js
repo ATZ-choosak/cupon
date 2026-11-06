@@ -90,7 +90,7 @@
     function c(s) { var m = bySlug(s); return m ? hrefCust(m) : '#'; }
     return '<div class="cust-shell"><div class="cust-top"><div class="bar">' +
       '<span class="logo">Pharmaplex</span><span class="search">ค้นหาสินค้า ชื่อยา แบรนด์…</span>' +
-      '<span class="icons"><span class="cart">ตะกร้า<b>3</b></span><span class="avatar">ร</span><span class="small">ร้านยา ทดสอบ จำกัด</span></span>' +
+      '<span class="icons"><a class="cart" id="custBell" href="' + base + 'home/03-customer-notifications.html">แจ้งเตือน<b hidden>0</b></a><a class="cart" id="custCart" href="' + base + 'promotion/09-customer-cart.html">ตะกร้า<b>0</b></a><span class="avatar">ร</span><span class="small">ร้านยา ทดสอบ จำกัด</span></span>' +
       '</div></div><div class="cust-nav"><div class="bar">' +
       a('home', 'หน้าแรก', c('home')) + a('products', 'สินค้า', '#') +
       a('promotion', 'โปรโมชั่น', c('promotion')) + a('coupon', 'คูปอง', c('coupon')) +
@@ -136,14 +136,14 @@
     'coupon/08-customer-center.html': ['state', 'wallet', 'ศูนย์คูปองจริง'], 'coupon/09-customer-cart-coupon.html': ['cart', '', 'ใช้คูปองในตะกร้าจริง'],
     'points/01-admin-rules.html': ['config', 'points', 'ตัวคูณพอยท์จริง'], 'points/02-admin-catalog.html': ['config', 'points', 'แคตตาล็อกแลกจริง'], 'points/03-admin-ledger.html': ['state', 'points', 'สมุดพอยท์ลูกค้าจริง'],
     'points/04-customer-dashboard.html': ['state', 'points', 'พอยท์ของฉันจริง'], 'points/05-customer-redeem.html': ['state', 'points', 'แลกพอยท์จริง'], 'points/06-customer-earn-preview.html': ['cart', '', 'พอยท์ที่จะได้จริง'],
-    'campaign/01-admin-list.html': ['config', 'camp', 'แคมเปญทั้งหมด'], 'campaign/02-admin-quota-editor.html': ['config', 'camp', 'แคมเปญโควตาจริง'], 'campaign/03-admin-ladder-editor.html': ['config', 'camp', 'แคมเปญขั้นบันไดจริง'],
+    'campaign/01-admin-list.html': ['config', 'camp', 'แคมเปญทั้งหมด'], 'campaign/03-admin-ladder-editor.html': ['config', 'camp', 'แคมเปญขั้นบันไดจริง'],
     'campaign/04-admin-claims.html': ['state', 'claims', 'คิวคำขอรับรางวัลจริง (อนุมัติ/ปฏิเสธ)'], 'campaign/05-admin-progress.html': ['state', 'camp', 'ความคืบหน้าจริง'], 'campaign/06-customer-ladder.html': ['state', 'camp', 'ขั้นบันไดของฉันจริง'],
-    'campaign/07-customer-claim-form.html': ['state', 'camp', 'ขอรับสิทธิ์จริง'], 'campaign/08-customer-quota-product.html': ['cart', '', 'ซื้อสินค้าโควตาจริง'],
+    'campaign/07-customer-claim-form.html': ['state', 'camp', 'ขอรับสิทธิ์จริง'],
     'raffle/01-admin-list.html': ['config', 'raffle', 'กิจกรรมทั้งหมด'], 'raffle/02-admin-editor.html': ['config', 'raffle', 'ตั้งกิจกรรมจริง'], 'raffle/03-admin-prizes-budget.html': ['config', 'raffle', 'รางวัล/น้ำหนักจริง'],
     'raffle/04-admin-draw-run.html': ['state', 'raffle', 'จับรางวัลโหมด B จริง'], 'raffle/05-admin-audit.html': ['state', 'raffle', 'บันทึกการลุ้นจริง'],
     'raffle/06-customer-tickets.html': ['state', 'raffle', 'สิทธิ์ลุ้นของฉันจริง'], 'raffle/07-customer-instant-draw.html': ['state', 'raffle', 'ลุ้นทันทีจริง'], 'raffle/08-customer-scheduled.html': ['state', 'raffle', 'จับตามรอบจริง'], 'raffle/09-customer-history.html': ['state', 'raffle', 'ประวัติการลุ้นจริง'],
     'coupon/02-admin-paper-list.html': ['config', 'paper', 'ชุดคูปองกระดาษจริง'], 'coupon/03-admin-paper-editor.html': ['config', 'paper', 'สร้าง/แก้ชุดคูปองกระดาษจริง'], 'coupon/04-admin-paper-preview.html': ['config', 'paper', 'ข้อมูลชุดคูปองกระดาษ'],
-    'coupon/05-admin-paper-claims.html': ['state', 'paper', 'คิวเบิกเงินร้านจริง (นับก้น/จ่าย)'], 'coupon/10-customer-paper-info.html': ['state', 'paper', 'ตรวจสอบร้านที่ใช้คูปองกระดาษได้จริง'],
+    'coupon/05-admin-paper-claims.html': ['state', 'paper', 'คิวเบิกเงินร้านจริง (นับก้น/จ่าย)'], 'coupon/11-admin-paper-print.html': ['config', 'paper', 'ข้อมูลชุดที่จะส่งออก'], 'coupon/12-admin-paper-template.html': ['config', 'paper', 'template + ชุดที่มีอยู่'], 'coupon/10-customer-paper-info.html': ['state', 'paper', 'ตรวจสอบร้านที่ใช้คูปองกระดาษได้จริง'],
     'starterkit/01-admin-list.html': ['config', 'kits', 'เซตร้านยาทั้งหมด'], 'starterkit/02-admin-editor.html': ['config', 'kits', 'สร้าง/แก้เซตจริง'], 'starterkit/03-admin-order-behalf.html': ['state', 'kit', 'สั่งแทนลูกค้าจริง'],
     'starterkit/04-customer-catalog.html': ['state', 'kit', 'เลือกเซตจริง'], 'starterkit/05-customer-builder.html': ['state', 'kit', 'ปรับเซต + ราคาสุทธิสดจริง'], 'starterkit/06-customer-blocked.html': ['state', 'kit', 'สินค้าบังคับหมด/B2C สั่งไม่ได้ (ลองลดสต็อก)'],
     'foundation/01-admin-customer-sets.html': ['config', 'csets', 'กลุ่มลูกค้าจริง'], 'foundation/02-admin-customer-set-editor.html': ['config', 'csets', 'สมาชิก + นำเข้าจริง'],

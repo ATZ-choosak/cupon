@@ -33,7 +33,7 @@
 <section class="ux-notes">
   <h6>หมายเหตุ UX / ลอจิก</h6>
   <ol>
-    <li><span class="pin">1</span><span><b>ลำดับคิดเงินเดียวกับระบบจริง</b> ราคาแคมเปญโควตา → โปรโมชั่น (ลูกค้าเลือก) → คูปอง → ค่าจัดส่ง → ชำระด้วยพอยท์/เครดิต · แต่ละขั้นคิดต่อจากยอดที่เหลือ และแสดงลำดับการตัดสิน (trace) ให้ตรวจ</span></li>
+    <li><span class="pin">1</span><span><b>ลำดับคิดเงินเดียวกับระบบจริง</b> ราคา/Flash → โปรโมชั่น (ลูกค้าเลือก) → คูปอง → ค่าจัดส่ง → ชำระด้วยพอยท์/เครดิต · แต่ละขั้นคิดต่อจากยอดที่เหลือ และแสดงลำดับการตัดสิน (trace) ให้ตรวจ</span></li>
     <li><span class="pin">2</span><span><b>ไม่มี priority</b> ทุกโปรที่เข้าเงื่อนไขเป็นการ์ด ลูกค้าเลือกเอง · “ใช้ร่วมกับโปรอื่นได้/ไม่ได้” ตั้งที่ตัวโปร · เลือกแล้วโปรที่ชนเป็นสีเทา กดยกเลิกแล้วกลับมาเลือกได้</span></li>
     <li><span class="pin">3</span><span><b>โควต้า 2 ชั้น</b> โควต้าทั้งหมด (ทุกคนรวม) และโควต้าต่อคน — ตัดตอนชำระสำเร็จ · เต็มแล้วโปรเป็นสีเทา “โควต้าเต็ม”</span></li>
     <li><span class="pin">4</span><span><b>ผลตอบแทนหลายอย่าง</b> ส่วนลด/ของแถม/ฟรีค่าส่งเกิดในบิลทันที · พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ของนอก POS ได้หลังชำระสำเร็จ (ดูกล่อง “หลังชำระ คุณจะได้”)</span></li>
@@ -121,7 +121,7 @@
     s += '<div class="r t"><span>ยอดสุทธิ</span><span>' + B(R.total) + '</span></div>';
     // earn
     var e = [];
-    if (R.earnBase) e.push('<li>พอยท์ <b>+' + R.earnBase.toLocaleString() + '</b>' + (R.earnMultNote.length ? ' (ตัวคูณแคมเปญ: ' + E(R.earnMultNote.join(', ')) + ')' : '') + '</li>');
+    if (R.earnBase) e.push('<li>พอยท์ <b>+' + R.earnBase.toLocaleString() + '</b>' + (R.earnMultNote.length ? ' (ตัวคูณโปรโมชั่น: ' + E(R.earnMultNote.join(', ')) + ')' : '') + '</li>');
     R.grants.forEach(function (g) { e.push('<li>' + E(PMP.describe(g.it, cfg)) + (g.mult > 1 ? ' × ' + g.mult : '') + ' <span class="muted">(จาก ' + E(g.from) + ')</span></li>'); });
     Object.keys(R.ticketsBuy).forEach(function (fid) { var f = cfg.raffles.filter(function (x) { return x.id === fid; })[0]; e.push('<li>สิทธิ์ลุ้น <b>+' + R.ticketsBuy[fid] + '</b> จากยอดซื้อ (ทุก ' + B(f.perBaht) + ') · ' + E(f.name) + '</li>'); });
     Object.keys(R.ladderAdd).forEach(function (lid) { var L = cfg.ladders.filter(function (x) { return x.id === lid; })[0], lv = cs.ladder[lid] || { spent: 0 }; if (R.ladderAdd[lid] > 0) e.push('<li>ยอดสะสมแคมเปญ “' + E(L.name) + '” ' + B(lv.spent) + ' → <b>' + B(lv.spent + R.ladderAdd[lid]) + '</b></li>'); });

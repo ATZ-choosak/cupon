@@ -25,7 +25,7 @@ s = open(SRC, encoding='utf-8').read()
 
 pattern = re.compile(r'^## (\d+)\. (.+)$', re.M)
 matches = list(pattern.finditer(s))
-assert len(matches) == 7, len(matches)
+assert len(matches) == 8, len(matches)
 
 modules = [
     ('pharmaplex-spec-00-overview', 'ภาพรวมระบบ Pharmaplex'),
@@ -35,6 +35,7 @@ modules = [
     ('pharmaplex-spec-04-points-campaign', 'พอยท์และแคมเปญ (Points & Campaigns)'),
     ('pharmaplex-spec-05-raffle', 'การสุ่มรางวัล (Lucky Draw)'),
     ('pharmaplex-spec-06-starter-kit', 'เซตร้านยาเปิดใหม่ (Pharmacy Starter Kit)'),
+    ('pharmaplex-spec-07-notifications', 'แจ้งเตือนลูกค้า (Customer Notifications)'),
 ]
 
 meta_line = ('> ส่วนหนึ่งของสเปกฉบับเต็ม `Pharmaplex-Platform-Spec.md` (ฉบับ 1.0 · 6 ตุลาคม 2569) '

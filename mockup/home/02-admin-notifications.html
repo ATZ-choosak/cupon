@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ตั้งค่าแจ้งเตือนลูกค้า</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css">
+<script src="../assets/registry.js"></script>
+</head>
+<body data-shell="admin" data-nav="home" data-crumb="หน้าแรกลูกค้า / ตั้งค่าแจ้งเตือนลูกค้า">
+<main id="screen">
+
+  <div class="page-head">
+    <div>
+      <h4>ตั้งค่าแจ้งเตือนลูกค้า</h4>
+      <p class="muted">ที่เดียวสำหรับทุกโมดูล — เปิด/ปิดเรื่องที่แจ้ง และตั้งจำนวนวันเตือน · ลูกค้าเห็นที่กระดิ่ง ศูนย์แจ้งเตือน และหน้าแรก</p>
+    </div>
+    <div class="row"></div>
+  </div>
+  <div class="stack" id="nfBody"></div>
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>ตารางเรื่องที่แจ้งเตือน 6 เรื่อง: พอยท์ · แคมเปญสะสมยอด · คำขอรับรางวัล · คูปอง · โปรโมชั่น · สุ่มรางวัล — สวิตช์เปิด/ปิดต่อเรื่อง ช่องทางเดียวคือแจ้งเตือนในเว็บ</span></li>
+    <li><span class="pin">2</span><span>ช่องตั้งค่าของแต่ละเรื่อง เช่น เตือนก่อนหมดอายุกี่วัน, ติ๊ก 80% / 95% ของแคมเปญ</span></li>
+    <li><span class="pin">3</span><span>แสดงตัวอย่างข้อความที่ลูกค้าจะเห็น เพื่อให้ admin รู้ว่าตั้งแล้วได้ผลอย่างไร</span></li>
+    <li><span class="pin">4</span><span>ส่วน “ลูกค้าจำลองเห็นอะไรตอนนี้” คำนวณสดจากค่าที่ตั้ง + ข้อมูลลูกค้าที่เลือกในแถบจำลอง — แก้ค่าแล้วเห็นผลทันที</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ช่องทางแจ้งเตือนมีเฉพาะในเว็บ (กระดิ่ง + ศูนย์แจ้งเตือน + การ์ดหน้าแรก) ไม่มีการส่งข้อความออกนอกระบบ</li>
+    <li>แจ้งเตือนคำนวณจากสถานะปัจจุบันของลูกค้า: เมื่อเงื่อนไขหาย (เช่น ใช้พอยท์แล้ว) แจ้งเตือนหายเอง · อ่านแล้วจำเป็นรายรายการ</li>
+    <li>ปิดเรื่องใด ลูกค้าไม่เห็นแจ้งเตือนเรื่องนั้นทันที แต่ข้อมูลในโมดูลนั้นไม่เปลี่ยน</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body>
+</html>

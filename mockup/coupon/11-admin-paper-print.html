@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ส่งออกไฟล์สั่งพิมพ์คูปองกระดาษ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.sec-t{font-weight:800;font-size:13.5px;margin:0 0 8px}
+.prt-grid{display:grid;grid-template-columns:400px minmax(0,1fr);gap:16px;align-items:start}
+.prt-prev{border:1px solid var(--g300);border-radius:10px;background:var(--g200);overflow:hidden;position:relative}
+.prt-prev iframe{border:0;transform-origin:0 0;background:#d9d9d9;display:block}
+.pf-list>div{display:flex;gap:8px;align-items:flex-start;padding:5px 0;font-size:13px}
+.ck{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;font-size:11px;font-weight:800;color:#fff;flex:none}
+.ck.y{background:var(--success)}.ck.n{background:var(--error)}.ck.w{background:var(--warning)}
+.exp-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:1100px){.prt-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body data-shell="admin" data-nav="coupon" data-crumb="โปรโมชั่นและสิทธิพิเศษ / คูปอง / คูปองกระดาษ / ส่งออกไฟล์สั่งพิมพ์">
+<main id="screen">
+
+<div class="page-head">
+  <div><h4>ส่งออกไฟล์สั่งพิมพ์ — <span class="mono-b" style="font-size:17px">NOV80</span></h4><p class="muted">ไฟล์หน้า-หลังพร้อมตัดตก/เครื่องหมายตัด สำหรับส่งโรงพิมพ์</p></div>
+  <div class="row"><a class="btn outlined" href="04-admin-paper-preview.html">← ตัวอย่างคูปอง</a><a class="btn outlined" href="02-admin-paper-list.html">รายการชุด</a></div>
+</div>
+
+<div class="alert info mb16 relative"><span class="pin" style="margin-right:8px">1</span><div><div class="a-title">ระบบสร้างไฟล์ให้ — ไม่ได้สั่งโรงพิมพ์เอง</div>ดาวน์โหลดไฟล์พิมพ์ (หน้า + หลัง) แล้วส่งให้โรงพิมพ์เอง — การติดต่อ/สั่งงานกับโรงพิมพ์ทาง Pharmaplex จัดการเอง ทุกใบเหมือนกันทั้งชุด ไม่มีเลขรันนิ่ง จำนวนพิมพ์ผูกกับ “จำนวนที่ออก” ของชุด</div></div>
+
+<div class="prt-grid mb16">
+  <!-- LEFT : print job settings -->
+  <div class="card"><div class="card-b">
+    <div class="sec-t">ตั้งค่างานพิมพ์ <span class="pin">2</span></div>
+    <div class="form-grid">
+      <div class="field"><label>จำนวนที่สั่งพิมพ์ (ใบ)</label><input class="input" id="pQty" value="1,500" readonly><span class="help">เท่ากับจำนวนที่ออกของชุด — พิมพ์เกินไม่ได้ เพราะยอดเบิกจะเกิน</span></div>
+      <div class="field"><label>ขนาดสำเร็จ</label><input class="input" value="21 × 9.5 ซม. (ก้นคูปอง 22%)" readonly></div>
+    </div>
+    <div class="stack s8 mt16">
+      <label class="switch"><input type="checkbox" id="pBleed" checked> ตัดตก (bleed) 3 มม. รอบด้าน</label>
+      <label class="switch"><input type="checkbox" id="pCrop" checked> เครื่องหมายตัด (crop marks)</label>
+      <label class="switch"><input type="checkbox" id="pPerf" checked> เส้นปรุที่ก้นคูปอง (แนวพับ/ปรุ)</label>
+    </div>
+    <div class="sep"></div>
+    <div class="sec-t">ตรวจก่อนส่งออก <span class="pin">3</span></div>
+    <div class="pf-list" id="pfl"></div>
+  </div></div>
+
+  <!-- RIGHT : preview + export -->
+  <div class="stack s16">
+    <div class="card"><div class="card-b">
+      <div class="row between mb8"><h6>ตัวอย่างไฟล์ที่จะส่งโรงพิมพ์ (หน้า / หลัง) <span class="pin">4</span></h6><span class="chip soft-info" id="pSheet">—</span></div>
+      <div class="prt-prev" id="pPrev"><iframe id="pFrame" title="ตัวอย่างไฟล์พิมพ์"></iframe></div>
+      <div class="help mt8">หลังบัตรสลับด้านก้นคูปองไปทางซ้าย เพื่อให้ตรงกับด้านหน้าเมื่อพลิกกระดาษ</div>
+    </div></div>
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">ส่งออก <span class="pin">5</span></h6>
+      <div class="exp-btns">
+        <button class="btn contained" type="button" id="xPrint">🖨 พิมพ์ / บันทึกเป็น PDF</button>
+        <button class="btn outlined primary" type="button" id="xHtml">⬇ ไฟล์พิมพ์ (.html)</button>
+      </div>
+      <div class="help mt8">PDF: กดปุ่มแรก แล้วเลือก “บันทึกเป็น PDF” ในหน้าต่างพิมพ์ (ขนาดกระดาษถูกตั้งให้แล้ว · ปิดหัว/ท้ายกระดาษ) · ถ้าโรงพิมพ์ต้องการ outline ฟอนต์ ให้ทีมกราฟิกเปิดไฟล์แล้วแปลงก่อนส่ง</div>
+    </div></div>
+    <div class="card"><div class="card-b">
+      <h6 class="mb8">ประวัติการส่งออก <span class="pin">6</span></h6>
+      <div class="table-wrap"><table class="table"><thead><tr><th>เมื่อ</th><th>ชุด</th><th>ไฟล์</th><th class="num">จำนวนพิมพ์</th></tr></thead><tbody id="pLog"></tbody></table></div>
+    </div></div>
+  </div>
+</div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>บอกชัดว่าระบบสร้างไฟล์ให้ แต่ไม่ได้สั่งโรงพิมพ์เอง · ทุกใบเหมือนกัน ไม่มีเลขรันนิ่ง</span></li>
+    <li><span class="pin">2</span><span>ตั้งค่างานพิมพ์: จำนวนผูกกับ “จำนวนที่ออก” (แก้ไม่ได้ในหน้านี้) · ขนาดสำเร็จ 21 × 9.5 ซม. · สวิตช์ตัดตก 3 มม. เครื่องหมายตัด เส้นปรุที่ก้น · ไม่มีข้อมูลโรงพิมพ์/ใบสั่งพิมพ์ — Pharmaplex จัดการเอง</span></li>
+    <li><span class="pin">3</span><span>เช็กก่อนส่งออก: มีผู้รับ · วันที่ครบ · เงื่อนไขไม่ล้นพื้นที่ · บาร์โค้ดอ่านได้ (รหัสชุดเป็น A–Z/0–9) — ✕ บล็อกการส่งออก ! เตือนเฉยๆ</span></li>
+    <li><span class="pin">4</span><span>ตัวอย่างคือไฟล์จริงที่จะดาวน์โหลด (หน้า + หลัง) ในขนาดย่อ · ตัดตก/เครื่องหมายตัดเปลี่ยนตามสวิตช์</span></li>
+    <li><span class="pin">5</span><span>ส่งออก 2 แบบ: พิมพ์/บันทึก PDF · ไฟล์พิมพ์ .html</span></li>
+    <li><span class="pin">6</span><span>ประวัติการส่งออกเก็บว่าส่งอะไรเมื่อไร และจำนวนพิมพ์ — ใช้ย้อนดูว่าพิมพ์ไปกี่ใบแล้ว</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>ชุดที่เผยแพร่แล้วส่งออกซ้ำได้ แต่ถ้าจำนวนที่ส่งออกสะสมเกินจำนวนที่ออก ระบบเตือน “พิมพ์สะสมเกินจำนวนที่ออก”</li>
+    <li>ไฟล์ที่ส่งออกมาจากค่าปัจจุบันของชุด — แก้ชุดแล้วต้องส่งออกใหม่ ไฟล์เก่าไม่อัปเดตตาม</li>
+    <li>ชื่อไฟล์: รหัสชุด + -print เช่น NOV80-print.html</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>โรงพิมพ์รับไฟล์ชนิดไหน (PDF / AI) และต้องการ CMYK/outline ฟอนต์หรือไม่ — ถ้าต้อง ต้องเพิ่มขั้นตอนกราฟิกหรือ export PDF ฝั่งเซิร์ฟเวอร์</li>
+    <li>ขนาด/ตำแหน่งเส้นปรุ และสเปกบาร์โค้ดขั้นต่ำที่เครื่อง POS อ่านได้ ต้องทดสอบกับเครื่องจริง</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

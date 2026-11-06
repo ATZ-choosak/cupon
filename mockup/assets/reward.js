@@ -7,13 +7,14 @@
   var ALL = ['gift', 'disc', 'ship', 'points', 'coupon', 'credit', 'entitle', 'offpos'];
   var HINT = {
     gift: 'เลือกสินค้าในระบบ + จำนวน', disc: 'บาท หรือ % พร้อมเพดาน', ship: 'ไม่มีฟิลด์เพิ่ม',
-    points: 'กำหนดจำนวนพอยท์ที่ได้คืน', coupon: 'เลือกจากคูปองที่มีอยู่ในระบบ', credit: 'ออกโดยระบบ เข้ากระเป๋าเครดิต',
+    points: 'พอยท์ฟรีคงที่ หรือ (ในโปรโมชั่น) ตัวคูณพอยท์', coupon: 'เลือกจากคูปองที่มีอยู่ในระบบ', credit: 'ออกโดยระบบ เข้ากระเป๋าเครดิต',
     entitle: 'สิทธิ์ลุ้นในกิจกรรมสุ่มรางวัล (โหมด A วงล้อ / โหมด B จับตามรอบ)', offpos: 'ระบุเป็นข้อความว่าเป็นของชิ้นไหน'
   };
   var MODNAME = { promotion: 'โปรโมชั่น', coupon: 'คูปอง', points: 'พอยท์ (แคตตาล็อกแลก)', campaign: 'แคมเปญ', raffle: 'สุ่มรางวัล', starterkit: 'เซตร้านยาเปิดใหม่' };
   function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
   function opt(v, label, cur) { return '<option value="' + esc(v) + '"' + (String(v) === String(cur) ? ' selected' : '') + '>' + esc(label) + '</option>'; }
 
+  var CUR = '';
   function itemHtml(it, i) {
     var cfg = PMP.cfg(), h = '<div class="rwd-item" data-i="' + i + '"><div class="rwd-h"><span class="chip soft-primary sq">' + PMP.kindLabel[it.k] + '</span><span class="rwd-hint">' + HINT[it.k] + '</span><button type="button" class="x-btn" data-rwd-del="' + i + '" title="ลบ">−</button></div><div class="rwd-f">';
     function f(label, ctl, cls) { return '<label class="rwd-fld ' + (cls || '') + '"><span>' + label + '</span>' + ctl + '</label>'; }
@@ -25,13 +26,15 @@
         f(it.mode === 'pct' ? 'ส่วนลด (%)' : 'ส่วนลด (บาท)', inp('value', 'number', it.value || 0, 'min="0"')) +
         (it.mode === 'pct' ? f('ลดสูงสุดไม่เกิน (฿) · 0 = ไม่จำกัด', inp('cap', 'number', it.cap || 0, 'min="0"')) : '');
     } else if (it.k === 'points') {
-      h += f('จำนวนพอยท์ที่ได้คืน', inp('pts', 'number', it.pts || 0, 'min="1"'));
+      if (CUR === 'promotion') {
+        h += f('รูปแบบพอยท์จากโปรนี้', '<select class="select" data-f="mode">' + opt('fixed', 'พอยท์ฟรี (จำนวนคงที่)', it.mode || 'fixed') + opt('mult', 'ตัวคูณพอยท์ของสินค้าที่เข้าโปร', it.mode || 'fixed') + '</select>') + (it.mode === 'mult' ? f('ตัวคูณ (×)', inp('value', 'number', it.value || 1, 'min="1" step="0.1"')) : f('จำนวนพอยท์ที่ได้ฟรี', inp('pts', 'number', it.pts || 0, 'min="1"')));
+      } else h += f('จำนวนพอยท์ที่ได้คืน', inp('pts', 'number', it.pts || 0, 'min="1"'));
     } else if (it.k === 'coupon') {
       h += f('คูปองในระบบ', '<select class="select" data-f="couponId">' + cfg.coupons.map(function (k) { return opt(k.id, k.code + ' · ' + k.name, it.couponId); }).join('') + '</select>', 'w2') + f('จำนวนใบ', inp('qty', 'number', it.qty || 1, 'min="1"'));
     } else if (it.k === 'credit') {
       h += f('เครดิตเงินคืน (฿)', inp('amount', 'number', it.amount || 0, 'min="1"')) + f('หมดอายุภายใน (วัน) · 0 = ไม่หมด', inp('expiryDays', 'number', it.expiryDays || 0, 'min="0"'));
     } else if (it.k === 'entitle') {
-      h += f('กิจกรรมสุ่มรางวัล', '<select class="select" data-f="activityId">' + cfg.raffles.map(function (r) { return opt(r.id, r.name + ' (โหมด ' + r.mode + ')', it.activityId); }).join('') + '</select>', 'w2') + f('จำนวนสิทธิ์', inp('tickets', 'number', it.tickets || 1, 'min="1"'));
+      h += f('กิจกรรมสุ่มรางวัล', '<select class="select" data-f="activityId">' + cfg.raffles.map(function (r) { return opt(r.id, '[' + (r.mode === 'A' ? 'ลุ้นทันที' : 'จับตามรอบ') + '] ' + r.name, it.activityId); }).join('') + '</select>', 'w2') + f('จำนวนสิทธิ์', inp('tickets', 'number', it.tickets || 1, 'min="1"'));
     } else if (it.k === 'offpos') {
       h += f('ของรางวัล (ข้อความ)', inp('text', 'text', it.text || '', 'placeholder="เช่น กระเป๋าผ้า Pharmaplex"'), 'w2') + f('จำนวน', inp('qty', 'number', it.qty || 1, 'min="1"'));
     } else h += '<div class="rwd-note">ฟรีค่าจัดส่งเฉพาะบิลที่ใช้โปรนี้ — ไม่มีฟิลด์เพิ่ม</div>';
@@ -39,14 +42,14 @@
   }
   function emptyItem(k) {
     var cfg = PMP.cfg();
-    return { gift: { k: 'gift', sku: 'BT-PP01', qty: 1 }, disc: { k: 'disc', mode: 'pct', value: 10, cap: 0 }, ship: { k: 'ship' }, points: { k: 'points', pts: 100 },
+    return { gift: { k: 'gift', sku: 'BT-PP01', qty: 1 }, disc: { k: 'disc', mode: 'pct', value: 10, cap: 0 }, ship: { k: 'ship' }, points: { k: 'points', mode: 'fixed', pts: 100 },
       coupon: { k: 'coupon', couponId: cfg.coupons[0].id, qty: 1 }, credit: { k: 'credit', amount: 100, expiryDays: 90 }, entitle: { k: 'entitle', activityId: cfg.raffles[0].id, tickets: 1 }, offpos: { k: 'offpos', text: '', qty: 1 } }[k];
   }
   function ownerOf(el) { return { module: el.getAttribute('data-module'), ref: el.getAttribute('data-ref') }; }
   function itemsOf(el) { var o = ownerOf(el); return PMP.rewardsOf(o.module, o.ref); }
   function summary(items) { return items.length ? items.map(function (i) { return PMP.describe(i); }).join(' + ') : 'ยังไม่มีผลตอบแทน — เพิ่มอย่างน้อย 1 รายการ'; }
   function renderInto(el) {
-    var o = ownerOf(el), items = itemsOf(el), kinds = (el.getAttribute('data-kinds') || ALL.join(',')).split(',');
+    var o = ownerOf(el), items = itemsOf(el), kinds = (el.getAttribute('data-kinds') || ALL.join(',')).split(','); CUR = o.module;
     var title = el.getAttribute('data-title') || 'ผลตอบแทน';
     var html = '<div class="rwd"><div class="rwd-top"><b>' + esc(title) + '</b><span class="chip outline sq" title="flag source_module ในฐานข้อมูล">ของโมดูล: ' + (MODNAME[o.module] || o.module) + '</span><span class="rwd-saved"></span></div>' +
       '<div class="rwd-list">' + (items.length ? items.map(itemHtml).join('') : '<div class="rwd-empty">ยังไม่มีผลตอบแทน</div>') + '</div>' +

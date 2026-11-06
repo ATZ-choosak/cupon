@@ -18,6 +18,14 @@
   .qbar i{display:block;height:100%;background:var(--primary)}
   .qbar.full i{background:var(--error)}
   .tabs{overflow-x:auto}
+  .type-pick{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .type-pick button{text-align:left;border:2px solid var(--g300);background:#fff;border-radius:12px;padding:14px 16px;cursor:pointer;font:inherit;position:relative}
+  .type-pick button:hover{border-color:var(--g500)}
+  .type-pick button.on{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-lighter)}
+  .type-pick b{font-size:15px}.type-pick .n{float:right;font-weight:800;font-size:18px;color:var(--primary)}
+  .type-pick .d{font-size:12.5px;color:var(--g700);margin-top:6px;line-height:1.5}
+  .type-pick .ex{font-size:12px;color:var(--g700);margin-top:6px}
+  @media(max-width:900px){.type-pick{grid-template-columns:1fr}}
 </style>
 </head>
 <body data-shell="admin" data-nav="promotion" data-crumb="โปรโมชั่นและสิทธิพิเศษ / โปรโมชั่น">
@@ -26,33 +34,42 @@
   <div class="page-head">
     <div>
       <h4>โปรโมชั่น</h4>
-      <p class="muted">จัดการโปรโมชั่นตามเงื่อนไข และลดตามวันพิเศษ — ผลตอบแทนผสมได้หลายอย่าง (ของแถม ส่วนลด ฟรีค่าส่ง พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ของนอก POS)</p>
+      <p class="muted">โปรโมชั่นมี 2 แบบ — <b>ตามเงื่อนไข</b> (ซื้อครบแล้วได้ผลตอบแทน) และ <b>ลดตามช่วงเวลา (Flash Sale)</b> (ลดราคาสินค้าเป็นช่วงเวลา) · เลือกแบบจากการ์ดด้านล่าง</p>
     </div>
     <div class="row">
-      <a class="btn outlined" href="../simulator/02-cart.html">จำลองตะกร้า (โมดูลใหม่)</a>
-      <a class="btn contained" href="02-admin-editor.html">＋ สร้างโปรโมชั่น</a>
+      <a class="btn outlined" href="../simulator/02-cart.html">จำลองตะกร้า</a>
+      <a class="btn contained" id="createBtn" href="02-admin-editor.html">＋ สร้างโปรโมชั่นตามเงื่อนไข</a>
     </div>
   </div>
 
+  <div class="type-pick relative" id="typePick"><span class="pin" style="position:absolute;left:-10px;top:-10px;z-index:2">1</span>
+    <button type="button" class="on" data-type="cond"><span class="n">0</span><b>โปรโมชั่นตามเงื่อนไข</b>
+      <div class="d">ลูกค้าซื้อครบตามเงื่อนไข (ยอดเงิน หรือจำนวนชิ้น) แล้วได้ผลตอบแทน ผสมได้หลายอย่าง: ของแถม · ส่วนลด · ส่งฟรี · พอยท์ · คูปอง · เครดิต · สิทธิ์ลุ้น · ลูกค้าเลือกโปรเองในตะกร้า</div>
+      <div class="ex">เช่น ซื้อ Blackmores ครบ ฿1,000 ลด 5% · ซื้อนมผง 2 กระป๋อง แถมขวดนม + ส่งฟรี</div></button>
+    <button type="button" data-type="flash"><span class="n">0</span><b>ลดตามช่วงเวลา (Flash Sale)</b>
+      <div class="d">ลดราคาสินค้า “ตามกลุ่มสินค้า” ในช่วงวัน/เวลาที่กำหนด มีโควตารอบ · ราคาใหม่ขึ้นที่การ์ดสินค้าเอง ไม่มีเงื่อนไขซื้อครบ ไม่ต้องเลือก · เกิดซ้ำได้ทุกปี · คิดก่อนโปรโมชั่นตามเงื่อนไข</div>
+      <div class="ex">เช่น Flash Sale 10.10 ยาสามัญ −30% วิตามิน −20% · 11.11 วิตามิน −25%</div></button>
+  </div>
+
   <div class="alert info mb16"><div>
-    <b>ไม่มีลำดับความสำคัญ (priority) แล้ว</b> — ถ้าตะกร้าของลูกค้าเข้าเงื่อนไขหลายโปร ลูกค้าเลือกเองเป็นการ์ดในตะกร้า ระบบทำโปรที่ใช้ร่วมกันไม่ได้เป็นสีเทาให้ · กำหนด “ใช้ร่วมกับโปรอื่นได้/ไม่ได้” ที่หน้าแก้ไขแต่ละโปร
-    <div class="small mt8">ข้อมูลในตารางด้านล่างดึงจากชุดเดียวกับ<a href="../simulator/01-config.html">ตั้งค่าจำลอง</a> — กดเปิด/ปิด ทำซ้ำ ลบ ได้จริง และสถานะคำนวณจากวันที่จำลอง <b id="nowLbl"></b></div>
+    <b>ไม่มีลำดับความสำคัญ (priority)</b> — ถ้าตะกร้าเข้าเงื่อนไขหลายโปร (แบบตามเงื่อนไข) ลูกค้าเลือกเองเป็นการ์ด โปรที่ใช้ร่วมกันไม่ได้จะถูกเทา · ราคา Flash ถูกคิดก่อนเสมอ แล้วโปรตามเงื่อนไขคิดต่อจากราคานั้น
+    <div class="small mt8">ข้อมูลดึงจากชุดเดียวกับ<a href="../simulator/01-config.html">ตั้งค่าจำลอง</a> — กดเปิด/ปิด ทำซ้ำ ลบ ได้จริง <span id="nowLbl"></span></div>
   </div></div>
 
-  <div class="card" style="overflow:hidden">
+  <!-- ===== แบบที่ 1: ตามเงื่อนไข ===== -->
+  <div class="card" style="overflow:hidden" id="panelCond">
     <div class="card-b" style="padding-bottom:0">
       <div class="tabs" data-tabs id="tabs" style="margin-bottom:0"></div>
     </div>
     <div class="table-toolbar">
       <div class="row" style="flex:1">
         <input class="input" id="q" style="max-width:300px" placeholder="ค้นหาชื่อโปร">
-        <select class="select" id="fk" style="max-width:210px"><option value="">ผลตอบแทน: ทั้งหมด</option><option value="gift">มีของแถม</option><option value="disc">มีส่วนลด</option><option value="ship">มีฟรีค่าส่ง</option><option value="points">มีพอยท์</option><option value="coupon">มีคูปอง</option><option value="credit">มีเครดิต</option><option value="entitle">มีสิทธิ์ลุ้น</option><option value="offpos">มีของนอก POS</option></select>
+        <select class="select" id="fk" style="max-width:210px"><option value="">ผลตอบแทน: ทั้งหมด</option><option value="gift">มีของแถม</option><option value="disc">มีส่วนลด</option><option value="ship">มีส่งฟรี</option><option value="points">มีพอยท์</option><option value="coupon">มีคูปอง</option><option value="credit">มีเครดิต</option><option value="entitle">มีสิทธิ์ลุ้น</option></select>
       </div>
-      <a class="btn outlined sm" href="04-admin-flash.html">จัดการแคมเปญลดตามวันพิเศษ (Flash)</a>
     </div>
     <div class="table-wrap"><table class="table">
       <thead><tr>
-        <th style="width:26px"></th><th>ชื่อ</th><th>ผลตอบแทน (ผสมได้) <span class="pin">1</span></th><th>สถานะ <span class="pin">2</span></th>
+        <th style="width:26px"></th><th>ชื่อ / เงื่อนไข</th><th>ผลตอบแทน (ผสมได้) <span class="pin">2</span></th><th>สถานะ</th>
         <th>วันที่เริ่ม – สิ้นสุด</th><th>โควต้าทั้งหมด <span class="pin">3</span></th><th>ต่อคน</th><th>การดำเนินการ <span class="pin">4</span></th>
       </tr></thead>
       <tbody id="rows"></tbody>
@@ -60,15 +77,16 @@
     <div class="pager"><span id="cnt"></span></div>
   </div>
 
-  <div class="card mt24" style="overflow:hidden" id="flashCard">
-    <div class="card-b"><b>แคมเปญลดตามวันพิเศษ (Flash Sale) <span class="pin">5</span></b> <span class="muted small">— ตั้งส่วนลดตามกลุ่มสินค้า + โควตารอบ จัดการที่หน้าเฉพาะ</span></div>
+  <!-- ===== แบบที่ 2: Flash Sale ===== -->
+  <div class="card" style="overflow:hidden;display:none" id="panelFlash">
+    <div class="card-b" style="padding-bottom:0">
+      <div class="tabs" id="ftabs" style="margin-bottom:0"></div>
+    </div>
     <div class="table-wrap"><table class="table">
-      <thead><tr><th>ชื่อแคมเปญ</th><th>ช่วงเวลา</th><th>เกิดซ้ำ</th><th>กลุ่มสินค้า / ส่วนลด</th><th>ขายไปแล้ว / โควตา</th><th>สถานะ</th><th></th></tr></thead>
-      <tbody>
-        <tr><td><div class="nm">Flash Sale 10.10</div></td><td>10 ต.ค. – 12 ต.ค. 2569</td><td>ทุกปี</td><td>ยาสามัญ 30% · วิตามิน 20% · เวชภัณฑ์ 10%</td><td class="num">1,199 / 1,800</td><td><span class="chip">จบแล้ว</span></td><td class="acts"><a class="btn text sm" href="04-admin-flash.html">ดู</a></td></tr>
-        <tr><td><div class="nm">11.11 วันช้อปปิ้ง</div></td><td>11 พ.ย. 2569</td><td>ทุกปี</td><td>วิตามิน 25% · ผ้าอ้อมและนม 15%</td><td class="num">0 / 1,200</td><td><span class="chip warning">ยังไม่เริ่ม</span></td><td class="acts"><a class="btn text sm" href="04-admin-flash.html">แก้ไข</a></td></tr>
-      </tbody>
+      <thead><tr><th>ชื่อโปรโมชั่น</th><th>ช่วงเวลา</th><th>เกิดซ้ำ</th><th>กลุ่มสินค้า / ส่วนลด <span class="pin">5</span></th><th>ขายไปแล้ว / โควตารอบ</th><th>สถานะ</th><th>การดำเนินการ</th></tr></thead>
+      <tbody id="frows"></tbody>
     </table></div>
+    <div class="pager"><span id="fcnt"></span></div>
   </div>
 
 </main>
@@ -76,54 +94,86 @@
 <section class="ux-notes">
   <h6>หมายเหตุ UX</h6>
   <ol>
-    <li><span class="pin">1</span><span><b>ผลตอบแทน</b> <span class="chip soft-primary sq">เปลี่ยน</span> โปรหนึ่งโปรมีหลายผลตอบแทนพร้อมกันได้ แสดงเป็น chip ต่อชนิด (ของแถม ส่วนลด ฟรีค่าส่ง พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ของนอก POS) · กรองได้ตามชนิดที่มีอยู่ในโปร</span></li>
-    <li><span class="pin">2</span><span><b>แท็บสถานะ</b> <span class="chip soft-primary sq">ใหม่</span> โปรโมชั่นตามเงื่อนไข · ลดตามวันพิเศษ · ยังไม่เริ่ม · หมดอายุ · ไม่ใช้งาน · หมดโควต้า — แท็บ 1–2 แสดงโปรที่กำลังใช้งาน ส่วนแท็บที่เหลือแสดงตามสถานะ (นับจากวันที่ + สวิตช์ + โควต้า)</span></li>
-    <li><span class="pin">3</span><span><b>โควต้าทั้งหมด</b> <span class="chip soft-primary sq">ใหม่</span> ใช้แล้ว / ทั้งหมด (ทุกคนรวมกัน) + แถบความคืบหน้า · เต็มแล้วเปลี่ยนเป็น “หมดโควต้า” เอง และเลือกไม่ได้ในตะกร้า · คอลัมน์ “ต่อคน” คือโควต้าต่อลูกค้า</span></li>
-    <li><span class="pin">4</span><span><b>การดำเนินการ</b> แก้ไข / เปิด-ปิดใช้งาน / ทำซ้ำ / ลบ ทำงานจริงกับข้อมูลตั้งค่าจำลอง · ทำซ้ำสร้าง “(สำเนา)” สถานะไม่ใช้งาน · ไม่มีการลากเรียงลำดับ</span></li>
-    <li><span class="pin">5</span><span><b>ลดตามวันพิเศษ (Flash)</b> ยังเป็นหน้าเฉพาะ (กลุ่มสินค้า + โควตารอบ) ราคา Flash ถูกคิดก่อนโปรเงื่อนไข</span></li>
+    <li><span class="pin">1</span><span><b>เลือกแบบโปรโมชั่น</b> <span class="chip soft-primary sq">ใหม่</span> โปรโมชั่นแยกเป็น 2 แบบในเมนูเดียว เพราะกลไกต่างกัน: <b>ตามเงื่อนไข</b> = ซื้อครบแล้วได้ผลตอบแทน ลูกค้าเลือกการ์ดเอง · <b>ลดตามช่วงเวลา (Flash Sale)</b> = ลดราคาตามกลุ่มสินค้าเป็นช่วงเวลา ไม่มีเงื่อนไข ไม่ต้องเลือก · การ์ดแต่ละใบมีคำอธิบาย ตัวอย่าง และจำนวนรายการ · กดแล้วตารางด้านล่างเปลี่ยน และปุ่ม “＋ สร้าง…” เปลี่ยนตามแบบที่เลือก</span></li>
+    <li><span class="pin">2</span><span><b>ผลตอบแทน</b> โปรตามเงื่อนไขมีหลายผลตอบแทนพร้อมกันได้ แสดงเป็นชิปตามชนิด (พอยท์ มีทั้งตัวคูณและพอยท์ฟรี)</span></li>
+    <li><span class="pin">3</span><span><b>โควต้าทั้งหมด</b> ใช้แล้ว / ทั้งหมด (ทุกคนรวมกัน) + แถบความคืบหน้า · ว่าง = ไม่จำกัด</span></li>
+    <li><span class="pin">4</span><span><b>การดำเนินการ</b> แก้ไข / เปิด-ปิดใช้งาน / ทำซ้ำ / ลบ ทำงานจริงกับข้อมูลตั้งค่าจำลอง</span></li>
+    <li><span class="pin">5</span><span><b>Flash Sale</b> ตั้งส่วนลด % ต่อกลุ่มสินค้า + โควตารอบ + เกิดซ้ำ ที่หน้าตั้งค่าของตัวเอง (กลไกต่างจากแบบตามเงื่อนไข จึงไม่รวมฟอร์มเดียวกัน) · แท็บสถานะ: ใช้งานอยู่ / ยังไม่เริ่ม / หมดอายุ / ปิดใช้งาน</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
-    <li>ลำดับ priority ถูกถอดออกทั้งระบบ: ลูกค้าเลือกโปรเอง · ระบบเทาโปรที่ใช้ร่วมกันไม่ได้ · ถ้าเลือกอยู่แล้วโปรชนกัน ระบบสลับให้ตามที่ลูกค้ากด</li>
+    <li>ลำดับ priority ถูกถอดออกทั้งระบบ: ลูกค้าเลือกโปรเอง · ระบบเทาโปรที่ใช้ร่วมกันไม่ได้</li>
+    <li>ถ้าสินค้าอยู่ทั้งใน Flash Sale และโปรตามเงื่อนไข: ลด Flash ก่อน แล้วโปรตามเงื่อนไขคิดต่อจากราคา Flash</li>
+    <li>โปรวันพิเศษที่ต้องการผลตอบแทนอื่น (เช่น พอยท์ ×2) ให้สร้างเป็น “โปรตามเงื่อนไข” แบบไม่มียอดขั้นต่ำ — Flash Sale ลดราคาอย่างเดียว</li>
     <li>สิทธิ์จัดการ: ROLE_MARKETING, ROLE_PRODUCT — บทบาทอื่นเห็นข้อความ “คุณไม่มีสิทธิ์เข้าถึง”</li>
-    <li>โปรเดิมที่เป็นเซตของแถม (Bundle) ถูกย้ายเข้ารายการนี้ ผลตอบแทน = ของแถม ขอบเขต = เลือกรายสินค้า</li>
     <li>ลบโปรที่มีประวัติใช้สิทธิ์: ซ่อนจากรายการ เก็บประวัติไว้ (soft delete)</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>จะรวม Flash Sale เข้าฟอร์มโปรโมชั่นเดียว (เงื่อนไข = ไม่มี, ผลตอบแทน = ส่วนลดต่อกลุ่มสินค้า + โควตารอบ + เกิดซ้ำ) หรือคงแยก 2 แบบตามมอคอัพนี้ — มอคอัพเสนอแยก เพราะต้องมีส่วนลดต่างกันต่อกลุ่มสินค้า และราคาต้องขึ้นที่การ์ดสินค้าโดยตรง</li>
   </ul></div>
 </section>
 <script src="../assets/mockup.js"></script>
 <script src="../assets/pmp-core.js"></script>
 <script>
 (function () {
-  var PMP = window.PMP, tab = 'cond', qEl, fk;
-  var TABS = [['cond', 'โปรโมชั่นตามเงื่อนไข'], ['special', 'ลดตามวันพิเศษ'], ['upcoming', 'ยังไม่เริ่ม'], ['expired', 'หมดอายุ'], ['inactive', 'ไม่ใช้งาน'], ['exhausted', 'หมดโควต้า']];
+  var PMP = window.PMP, type = 'cond', tab = 'running', ftab = 'running', qEl, fk;
+  var STS = [['running', 'ใช้งานอยู่'], ['upcoming', 'ยังไม่เริ่ม'], ['expired', 'หมดอายุ'], ['inactive', 'ปิดใช้งาน']];
   var CHIP = { gift: 'soft-success', disc: 'soft-primary', ship: 'soft-info', points: 'soft-warning', coupon: 'soft-info', credit: 'soft-success', entitle: 'soft-primary', offpos: '' };
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;'); }
   function dm(iso) { var m = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'], p = iso.split('-'); return (+p[2]) + ' ' + m[+p[1] - 1] + ' ' + (+p[0] + 543); }
-  function inTab(p, t, now) {
-    var st = PMP.status(p, now);
-    if (t === 'cond') return st === 'running' && p.kind === 'cond';
-    if (t === 'special') return st === 'running' && p.kind === 'special';
-    return st === t;
-  }
+  function fst(f, now) { return PMP.status({ active: f.active, start: f.start, end: f.end, quotaTotal: f.quota, used: f.used }, now); }
+  function norm(st) { return st === 'exhausted' ? 'expired' : st; }
+  function tabsHtml(cnt, cur, key) { return STS.map(function (t) { return '<button type="button" data-' + key + '="' + t[0] + '" class="' + (cur === t[0] ? 'on' : '') + '">' + t[1] + ' <span class="chip sq" style="margin-left:4px">' + (cnt[t[0]] || 0) + '</span></button>'; }).join(''); }
   function render() {
     var cfg = PMP.cfg(), now = cfg.now; document.getElementById('nowLbl').textContent = '(' + dm(now) + ')';
-    var tabsEl = document.getElementById('tabs');
-    tabsEl.innerHTML = TABS.map(function (t) { var n = cfg.promos.filter(function (p) { return inTab(p, t[0], now); }).length; return '<button data-tabkey="' + t[0] + '" class="' + (tab === t[0] ? 'on' : '') + '">' + t[1] + ' <span class="chip sq" style="margin-left:4px">' + n + '</span></button>'; }).join('');
+    var pc = {}; cfg.promos.forEach(function (p) { var s = norm(PMP.status(p, now)); pc[s] = (pc[s] || 0) + 1; });
+    var fc = {}; (cfg.flash || []).forEach(function (f) { var s = norm(fst(f, now)); fc[s] = (fc[s] || 0) + 1; });
+    var tp = document.querySelectorAll('#typePick button'); tp[0].querySelector('.n').textContent = cfg.promos.length + ' รายการ'; tp[1].querySelector('.n').textContent = (cfg.flash || []).length + ' รายการ';
+    Array.prototype.forEach.call(tp, function (b) { b.classList.toggle('on', b.getAttribute('data-type') === type); });
+    var cb = document.getElementById('createBtn'); cb.textContent = type === 'cond' ? '＋ สร้างโปรโมชั่นตามเงื่อนไข' : '＋ สร้าง Flash Sale'; cb.setAttribute('href', type === 'cond' ? '02-admin-editor.html' : '04-admin-flash.html'); cb.setAttribute('data-create', type);
+    document.getElementById('panelCond').style.display = type === 'cond' ? '' : 'none'; document.getElementById('panelFlash').style.display = type === 'flash' ? '' : 'none';
+    document.getElementById('tabs').innerHTML = tabsHtml(pc, tab, 'tabkey');
     var q = qEl.value.trim(), k = fk.value;
-    var list = cfg.promos.filter(function (p) { return inTab(p, tab, now) && (!q || p.name.indexOf(q) > -1) && (!k || PMP.rewardsOf('promotion', p.id).some(function (i) { return i.k === k; })); });
+    var list = cfg.promos.filter(function (p) { return norm(PMP.status(p, now)) === tab && (!q || p.name.indexOf(q) > -1) && (!k || PMP.rewardsOf('promotion', p.id).some(function (i) { return i.k === k; })); });
     document.getElementById('rows').innerHTML = list.length ? list.map(function (p) {
       var items = PMP.rewardsOf('promotion', p.id), st = PMP.status(p, now), pct = p.quotaTotal ? Math.min(100, Math.round(p.used / p.quotaTotal * 100)) : 0;
       var chipSt = { running: 'success', upcoming: 'warning', expired: 'error', inactive: '', exhausted: 'error' }[st];
-      return '<tr><td></td><td><div class="nm">' + esc(p.name) + '</div><div class="sub">' + (p.kind === 'special' ? 'ลดตามวันพิเศษ' : (p.ctype === 'qty' ? 'ตามจำนวน ' + p.min : 'ตามยอดเงิน ' + PMP.util.baht(p.min))) + (p.aud === 'new' ? ' · เฉพาะลูกค้าใหม่' : '') + (p.strict ? ' · ตรวจหน่วยเข้มงวด' : '') + ' · ' + (p.stackPromo ? 'ใช้ร่วมโปรอื่นได้' : 'ใช้ร่วมโปรอื่นไม่ได้') + '</div></td>' +
+      var cond = !p.min ? 'ไม่มียอดขั้นต่ำ' : p.ctype === 'qty' ? 'ซื้อครบ ' + p.min + ' ชิ้น' : 'ซื้อครบ ' + PMP.util.baht(p.min);
+      return '<tr><td></td><td><div class="nm">' + esc(p.name) + '</div><div class="sub">' + cond + (p.aud === 'new' ? ' · เฉพาะลูกค้าใหม่' : '') + (p.strict ? ' · ตรวจหน่วยเข้มงวด' : '') + ' · ' + (p.stackPromo ? 'ใช้ร่วมโปรอื่นได้' : 'ใช้ร่วมโปรอื่นไม่ได้') + '</div></td>' +
         '<td><div class="rw">' + (items.length ? items.map(function (i) { return '<span class="chip ' + CHIP[i.k] + '" title="' + esc(PMP.describe(i, cfg)) + '">' + PMP.kindLabel[i.k] + '</span>'; }).join('') : '<span class="chip error">ยังไม่มีผลตอบแทน</span>') + '</div><div class="sub">' + esc(items.map(function (i) { return PMP.describe(i, cfg); }).join(' + ')) + '</div></td>' +
         '<td><span class="chip ' + chipSt + '">' + PMP.statusLabel[st] + '</span></td><td>' + dm(p.start) + '<br>– ' + dm(p.end) + '</td>' +
         '<td><b>' + p.used + '</b> / ' + (p.quotaTotal || '∞') + '<div class="qbar' + (pct >= 100 ? ' full' : '') + '"><i style="width:' + pct + '%"></i></div></td><td>' + (p.perCust || '∞') + '</td>' +
         '<td class="acts"><a class="btn text sm" href="02-admin-editor.html" data-lsel-promo="' + p.id + '">แก้ไข</a><button class="btn text sm grey" data-act="tog" data-id="' + p.id + '">' + (p.active ? 'ปิดใช้งาน' : 'เปิดใช้งาน') + '</button><button class="btn text sm grey" data-act="dup" data-id="' + p.id + '">ทำซ้ำ</button><button class="btn text sm grey" data-act="del" data-id="' + p.id + '">ลบ</button></td></tr>';
-    }).join('') : '<tr><td colspan="8" class="center muted" style="padding:28px">ไม่มีโปรโมชั่นในแท็บนี้</td></tr>';
+    }).join('') : '<tr><td colspan="8" class="center muted" style="padding:28px">ไม่มีโปรโมชั่นตามเงื่อนไขในแท็บนี้</td></tr>';
     document.getElementById('cnt').textContent = 'แสดง ' + list.length + ' จาก ' + cfg.promos.length + ' รายการ';
+    document.getElementById('ftabs').innerHTML = tabsHtml(fc, ftab, 'ftabkey');
+    var fl = (cfg.flash || []).filter(function (f) { return norm(fst(f, now)) === ftab; });
+    document.getElementById('frows').innerHTML = fl.length ? fl.map(function (f) {
+      var st = fst(f, now), chipSt = { running: 'success', upcoming: 'warning', expired: 'error', inactive: '', exhausted: 'error' }[st], pct = f.quota ? Math.min(100, Math.round(f.used / f.quota * 100)) : 0;
+      var rules = f.rules.map(function (r) { var ps = cfg.psets.filter(function (x) { return x.id === r.ps; })[0]; return (ps ? ps.name : r.ps) + ' −' + r.pct + '%'; }).join(' · ');
+      return '<tr><td><div class="nm">' + esc(f.name) + '</div></td><td>' + (f.start === f.end ? dm(f.start) : dm(f.start) + '<br>– ' + dm(f.end)) + '</td><td>' + (f.repeat ? 'ทุกปี' : 'ครั้งเดียว') + '</td><td>' + esc(rules) + '</td>' +
+        '<td><b>' + f.used + '</b> / ' + (f.quota || '∞') + '<div class="qbar' + (pct >= 100 ? ' full' : '') + '"><i style="width:' + pct + '%"></i></div></td><td><span class="chip ' + chipSt + '">' + PMP.statusLabel[st] + '</span></td>' +
+        '<td class="acts"><a class="btn text sm" href="04-admin-flash.html" data-lsel-flash="' + f.id + '">แก้ไข</a><button class="btn text sm grey" data-fact="tog" data-id="' + f.id + '">' + (f.active ? 'ปิดใช้งาน' : 'เปิดใช้งาน') + '</button><button class="btn text sm grey" data-fact="dup" data-id="' + f.id + '">ทำซ้ำ</button><button class="btn text sm grey" data-fact="del" data-id="' + f.id + '">ลบ</button></td></tr>';
+    }).join('') : '<tr><td colspan="7" class="center muted" style="padding:28px">ไม่มี Flash Sale ในแท็บนี้</td></tr>';
+    document.getElementById('fcnt').textContent = 'แสดง ' + fl.length + ' จาก ' + (cfg.flash || []).length + ' รายการ';
   }
   document.addEventListener('click', function (e) {
-    var t = e.target.closest && e.target.closest('[data-tabkey]');
-    if (t) { tab = t.getAttribute('data-tabkey'); render(); e.stopPropagation(); return; }
+    var tp = e.target.closest && e.target.closest('#typePick button'); if (tp) { type = tp.getAttribute('data-type'); render(); e.stopPropagation(); return; }
+    var t = e.target.closest && e.target.closest('[data-tabkey]'); if (t) { tab = t.getAttribute('data-tabkey'); render(); e.stopPropagation(); return; }
+    var ft = e.target.closest && e.target.closest('[data-ftabkey]'); if (ft) { ftab = ft.getAttribute('data-ftabkey'); render(); e.stopPropagation(); return; }
+    var fa = e.target.closest && e.target.closest('[data-fact]');
+    if (fa) {
+      var cf = PMP.cfg(), fid = fa.getAttribute('data-id'), fi = cf.flash.map(function (f) { return f.id; }).indexOf(fid), f0 = cf.flash[fi], fk2 = fa.getAttribute('data-fact');
+      if (fk2 === 'tog') f0.active = !f0.active;
+      if (fk2 === 'dup') { var c2 = PMP.util.clone(f0); c2.id = PMP.util.uid('fl'); c2.name += ' (สำเนา)'; c2.active = false; c2.used = 0; cf.flash.push(c2); }
+      if (fk2 === 'del') { if (!confirm('ลบ Flash Sale “' + f0.name + '” ?')) return; cf.flash.splice(fi, 1); }
+      PMP.saveCfg(cf); render(); return;
+    }
+    var cbtn = e.target.closest && e.target.closest('#createBtn');
+    if (cbtn && cbtn.getAttribute('data-create') === 'flash') {
+      var c3 = PMP.cfg(), nid = PMP.util.uid('fl'); c3.flash.push({ id: nid, name: 'Flash Sale ใหม่', start: c3.now, end: c3.now, active: true, quota: 100, used: 0, rules: [{ ps: c3.psets[0].id, pct: 10 }] }); PMP.saveCfg(c3);
+      try { localStorage.setItem('pmpc.live.sel.flash', JSON.stringify(nid)); } catch (x) {}
+      return;
+    }
     var a = e.target.closest && e.target.closest('[data-act]'); if (!a) return;
     var cfg = PMP.cfg(), id = a.getAttribute('data-id'), i = cfg.promos.map(function (p) { return p.id; }).indexOf(id), p = cfg.promos[i], act = a.getAttribute('data-act');
     if (act === 'tog') p.active = !p.active;

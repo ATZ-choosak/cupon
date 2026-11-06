@@ -40,7 +40,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
 .pf-chips span.no{border-color:var(--error);color:var(--error-dark)}
 .pf-foot{margin-top:auto;font-size:10.5px;color:var(--g700);border-top:1px solid var(--g300);padding-top:6px}
 .pcs .stub{width:22%;padding:8px;gap:5px}
-.pcs .qrbox{width:62px;height:62px}
+.pcs .barcode{width:104px;height:44px}
 .pcs .stub .cd{font-family:ui-monospace,Consolas,monospace;font-weight:800;font-size:13px}
 .pcs .stub .tr{font-size:9.5px;color:var(--g700);line-height:1.35}
 .pb-main{position:absolute;left:0;top:0;bottom:0;width:78%;padding:18px 14px 8px 24px;display:flex;flex-direction:column}
@@ -91,10 +91,10 @@ ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
     <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
     <div class="big">฿50</div>
     <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿300</div>
-    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span>1 ใบ/บิล</span></div>
     <div class="pf-foot">ใช้ได้ถึง 31 ธ.ค. 2569 · บูทสัมมนาเภสัช ต.ค. 69</div>
   </div>
-  <div class="stub"><div class="qrbox"></div><div class="cd">OCT50</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  <div class="stub"><div class="stub-in"><div class="barcode"></div><div class="cd">OCT50</div><div class="tr">✂ ก้นคูปอง · ร้านฉีกเก็บไว้เบิก</div></div></div>
   
 </div></div><div class="face back"><div class="pface rear"><span class="cap">หลัง</span>
   <div class="pb-main">
@@ -103,16 +103,16 @@ ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
       <div>
         <h6>ใช้ได้ที่ร้าน/สาขา</h6>
         <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>Pharmaplex สาขาเชียงใหม่</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาชุมชนคลองหลวง (ปทุมธานี)</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
-        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div></div>
       </div>
       <div>
         <h6>สิทธิ์และเงื่อนไข</h6>
-        <ul><li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 ต.ค. – 31 ธ.ค. 2569</li></ul>
+        <ul class="nm"><li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 ต.ค. – 31 ธ.ค. 2569</li></ul>
       </div>
     </div>
     <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
   </div>
-  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  <div class="stub"><div class="stub-in"><div class="cd" style="font-size:11px">ก้นคูปอง</div></div></div>
   
 </div></div></div></div></div></div>
   </div></div>
@@ -121,7 +121,6 @@ ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
       <h6 class="mb8">ใช้ได้ที่ไหน <span class="pin">4</span></h6>
       <div class="stack s8">
         <div class="chan y"><span class="big">✔</span><div><b>หน้าร้าน / POS ของร้านที่ร่วมรายการ</b><div class="small muted">ยื่นคูปองที่แคชเชียร์ ร้านจะฉีกก้นคูปองเก็บไว้</div></div></div>
-        <div class="chan n"><span class="big">✘</span><div><b>สั่งซื้อออนไลน์ (เว็บ/แอป)</b><div class="small muted">ใช้ไม่ได้ — กรอกรหัสนี้ในตะกร้าไม่ได้ เพราะรหัสเหมือนกันทั้งชุด</div></div></div>
       </div>
     </div></div>
     <div class="card"><div class="card-b">
@@ -145,10 +144,10 @@ ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
     <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
     <div class="big">฿50</div>
     <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿300</div>
-    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span>1 ใบ/บิล</span></div>
     <div class="pf-foot">ใช้ได้ถึง 31 ธ.ค. 2569 · บูทสัมมนาเภสัช ต.ค. 69</div>
   </div>
-  <div class="stub"><div class="qrbox"></div><div class="cd">OCT50</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  <div class="stub"><div class="stub-in"><div class="barcode"></div><div class="cd">OCT50</div><div class="tr">✂ ก้นคูปอง · ร้านฉีกเก็บไว้เบิก</div></div></div>
   
 </div></div></div><div class="pcw" style="--s:0.88"><div class="pcs"><div class="pface rear"><span class="cap">หลัง</span>
   <div class="pb-main">
@@ -157,16 +156,16 @@ ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
       <div>
         <h6>ใช้ได้ที่ร้าน/สาขา</h6>
         <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>Pharmaplex สาขาเชียงใหม่</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาชุมชนคลองหลวง (ปทุมธานี)</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
-        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div></div>
       </div>
       <div>
         <h6>สิทธิ์และเงื่อนไข</h6>
-        <ul><li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 ต.ค. – 31 ธ.ค. 2569</li></ul>
+        <ul class="nm"><li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 ต.ค. – 31 ธ.ค. 2569</li></ul>
       </div>
     </div>
     <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
   </div>
-  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  <div class="stub"><div class="stub-in"><div class="cd" style="font-size:11px">ก้นคูปอง</div></div></div>
   
 </div></div></div></div>
 </div></div>
@@ -184,7 +183,6 @@ ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
 
 <div class="card mb24"><div class="card-b">
   <h6 class="mb8">คำถามที่พบบ่อย <span class="pin">6</span></h6>
-  <details class="faq" open><summary>ใช้คูปองกระดาษออนไลน์ได้ไหม</summary><div>ไม่ได้ คูปองกระดาษใช้ที่หน้าร้านที่ร่วมรายการเท่านั้น รหัสบนใบเหมือนกันทั้งชุด ระบบจึงไม่รับกรอกรหัสนี้ในตะกร้าออนไลน์ (ถ้าต้องการคูปองสำหรับสั่งออนไลน์ ดูที่ศูนย์คูปอง)</div></details>
   <details class="faq"><summary>ใช้ร่วมกับโปรโมชั่นหรือคูปองอื่นได้ไหม</summary><div>ดูที่ "สิทธิ์และเงื่อนไข" ของแต่ละชุด — ชุดนี้ใช้ร่วมโปรโมชั่นและพอยท์ได้ แต่ใช้ร่วมคูปองใบอื่นไม่ได้ และใช้ได้ 1 ใบต่อบิล</div></details>
   <details class="faq"><summary>คูปองหมดอายุแล้วทำอย่างไร</summary><div>ใช้ไม่ได้ ร้านจะไม่รับคูปองที่เลยวันที่ใช้ได้ตามที่พิมพ์ไว้ (ตรวจสถานะได้จากหน้านี้) — กรุณารอแคมเปญครั้งถัดไป</div></details>
   <details class="faq"><summary>คูปองชำรุด/ฉีกขาด/ก้นหาย ยังใช้ได้ไหม</summary><div>ต้องมีรหัสชุดและก้นคูปองครบจึงจะรับสิทธิ์ได้ — ถ้าใบชำรุดหรือก้นหาย ให้ติดต่อฝ่ายบริการลูกค้าก่อนไปใช้ที่ร้าน</div></details>
@@ -204,10 +202,10 @@ ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
     <div class="pf-brand">PHARMAPLEX · คูปองส่วนลด</div>
     <div class="big">฿40</div>
     <div class="pf-sub">ส่วนลดทันที เมื่อซื้อสินค้าครบ ฿250</div>
-    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span class="no">ใช้ออนไลน์ไม่ได้</span><span>1 ใบ/บิล</span></div>
+    <div class="pf-chips"><span>ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)</span><span>1 ใบ/บิล</span></div>
     <div class="pf-foot">ใช้ได้ถึง 30 ก.ย. 2569 · งานแสดงสินค้า ก.ย. 69</div>
   </div>
-  <div class="stub"><div class="qrbox"></div><div class="cd">SEP40</div><div class="tr">✂ ก้นคูปอง<br>ร้านฉีกเก็บไว้เบิก</div></div>
+  <div class="stub"><div class="stub-in"><div class="barcode"></div><div class="cd">SEP40</div><div class="tr">✂ ก้นคูปอง · ร้านฉีกเก็บไว้เบิก</div></div></div>
   <div class="pf-void">หมดอายุ</div>
 </div></div></div><div class="pcw" style="--s:0.4"><div class="pcs"><div class="pface rear"><span class="cap">หลัง</span>
   <div class="pb-main">
@@ -216,16 +214,16 @@ ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
       <div>
         <h6>ใช้ได้ที่ร้าน/สาขา</h6>
         <ul><li>Pharmaplex สำนักงานใหญ่ (กรุงเทพฯ)</li><li>Pharmaplex สาขาโคราช</li><li>Pharmaplex สาขาเชียงใหม่</li><li>ร้านยาเภสัชกรเมือง (นครราชสีมา)</li><li>ร้านยาสุขใจ สาขาลาดพร้าว</li><li class="ln">รายชื่อล่าสุด: pharmaplex.co.th/coupon</li></ul>
-        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div></div>
+        <div class="pb-chan"><div class="y">✔ ใช้ที่หน้าร้าน / POS ได้</div></div>
       </div>
       <div>
         <h6>สิทธิ์และเงื่อนไข</h6>
-        <ul><li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 – 30 ก.ย. 2569</li></ul>
+        <ul class="nm"><li>ซื้อครบ ฿300 ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>ร่วมโปรโมชั่นได้ · ร่วมพอยท์ได้ · ร่วมคูปองอื่นไม่ได้</li><li>ยกเว้น: นมผงสูตร 3 (ลัง/กระป๋อง)</li><li>ใช้ได้กับลูกค้าทุกกลุ่ม</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ใช้ได้ 1 – 30 ก.ย. 2569</li></ul>
       </div>
     </div>
     <div class="pb-note">คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนา · ร้านต้องเก็บก้นคูปองทุกใบเพื่อเบิกเงิน</div>
   </div>
-  <div class="stub"><div class="cd" style="font-size:11px">ก้นคูปอง</div><div class="tr">ร้านฉีกเก็บไว้<br>แล้วส่งเบิกภายใน<br><b>30 วัน</b><br>นับจากวันที่ลูกค้าใช้</div></div>
+  <div class="stub"><div class="stub-in"><div class="cd" style="font-size:11px">ก้นคูปอง</div></div></div>
   
 </div></div></div></div>
   </div></div>
@@ -238,10 +236,11 @@ ul.cond{margin:0;padding-left:20px;line-height:1.9;font-size:13px}
     <li><span class="pin">1</span><span>ช่องกรอกรหัสชุดบนคูปอง (ไม่ต้องล็อกอิน) — ไม่แยกพิมพ์เล็ก/ใหญ่ ตัดช่องว่าง · หน้านี้ "ตรวจสอบ/ให้ข้อมูล" เท่านั้น ไม่ใช้ส่วนลดให้</span></li>
     <li><span class="pin">2</span><span>แบนเนอร์สถานะชุด: ใช้ได้ / หมดอายุ / ไม่พบ พร้อมสรุปมูลค่า ขั้นต่ำ วันที่ และจำนวนร้าน</span></li>
     <li><span class="pin">3</span><span>แสดงคูปองทั้งหน้าและหลัง: พลิกดูได้ในใบเดียว และเทียบแบบหน้า–หลังข้างกัน เหมือนที่พิมพ์จริง</span></li>
-    <li><span class="pin">4</span><span>บรรทัดช่องทาง ✔/✘ ชัดเจน: หน้าร้าน/POS และออนไลน์ พร้อมเหตุผลเมื่อใช้ไม่ได้</span></li>
+    <li><span class="pin">4</span><span>บรรทัดช่องทาง ✔ ชัดเจน: ใช้ที่หน้าร้าน/POS ของร้านที่ร่วมรายการ</span></li>
     <li><span class="pin">5</span><span>รายชื่อร้าน/สาขาที่ใช้ได้ ค้นหาและกรองจังหวัดได้ — ร้านที่ไม่อยู่ในรายชื่อ = ใช้ไม่ได้</span></li>
-    <li><span class="pin">6</span><span>คำถามที่พบบ่อย 4 ข้อ (ออนไลน์ได้ไหม / ใช้ร่วมได้ไหม / หมดอายุ / ใบชำรุด) แบบพับเก็บได้</span></li>
+    <li><span class="pin">6</span><span>คำถามที่พบบ่อย (ใช้ร่วมได้ไหม / หมดอายุ / ใบชำรุด) แบบพับเก็บได้</span></li>
     <li><span class="pin">7</span><span>สถานะไม่พบรหัส และหมดอายุ (ตราประทับ "หมดอายุ" บนทั้งสองด้าน)</span></li>
+      <li><span class="pin">9</span><span><b>แลกที่ไหน/ได้อะไร</b> <span class="chip soft-primary sq">ใหม่</span> ลูกค้ากรอกรหัสแล้วเห็นสิทธิ์ (ส่วนลด หรือของฟรี) และรายชื่อร้านที่รับ รวมพาร์ทเนอร์นอกระบบพร้อมสาขา</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>ข้อมูลทุกอย่างมาจากชุดที่แอดมินตั้งค่า — ไม่แสดงจำนวนก้น/ยอดเบิก/ข้อมูลภายในของร้านใด ๆ</li>

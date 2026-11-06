@@ -1,6 +1,6 @@
 /* PMP core — shared state + pricing engine for the mockup (runs in the browser, state in localStorage).
    Mirrors what the real services will do:  PromotionService.evaluate · CouponService.validate · PointsService.earn/redeem ·
-   CampaignService.quota/ladder · RaffleService.issue/draw · RewardService.grant (one component for every module).
+   CampaignService.ladder · RaffleService.issue/draw · RewardService.grant (one component for every module).
    Everything the admin pages save (reward groups) and everything the simulator config saves lives under 'pmpc.*' keys. */
 (function (g) {
   var PMP = g.PMP = g.PMP || {};
@@ -32,8 +32,14 @@
   ];
   PMP.stores = [
     { id: 's1', name: 'ร้านยาสุขใจ สาขาลาดพร้าว' }, { id: 's2', name: 'ร้านยาสุขใจ สาขาบางนา' }, { id: 's3', name: 'ร้านยาเภสัชกรเมือง' },
-    { id: 's4', name: 'ร้านยาชุมชนคลองหลวง' }, { id: 's5', name: 'Pharmaplex สาขาโคราช' }
+    { id: 's4', name: 'ร้านยาชุมชนคลองหลวง' }, { id: 's5', name: 'Pharmaplex สาขาโคราช' },
+    { id: 'x1', name: 'ร้านไอศกรีมสุขใจ (พาร์ทเนอร์)', kind: 'ext', cat: 'ร้านไอศกรีม', contact: 'คุณมานี 081-234-5678', branches: 'สาขาสยาม · สาขาลาดพร้าว · สาขาเมกาบางนา' },
+    { id: 'x2', name: 'คาเฟ่ลมโชย (พาร์ทเนอร์)', kind: 'ext', cat: 'คาเฟ่/เครื่องดื่ม', contact: 'คุณพิม 089-111-2222', branches: 'สาขาอารีย์ · สาขาทองหล่อ' }
   ];
+  PMP.stores.forEach(function (x) { if (!x.kind) x.kind = 'sys'; });
+  /* every place that can redeem a paper coupon: registered stores (in-system) + partner organisations outside the system (cfg.partners adds more) */
+  PMP.partners = function () { return PMP.stores.concat((PMP.cfg().partners) || []); };
+  PMP.partner = function (id) { return PMP.partners().filter(function (x) { return x.id === id; })[0] || { id: id, name: id, kind: 'ext' }; };
   PMP.product = function (sku) { return PMP.products.filter(function (p) { return p.sku === sku; })[0]; };
 
   /* ---------------- configuration (editable in simulator/01-config) ---------------- */
@@ -44,8 +50,9 @@
       csets: [{ id: 'cs1', name: 'ร้านยา VIP ปี 2569', members: ['c-b2b'], extra: 37, note: 'ลูกค้ายอดซื้อสูง' }, { id: 'cs2', name: 'ลูกค้าติดตามหนี้', members: ['c-b2c'], extra: 5, note: '' }],
       flash: [{ id: 'fl1', name: 'Flash Sale 10.27', start: '2026-10-27', end: '2026-10-27', active: true, quota: 50, used: 12, rules: [{ ps: 'ps1', pct: 20 }, { ps: 'ps2', pct: 15 }] }],
       paper: [
-        { id: 'pp1', code: 'OCT50', name: 'คูปองกระดาษ ลด ฿50 งานสัมมนา ต.ค.', value: 50, min: 500, issued: 2000, maxPerStore: 300, stores: { mode: 'pick', ids: ['s1', 's2', 's3'] }, active: true, payDays: 30, back: 'ใช้ได้เฉพาะหน้าร้านที่ร่วมรายการ ไม่ใช้ร่วมโปรอื่น' },
-        { id: 'pp2', code: 'NOV80', name: 'คูปองกระดาษ ลด ฿80 บูท พ.ย.', value: 80, min: 800, issued: 1000, maxPerStore: 200, stores: { mode: 'all', ids: [] }, active: true, payDays: 30, back: 'ใช้ได้ทุกร้านที่ลงทะเบียน' }],
+        { id: 'pp1', benefit: 'discount', item: '', settle: 'pay', cost: 0, serial: { on: false, prefix: '', from: 1, to: 0 }, code: 'OCT50', name: 'คูปองกระดาษ ลด ฿50 งานสัมมนา ต.ค.', value: 50, min: 500, issued: 2000, maxPerStore: 0, stores: { mode: 'pick', ids: ['s1', 's2', 's3'] }, active: true, payDays: 30, back: 'ใช้ได้เฉพาะหน้าร้านที่ร่วมรายการ ไม่ใช้ร่วมโปรอื่น' },
+        { id: 'pp2', benefit: 'discount', item: '', settle: 'pay', cost: 0, serial: { on: false, prefix: '', from: 1, to: 0 }, code: 'NOV80', name: 'คูปองกระดาษ ลด ฿80 บูท พ.ย.', value: 80, min: 800, issued: 1000, maxPerStore: 0, stores: { mode: 'all', ids: [] }, active: true, payDays: 30, back: 'ใช้ได้ทุกร้านที่ลงทะเบียน' },
+        { id: 'pp3', benefit: 'item', item: 'ไอศกรีมวานิลลา 1 ถ้วย', settle: 'pay', cost: 25, serial: { on: false, prefix: '', from: 1, to: 0 }, code: 'ICE1', name: 'คูปองไอศกรีมฟรี 1 ถ้วย (พาร์ทเนอร์)', value: 0, min: 0, issued: 1000, maxPerStore: 0, stores: { mode: 'pick', ids: ['x1'] }, active: true, payDays: 30, back: 'แลกไอศกรีมวานิลลา 1 ถ้วยฟรี ที่ร้านไอศกรีมสุขใจ ทุกสาขา · 1 ใบ/ถ้วย · ไม่แลกเป็นเงินสด' }],
       kits: [
         { id: 'kt1', name: 'ชุดร้านยาเปิดใหม่ S', disc: 5, aud: 'B2B', items: [{ sku: 'PAR-500', qty: 50, min: 20, req: true }, { sku: 'SY-3ML', qty: 10, min: 5, req: true }, { sku: 'BM-VC500', qty: 6, min: 0, req: false }, { sku: 'PP-DM', qty: 4, min: 0, req: false }] },
         { id: 'kt2', name: 'ชุดร้านยาเปิดใหม่ L', disc: 8, aud: 'B2B', items: [{ sku: 'PAR-500', qty: 100, min: 50, req: true }, { sku: 'SY-3ML', qty: 30, min: 10, req: true }, { sku: 'BM-VC500B', qty: 2, min: 0, req: false }, { sku: 'DX-MP1', qty: 6, min: 0, req: false }] }],
@@ -65,12 +72,14 @@
           aud: 'all', ctype: 'qty', min: 2, scope: { mode: 'skus', ref: ['DX-MP1'] }, strict: true, stackPromo: true, stackCoupon: true, stackPoints: true },
         { id: 'p9', name: 'ลูกค้าใหม่ ซื้อครบ ฿5,000 ลด ฿300 + ลุ้นโชค 1 สิทธิ์', kind: 'cond', start: '2026-10-01', end: '2026-12-31', active: true, quotaTotal: 200, used: 31, perCust: 1,
           aud: 'new', ctype: 'amt', min: 5000, scope: { mode: 'all', ref: null }, strict: false, stackPromo: true, stackCoupon: false, stackPoints: true },
-        { id: 'p10', name: 'วันพิเศษ 10.27 ลดทั้งร้าน 10% (สูงสุด ฿500)', kind: 'special', start: '2026-10-27', end: '2026-10-27', active: true, quotaTotal: 300, used: 120, perCust: 1,
+        { id: 'p10', name: 'วันพิเศษ 10.27 ซื้อเท่าไรก็ได้ ลด 10% (สูงสุด ฿500) + พอยท์ ×2', kind: 'cond', start: '2026-10-27', end: '2026-10-27', active: true, quotaTotal: 300, used: 120, perCust: 1,
           aud: 'all', ctype: 'amt', min: 0, scope: { mode: 'all', ref: null }, strict: false, stackPromo: false, stackCoupon: true, stackPoints: true },
         { id: 'p11', name: 'ซื้อผ้าอ้อมครบ 2 แพ็ก ลด ฿60 (โควตาหมดแล้ว)', kind: 'cond', start: '2026-10-01', end: '2026-12-31', active: true, quotaTotal: 20, used: 20, perCust: 1,
           aud: 'all', ctype: 'qty', min: 2, scope: { mode: 'skus', ref: ['PP-DM'] }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true },
         { id: 'p12', name: 'ซื้อเข็มฉีดยาครบ 5 กล่อง แถม 1 กล่อง (ยังไม่เริ่ม)', kind: 'cond', start: '2026-12-01', end: '2026-12-31', active: true, quotaTotal: 100, used: 0, perCust: 2,
-          aud: 'all', ctype: 'qty', min: 5, scope: { mode: 'skus', ref: ['SY-3ML'] }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true }
+          aud: 'all', ctype: 'qty', min: 5, scope: { mode: 'skus', ref: ['SY-3ML'] }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true },
+        { id: 'p13', name: 'ซื้อสินค้ากลุ่มนมผง รับพอยท์ ×1.5', kind: 'cond', start: '2026-10-01', end: '2026-11-30', active: true, quotaTotal: 0, used: 0, perCust: 0,
+          aud: 'all', ctype: 'qty', min: 1, scope: { mode: 'pset', ref: 'ps2' }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true }
       ],
       coupons: [
         { id: 'k1', code: 'SAVE100', name: 'โค้ดลด ฿100 เมื่อซื้อครบ ฿1,000', kind: 'code', start: '2026-10-01', end: '2026-12-31', active: true, quotaTotal: 500, used: 120, perCust: 1,
@@ -83,8 +92,6 @@
           aud: 'all', dtype: 'ship', value: 0, cap: 0, min: 0, scope: { mode: 'all', ref: null }, except: [], stackPromo: true, stackPoints: true }
       ],
       points: {
-        mults: [{ id: 'm1', name: 'พอยท์ ×2 ช่วงวันพิเศษ', start: '2026-10-27', end: '2026-10-29', mult: 2, scope: { mode: 'all', ref: null } },
-                { id: 'm2', name: 'พอยท์ ×1.5 กลุ่มนมผง', start: '2026-10-01', end: '2026-11-30', mult: 1.5, scope: { mode: 'pset', ref: 'ps2' } }],
         expiryDays: 365
       },
       catalog: [
@@ -93,25 +100,43 @@
         { id: 'r3', name: 'ชุดพรีเมียม: กระเป๋า + 1 สิทธิ์ลุ้น', pts: 800, stock: 20, active: true, aud: 'all' },
         { id: 'r4', name: 'คูปองส่งฟรี 1 ครั้ง', pts: 150, stock: 200, active: true, aud: 'all' }
       ],
-      quota: [
-        { id: 'q1', name: 'ราคาพิเศษ Dumex 590 บาท (โควตา 60 กระป๋อง)', start: '2026-10-20', end: '2026-10-31', active: true, sku: 'DX-MP1', special: 590, quotaTotal: 60, used: 41, perCust: 6, holdMin: 15, aud: 'all' }
-      ],
       ladders: [
         { id: 'l1', name: 'สะสมยอดรายปี 2569 (ทั้งปีสัญญา)', start: '2026-01-01', end: '2026-12-31', active: true, aud: 'B2B', scope: { mode: 'all', ref: null },
           tiers: [{ id: 't1', at: 10000, name: 'ขั้น 1 · ฿10,000', cap: 0, formText: 'ที่อยู่จัดส่ง*\nเบอร์โทร*' }, { id: 't2', at: 30000, name: 'ขั้น 2 · ฿30,000', cap: 0, formText: 'ที่อยู่จัดส่ง*' }, { id: 't3', at: 60000, name: 'ขั้น 3 · ฿60,000', cap: 5, formText: 'ชื่อผู้เดินทางตามพาสปอร์ต*\nเบอร์โทร*\nหมายเหตุ' }] }
       ],
       raffles: [
-        { id: 'f1', name: 'ลุ้นโชคปลายปี 2569', start: '2026-10-01', end: '2026-12-31', active: true, perBaht: 1000, mode: 'A', poolOthers: 240,
-          prizes: [{ id: 'z1', name: 'รางวัลปลอบใจ', weight: 50, stock: 999 }, { id: 'z2', name: 'คูปองลด ฿100', weight: 30, stock: 200 }, { id: 'z3', name: 'พอยท์ 500', weight: 15, stock: 100 }, { id: 'z4', name: 'ชุดของพรีเมียม', weight: 5, stock: 10 }] }
-      ]
+        { id: 'f1', mode: 'A', style: 'wheel', speed: 'normal', name: 'ลุ้นโชคปลายปี 2569 (ลุ้นทันที)', desc: 'ใช้สิทธิ์ 1 ใบ หมุนวงล้อ รู้ผลทันที', start: '2026-10-01', end: '2026-12-31', active: true, aud: 'all', perBaht: 1000, ptsPer: 300,
+          prizes: [{ id: 'z1', name: 'รางวัลปลอบใจ', weight: 50, stock: 999 }, { id: 'z2', name: 'คูปองลด ฿100', weight: 30, stock: 200 }, { id: 'z3', name: 'พอยท์ 500', weight: 15, stock: 100 }, { id: 'z4', name: 'ชุดของพรีเมียม', weight: 5, stock: 10 }] },
+        { id: 'f2', mode: 'B', name: 'จับรางวัลใหญ่ส่งท้ายปี 2569 (จับตามรอบ)', desc: 'นำสิทธิ์ลงกอง รอประกาศผลตามวันที่กำหนด', start: '2026-10-01', end: '2026-12-25', drawAt: '2026-12-31', active: true, aud: 'all', perBaht: 5000, ptsPer: 0, poolOthers: 240,
+          prizes: [{ id: 'z5', name: 'ทริปญี่ปุ่น 2 ท่าน', winners: 1 }, { id: 'z6', name: 'iPad Air', winners: 2 }, { id: 'z7', name: 'คูปองลด ฿500', winners: 5 }] }
+      ],
+      notify: {
+        points: { on: true, days: 30 },
+        ladder: { on: true, at80: true, at95: true, expiryDays: 30 },
+        claim: { on: true },
+        coupon: { on: true, days: 3 },
+        promo: { on: true, days: 3 },
+        raffle: { on: true }
+      }
     };
   }
   PMP.cfg = function () {
     var c = rd('pmpc.sim.cfg', null);
-    if (!c) { c = seedCfg(); wr('pmpc.sim.cfg', c); return c; }
+    if (!c) { c = seedCfg(); wr('pmpc.sim.cfg', c); }
     var d = seedCfg(), ch = false;
-    ['csets', 'flash', 'paper', 'kits', 'stock'].forEach(function (k) { if (!c[k]) { c[k] = d[k]; ch = true; } });
+    if (c.quota) { delete c.quota; ch = true; }
+    c.promos.forEach(function (p) { if (p.kind === 'special') { p.kind = 'cond'; if (p.id === 'p10') p.name = 'วันพิเศษ 10.27 ซื้อเท่าไรก็ได้ ลด 10% (สูงสุด ฿500) + พอยท์ ×2'; ch = true; } });
+    if (c.points && c.points.mults) { delete c.points.mults; ch = true; }
+    if (!c.promos.some(function (p) { return p.id === 'p13'; }) && !c._p13) { c.promos.push(d.promos.filter(function (p) { return p.id === 'p13'; })[0]); c._p13 = 1; ch = true; }
+    ['csets', 'flash', 'paper', 'kits', 'stock', 'partners'].forEach(function (k) { if (!c[k]) { c[k] = d[k] || []; ch = true; } });
+    c.paper.forEach(function (p) { if (p.serial && p.serial.on) { p.serial.on = false; ch = true; } if (!p.benefit) { p.benefit = 'discount'; p.item = ''; p.settle = 'pay'; p.cost = 0; p.serial = { on: false, prefix: '', from: 1, to: 0 }; ch = true; } });
+    c.paper.forEach(function (p) { if (!Array.isArray(p.terms)) { p.terms = String(p.back || '').split(/\s*·\s*|\n/).map(function (x) { return x.trim(); }).filter(Boolean); ch = true; } if (p.note == null) { p.note = PMP.PAPER_NOTE; ch = true; } if (!p.tpl) { p.tpl = p.benefit === 'item' ? 'gift' : 'classic'; ch = true; } if (!p.theme) { p.theme = 'red'; ch = true; } });
+    c.paper.forEach(function (p) { p.maxPerStore = 0; if (!p.start) { p.start = '2026-10-01'; p.end = '2026-12-31'; ch = true; } });
+    if (!c._pp3 && !c.paper.some(function (p) { return p.id === 'pp3'; })) { c.paper.push(d.paper.filter(function (p) { return p.id === 'pp3'; })[0]); c._pp3 = 1; ch = true; }
     c.ladders.forEach(function (L, i) { L.tiers.forEach(function (t, j) { if (t.formText == null) { t.formText = 'ที่อยู่จัดส่ง*'; ch = true; } }); });
+    c.raffles.forEach(function (f) { if (f.mode !== 'A' && f.mode !== 'B') { f.mode = 'A'; ch = true; } if (f.ptsPer == null) { f.ptsPer = 0; ch = true; } if (!f.aud) { f.aud = 'all'; ch = true; } if (f.mode === 'B' && !f.drawAt) { f.drawAt = f.end; ch = true; } if (f.mode === 'B') f.prizes.forEach(function (z) { if (z.winners == null) { z.winners = 1; ch = true; } }); if (f.mode === 'A' && /ลุ้นโชคปลายปี/.test(f.name) && !/ลุ้นทันที/.test(f.name)) { f.name += ' (ลุ้นทันที)'; ch = true; } });
+    if (!c._f2 && !c.raffles.some(function (f) { return f.id === 'f2'; })) { c.raffles.push(d.raffles.filter(function (f) { return f.id === 'f2'; })[0]); c._f2 = 1; ch = true; }
+    if (!c.notify) { c.notify = d.notify; ch = true; }
     if (ch) wr('pmpc.sim.cfg', c);
     return c;
   };
@@ -124,7 +149,8 @@
     'promotion.p5': [{ k: 'disc', mode: 'pct', value: 10, cap: 150 }],
     'promotion.p7': [{ k: 'gift', sku: 'BT-PP01', qty: 1 }, { k: 'ship' }, { k: 'points', pts: 50 }],
     'promotion.p9': [{ k: 'disc', mode: 'baht', value: 300, cap: 0 }, { k: 'entitle', activityId: 'f1', tickets: 1 }],
-    'promotion.p10': [{ k: 'disc', mode: 'pct', value: 10, cap: 500 }],
+    'promotion.p10': [{ k: 'disc', mode: 'pct', value: 10, cap: 500 }, { k: 'points', mode: 'mult', value: 2 }],
+    'promotion.p13': [{ k: 'points', mode: 'mult', value: 1.5 }],
     'promotion.p11': [{ k: 'disc', mode: 'baht', value: 60, cap: 0 }],
     'promotion.p12': [{ k: 'gift', sku: 'SY-3ML', qty: 1 }],
     'points.r1': [{ k: 'coupon', couponId: 'k1', qty: 1 }],
@@ -137,7 +163,10 @@
     'raffle.z1': [{ k: 'points', pts: 5 }],
     'raffle.z2': [{ k: 'coupon', couponId: 'k1', qty: 1 }],
     'raffle.z3': [{ k: 'points', pts: 500 }],
-    'raffle.z4': [{ k: 'offpos', text: 'ชุดของพรีเมียม (ส่งทางไปรษณีย์)', qty: 1 }, { k: 'credit', amount: 300, expiryDays: 90 }]
+    'raffle.z4': [{ k: 'offpos', text: 'ชุดของพรีเมียม (ส่งทางไปรษณีย์)', qty: 1 }, { k: 'credit', amount: 300, expiryDays: 90 }],
+    'raffle.z5': [{ k: 'offpos', text: 'ทริปญี่ปุ่น 2 ท่าน (ทีมงานติดต่อภายใน 7 วัน)', qty: 1 }],
+    'raffle.z6': [{ k: 'offpos', text: 'iPad Air (ส่งทางไปรษณีย์)', qty: 1 }],
+    'raffle.z7': [{ k: 'coupon', couponId: 'k1', qty: 5 }]
   };
   PMP.seedReward = function (module, ref) { return clone(SEED_RWD[module + '.' + ref] || []); };
 
@@ -145,10 +174,10 @@
   function seedState() {
     var st = { customers: {}, orders: [], log: [] };
     PMP.customers.forEach(function (c) {
-      st.customers[c.id] = { points: c.id === 'c-b2b' ? 1240 : c.id === 'c-b2c' ? 300 : 0, lots: [], credit: 0, orders: c.id === 'c-b2b' ? 12 : c.id === 'c-b2c' ? 3 : 0,
-        wallet: [], tickets: { f1: c.id === 'c-b2b' ? 2 : 0 }, promoUse: {}, couponUse: {}, quotaUse: {}, ladder: { l1: { spent: c.id === 'c-b2b' ? 8400 : 0, unlocked: [], claimed: [] } }, queue: [], draws: [], ledger: [], collected: {} };
+      st.customers[c.id] = { points: c.id === 'c-b2b' ? 1240 : c.id === 'c-b2c' ? 300 : 0, lots: c.id === 'c-b2b' ? [{ pts: 240, exp: addDays(seedCfg().now, 20) }] : [], credit: 0, orders: c.id === 'c-b2b' ? 12 : c.id === 'c-b2c' ? 3 : 0,
+        wallet: [], tickets: { f1: c.id === 'c-b2b' ? 2 : 0, f2: c.id === 'c-b2b' ? 2 : 0 }, promoUse: {}, couponUse: {}, ladder: { l1: { spent: c.id === 'c-b2b' ? 8400 : 0, unlocked: [], claimed: [] } }, queue: [], draws: [], ledger: [], collected: {} };
     });
-    st.shared = { promoUsed: {}, couponUsed: {}, quotaUsed: {}, prizeUsed: {}, rafflePool: {} };
+    st.shared = { promoUsed: {}, couponUsed: {}, prizeUsed: {}, rafflePool: {}, drawResult: {} };
     return st;
   }
   PMP.state = function () { var s = rd('pmpc.sim.state', null); if (!s) { s = seedState(); wr('pmpc.sim.state', s); } return s; };
@@ -203,7 +232,7 @@
       case 'gift': var p = PMP.product(it.sku); return 'แถม ' + (p ? p.name : it.sku) + ' × ' + (it.qty || 1);
       case 'disc': return it.mode === 'pct' ? 'ลด ' + it.value + '%' + (it.cap ? ' (สูงสุด ' + baht(it.cap) + ')' : '') : 'ลด ' + baht(it.value || 0);
       case 'ship': return 'ฟรีค่าจัดส่ง';
-      case 'points': return 'รับ ' + (it.pts || 0).toLocaleString('en-US') + ' พอยท์';
+      case 'points': return it.mode === 'mult' ? 'พอยท์ ×' + (it.value || 1) + ' (ของสินค้าที่เข้าโปร)' : 'รับ ' + (it.pts || 0).toLocaleString('en-US') + ' พอยท์';
       case 'coupon': var k = cfg.coupons.filter(function (x) { return x.id === it.couponId; })[0]; return 'คูปอง ' + (k ? k.code : '?') + ' × ' + (it.qty || 1);
       case 'credit': return 'เครดิตเงินคืน ' + baht(it.amount || 0) + (it.expiryDays ? ' (หมดอายุ ' + it.expiryDays + ' วัน)' : '');
       case 'entitle': var f = cfg.raffles.filter(function (x) { return x.id === it.activityId; })[0]; return 'สิทธิ์ลุ้น ' + (it.tickets || 1) + ' ใบ · ' + (f ? f.name : '?');
@@ -239,21 +268,14 @@
       var p = PMP.product(c.sku); line[c.sku] = { sku: c.sku, p: p, qty: c.qty, unit: p.price, base: p.price, tag: '', promoDisc: 0, couponDisc: 0 };
     });
     var lines = Object.keys(line).map(function (k) { return line[k]; });
-    /* 1 — quota campaign special price */
-    cfg.quota.forEach(function (q) {
-      if (PMP.status(q, now) !== 'running' || !audOk(q.aud, cust, cs) || !line[q.sku]) return;
-      var left = q.quotaTotal - q.used, mine = q.perCust - (cs.quotaUse[q.id] || 0), l = line[q.sku];
-      var n = Math.max(0, Math.min(l.qty, left, mine));
-      if (n > 0) { l.quota = { id: q.id, n: n, special: q.special }; R.trace.push('แคมเปญโควตา “' + q.name + '”: ราคาพิเศษ ' + baht(q.special) + ' × ' + n + ' (เหลือโควตา ' + left + ', สิทธิ์ของคุณ ' + mine + ')'); }
-      else R.trace.push('แคมเปญโควตา “' + q.name + '”: ไม่ได้ราคาพิเศษ (โควตา/สิทธิ์ต่อคนหมด)');
-    });
+    /* 1 — Flash Sale */
     /* 1b — Flash Sale (ลดตามวันพิเศษ): % ต่อกลุ่มสินค้า + โควตารอบ */
     R.flashUse = {};
     (cfg.flash || []).forEach(function (f) {
       if (PMP.status({ active: f.active, start: f.start, end: f.end, quotaTotal: f.quota, used: f.used }, now) !== 'running') return;
       var left = f.quota ? f.quota - f.used : 1e9;
       lines.forEach(function (l) {
-        if (l.quota || l.flash || left <= 0) return;
+        if (l.flash || left <= 0) return;
         var rule = f.rules.filter(function (r) { return inPset(psetById(cfg, r.ps), l.p); })[0];
         if (!rule) return;
         var n = Math.min(l.qty, left); left -= n;
@@ -262,7 +284,7 @@
         R.trace.push('Flash “' + f.name + '”: ' + l.p.sku + ' ลด ' + rule.pct + '% × ' + n + ' (โควตารอบเหลือ ' + left + ')');
       });
     });
-    lines.forEach(function (l) { l.amount = (l.quota ? l.quota.n * l.quota.special + (l.qty - l.quota.n) * l.base : l.qty * l.base) - (l.flash ? l.flash.disc : 0); l.gross = l.amount; });
+    lines.forEach(function (l) { l.amount = l.qty * l.base - (l.flash ? l.flash.disc : 0); l.gross = l.amount; });
     var subtotal = lines.reduce(function (a, l) { return a + l.amount; }, 0);
     R.subtotal = subtotal; R.lines = lines;
 
@@ -298,6 +320,7 @@
           var rest = v; scopeLines.forEach(function (l, i) { var share = i === scopeLines.length - 1 ? rest : Math.round(v * (l.amount - l.promoDisc) / (base || 1) * 100) / 100; l.promoDisc += share; rest -= share; });
         } else if (it.k === 'gift') { R.gifts.push({ sku: it.sku, qty: (it.qty || 1) * card.m.times, from: p.name }); }
         else if (it.k === 'ship') { shipFree = true; }
+        else if (it.k === 'points' && it.mode === 'mult') { scopeLines.forEach(function (l) { l.ptsMult = (l.ptsMult || 1) + (it.value || 1) - 1; }); notes.push('พอยท์ ×' + (it.value || 1)); }
         else grants.push({ it: it, mult: card.m.times, from: p.name });
       });
       promoDiscTotal += d;
@@ -359,16 +382,16 @@
 
     /* 7 — what the order will earn */
     var net = Math.max(0, goods - R.pointsDisc);
-    var mults = cfg.points.mults.filter(function (m) { return inRange(now, m.start, m.end); });
+    /* points = qty × the product's own points/unit (0 when the product has none) × promotion multiplier. No default rate. */
     var earn = 0, earnTrace = [];
     lines.forEach(function (l) {
-      var pv = (cfg.pts && cfg.pts[l.p.sku] != null) ? cfg.pts[l.p.sku] : l.p.pts; if (!pv) return;
-      var mm = 1; mults.forEach(function (m) { if (inScope(cfg, m.scope, l.p)) mm += m.mult - 1; });
-      var e = l.qty * pv * mm; earn += e;
-      if (mm > 1) earnTrace.push(l.p.sku + ' ×' + mm);
+      var pv = (cfg.pts && cfg.pts[l.p.sku] != null) ? cfg.pts[l.p.sku] : l.p.pts; l.basePts = pv ? l.qty * pv : 0; l.ptsMult = l.basePts ? (l.ptsMult || 1) : 1;
+      l.pts = Math.round(l.basePts * l.ptsMult); earn += l.pts;
+      if (l.ptsMult > 1 && l.basePts) earnTrace.push(l.p.sku + ' ×' + l.ptsMult);
     });
-    R.earnBase = Math.floor(earn);
+    R.earnBase = earn;
     R.earnMultNote = earnTrace;
+    R.bonusPts = grants.reduce(function (a, g) { return a + (g.it.k === 'points' ? (g.it.pts || 0) * g.mult : 0); }, 0);
     var tickets = {};
     cfg.raffles.forEach(function (f) { if (PMP.status(f, now) === 'running' && f.perBaht) { var n = Math.floor(net / f.perBaht); if (n > 0) tickets[f.id] = n; } });
     R.ticketsBuy = tickets;
@@ -377,7 +400,8 @@
     R.ladderAdd = {};
     cfg.ladders.forEach(function (L) {
       if (PMP.status(L, now) !== 'running' || !audOk(L.aud, cust, cs)) return;
-      R.ladderAdd[L.id] = lines.filter(function (l) { return inScope(cfg, L.scope, l.p); }).reduce(function (a, l) { return a + l.amount - l.promoDisc - l.couponDisc; }, 0);
+      var tot = 0; lines.forEach(function (l) { if (!inScope(cfg, L.scope, l.p)) return; var v = Math.round((l.amount - l.promoDisc - l.couponDisc) * 100) / 100; (l.ladder = l.ladder || {})[L.id] = v; tot += v; });
+      R.ladderAdd[L.id] = Math.round(tot * 100) / 100;
     });
     return R;
   };
@@ -408,8 +432,6 @@
   PMP.checkout = function (cart, opts) {
     var cfg = PMP.cfg(), st = PMP.state(), R = PMP.price(cart, opts), cs = st.customers[opts.customerId], now = cfg.now, log = [];
     if (!R.lines.length) return { error: 'ตะกร้าว่าง' };
-    // quota hold → permanent cut
-    R.lines.forEach(function (l) { if (l.quota) { var q = cfg.quota.filter(function (x) { return x.id === l.quota.id; })[0]; q.used += l.quota.n; cs.quotaUse[q.id] = (cs.quotaUse[q.id] || 0) + l.quota.n; log.push('ตัดโควตาแคมเปญ ' + q.name + ' −' + l.quota.n); } });
     R.chosen.forEach(function (c) { c.p.used++; cs.promoUse[c.p.id] = (cs.promoUse[c.p.id] || 0) + 1; log.push('ตัดโควตาโปร ' + c.p.id + ' (ทั้งหมด ' + c.p.used + '/' + (c.p.quotaTotal || '∞') + ')'); });
     if (R.coupon) { var kp = cfg.coupons.filter(function (k) { return k.id === R.coupon.id; })[0]; kp.used++; cs.couponUse[kp.id] = (cs.couponUse[kp.id] || 0) + 1; if (R.coupon.walletId) cs.wallet.forEach(function (w) { if (w.id === R.coupon.walletId) w.used = true; }); log.push('ใช้คูปอง ' + kp.code); }
     if (R.pointsUsed) { cs.points -= R.pointsUsed; cs.ledger.unshift({ d: now, t: '-' + R.pointsUsed, why: 'ใช้เป็นส่วนลดในออเดอร์' }); log.push('หักพอยท์ ' + R.pointsUsed); }
@@ -431,10 +453,21 @@
       log.push('ยอดสะสม ' + L.name + ' = ' + baht(lv.spent));
     });
     cs.orders++;
-    var order = { no: 'SO' + (1000 + st.orders.length + 1), customerId: opts.customerId, d: now, lines: R.lines.map(function (l) { return { sku: l.sku, qty: l.qty, amount: l.amount }; }), subtotal: R.subtotal, promoDisc: R.promoDisc, couponDisc: R.couponDisc, shipping: R.shipping, pointsDisc: R.pointsDisc, creditUsed: R.creditUsed, total: R.total, promos: R.promoApplied.map(function (p) { return p.name; }), coupon: R.coupon && R.coupon.code, earn: R.earnBase, effects: log };
+    var order = { no: 'SO' + (1000 + st.orders.length + 1), customerId: opts.customerId, d: now, lines: R.lines.map(function (l) { return { sku: l.sku, qty: l.qty, amount: l.amount, pts: l.pts || 0, ptsMult: l.ptsMult || 1, ladder: l.ladder || {} }; }), pointsEarned: R.earnBase, pointsBonus: R.bonusPts || 0, ladder: JSON.parse(JSON.stringify(R.ladderAdd || {})), status: 'ปกติ', subtotal: R.subtotal, promoDisc: R.promoDisc, couponDisc: R.couponDisc, shipping: R.shipping, pointsDisc: R.pointsDisc, creditUsed: R.creditUsed, total: R.total, promos: R.promoApplied.map(function (p) { return p.name; }), coupon: R.coupon && R.coupon.code, earn: R.earnBase, effects: log };
     st.orders.unshift(order);
     PMP.saveCfg(cfg); PMP.saveState(st);
     return { order: order, R: R };
+  };
+
+  /* cancel an order: points it earned and the amount it added to every annual-spend campaign are ALWAYS taken back (read from fields stored on the order) */
+  PMP.cancelOrder = function (no) {
+    var cfg = PMP.cfg(), st = PMP.state(), o = st.orders.filter(function (x) { return x.no === no; })[0];
+    if (!o) return { error: 'ไม่พบออเดอร์' }; if (o.status === 'ยกเลิก') return { error: 'ออเดอร์นี้ยกเลิกไปแล้ว' };
+    var cs = st.customers[o.customerId], out = [], pts = (o.pointsEarned || 0) + (o.pointsBonus || 0);
+    if (pts) { var take = Math.min(cs.points, pts); cs.points -= take; cs.ledger.unshift({ d: cfg.now, t: '-' + take, why: 'ยกเลิกออเดอร์ ' + o.no + ' — หักพอยท์คืน' }); var left = take; for (var i = cs.lots.length - 1; i >= 0 && left > 0; i--) { var d = Math.min(cs.lots[i].pts, left); cs.lots[i].pts -= d; left -= d; } cs.lots = cs.lots.filter(function (x) { return x.pts > 0; }); out.push('หักพอยท์คืน ' + take + (take < pts ? ' (พอยท์คงเหลือไม่พอ ขาด ' + (pts - take) + ')' : '')); }
+    Object.keys(o.ladder || {}).forEach(function (lid) { var lv = cs.ladder[lid]; if (!lv) return; lv.spent = Math.max(0, Math.round((lv.spent - o.ladder[lid]) * 100) / 100); var L = cfg.ladders.filter(function (x) { return x.id === lid; })[0]; if (L) L.tiers.forEach(function (t) { if (lv.spent < t.at && lv.unlocked.indexOf(t.id) > -1 && lv.claimed.indexOf(t.id) < 0) { lv.unlocked.splice(lv.unlocked.indexOf(t.id), 1); out.push('ขั้น ' + t.name + ' ถูกล็อกกลับ'); } }); out.push('หักยอดสะสม ' + (L ? L.name : lid) + ' ' + baht(o.ladder[lid])); });
+    o.status = 'ยกเลิก'; o.cancelDate = cfg.now; o.cancelLog = out; cs.orders = Math.max(0, cs.orders - 1);
+    PMP.saveState(st); return { out: out };
   };
 
   /* ---------------- other module services ---------------- */
@@ -458,40 +491,93 @@
     if (t.cap && (t.used || 0) >= t.cap) return { error: 'สิทธิ์ขั้นนี้เต็มแล้ว' };
     lv.claimed.push(tid); t.used = (t.used || 0) + 1;
     st.claims = st.claims || [];
-    st.claims.unshift({ id: uid('cl'), cid: cid, lid: lid, tid: tid, name: L.name + ' · ' + t.name, answers: answers || [], labels: PMP.formFields(t).map(function (f) { return f.label; }), status: 'รอตรวจ', d: cfg.now, reason: '' });
-    PMP.saveCfg(cfg); PMP.saveState(st); return { out: ['ส่งคำขอแล้ว สถานะ “รอตรวจ” — รอทีมงานอนุมัติ (ตัดสิทธิ์ขั้นนี้ไว้แล้ว)'] };
+    st.claims.unshift({ id: uid('cl'), cid: cid, lid: lid, tid: tid, name: L.name + ' · ' + t.name, answers: answers || [], labels: PMP.formFields(t).map(function (f) { return f.label; }), status: 'รอตรวจ', d: cfg.now, reason: '', snap: lv.spent, log: [{ d: cfg.now, t: 'ส่งคำขอโดยลูกค้า (ตัดสิทธิ์ขั้นนี้ไว้แล้ว)' }] });
+    PMP.saveCfg(cfg); PMP.saveState(st);
+    /* a tier without a form is claimable at once: nothing to review, the reward is granted automatically */
+    if (!PMP.formFields(t).length) { var id0 = st.claims[0].id, st2 = PMP.state(); st2.claims[0].auto = true; PMP.saveState(st2); var ra = PMP.claimAct(id0, 'approve'); return { out: ['รับรางวัลแล้ว (ขั้นนี้ไม่มีฟอร์ม ระบบอนุมัติให้อัตโนมัติ) — ' + (ra.out || []).join(' · ')] }; }
+    return { out: ['ส่งคำขอแล้ว สถานะ “รอตรวจ” — รอทีมงานอนุมัติ (ตัดสิทธิ์ขั้นนี้ไว้แล้ว)'] };
   };
   PMP.claimAct = function (claimId, act, reason) {
     var cfg = PMP.cfg(), st = PMP.state(), c = (st.claims || []).filter(function (x) { return x.id === claimId; })[0];
     if (!c || c.status !== 'รอตรวจ') return { error: 'คำขอนี้ดำเนินการแล้ว' };
     var cs = st.customers[c.cid], lv = cs.ladder[c.lid], L = cfg.ladders.filter(function (x) { return x.id === c.lid; })[0], t = L.tiers.filter(function (x) { return x.id === c.tid; })[0];
-    if (act === 'approve') { c.status = 'อนุมัติ/ส่งมอบแล้ว'; var out = PMP.grant(st, c.cid, PMP.rewardsOf('campaign', c.lid + '-' + c.tid), 'แคมเปญ ' + c.name, cfg); PMP.saveCfg(cfg); PMP.saveState(st); return { out: out }; }
+    if (act === 'approve') { c.status = 'อนุมัติ/ส่งมอบแล้ว'; (c.log = c.log || []).push({ d: cfg.now, t: (c.auto ? 'อนุมัติอัตโนมัติ (ขั้นนี้ไม่มีฟอร์ม) — ' : 'อนุมัติ — ') + 'ส่งรางวัลตาม component ของขั้น' }); var out = PMP.grant(st, c.cid, PMP.rewardsOf('campaign', c.lid + '-' + c.tid), 'แคมเปญ ' + c.name, cfg); PMP.saveCfg(cfg); PMP.saveState(st); return { out: out }; }
     if (!reason) return { error: 'ต้องระบุเหตุผลที่ปฏิเสธ' };
-    c.status = 'ปฏิเสธ'; c.reason = reason; lv.claimed = lv.claimed.filter(function (x) { return x !== c.tid; }); t.used = Math.max(0, (t.used || 1) - 1);
+    c.status = 'ปฏิเสธ'; c.reason = reason; (c.log = c.log || []).push({ d: cfg.now, t: 'ปฏิเสธ · เหตุผล: ' + reason + ' (คืนสิทธิ์ให้ขั้นนี้)' }); lv.claimed = lv.claimed.filter(function (x) { return x !== c.tid; }); t.used = Math.max(0, (t.used || 1) - 1);
     PMP.saveCfg(cfg); PMP.saveState(st); return { out: ['ปฏิเสธคำขอ — คืนสิทธิ์ให้ขั้นนี้ ลูกค้าส่งใหม่ได้'] };
   };
   /* ---- paper coupons (ใช้ที่ร้าน · นับก้นคูปองเพื่อเบิกเงิน) ---- */
-  PMP.paperAccepts = function (pp, storeId) { return pp.active && (pp.stores.mode === 'all' || pp.stores.ids.indexOf(storeId) > -1); };
-  PMP.paperClaim = function (ppId, storeId, stubs) {
-    var cfg = PMP.cfg(), st = PMP.state(), pp = cfg.paper.filter(function (x) { return x.id === ppId; })[0];
-    if (!pp || !storeId || !(stubs > 0)) return { error: 'เลือกชุด/ร้าน และกรอกจำนวนก้นคูปอง' };
-    st.paperClaims = st.paperClaims || [];
-    var prev = st.paperClaims.filter(function (c) { return c.ppId === ppId && c.storeId === storeId && c.status !== 'ปฏิเสธ'; }).reduce(function (a, c) { return a + c.stubs; }, 0);
-    var tot = st.paperClaims.filter(function (c) { return c.ppId === ppId && c.status !== 'ปฏิเสธ'; }).reduce(function (a, c) { return a + c.stubs; }, 0);
-    var flags = [];
-    if (!PMP.paperAccepts(pp, storeId)) flags.push('ร้านไม่ได้อยู่ในชุดที่ร่วมรายการ');
-    if (prev + stubs > pp.maxPerStore) flags.push('เกินใบสูงสุดต่อร้าน (' + pp.maxPerStore + ')');
-    if (tot + stubs > pp.issued) flags.push('รวมเกินจำนวนที่ออก (' + pp.issued + ')');
-    st.paperClaims.unshift({ id: uid('pc'), ppId: ppId, storeId: storeId, stubs: stubs, amount: stubs * pp.value, flags: flags, status: 'รอตรวจนับ', d: cfg.now, counted: null });
-    PMP.saveState(st); return { flags: flags };
+
+  /* ---- Code 128 (subset B) barcode → SVG string. Same code on every coupon of a set (no per-coupon running number). ---- */
+  var C128 = ['212222','222122','222221','121223','121322','131222','122213','122312','132212','221213','221312','231212','112232','122132','122231','113222','123122','123221','223211','221132','221231','213212','223112','312131','311222','321122','321221','312212','322112','322211','212123','212321','232121','111323','131123','131321','112313','132113','132311','211313','231113','231311','112133','112331','132131','113123','113321','133121','313121','211331','231131','213113','213311','213131','311123','311321','331121','312113','312311','332111','314111','221411','431111','111224','111422','121124','121421','141122','141221','112214','112412','122114','122411','142112','142211','241211','221114','413111','241112','134111','111242','121142','121241','114212','124112','124211','411212','421112','421211','212141','214121','412121','111143','111341','131141','114113','114311','411113','411311','113141','114131','311141','411131','211412','211214','211232','2331112'];
+  PMP.code128 = function (text) {
+    var t = String(text || ''), vals = [104], sum = 104, i, v;
+    for (i = 0; i < t.length; i++) { v = t.charCodeAt(i) - 32; if (v < 0 || v > 94) v = 0; vals.push(v); sum += v * (i + 1); }
+    vals.push(sum % 103); vals.push(106);
+    return vals.map(function (x) { return C128[x]; }).join('');
   };
-  PMP.paperAct = function (id, act, counted) {
+  /* w = quiet-zone-less module count is derived; returns {svg, modules}. h = bar height (viewBox units) */
+  PMP.code128svg = function (text, h, color) {
+    var pat = PMP.code128(text), x = 10, bars = '', i, w;
+    for (i = 0; i < pat.length; i++) { w = +pat.charAt(i); if (i % 2 === 0) bars += '<rect x="' + x + '" y="0" width="' + w + '" height="' + (h || 40) + '"/>'; x += w; }
+    var W = x + 10;
+    return { modules: W, svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + W + ' ' + (h || 40) + '" preserveAspectRatio="none" fill="' + (color || '#000') + '" shape-rendering="crispEdges">' + bars + '</svg>' };
+  };
+
+  /* paper coupon templates (layout) + colour themes */
+  PMP.PAPER_TPL = [
+    { id: 'classic', name: 'คลาสสิก', desc: 'ตัวเลขใหญ่กลางบัตร พื้นไล่สีอ่อน ก้นคูปองด้านขวา อ่านง่ายที่สุด', fit: 'discount' },
+    { id: 'band', name: 'แถบสีหัวบัตร', desc: 'แถบสีเต็มความกว้างด้านบน ชื่อแบรนด์ชัด พื้นขาวประหยัดหมึก', fit: 'both' },
+    { id: 'bold', name: 'สีเต็มใบ', desc: 'พื้นสีเข้ม ตัวหนังสือขาว สะดุดตา เหมาะแจกกลางงาน/บูท', fit: 'discount' },
+    { id: 'gift', name: 'ตั๋วแลกของฟรี', desc: 'กรอบหนา มีไอคอนของขวัญ เหมาะกับของแถม/บริการฟรีที่ร้านพาร์ทเนอร์', fit: 'item' },
+    { id: 'minimal', name: 'มินิมอล', desc: 'พื้นขาว ขอบสีด้านซ้าย พิมพ์สีเดียวได้ ต้นทุนต่ำ', fit: 'both' }
+  ];
+  PMP.PAPER_THEMES = { red: { n: 'แดง Pharmaplex', pc: '#B71C1C', pt: '#FFF3F3' }, blue: { n: 'น้ำเงิน', pc: '#1565C0', pt: '#EEF5FF' }, green: { n: 'เขียว', pc: '#2E7D32', pt: '#EEF8EE' }, orange: { n: 'ส้ม', pc: '#E65100', pt: '#FFF4EA' } };
+  PMP.PAPER_NOTE = 'คูปองนี้พิมพ์โดย Pharmaplex เท่านั้น ห้ามถ่ายสำเนาหรือดัดแปลง ร้านต้องเก็บก้นคูปองทุกใบเพื่อใช้เบิกเงิน หากพบคูปองชำรุดหรือสงสัยว่าปลอมแปลง โปรดแจ้งฝ่ายบริการลูกค้า';
+  PMP.paperAccepts = function (pp, storeId) { return pp.active && (pp.stores.mode === 'all' ? PMP.stores.filter(function (x) { return x.kind === 'sys'; }).some(function (x) { return x.id === storeId; }) : pp.stores.ids.indexOf(storeId) > -1); };
+  /* what the issuer settles per redeemed coupon: discount sets → the printed value; free-item sets → agreed cost (0 when the partner sponsors) */
+  PMP.paperUnit = function (pp) { return pp.benefit === 'item' ? (pp.settle === 'pay' ? (pp.cost || 0) : 0) : (pp.value || 0); };
+  PMP.paperBenefitText = function (pp) { return pp.benefit === 'item' ? 'แลก ' + (pp.item || 'ของฟรี') + ' ฟรี' : 'ลด ' + util_baht(pp.value) + (pp.min ? ' เมื่อซื้อครบ ' + util_baht(pp.min) : ''); };
+  function util_baht(n) { return '฿' + Math.round(n).toLocaleString('en-US'); }
+  PMP.serialLabel = function (pp, n) { return (pp.serial.prefix || '') + '-' + String(n).padStart(6, '0'); };
+  /* parse "1-10, 15, 21" (numbers or PREFIX-000015) into a list of serial numbers */
+  PMP.parseSerials = function (txt) {
+    var out = [], bad = [];
+    String(txt || '').split(/[\s,;]+/).filter(Boolean).forEach(function (tok) {
+      var t = tok.replace(/^[A-Za-z]+-?/, '').replace(/\.\./g, '-'), m = t.match(/^0*(\d+)-[A-Za-z]*-?0*(\d+)$/), n = t.match(/^0*(\d+)$/);
+      if (m) { var a = +m[1], b = +m[2]; if (b < a || b - a > 5000) bad.push(tok); else for (var i = a; i <= b; i++) out.push(i); } else if (n) out.push(+n[1]); else bad.push(tok);
+    });
+    return { list: out, bad: bad };
+  };
+  PMP.paperClaim = function (ppId, storeId, stubs, serialTxt) {
+    var cfg = PMP.cfg(), st = PMP.state(), pp = cfg.paper.filter(function (x) { return x.id === ppId; })[0];
+    if (!pp || !storeId) return { error: 'เลือกชุดและร้าน/พาร์ทเนอร์' };
+    var sr = { list: [], bad: [] }, n = stubs;
+    if (!(n > 0)) return { error: 'กรอกจำนวนก้นคูปอง' };
+    st.paperClaims = st.paperClaims || [];
+    var live = st.paperClaims.filter(function (c) { return c.ppId === ppId && c.status !== 'ปฏิเสธ'; });
+    var prev = live.filter(function (c) { return c.storeId === storeId; }).reduce(function (a, c) { return a + c.stubs; }, 0), tot = live.reduce(function (a, c) { return a + c.stubs; }, 0);
+    var flags = [];
+    if (!PMP.paperAccepts(pp, storeId)) flags.push('ไม่ได้อยู่ในรายชื่อผู้รับคูปองชุดนี้');
+    if (tot + n > pp.issued) flags.unshift('⚠ ผิดปกติร้ายแรง: รวมเกินจำนวนที่พิมพ์/ออก (' + pp.issued + ' ใบ) — ตรวจก่อนจ่าย');
+    if (sr.bad.length) flags.push('เลขใบอ่านไม่ได้: ' + sr.bad.join(', '));
+    if (pp.serial && pp.serial.on && sr.list.length) {
+      var seen = {}, dupIn = sr.list.filter(function (x) { if (seen[x]) return true; seen[x] = 1; return false; }); if (dupIn.length) flags.push('เลขใบซ้ำในคำขอเดียวกัน: ' + dupIn.slice(0, 5).map(function (x) { return PMP.serialLabel(pp, x); }).join(', '));
+      var oor = sr.list.filter(function (x) { return x < pp.serial.from || x > pp.serial.to; }); if (oor.length) flags.push('เลขใบอยู่นอกช่วงที่พิมพ์ (' + pp.serial.from + '–' + pp.serial.to + '): ' + oor.slice(0, 5).map(function (x) { return PMP.serialLabel(pp, x); }).join(', '));
+      var used = {}; live.forEach(function (c) { (c.serials || []).forEach(function (x) { used[x] = c.storeId; }); }); var dup = sr.list.filter(function (x) { return used[x] != null; }); if (dup.length) flags.push('เลขใบเคยถูกเบิกแล้ว (' + dup.length + ' ใบ) เช่น ' + PMP.serialLabel(pp, dup[0]) + ' โดย ' + PMP.partner(used[dup[0]]).name);
+    }
+    st.paperClaims.unshift({ id: uid('pc'), ppId: ppId, storeId: storeId, stubs: n, serials: sr.list, amount: n * PMP.paperUnit(pp), flags: flags, status: 'รอตรวจนับ', d: cfg.now, counted: null, by: 'บันทึกโดยแอดมิน', log: [{ d: cfg.now, t: 'รับก้น ' + n + ' ใบเข้าระบบ (บันทึกโดยแอดมิน)' }] });
+    PMP.saveState(st); return { flags: flags, n: n };
+  };
+  PMP.paperAct = function (id, act, counted, extra) {
+    extra = extra || {};
     var st = PMP.state(), c = (st.paperClaims || []).filter(function (x) { return x.id === id; })[0], cfg = PMP.cfg();
     if (!c) return { error: 'ไม่พบคำขอ' };
     var pp = cfg.paper.filter(function (x) { return x.id === c.ppId; })[0];
-    if (act === 'count') { if (!(counted >= 0)) return { error: 'กรอกจำนวนที่นับได้' }; c.counted = counted; c.amount = counted * pp.value; c.status = 'ตรวจนับแล้ว'; }
-    else if (act === 'pay') { if (c.status !== 'ตรวจนับแล้ว') return { error: 'ต้องตรวจนับก่อนจ่าย' }; c.status = 'จ่ายแล้ว'; }
-    else if (act === 'reject') c.status = 'ปฏิเสธ';
+    if (act === 'count') { if (!(counted >= 0)) return { error: 'กรอกจำนวนที่นับได้' }; c.counted = counted; c.amount = counted * PMP.paperUnit(pp); c.status = 'ตรวจนับแล้ว'; (c.log = c.log || []).push({ d: cfg.now, t: 'นับก้นได้ ' + counted + ' ใบ (ร้านแจ้ง ' + c.stubs + ')' }); }
+    else if (act === 'recount') { c.status = 'รอตรวจนับ'; (c.log = c.log || []).push({ d: cfg.now, t: 'ส่งกลับไปตรวจนับใหม่' }); }
+    else if (act === 'pay') { if (c.status !== 'ตรวจนับแล้ว') return { error: 'ต้องตรวจนับก่อน' + (pp.settle === 'pay' || pp.benefit === 'discount' ? 'จ่าย' : 'ปิดงาน') }; c.status = (pp.benefit === 'item' && pp.settle !== 'pay') ? 'ปิดงานแล้ว' : 'จ่ายแล้ว'; c.payRef = extra.ref || ''; c.payDate = extra.date || cfg.now; if (extra.note) c.note = extra.note; (c.log = c.log || []).push({ d: c.payDate, t: (c.status === 'ปิดงานแล้ว' ? 'ปิดงาน (พาร์ทเนอร์ออกเอง ไม่มีการจ่าย)' : 'จ่ายเงิน') + (c.payRef ? ' · อ้างอิง ' + c.payRef : '') + (extra.note ? ' · อนุมัติพิเศษ: ' + extra.note : '') }); }
+    else if (act === 'reject') { c.status = 'ปฏิเสธ'; c.reason = extra.reason || ''; (c.log = c.log || []).push({ d: cfg.now, t: 'ปฏิเสธ' + (extra.reason ? ' · เหตุผล: ' + extra.reason : '') }); }
     PMP.saveState(st); return { ok: true };
   };
   /* ---- starter kit (เซตร้านยาเปิดใหม่) ---- */
@@ -537,10 +623,14 @@
   };
   function fnv(s) { var h = 2166136261; for (var i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = (h * 16777619) >>> 0; } return ('00000000' + h.toString(16)).slice(-8); }
   PMP.fnv = fnv;
-  /* Mode A — instant draw, weights + stock. Result decided here (server side in the real system), animation is cosmetic. */
+  /* Activity = ONE mode. A: instant draw (weights + stock). B: enter pool, admin draws on drawAt (winners per prize). */
+  PMP.raffle = function (fid) { return PMP.cfg().raffles.filter(function (x) { return x.id === fid; })[0]; };
+  PMP.raffleOf = function (mode) { return PMP.cfg().raffles.filter(function (x) { return x.mode === mode; }); };
+  /* Mode A — result decided here (server side in the real system), animation is cosmetic. */
   PMP.drawA = function (cid, fid) {
-    var cfg = PMP.cfg(), st = PMP.state(), cs = st.customers[cid], f = cfg.raffles.filter(function (x) { return x.id === fid; })[0];
-    if (!f || PMP.status(f, cfg.now) !== 'running') return { error: 'กิจกรรมนี้ไม่เปิดอยู่' };
+    var cfg = PMP.cfg(), st = PMP.state(), cs = st.customers[cid], f = PMP.raffle(fid);
+    if (!f || f.mode !== 'A') return { error: 'กิจกรรมนี้ไม่ใช่แบบลุ้นทันที' };
+    if (PMP.status(f, cfg.now) !== 'running') return { error: 'กิจกรรมนี้ไม่เปิดอยู่' };
     if ((cs.tickets[fid] || 0) < 1) return { error: 'ไม่มีสิทธิ์ลุ้น' };
     var pool = f.prizes.filter(function (z) { return (st.shared.prizeUsed[z.id] || 0) < z.stock; });
     if (!pool.length) return { error: 'ของรางวัลหมด' };
@@ -549,24 +639,102 @@
     for (var i = 0; i < pool.length; i++) { if (r < pool[i].weight) { win = pool[i]; break; } r -= pool[i].weight; }
     st.shared.prizeUsed[win.id] = (st.shared.prizeUsed[win.id] || 0) + 1;
     var out = PMP.grant(st, cid, PMP.rewardsOf('raffle', win.id), 'ลุ้นโชค: ' + win.name, cfg);
-    cs.draws.unshift({ d: cfg.now, f: f.name, prize: win.name, out: out });
+    cs.draws.unshift({ d: cfg.now, f: f.name, fid: f.id, mode: 'A', prize: win.name, out: out });
     PMP.saveState(st); return { prize: win, out: out, odds: Math.round(win.weight / tot * 1000) / 10 };
   };
+  /* tickets from points (only if the activity sets ptsPer > 0) */
+  PMP.exchangeTickets = function (cid, fid, n) {
+    var cfg = PMP.cfg(), st = PMP.state(), cs = st.customers[cid], f = PMP.raffle(fid); n = n || 1;
+    if (!f || !f.ptsPer) return { error: 'กิจกรรมนี้ไม่เปิดให้แลกพอยท์' };
+    if (PMP.status(f, cfg.now) !== 'running') return { error: 'กิจกรรมนี้ไม่เปิดอยู่' };
+    var need = f.ptsPer * n; if (cs.points < need) return { error: 'พอยท์ไม่พอ (ต้องใช้ ' + need + ')' };
+    cs.points -= need; cs.ledger.unshift({ d: cfg.now, t: '-' + need, why: 'แลกสิทธิ์ลุ้น ' + n + ' ใบ · ' + f.name }); cs.tickets[fid] = (cs.tickets[fid] || 0) + n;
+    PMP.saveState(st); return { ok: true, need: need };
+  };
+  PMP.poolSize = function (fid) { var st = PMP.state(), f = PMP.raffle(fid), p = st.shared.rafflePool[fid] || {}; return Object.keys(p).reduce(function (a, k) { return a + p[k]; }, 0) + ((f && f.poolOthers) || 0); };
+  PMP.drawResult = function (fid) { return (PMP.state().shared.drawResult || {})[fid] || null; };
   /* Mode B — enter the pool, later draw with a published seed */
   PMP.enterPool = function (cid, fid, n) {
-    var st = PMP.state(), cs = st.customers[cid];
+    var st = PMP.state(), cs = st.customers[cid], f = PMP.raffle(fid); n = n || 1;
+    if (!f || f.mode !== 'B') return { error: 'กิจกรรมนี้ไม่ใช่แบบจับตามรอบ' };
+    if ((st.shared.drawResult || {})[fid]) return { error: 'จับรางวัลไปแล้ว' };
     if ((cs.tickets[fid] || 0) < n) return { error: 'สิทธิ์ไม่พอ' };
     cs.tickets[fid] -= n; var p = st.shared.rafflePool[fid] || (st.shared.rafflePool[fid] = {}); p[cid] = (p[cid] || 0) + n;
     PMP.saveState(st); return { ok: true };
   };
-  PMP.drawB = function (fid) {
-    var cfg = PMP.cfg(), st = PMP.state(), f = cfg.raffles.filter(function (x) { return x.id === fid; })[0], mine = st.shared.rafflePool[fid] || {};
+  PMP.drawB = function (fid, forceCid) {
+    var cfg = PMP.cfg(), st = PMP.state(), f = PMP.raffle(fid), mine = st.shared.rafflePool[fid] || {};
+    if (!f || f.mode !== 'B') return { error: 'กิจกรรมนี้ไม่ใช่แบบจับตามรอบ' };
+    st.shared.drawResult = st.shared.drawResult || {};
+    if (st.shared.drawResult[fid]) return { error: 'จับรางวัลไปแล้ว' };
     var entries = []; Object.keys(mine).forEach(function (cid) { for (var i = 0; i < mine[cid]; i++) entries.push(cid); });
-    for (var j = 0; j < f.poolOthers; j++) entries.push('other-' + j);
-    var seed = 'seed-' + Date.now(), commit = fnv(entries.length + ':' + seed.length);
-    var idx = parseInt(fnv(seed + entries.length), 16) % entries.length, winner = entries[idx];
-    var res = { seed: seed, total: entries.length, idx: idx, winner: winner, commit: commit };
-    if (winner.indexOf('other-') !== 0) { PMP.grant(st, winner, PMP.rewardsOf('raffle', f.prizes[f.prizes.length - 1].id), 'ลุ้นโชคโหมด B', cfg); }
+    for (var j = 0; j < (f.poolOthers || 0); j++) entries.push('other-' + j);
+    if (!entries.length) return { error: 'ยังไม่มีสิทธิ์ในกอง' };
+    var seed = 'seed-' + Date.now(), commit = fnv(entries.length + ':' + seed.length), left = entries.slice(), winners = [], k = 0;
+    f.prizes.forEach(function (z) {
+      for (var w = 0; w < (z.winners || 1) && left.length; w++) {
+        var idx = parseInt(fnv(seed + ':' + (k++) + ':' + left.length), 16) % left.length;
+        if (forceCid && !winners.length && left.indexOf(forceCid) > -1) idx = left.indexOf(forceCid); /* demo only: force the simulated customer to win the first prize */
+        var who = left.splice(idx, 1)[0];
+        winners.push({ prizeId: z.id, prize: z.name, who: who });
+        if (who.indexOf('other-') !== 0) { var out = PMP.grant(st, who, PMP.rewardsOf('raffle', z.id), 'จับรางวัล: ' + z.name, cfg); st.customers[who].draws.unshift({ d: cfg.now, f: f.name, fid: f.id, mode: 'B', prize: z.name, out: out }); }
+      }
+    });
+    var res = { seed: seed, total: entries.length, commit: commit, d: cfg.now, winners: winners };
+    st.shared.drawResult[fid] = res;
     PMP.saveState(st); return res;
   };
+  /* ---------------- customer notifications: derived from admin cfg.notify + customer state · in-web only (bell + notification center) ---------------- */
+  PMP.notifications = function (cid) {
+    var cfg = PMP.cfg(), st = PMP.state(), cs = st.customers[cid], cust = customer(cid), now = cfg.now, N = cfg.notify || {}, out = [];
+    function days(iso) { return Math.round((new Date(iso) - new Date(now)) / 864e5); }
+    function add(id, type, level, title, body, href) { out.push({ id: id, type: type, level: level, title: title, body: body, href: href }); }
+    if (N.points && N.points.on) {
+      var sum = 0, L = (cs.lots || []).map(function (l) { sum += l.pts; return { pts: l.pts, exp: l.exp }; });
+      if (cs.points - sum > 0) L.push({ pts: cs.points - sum, exp: addDays(now, cfg.points.expiryDays) });
+      L.sort(function (a, b) { return a.exp < b.exp ? -1 : 1; });
+      var over = L.reduce(function (a, l) { return a + l.pts; }, 0) - cs.points; for (var i = 0; i < L.length && over > 0; i++) { var d0 = Math.min(L[i].pts, over); L[i].pts -= d0; over -= d0; }
+      var soon = L.filter(function (l) { return l.pts > 0 && days(l.exp) >= 0 && days(l.exp) <= N.points.days; });
+      if (soon.length) { var tot = soon.reduce(function (a, l) { return a + l.pts; }, 0), dd = days(soon[0].exp); add('pt:' + soon[0].exp, 'points', dd <= 7 ? 'error' : 'warn', 'พอยท์ใกล้หมดอายุ', tot.toLocaleString() + ' พอยท์จะหมดอายุภายใน ' + dd + ' วัน (' + soon[0].exp + ') — ใช้เป็นส่วนลดตอนชำระเงินหรือแลกของรางวัลก่อนหมด', '../points/05-customer-redeem.html'); }
+    }
+    if (N.ladder && N.ladder.on) cfg.ladders.forEach(function (Ld) {
+      if (PMP.status(Ld, now) !== 'running' || !audOk(Ld.aud, cust, cs)) return;
+      var lv = cs.ladder[Ld.id] || { spent: 0, unlocked: [], claimed: [] }, nxt = Ld.tiers.filter(function (t) { return t.at > lv.spent; })[0];
+      Ld.tiers.forEach(function (t) { if (lv.unlocked.indexOf(t.id) > -1 && lv.claimed.indexOf(t.id) < 0 && !(st.claims || []).some(function (c) { return c.cid === cid && c.lid === Ld.id && c.tid === t.id && c.status !== 'ปฏิเสธ'; })) add('lu:' + Ld.id + t.id, 'ladder', 'success', 'ปลดล็อกรางวัลแล้ว: ' + t.name, 'ยอดสะสมของคุณถึงเกณฑ์แล้ว — กดรับรางวัลได้ที่หน้าแคมเปญ', '../campaign/06-customer-ladder.html'); });
+      if (nxt) {
+        var pct = lv.spent / nxt.at * 100, left = nxt.at - lv.spent;
+        if (N.ladder.at95 && pct >= 95) add('l95:' + Ld.id + nxt.id, 'ladder', 'warn', 'เกือบถึงแล้ว! ' + nxt.name, 'อีกเพียง ' + baht(left) + ' ปลดล็อกรางวัลขั้นถัดไป (สะสมแล้ว ' + pct.toFixed(0) + '%)', '../campaign/06-customer-ladder.html');
+        else if (N.ladder.at80 && pct >= 80) add('l80:' + Ld.id + nxt.id, 'ladder', 'info', 'สะสมครบ 80% ของ ' + nxt.name, 'อีก ' + baht(left) + ' ถึงขั้นถัดไป', '../campaign/06-customer-ladder.html');
+        var dl = days(Ld.end); if (N.ladder.expiryDays && dl >= 0 && dl <= N.ladder.expiryDays) add('lx:' + Ld.id, 'ladder', 'warn', 'แคมเปญสะสมยอดใกล้สิ้นสุด', 'เหลือ ' + dl + ' วัน (สิ้นสุด ' + Ld.end + ') · ยังขาด ' + baht(left) + ' ถึง ' + nxt.name, '../campaign/06-customer-ladder.html');
+      }
+    });
+    if (N.claim && N.claim.on) (st.claims || []).filter(function (c) { return c.cid === cid; }).forEach(function (c) {
+      if (c.status === 'รอตรวจ') add('cl:' + c.id + ':w', 'claim', 'info', 'ได้รับคำขอรับรางวัลแล้ว', c.name + ' · ทีมงานตรวจสอบภายใน 2 วันทำการ', '../campaign/07-customer-claim-form.html');
+      else if (c.status === 'ปฏิเสธ') add('cl:' + c.id + ':r', 'claim', 'error', 'คำขอรับรางวัลถูกปฏิเสธ', c.name + ' · เหตุผล: ' + (c.reason || '-') + ' (สิทธิ์ถูกคืนแล้ว ส่งคำขอใหม่ได้)', '../campaign/07-customer-claim-form.html');
+      else add('cl:' + c.id + ':a', 'claim', 'success', 'คำขอรับรางวัลอนุมัติแล้ว', c.name + (c.auto ? ' · ได้รับทันที' : ' · ส่งรางวัลเข้าบัญชีแล้ว'), '../campaign/07-customer-claim-form.html');
+    });
+    if (N.coupon && N.coupon.on) cs.wallet.forEach(function (w) {
+      var k = cfg.coupons.filter(function (x) { return x.id === w.couponId; })[0]; if (!k || w.used || !k.end) return; var dl = days(k.end);
+      if (dl >= 0 && dl <= N.coupon.days) add('cp:' + w.id, 'coupon', dl <= 1 ? 'error' : 'warn', 'คูปองใกล้หมดอายุ', k.code + ' · ' + k.name + ' — หมดอายุใน ' + dl + ' วัน (' + k.end + ')', '../coupon/08-customer-center.html');
+    });
+    if (N.promo && N.promo.on) cfg.promos.forEach(function (p) {
+      if (PMP.status(p, now) !== 'running' || !audOk(p.aud, cust, cs) || !p.end) return; var dl = days(p.end);
+      if (dl >= 0 && dl <= N.promo.days) add('pm:' + p.id, 'promo', 'info', 'โปรโมชั่นใกล้สิ้นสุด', p.name + ' — ' + (dl === 0 ? 'สิ้นสุดวันนี้' : 'สิ้นสุดใน ' + dl + ' วัน') + ' (' + p.end + ')', '../promotion/06-customer-list.html');
+    });
+    if (N.raffle && N.raffle.on) cfg.raffles.forEach(function (f) {
+      if (!(f.active && (f.aud === 'all' || f.aud === cust.type))) return; var n = cs.tickets[f.id] || 0, res = (st.shared.drawResult || {})[f.id];
+      if (res && ((st.shared.rafflePool[f.id] || {})[cid] || 0) > 0 && !PMP.revealed(cid, f.id)) { add('rf:' + f.id + ':rv', 'raffle', 'warn', 'ประกาศผลแล้ว — เปิดดูว่าคุณได้รางวัลไหม', f.name + ' · แตะเพื่อเปิดผลของคุณ', '../raffle/08-customer-scheduled.html?f=' + f.id + '&reveal=1'); }
+      else if (res) { var mw = res.winners.filter(function (w) { return w.who === cid; }); add('rf:' + f.id + ':res', 'raffle', mw.length ? 'success' : 'info', mw.length ? 'ยินดีด้วย! คุณถูกรางวัล' : 'ประกาศผลแล้ว: ' + f.name, mw.length ? mw.map(function (w) { return w.prize; }).join(' · ') + ' — รางวัลเข้าบัญชี/คิวรับของแล้ว' : 'รอบนี้คุณไม่ได้รับรางวัล ขอบคุณที่ร่วมสนุก', '../raffle/08-customer-scheduled.html?f=' + f.id); }
+      else if (n > 0 && PMP.status(f, now) === 'running') add('rf:' + f.id + ':tk:' + n, 'raffle', 'info', 'คุณมีสิทธิ์ลุ้น ' + n + ' ใบ', f.name + (f.mode === 'A' ? ' — ใช้ลุ้นได้ทันที' : ' — นำลงกองก่อนประกาศผล ' + f.drawAt), f.mode === 'A' ? '../raffle/07-customer-instant-draw.html?f=' + f.id : '../raffle/08-customer-scheduled.html?f=' + f.id);
+    });
+    var rk = { error: 0, warn: 1, success: 2, info: 3 }; out.sort(function (a, b) { return rk[a.level] - rk[b.level]; });
+    var rd0 = (rd('pmpc.sim.nread', {}) || {})[cid] || {}; out.forEach(function (n) { n.read = !!rd0[n.id]; });
+    return out;
+  };
+  PMP.notifRead = function (cid, ids) { var m = rd('pmpc.sim.nread', {}) || {}; m[cid] = m[cid] || {}; (ids || PMP.notifications(cid).map(function (n) { return n.id; })).forEach(function (i) { m[cid][i] = 1; }); wr('pmpc.sim.nread', m); };
+  /* Mode B reveal: a customer who entered the pool opens their own result first (suspense), then sees the full winner list */
+  PMP.revealed = function (cid, fid) { var res = (PMP.state().shared.drawResult || {})[fid], m = rd('pmpc.sim.reveal', {}) || {}; return !!(res && (m[cid] || {})[fid] === res.seed); };
+  PMP.setRevealed = function (cid, fid) { var res = (PMP.state().shared.drawResult || {})[fid], m = rd('pmpc.sim.reveal', {}) || {}; if (!res) return; m[cid] = m[cid] || {}; m[cid][fid] = res.seed; wr('pmpc.sim.reveal', m); };
+  PMP.resetReveal = function (cid, fid) { var m = rd('pmpc.sim.reveal', {}) || {}; if (m[cid]) delete m[cid][fid]; wr('pmpc.sim.reveal', m); try { localStorage.removeItem('pmpc.sim.rvshown'); sessionStorage.clear(); } catch (e) { } };
+  PMP.revealPending =function (cid) { var st = PMP.state(); return PMP.cfg().raffles.filter(function (f) { return f.mode === 'B' && (st.shared.drawResult || {})[f.id] && ((st.shared.rafflePool[f.id] || {})[cid] || 0) > 0 && !PMP.revealed(cid, f.id); }); };
 })(window);

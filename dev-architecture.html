@@ -60,18 +60,14 @@
                   <ul>
                     <li><span class="node"><span class="cn concrete">OnlineCoupon</span><span class="note">โค้ดแชร์ได้ · กันซ้ำด้วยประวัติต่อบัญชี (โควตารวม + ต่อคน)</span></span></li>
                     <li><span class="node"><span class="cn concrete">CollectibleCoupon</span><span class="note"><code>distribution</code> = MANUAL (กดเก็บ) | AUTO_MONTHLY (ออกให้วันที่ N) → กระเป๋าคูปอง</span></span></li>
-                    <li><span class="node"><span class="cn concrete">PaperCoupon</span><span class="note">ชุดคูปองกระดาษ · ร้านที่ร่วม = เลือกจาก <code>CustomerSet</code> (กลุ่มลูกค้า/ร้านเดียวกับที่ใช้ทั่วระบบ ไม่มี purpose) · ไม่สั่งพิมพ์ · นับก้นคูปองเบิก</span></span></li>
+                    <li><span class="node"><span class="cn concrete">PaperCoupon</span><span class="note">ชุดคูปองกระดาษ · <code>benefitKind</code> = DISCOUNT_AMOUNT | FREE_ITEM (+ <code>itemText</code>) · <code>settlementMode</code> = PAY_RECIPIENT | SPONSORED + <code>unitCost</code> · ไม่มีเลขรันนิ่งรายใบ (ทุกใบเหมือนกัน · ก้นมีบาร์โค้ดรหัสชุด) · ผู้รับ = <code>PaperCouponRecipient</code> → <code>Partner</code> · ชุดคูปองกระดาษ · ร้านที่ร่วม = เลือกจาก <code>CustomerSet</code> (กลุ่มลูกค้า/ร้านเดียวกับที่ใช้ทั่วระบบ ไม่มี purpose) · ไม่สั่งพิมพ์ · นับก้นคูปองเบิก</span></span></li>
                   </ul></li>
                 <li><span class="node"><span class="cn concrete">StarterKitOffer</span><span class="note">เซตร้านยาเปิดใหม่ · <code>items[]</code> บังคับ/ทางเลือก · audience = B2B</span></span></li>
               </ul></li>
             <li><span class="node"><span class="cn abs">LoyaltyBenefit</span><span class="note">ทำงานหลังชำระเงินสำเร็จ · เขียน ledger</span></span>
               <ul>
-                <li><span class="node"><span class="cn concrete">PointsRule</span><span class="note">ตัวคูณช่วงแคมเปญ (บวกกัน) + อัตราพอยท์รายสินค้า (<code>SkuPointRate</code>) + กติกาปัดเศษ/หมดอายุ</span></span></li>
-                <li><span class="node"><span class="cn abs">Campaign</span><span class="note">ช่วงเวลา + ProductSet ที่ร่วมรายการ</span></span>
-                  <ul>
-                    <li><span class="node"><span class="cn concrete">QuotaCampaign</span><span class="note">ราคาแคมเปญ (โหมด SKU: ต่อ SKU · โหมดกลุ่มสินค้า: กติกาเดียวทั้งกลุ่ม) · โควตารวม + ต่อร้าน · พักโควตา 15 นาที</span></span></li>
-                    <li><span class="node"><span class="cn concrete">LadderCampaign</span><span class="note">สะสมยอดรายปี · ขอบเขตนับยอด = ทุกสินค้า | ProductSet · <code>tiers[]</code> แต่ละขั้น = threshold + RewardGroup ของขั้น + สิทธิ์ที่เหลือ + ฟอร์ม (ตัวสร้างฟอร์ม 4 ชนิดช่อง) · ขั้นที่มีลูกค้าถึงแล้วลบ/แก้ threshold ไม่ได้</span></span></li>
-                  </ul></li>
+                <li><span class="node"><span class="cn concrete">PointsRule</span><span class="note">อัตราพอยท์รายสินค้า (<code>SkuPointRate</code> · ไม่ตั้ง = 0 ไม่มีค่าเริ่มต้น) + กติกาปัดเศษ/หมดอายุ · ตัวคูณพอยท์มาจากผลตอบแทนของโปรโมชั่นเท่านั้น (<code>reward_item</code> kind POINTS: mode FIXED | MULTIPLIER)</span></span></li>
+                <li><span class="node"><span class="cn concrete">LadderCampaign</span><span class="note">สะสมยอดรายปี · ขอบเขตนับยอด = ทุกสินค้า | ProductSet · <code>tiers[]</code> แต่ละขั้น = threshold + RewardGroup ของขั้น + สิทธิ์ที่เหลือ + ฟอร์ม (ตัวสร้างฟอร์ม 4 ชนิดช่อง) · ขั้นที่มีลูกค้าถึงแล้วลบ/แก้ threshold ไม่ได้</span></span></li>
               </ul></li>
             <li><span class="node"><span class="cn concrete">RaffleEvent</span><span class="note">ใช้ <code>RaffleTicket</code> · รางวัลมี <code>mode</code> A (ลุ้นทันที) / B (จับตามรอบ) · ทางเข้าสิทธิ์เปิดปิดได้ทีละทาง</span></span></li>
           </ul></li>
@@ -131,9 +127,8 @@
         <ul>
           <li><code>ProductSetRule(setId, scopeType, scopeValue, effect)</code> · scopeType = SKU | BRAND | CATEGORY</li>
           <li>resolve เป็นรายการ SKU ตอนประเมิน (cache ตามเวอร์ชันของเซต) — สินค้าใหม่ในแบรนด์เข้าเซตเองอัตโนมัติ</li>
-          <li>ใช้กับ: เงื่อนไขโปร, ขอบเขตแคมเปญ, ตัวคูณพอยท์, ยกเว้นคูปองส่งฟรี (แทน <code>coupon_category_exclusions</code> เดิม)</li>
-          <li><b>UI เลือกจากกลุ่มเดียวทุกที่ (ProductSetPicker)</b>: ขอบเขตโปร (ตัวเลือก “กลุ่มสินค้าที่ตั้งไว้” เคียง SKU/แบรนด์/หมวดเดิม) · แคมเปญสะสมยอด (ทุกสินค้า หรือกลุ่มสินค้า — ไม่มี scope แบรนด์/หมวด/SKU/ยกเว้นรายตัวแยกอีก) · แคมเปญช่วงเวลา+โควตา (โหมด SKU หรือโหมดกลุ่มสินค้า)</li>
-          <li>QuotaCampaign มี <code>scopeMode</code> = SKU (ตาราง <code>quota_campaign_sku</code>: ราคา/ตัวคูณพอยท์/โควตารายตัว) | PRODUCT_SET (<code>productSetId</code> + <code>priceRule</code> ลด %/บาทเดียวทั้งกลุ่ม + <code>pointMultiplier</code>; <b>ไม่มีโควตารายตัว</b> ใช้เฉพาะโควตารวม + ต่อร้าน) · กันซ้ำ: SKU เดียวอยู่ในแคมเปญช่วงเวลาทับกันไม่ได้ทั้งสองโหมด (resolve เป็น SKU ตอนบันทึก)</li>
+          <li>ใช้กับ: เงื่อนไขโปร, ขอบเขตแคมเปญ, ยกเว้นคูปองส่งฟรี (แทน <code>coupon_category_exclusions</code> เดิม)</li>
+          <li><b>UI เลือกจากกลุ่มเดียวทุกที่ (ProductSetPicker)</b>: ขอบเขตโปร (ตัวเลือก “กลุ่มสินค้าที่ตั้งไว้” เคียง SKU/แบรนด์/หมวดเดิม) · แคมเปญสะสมยอด (ทุกสินค้า หรือกลุ่มสินค้า — ไม่มี scope แบรนด์/หมวด/SKU/ยกเว้นรายตัวแยกอีก)</li>
         </ul>
       </div>
       <div class="card">
@@ -200,7 +195,7 @@
       <div class="step"><b>1 · Window</b><div class="sub">status = ACTIVE และอยู่ใน startAt–endAt (ตัวจำลองสถานะมีสวิตช์ข้ามวันเวลา)</div></div>
       <div class="step fast"><b>2 · AudienceGuard</b><div class="sub">ALL → ผ่านทันที ไม่ query · SELECTED → ตรวจสมาชิกเซต (cache) · EXCLUDE ชนะ</div></div>
       <div class="step"><b>3 · Conditions</b><div class="sub">ทุก Condition ต้องผ่าน (AND) · เก็บ progress ของใบที่ยังไม่ผ่านไว้แสดงผล</div></div>
-      <div class="step"><b>4 · Limits</b><div class="sub">perCustomer / global จาก redemption · QuotaCampaign ใช้ reservation 15 นาที</div></div>
+      <div class="step"><b>4 · Limits</b><div class="sub">perCustomer / global จาก redemption</div></div>
       <div class="step"><b>5 · Resolve</b><div class="sub">ไม่มี priority: ระบบคืนรายการโปรที่เข้าเงื่อนไขเป็น “การ์ดตัวเลือก” + ตาราง compat (ชนกับใคร เพราะ combinableWithPromotion) — <b>ลูกค้าเลือกเอง</b> ส่ง <code>selectedPromotionIds</code> กลับมา เซิร์ฟเวอร์ตรวจ compat ซ้ำ · Coupon เช็ค combinable ทั้งคู่</div></div>
       <div class="step"><b>6 · Apply</b><div class="sub">RewardItem AT_CART (DISCOUNT/FREE_SHIPPING/GIFT_SKU) กระจายลง line ไม่หักเกินมูลค่าสินค้า · ผลตอบแทนผสมหลาย item ในโปรเดียวได้ · ค่าส่งเหมา/ยกเว้นตามอัลกอริทึม §4.1</div></div>
       <div class="step"><b>7 · Commit</b><div class="sub">ตอนออเดอร์ชำระ: redemption + ตัดโควตา + AT_GRANT · idempotent ด้วย <code>(benefitId, orderId)</code></div></div>
@@ -272,7 +267,6 @@
         <tr><td>คูปองกระดาษ ร่วม 5 ร้าน</td><td>PaperCoupon.stores = เลือกจาก CustomerSet</td><td>ตรวจร้านที่ส่งก้นเบิกว่าอยู่ในเซต · ร้านที่ลงทะเบียนใหม่ตั้งค่า "ทุกร้าน" ได้อัตโนมัติ</td></tr>
         <tr><td>เซตร้านยาเปิดใหม่ เฉพาะ B2B</td><td>StarterKitOffer: เงื่อนไข <code>customerType = B2B</code> ตายตัว (ไม่ใช่ CustomerSet) + audience จำกัดเพิ่มได้ (ทุกคน/บางคน)</td><td>B2C เห็นเซตแต่สั่งไม่ได้ ("ไม่มีสิทธิ์สั่ง" ตามหน้า 06-customer-blocked และป้ายบนหน้าแรก) · สั่งตรงถูกบล็อกที่เซิร์ฟเวอร์</td></tr>
         <tr><td>คูปองกระดาษ</td><td>ไม่มี audience “ใครใช้ได้” · เลือกร้านที่รับ: ทุกร้าน | รายร้าน | CustomerSet</td><td>คุมที่ร้านรับคูปอง ไม่คุมคนถือใบ</td></tr>
-        <tr><td>แคมเปญช่วงเวลาเฉพาะแบรนด์ ราคาเดียวทั้งกลุ่ม</td><td>QuotaCampaign.scopeMode = PRODUCT_SET + priceRule ลด 15%</td><td>สินค้าใหม่ในแบรนด์เข้าแคมเปญเอง · ไม่มีโควตารายตัว ใช้โควตารวม/ต่อร้าน</td></tr>
         <tr><td>ของรางวัลแลกพอยท์เฉพาะร้าน VIP</td><td>RedeemCatalogItem.rewardSetVersionId + BenefitAudience(ownerType=REDEEM_ITEM)</td><td>ลูกค้านอกกลุ่มไม่เห็นรายการในหน้าแลก · เซิร์ฟเวอร์ปฏิเสธการแลกตรง</td></tr>
         <tr><td>รางวัลชุดเดียว หลายที่</td><td>โปรโมชั่นลูกค้าใหม่: RewardGroup(PROMOTION) = ส่วนลด ฿300 + สิทธิ์ลุ้น 1 ใบ</td><td>ผสมผลตอบแทนหลายชนิดได้ในโปรเดียว · แต่ละโมดูลตั้งของตัวเองด้วย RewardEditor (ไม่ต้องสร้างชุดกลาง)</td></tr>
       </tbody>
@@ -302,11 +296,11 @@
           <li><code>RewardModule</code> — RewardGroup (sourceModule), RewardItem, GrantService (dispatch ตาม deliveryKind)</li>
           <li><code>BenefitModule</code> — Benefit base, Condition, EvaluationPipeline, Redemption, Quota/Reservation</li>
           <li><code>PromotionModule</code> / <code>CouponModule</code> — ชนิดย่อย + wallet + paper claims</li>
-          <li><code>LoyaltyModule</code> — PointsRule, PointLedger, Campaign (Quota/Ladder), AccumulationLedger, ClaimRequest</li>
+          <li><code>LoyaltyModule</code> — PointsRule, PointLedger, LadderCampaign, AccumulationLedger, ClaimRequest</li>
           <li><code>RaffleModule</code> — Event, Prize, Ticket, Draw (A/B), Audit</li>
           <li><code>StarterKitModule</code></li>
           <li><code>HomeModule</code> — รวมส่วนของหน้าแรกลูกค้า (Flash, โปร, คูปองที่เก็บได้, แคมเปญ, เซตร้านยา, ลุ้นรางวัล, แลกพอยท์, สถานะของฉัน) เรียก service ของโมดูลอื่นตาม <code>AudienceGuard</code> · แต่ละส่วนมี endpoint ของตัวเอง (โหลดแยก ไม่บล็อกกัน) และส่วนว่างคืน <code>[]</code> เพื่อให้ UI ซ่อนเอง</li>
-          <li>Job (processors เดิม): point expiry รายคืน · auto-monthly coupon · quota reservation expiry · alert 80/95%</li>
+          <li>Job (processors เดิม): point expiry รายคืน · auto-monthly coupon · alert 80/95%</li>
         </ul>
       </div>
       <div class="card">
@@ -362,21 +356,25 @@
     ['customer_set_import_log', 'WHO', 'setId, fileName, rows, passed, duplicate, notFound, nameMismatch, createdBy/At', 'เก็บผลนำเข้าไว้ตรวจย้อนหลัง'],
     ['product_set / product_set_rule', 'WHAT', 'setId, scopeType, scopeValue, effect', 'ใหม่'],
     ['reward_group', 'REWARD', 'id, sourceModule (PROMOTION|COUPON|POINTS_CATALOG|CAMPAIGN_TIER|RAFFLE_PRIZE|STARTER_KIT), ownerType, ownerId, updatedBy/At', 'unique(sourceModule, ownerType, ownerId) · flag ว่าชุดผลตอบแทนมาจากโมดูลไหน'],
-    ['reward_item', 'REWARD', 'groupId, kind (GIFT_SKU|DISCOUNT|FREE_SHIPPING|POINTS|COUPON|CREDIT|ENTITLEMENT|OFF_POS), qty, sku / discountMode+value+maxCap / points / couponId / creditAmount+expiryDays / activityId+tickets / text, valueEstimate', 'STI ตาม kind'],
+    ['reward_item', 'REWARD', 'groupId, kind (GIFT_SKU|DISCOUNT|FREE_SHIPPING|POINTS|COUPON|CREDIT|ENTITLEMENT|OFF_POS), qty, sku / discountMode+value+maxCap / pointsMode (FIXED|MULTIPLIER; MULTIPLIER ใช้ได้เฉพาะ sourceModule = PROMOTION) + points | multiplier / couponId / creditAmount+expiryDays / activityId+tickets / text, valueEstimate', 'STI ตาม kind'],
     ['benefit', 'CORE', 'ฟิลด์ร่วมตามหัวข้อ 02 + kind + globalLimit/perCustomerLimit + newCustomerOnly/strictUnit (Promotion) + คอลัมน์เฉพาะชนิด (nullable เช่น scopeMode, productSetId, priceRule, badgeText) — ไม่มี priority', 'STI root'],
     ['benefit_audience', 'WHO', 'ownerType (BENEFIT|REDEEM_ITEM), ownerId, customerSetId, effect', 'ไม่มีแถว = ทุกคน · PaperCoupon ไม่ใช้'],
     ['benefit_condition', 'WHEN', 'benefitId, kind, productSetId, minQty, minAmount, window...', 'STI Condition'],
-    ['benefit_tier', 'WHEN', 'benefitId, seq, threshold, (reward ที่ reward_group), quotaTotal, quotaLeft, formSchema', 'GiftSetGroup + Ladder'],
-    ['quota_campaign_sku', 'WHEN', 'benefitId, skuId, campaignPrice, pointMultiplier, quotaSku', 'ใช้เมื่อ scopeMode = SKU'],
+    ['benefit_tier', 'WHEN', 'benefitId, seq, threshold, (reward ที่ reward_group), quotaTotal, quotaLeft, formSchema (ว่าง = ไม่มีฟอร์ม → claim_request อนุมัติอัตโนมัติ autoApproved=true)', 'GiftSetGroup + Ladder'],
     ['benefit_redemption', 'LEDGER', 'benefitId, customerId, orderId, state (RESERVED|COMMITTED|VOID), snapshot jsonb', 'unique(benefitId, orderId)'],
-    ['quota_reservation', 'LEDGER', 'benefitId, skuId, customerId, qty, expiresAt, state', 'job คืนโควตา 15 นาที'],
     ['reward_grant', 'LEDGER', 'customerId, sourceBenefitId, sourceRef, itemSnapshot, deliveryKind, status, expiresAt', 'ทางเดียวที่ AT_GRANT ออกของ'],
     ['coupon_wallet_entry', 'COUPON', 'customerId, couponId, state (AVAILABLE|USED|EXPIRED), expiresAt, usedOrderId', 'เก็บเอง / แจกรายเดือน'],
-    ['paper_coupon_claim', 'COUPON', 'batchId, storeCustomerId, stubCount, claimedAt, flags, status', 'ธง: ร้านไม่อยู่ในชุด / เกินจำนวนออก / เกินกำหนด'],
+    ['partner', 'COUPON', 'id, kind (IN_SYSTEM|EXTERNAL), storeCustomerId null, name, category, contactName/Phone, branchesText, taxId, isActive', 'ทะเบียนผู้รับคูปองกระดาษ · EXTERNAL = ไม่มีบัญชีเข้าระบบ (ร้านไอศกรีม ฯลฯ)'],
+    ['paper_coupon_set', 'COUPON', 'benefitId, benefitKind (DISCOUNT_AMOUNT|FREE_ITEM), itemText, faceValue, minSpend, settlementMode (PAY_RECIPIENT|SPONSORED), unitCost, issuedQty, startAt, endAt, templateKey (CLASSIC|BAND|BOLD|GIFT|MINIMAL), themeKey (RED|BLUE|GREEN|ORANGE), terms text[] (≤8 ข้อ ข้อละ ≤80), noteText (≤240 หมายเหตุท้ายบัตร), claimWithinDays (ตั้งในส่วนเบิกจ่าย ไม่พิมพ์บนบัตร) — ไม่มี maxPerRecipient/serial/ช่องทางออนไลน์, minSpend ไม่บังคับ', 'unitCost = ราคาตกลงต่อใบ (FREE_ITEM) · ยอดรับผิดชอบสูงสุด = issuedQty × unit'],
+    ['paper_print_job', 'COUPON', 'setId, qty, bleedMm, cropMarks, perforation, fileType (PDF|PRINT_HTML), exportedBy, exportedAt', 'บันทึกการส่งออกไฟล์พิมพ์ · qty = issuedQty เสมอ · เตือนเมื่อพิมพ์สะสมเกินจำนวนที่ออก · ไม่เก็บข้อมูลโรงพิมพ์'],
+    ['paper_coupon_recipient', 'COUPON', 'setId, partnerId, maxStubs null', 'mode ALL = ทุก partner IN_SYSTEM ไม่มีแถว'],
+    ['paper_coupon_claim', 'COUPON', 'setId, partnerId, stubCount, countedCount, amount, flags jsonb, status (PENDING|COUNTED|PAID|CLOSED|REJECTED), enteredBy (PARTNER|ADMIN_ON_BEHALF), evidence url[]', 'ธง: เกินจำนวนที่ออก (ร้ายแรง) / ไม่อยู่ในรายชื่อ / เกินกำหนดส่งก้น'],
+    ['order_item (เพิ่มฟิลด์)', 'ORDER', 'pointsEarned int (พอยท์ที่ได้จากรายการนี้หลังคูณตัวคูณโปรโมชั่น), pointsMultiplier numeric (ผลรวมตัวคูณที่ใช้, default 1), accumulations jsonb {campaignId: amount} (ยอดสะสมที่บวกให้แต่ละแคมเปญ)', 'เก็บตั้งแต่ตอนชำระสำเร็จ · ตอนยกเลิกออเดอร์อ่านค่าเหล่านี้มาหักคืนได้ตรง ๆ ไม่ต้องคำนวณย้อนหลัง'],
+    ['order (เพิ่มฟิลด์)', 'ORDER', 'bonusPoints int (พอยท์ฟรีคงที่จากโปรโมชั่น), pointsEarnedTotal int, accumulationTotals jsonb {campaignId: amount}, cancelledAt', 'หักคืนเสมอเมื่อยกเลิก — ไม่มี setting เปิด/ปิด · ไม่มีตั้งค่า “ค่าเริ่มต้นพอยท์ของสินค้า” (ไม่ตั้ง = 0)'],
     ['sku_point_rate', 'POINTS', 'skuId PK, pointsPerUnit, isEnabled', 'ต่อยอด product_point_settings'],
-    ['point_ledger', 'POINTS', 'customerId, lotId, type (EARN|REDEEM|EXPIRE|ADJUST|CLAWBACK), points, remaining, orderId, reason, expiresAt', 'append-only'],
+    ['point_ledger', 'POINTS', 'customerId, lotId, type (EARN|BONUS|REDEEM|EXPIRE|ADJUST|CLAWBACK), points, remaining, orderId, reason, expiresAt', 'append-only'],
     ['redeem_catalog_item', 'POINTS', 'name, pointsCost, (reward ที่ reward_group), quotaTotal, quotaLeft, perCustomerLimit + period (MONTH|YEAR|ALWAYS), openFrom/openTo, isActive', 'ไม่ใช่ Benefit · audience ผ่าน benefit_audience(REDEEM_ITEM)'],
-    ['accumulation_ledger', 'CAMPAIGN', 'campaignId, customerId, orderId, amount, type (ADD|REVERSE)', 'แยกจากพอยท์เด็ดขาด'],
+    ['accumulation_ledger', 'CAMPAIGN', 'campaignId, customerId, orderId, orderItemId, amount, type (ADD|REVERSE)', 'แยกจากพอยท์เด็ดขาด · REVERSE เกิดจากยกเลิกออเดอร์เสมอ'],
     ['claim_request', 'CAMPAIGN', 'kind (TIER|PRIZE), customerId, sourceBenefitId, tierId, formData, status, rejectReason, snapshot', 'คิวขอรับของเดียวทั้งระบบ'],
     ['raffle_prize', 'RAFFLE', 'eventId, (reward ที่ reward_group), mode (A|B), weight, stockTotal, stockLeft, valuePerUnit, winners (B)', 'ไม่ถูกรางวัล = แถวพิเศษ'],
     ['raffle_ticket', 'RAFFLE', 'eventId, customerId, source, sourceRef, expiresAt, status (UNUSED|USED|POOLED|EXPIRED)', 'หน่วยกลางหน่วยเดียว'],
@@ -411,11 +409,10 @@
     ['สมุดพอยท์ลูกค้า + ปรับพอยท์', 'admin', '/admin/points/ledger', 'PointLedger', MOCK('points/03-admin-ledger.html', '03-admin-ledger'), 'R2', 'points'],
     ['พอยท์ของฉัน / แลกของ / พอยท์ที่จะได้', 'customer', '/me/points', 'PointLedger', MOCK('points/04-customer-dashboard.html', '04') + ' · ' + MOCK('points/05-customer-redeem.html', '05') + ' · ' + MOCK('points/06-customer-earn-preview.html', '06'), 'R2', 'points'],
     ['รายการแคมเปญ', 'admin', '/admin/campaigns', 'Campaign', MOCK('campaign/01-admin-list.html', '01-admin-list'), 'R2', 'campaign'],
-    ['แคมเปญช่วงเวลา + โควตา', 'admin', '/admin/campaigns/quota/:id', 'QuotaCampaign', MOCK('campaign/02-admin-quota-editor.html', '02-admin-quota-editor'), 'R2', 'campaign'],
     ['แคมเปญสะสมยอดรายปี (ขั้นบันได)', 'admin', '/admin/campaigns/ladder/:id', 'LadderCampaign', MOCK('campaign/03-admin-ladder-editor.html', '03-admin-ladder-editor'), 'R2', 'campaign'],
     ['คิวคำขอรับรางวัล', 'admin', '/admin/claims', 'ClaimRequest', MOCK('campaign/04-admin-claims.html', '04-admin-claims'), 'R2', 'campaign'],
     ['ความคืบหน้าลูกค้า + แจ้งเตือน', 'admin', '/admin/campaigns/:id/progress', 'AccumulationLedger', MOCK('campaign/05-admin-progress.html', '05-admin-progress'), 'R3', 'campaign'],
-    ['ขั้นบันไดของฉัน / ฟอร์มรับสิทธิ์ / สินค้าโควตา', 'customer', '/me/campaigns', 'LadderCampaign / QuotaCampaign', MOCK('campaign/06-customer-ladder.html', '06') + ' · ' + MOCK('campaign/07-customer-claim-form.html', '07') + ' · ' + MOCK('campaign/08-customer-quota-product.html', '08'), 'R2', 'campaign'],
+    ['ขั้นบันไดของฉัน / ฟอร์มรับสิทธิ์', 'customer', '/me/campaigns', 'LadderCampaign', MOCK('campaign/06-customer-ladder.html', '06') + ' · ' + MOCK('campaign/07-customer-claim-form.html', '07'), 'R2', 'campaign'],
     ['รายการ + ตั้งค่ากิจกรรมลุ้นโชค', 'admin', '/admin/raffles', 'RaffleEvent', MOCK('raffle/01-admin-list.html', '01') + ' · ' + MOCK('raffle/02-admin-editor.html', '02'), 'R2', 'raffle'],
     ['รางวัล น้ำหนัก งบประมาณ', 'admin', '/admin/raffles/:id/prizes', 'raffle_prize', MOCK('raffle/03-admin-prizes-budget.html', '03-admin-prizes-budget'), 'R2', 'raffle'],
     ['ประกาศกองสิทธิ์ + จับรางวัล (โหมด B)', 'admin', '/admin/raffles/:id/draw', 'raffle_pool / raffle_draw', MOCK('raffle/04-admin-draw-run.html', '04-admin-draw-run'), 'R3', 'raffle'],
@@ -457,6 +454,8 @@
     ['D-12', 'ยกเลิกตารางชุดของรางวัลกลาง ใช้ RewardGroup ต่อเจ้าของ + flag sourceModule (RewardEditor component เดียว)', 'ทางเลือก: คงชุดกลางแล้วให้ทุกโมดูลชี้ (แก้ที่เดียว แต่ต้องมีหน้าจัดการ + เวอร์ชัน)', 'ลูกค้ายืนยันแล้ว (รอบนี้) · dev lead'],
     ['D-13', 'ยกเลิก priority ของโปรโมชั่น: ลูกค้าเลือกเอง (API คืนการ์ด + compat) เซิร์ฟเวอร์ตรวจ compat ซ้ำ', 'ทางเลือก: ระบบเลือกชุดที่ประหยัดสุดให้อัตโนมัติ (ติ๊กไว้ก่อน ลูกค้าเปลี่ยนได้)', 'ลูกค้ายืนยันแล้ว (รอบนี้) · ต้องยืนยัน default ติ๊กให้หรือไม่'],
     ['D-14', 'คูปองลูกค้าใหม่ → โปรโมชั่น newCustomerOnly (ลบ WelcomeCoupon) · คูปองเหลือ PaperCoupon + OnlineCoupon (CODE | COLLECTIBLE | MONTHLY)', 'ทางเลือก: คง WelcomeCoupon แยก', 'ลูกค้ายืนยันแล้ว (รอบนี้)'],
+    ['D-16', 'คูปองกระดาษรองรับของแถม/บริการฟรี + พาร์ทเนอร์นอกระบบ (Partner.kind = EXTERNAL) + การเบิกจ่าย 2 แบบ (PAY_RECIPIENT | SPONSORED) · ไม่ใช้เลขรันนิ่ง (ทุกใบเหมือนกัน นับก้นด้วยบาร์โค้ดรหัสชุด)', 'ทางเลือก: แยกเป็นโมดูล “Voucher พาร์ทเนอร์” ต่างหาก (แต่ flow นับก้น/เบิกจ่ายซ้ำกับคูปองกระดาษ)', 'ลูกค้ายืนยันแนวทาง · ฝ่ายบัญชี (ใบกำกับ/ภาษีของการจ่ายพาร์ทเนอร์)'],
+    ['D-17', 'แคมเปญมีแบบเดียว = สะสมยอดรายปี (ลบ QuotaCampaign: ช่วงเวลา+โควตา+ราคาพิเศษ → ทำที่โปรโมชั่น) · พอยท์เพิ่มได้ผ่านโปรโมชั่นเท่านั้น (MULTIPLIER หรือ FIXED) · ยกเลิกออเดอร์หักพอยท์+ยอดสะสมคืนเสมอ โดยเก็บฟิลด์ที่ order_item', 'ทางเลือก: คำนวณพอยท์/ยอดสะสมย้อนหลังจากกติกา ณ ตอนนั้น (เสี่ยงผิดถ้ากติกาเปลี่ยน)', 'ลูกค้ายืนยันว่าไม่ต้องมี setting หักคืน และโควตา/ราคาพิเศษใช้โปรโมชั่นแทน'],
     ['D-15', 'โมดูลจำลองครบวงจร: ลอจิก pmp-core.js ในมอคอัพเป็นต้นแบบของ EvaluationPipeline/GrantService/FlashSale/PaperCouponClaim/StarterKit/ClaimQueue (ไม่ใช่โค้ดจริง) · หน้า mockup หลักของลูกค้า/แอดมิน (รวมหน้าตั้งค่า/แก้ไขที่มีตัวเลือกรายการ) ทำงานจริงด้วย UI เดิม (hydrate ด้วย live.js อ่าน/เขียนข้อมูลเดียวกับ pmp-core.js) ทุกหน้าของโมดูลที่จำลองใช้ UI เดิม (ยกเว้นหน้า flow) — กล่อง “ใช้งานจริง” (iframe) เหลือเป็นทางสำรอง', 'ทางเลือก: ทำ simulator เป็นเครื่องมือแอดมินจริงที่เรียก /cart/evaluate แบบ dry-run', 'dev lead']
   ];
   document.getElementById('decisions').innerHTML = '<div class="tbl-wrap"><table class="t"><thead><tr><th>#</th><th>ข้อเสนอ</th><th>ทางเลือก</th><th>ใครตัดสิน</th></tr></thead><tbody>' +

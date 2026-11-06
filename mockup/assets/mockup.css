@@ -270,6 +270,7 @@ a.node:hover{border-color:var(--primary);box-shadow:var(--z4)}
 .pface .cap{position:absolute;top:-1px;left:-1px;background:var(--g800);color:#fff;font-size:10.5px;padding:2px 10px;border-radius:12px 0 8px 0;font-weight:700}
 .pface .big{font-size:34px;font-weight:800;color:var(--primary);line-height:1.1}
 .pface .stub{position:absolute;right:0;top:0;bottom:0;width:22%;border-left:2px dashed var(--g500);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:rgba(255,255,255,.7);text-align:center}
+.barcode{width:96px;height:40px;background:repeating-linear-gradient(90deg,var(--g800) 0 2px,#fff 2px 4px,var(--g800) 4px 5px,#fff 5px 8px,var(--g800) 8px 11px,#fff 11px 12px,var(--g800) 12px 13px,#fff 13px 16px);border-radius:2px}
 .qrbox{width:54px;height:54px;background:repeating-conic-gradient(var(--g800) 0 25%,#fff 0 50%) 0 0/12px 12px;border-radius:4px}
 .flip{perspective:1000px}
 .flip-inner{position:relative;transition:transform .6s;transform-style:preserve-3d}
@@ -342,3 +343,99 @@ a.node:hover{border-color:var(--primary);box-shadow:var(--z4)}
 .live-pick .select{width:auto;max-width:420px;min-height:34px;padding:4px 10px}
 .live-saved{position:fixed;left:50%;top:56px;transform:translateX(-50%) translateY(-10px);background:var(--success-dark,#2e7d32);color:#fff;border-radius:8px;padding:7px 14px;font-size:12.5px;opacity:0;pointer-events:none;transition:.2s;z-index:90}
 .live-saved.on{opacity:1;transform:translateX(-50%) translateY(0)}
+/* paper coupon: stub content rotated 90° along the tear-off stub; numbered conditions */
+.pcs .stub{overflow:hidden}
+.pcs .stub .stub-in{transform:rotate(-90deg);width:250px;flex:none;display:flex;flex-direction:column;align-items:center;gap:4px}
+.pcs .stub-in .barcode{width:200px;height:40px}
+.barcode.svg{background:none;border-radius:0}
+.barcode svg{width:100%;height:100%;display:block}
+.pb-cols ul.nm{counter-reset:n}
+.pb-cols ul.nm li{counter-increment:n;padding-left:15px}
+.pb-cols ul.nm li::before{content:counter(n) ".";font-weight:700}
+/* paper coupon templates + colour themes */
+.pface{--pc:#B71C1C;--pt:#FFF3F3}
+.pface.th-blue{--pc:#1565C0;--pt:#EEF5FF}
+.pface.th-green{--pc:#2E7D32;--pt:#EEF8EE}
+.pface.th-orange{--pc:#E65100;--pt:#FFF4EA}
+.pface.front{background:linear-gradient(135deg,#fff 40%,var(--pt))}
+.pface.front .pf-brand,.pface.front .big{color:var(--pc)}
+.pface.rear .pb-cols h6{color:var(--pc)}
+.pface.t-band{background:#fff}
+.pface.t-band::before{content:"";position:absolute;left:0;top:0;right:0;height:40px;background:var(--pc)}
+.pface.t-band .pf-main{padding-top:56px}
+.pface.t-band .pf-brand{position:absolute;left:28px;top:12px;color:#fff;z-index:1}
+.pface.t-band .cap{z-index:2}
+.pface.front.t-bold{background:#fff}
+.pface.t-bold .pf-main{background:var(--pc);color:#fff}
+.pface.t-bold .pf-brand,.pface.t-bold .big,.pface.t-bold .pf-sub{color:#fff}
+.pface.t-bold .pf-chips span{background:transparent;border-color:rgba(255,255,255,.75);color:#fff}
+.pface.t-bold .pf-foot{color:rgba(255,255,255,.9);border-top-color:rgba(255,255,255,.4)}
+.pface.front.t-gift{border:4px solid var(--pc);background:var(--pt)}
+.pface.t-gift .pf-main::after{content:"\1F381";position:absolute;right:20px;top:14px;font-size:58px}
+.pface.front.t-minimal{background:#fff}
+.pface.t-minimal .pf-main{border-left:9px solid var(--pc)}
+.pface.t-minimal .big{color:#222}
+.sw{width:26px;height:26px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px var(--g400);cursor:pointer;padding:0;flex:none}
+.sw.on{box-shadow:0 0 0 2.5px var(--g800)}
+
+/* ===== raffle (สุ่มรางวัล): 1 กิจกรรม = 1 รูปแบบ A/B ===== */
+.mode{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;border-radius:7px;font-weight:800;font-size:12px}
+.mode.a{background:var(--info-lighter);color:var(--info-dark)}.mode.b{background:#F3E5F5;color:#6A1B9A}
+.ev-id{font-size:11px;color:var(--text2)}
+.tk-big{font-size:44px;font-weight:800;line-height:1;color:var(--primary)}
+.src-chips{display:flex;flex-wrap:wrap;gap:8px}.src-chips span{background:var(--g100);border:1px solid var(--g200);border-radius:999px;padding:4px 12px;font-size:12.5px}
+.ev-card{display:grid;grid-template-columns:130px 1fr auto;gap:20px;align-items:center}
+@media(max-width:800px){.ev-card{grid-template-columns:1fr}}
+.rf-group{margin-top:20px}.rf-group>.stack{margin-top:10px}
+.rf-gh{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:12px;font-size:15px}
+.rf-group.a .rf-gh{background:var(--info-lighter)}.rf-group.b .rf-gh{background:#F3E5F5}
+.rf-src{display:grid;grid-template-columns:56px 1fr auto;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--g200)}.rf-src:last-of-type{border-bottom:0}
+.rf-src .rate{display:flex;align-items:center;gap:6px;font-size:13px;white-space:nowrap}.rf-src .rate .input{width:96px;padding:7px 10px;min-height:36px}
+.rf-pl{list-style:none;margin:0;padding:0}.rf-pl li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid var(--g200);font-size:13.5px}.rf-pl li:last-child{border-bottom:0}
+.check-item{display:grid;grid-template-columns:28px 1fr;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--g200)}.check-item:last-of-type{border-bottom:0}
+.ci-ic{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:14px}.ci-ic.ok{background:var(--success)}.ci-ic.no{background:var(--error)}
+.w-in{width:84px;text-align:right;padding:6px 10px;min-height:34px}.odds{font-weight:800;color:var(--primary-dark);font-variant-numeric:tabular-nums}
+tr.sel td{background:var(--primary-lighter)!important}
+.hero{background:linear-gradient(135deg,#751D1A,#B32026);color:#fff;border-radius:16px;padding:22px 28px;margin-bottom:16px}.hero h5{font-size:20px}
+.hash{font-family:ui-monospace,Consolas,monospace;font-size:12px;background:var(--g100);border:1px solid var(--g300);border-radius:8px;padding:10px 12px;word-break:break-all;line-height:1.6}
+.prize-card{background:#fff;border:1px solid var(--g200);border-radius:14px;overflow:hidden}.prize-card .pb{padding:14px}
+.winners-n{font-size:22px;font-weight:800;color:var(--primary)}
+a.cart{color:inherit;text-decoration:none}.cust-top .cart b[hidden]{display:none}
+.nf-it{display:grid;grid-template-columns:12px 1fr auto;gap:12px;align-items:center;background:#fff;border:1px solid var(--g200);border-left:4px solid var(--g400);border-radius:10px;padding:12px 14px}
+.nf-it.error{border-left-color:var(--error)}.nf-it.warn{border-left-color:var(--warning)}.nf-it.success{border-left-color:var(--success)}.nf-it.info{border-left-color:var(--info)}
+.nf-dot{width:8px;height:8px;border-radius:50%;background:var(--primary)}.nf-it.read .nf-dot{background:transparent}.nf-it.read{opacity:.7}
+.stack.s8>*+*{margin-top:8px}
+.rv-box{text-align:center;padding:10px 4px 4px}
+.rv-box .rv-t{font-size:13px;color:var(--text2)}
+.rv-box .rv-big{font-size:26px;font-weight:800;margin:10px 0}
+.rv-roll{height:64px;border:2px dashed var(--g400);border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;font-variant-numeric:tabular-nums;background:var(--g50);overflow:hidden}
+.rv-win{background:linear-gradient(135deg,var(--success-lighter),#fff);border:2px solid #A5D6A7;border-radius:16px;padding:18px;animation:rvpop .5s ease}
+.rv-lose{background:var(--g50);border:2px solid var(--g300);border-radius:16px;padding:18px;animation:rvpop .5s ease}
+@keyframes rvpop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+.rv-conf{font-size:28px;letter-spacing:6px}
+/* raffle A reveal styles: gift box + scratch card (admin picks one per activity) */
+.sty-chip{display:inline-flex;align-items:center;gap:6px;background:var(--g100);border-radius:999px;padding:4px 14px;font-size:12.5px;font-weight:700;color:var(--g800)}
+.gift-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;max-width:420px;padding:6px 0}
+.gift{position:relative;aspect-ratio:1;border-radius:16px;background:linear-gradient(160deg,#FFEBEE,#FFF8E1);border:2px solid #F5C6C8;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .4s,transform .3s}
+.gift .g-ic{font-size:54px;line-height:1;transition:transform .5s cubic-bezier(.3,1.6,.5,1),opacity .4s;display:block}
+.gift .g-pz{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-weight:800;font-size:13px;text-align:center;padding:6px;opacity:0;transform:scale(.3)}
+.gift .g-pz b{font-size:28px}
+.gift.shake{animation:gshake .45s ease-in-out infinite}
+.gift.open{background:linear-gradient(160deg,#E8F5E9,#FFFDE7);border-color:#81C784;transform:scale(1.07);z-index:2;box-shadow:0 0 0 4px rgba(76,175,80,.25),0 8px 22px rgba(0,0,0,.18)}
+.gift.open .g-ic{transform:translateY(-70px) rotate(-25deg) scale(1.3);opacity:0}
+.gift.open .g-pz{opacity:1;transform:scale(1);transition:all .5s .15s cubic-bezier(.3,1.6,.5,1)}
+.gift.dim{opacity:.35;filter:grayscale(.7)}
+@keyframes gshake{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg) translateY(-3px)}75%{transform:rotate(7deg) translateY(-3px)}}
+.scr-card{position:relative;width:340px;max-width:100%;height:170px;border-radius:16px;border:3px solid var(--primary);background:linear-gradient(135deg,#FFF8E1,#FFEBEE);overflow:hidden;box-shadow:var(--z4,0 4px 14px rgba(0,0,0,.18))}
+.scr-card .scr-prize{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;padding:10px}
+.scr-card .scr-prize small{font-size:12px;color:var(--g600)}.scr-card .scr-prize b{font-size:22px;color:var(--primary-dark)}
+.scr-card canvas{position:absolute;inset:0;width:100%;height:100%;cursor:not-allowed;transition:opacity .6s;touch-action:none}
+.scr-card.armed canvas{cursor:crosshair}
+.scr-card.revealed canvas{opacity:0;pointer-events:none}
+.scr-card.revealed{animation:rvpop .5s ease}
+.scr-hint{font-size:12px;color:var(--g600)}
+.sty-opt{display:flex;gap:12px;align-items:flex-start}.sty-opt .si{font-size:34px;line-height:1}
+.sty-prev{display:flex;gap:16px;align-items:center;margin-top:12px;padding:12px 14px;background:var(--g50);border:1px dashed var(--g300);border-radius:10px;font-size:13px}
+.sty-prev .si{font-size:42px}
+.gift[data-gi]{cursor:pointer}.gift[data-gi]:hover{transform:translateY(-4px) scale(1.04);border-color:var(--primary)}
+.gift.shake,.gift.open,.gift.dim{pointer-events:none}

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>เลือก template คูปองกระดาษ</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
+<style>
+.mono-b{font-family:ui-monospace,Consolas,monospace;font-weight:700}
+.sec-t{font-weight:800;font-size:13.5px;margin:0 0 8px}
+.sep{border-top:1px dashed var(--g300);margin:14px 0}
+.flow3{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.flow3 .s{display:flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--g200);color:var(--g700);font-weight:600;font-size:13px}
+.flow3 .s .n{width:22px;height:22px;border-radius:50%;background:var(--g500);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.flow3 .s.on{background:var(--primary-lighter);color:var(--primary)}.flow3 .s.on .n{background:var(--primary)}
+.flow3 .ar{color:var(--g500)}
+.tpl-wrap{display:grid;grid-template-columns:minmax(0,1fr) 560px;gap:16px;align-items:start}
+.tpl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.tpl-card{display:block;border:2px solid var(--g300);border-radius:12px;background:#fff;padding:10px;cursor:pointer;position:relative}
+.tpl-card:hover{border-color:var(--g500)}
+.tpl-card.on{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-lighter)}
+.tpl-card.dim{opacity:.55}
+.tpl-card input{position:absolute;opacity:0;pointer-events:none}
+.tpl-th{overflow:hidden;border-radius:8px}
+.tpl-meta{margin-top:8px}
+.tpl-meta b{font-size:14px}
+.dup-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--g200)}
+@media(max-width:1200px){.tpl-wrap{grid-template-columns:1fr}}
+.pcw{width:calc(630px*var(--s,1));height:calc(285px*var(--s,1));position:relative;flex:none}
+.pcs{width:630px;height:285px;transform:scale(var(--s,1));transform-origin:0 0}
+.pcs .pface{width:630px;height:285px;aspect-ratio:auto;padding:0;font-size:11px;line-height:1.35;color:var(--g800)}
+.pcs .flip,.pcs .flip-inner{width:630px;height:285px;cursor:pointer}
+.pf-main{position:absolute;left:0;top:0;bottom:0;width:78%;padding:24px 20px 12px 28px;display:flex;flex-direction:column}
+.pf-brand{font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--primary)}
+.pcs .big{font-size:62px;margin:4px 0 0;letter-spacing:-.02em}
+.pf-sub{font-size:16px;font-weight:700;margin-top:2px}
+.pf-chips{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.pf-chips span{border:1px solid var(--g500);border-radius:6px;padding:1px 8px;font-size:10.5px;font-weight:600;background:#fff}
+.pf-chips span.no{border-color:var(--error);color:var(--error-dark)}
+.pf-foot{margin-top:auto;font-size:10.5px;color:var(--g700);border-top:1px solid var(--g300);padding-top:6px}
+.pcs .stub{width:22%;padding:8px;gap:5px}
+.pcs .barcode{width:104px;height:44px}
+.pcs .stub .cd{font-family:ui-monospace,Consolas,monospace;font-weight:800;font-size:13px}
+.pcs .stub .tr{font-size:9.5px;color:var(--g700);line-height:1.35}
+.pb-main{position:absolute;left:0;top:0;bottom:0;width:78%;padding:18px 14px 8px 24px;display:flex;flex-direction:column}
+.pb-h{display:flex;justify-content:space-between;align-items:baseline;font-weight:800;font-size:12px;border-bottom:2px solid var(--g800);padding:0 0 3px 56px;margin-bottom:6px}
+.pb-h span{font-family:ui-monospace,Consolas,monospace;font-size:11px}
+.pb-cols{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;min-height:0}
+.pb-cols h6{font-size:12.5px;font-weight:800;color:var(--primary);margin:0 0 3px}
+.pb-cols ul{margin:0;padding:0;list-style:none;font-size:11.5px;line-height:1.4}
+.pb-cols li{padding-left:9px;position:relative}
+.pb-cols li::before{content:"•";position:absolute;left:0}
+.pb-cols li.ln::before{content:""}
+.pb-cols li.ln{padding-left:0;color:var(--g700)}
+.pb-chan{margin-top:6px;font-size:11.5px;font-weight:700;line-height:1.55}
+.pb-chan .y{color:var(--success-darker)}.pb-chan .n{color:var(--error-dark)}
+.pb-note{border-top:1px dashed var(--g500);margin-top:4px;padding-top:3px;font-size:10px;color:var(--g700);line-height:1.3}
+.pf-void{position:absolute;left:150px;top:100px;border:4px solid var(--error);color:var(--error);font-weight:800;font-size:34px;padding:2px 22px;border-radius:10px;transform:rotate(-12deg);background:rgba(255,255,255,.7);z-index:6}
+.pface.clip-note .pb-note{outline:1.5px dashed var(--error);outline-offset:1px}
+</style>
+</head>
+<body data-shell="admin" data-nav="coupon" data-crumb="โปรโมชั่นและสิทธิพิเศษ / คูปอง / คูปองกระดาษ / เลือก template">
+<main id="screen">
+
+<div class="page-head">
+  <div><h4 id="tplTitle">สร้างชุดคูปองกระดาษ — เลือก template</h4><p class="muted" id="tplSub">เลือกรูปแบบบัตรก่อน แล้วค่อยใส่ข้อมูลชุด · เปลี่ยน template ภายหลังได้</p></div>
+  <div class="row"><a class="btn outlined" href="02-admin-paper-list.html">← รายการชุด</a></div>
+</div>
+
+<div class="flow3 relative"><span class="pin" style="margin-right:4px">1</span>
+  <span class="s on"><span class="n">1</span>เลือก template</span><span class="ar">→</span>
+  <span class="s"><span class="n">2</span>ใส่ข้อมูลชุด</span><span class="ar">→</span>
+  <span class="s"><span class="n">3</span>ตัวอย่าง / ส่งออกไฟล์พิมพ์</span>
+</div>
+
+<div class="tpl-wrap mb16">
+  <div class="stack s16">
+    <div class="card"><div class="card-b">
+      <div class="row between mb8" style="flex-wrap:wrap;gap:8px">
+        <h6>template รูปแบบบัตร <span class="pin">2</span></h6>
+        <div class="seg" id="tplFit"><button type="button" data-fit="all" class="on">ทั้งหมด</button><button type="button" data-fit="discount">ส่วนลดเงินสด</button><button type="button" data-fit="item">ของแถม / บริการฟรี</button></div>
+      </div>
+      <div class="row mb16" id="tplSw" style="gap:8px;align-items:center"><span class="small muted">สีบัตร <span class="pin">3</span></span></div>
+      <div class="tpl-grid" id="tplGrid"></div>
+    </div></div>
+    <div class="card" id="dupCard"><div class="card-b">
+      <h6 class="mb8">หรือเริ่มจากชุดเดิม (ทำซ้ำ) <span class="pin">5</span></h6>
+      <div id="dupList"></div>
+    </div></div>
+  </div>
+
+  <div class="stack s16" style="position:sticky;top:16px">
+    <div class="card"><div class="card-b">
+      <div class="row between mb8"><h6>ตัวอย่างที่เลือก <span class="pin">4</span></h6><span class="chip soft-primary" id="tplPick">—</span></div>
+      <div class="stack s12" id="tplPrev"></div>
+      <div class="help mt8" id="tplHelp"></div>
+      <div class="row end mt16"><button class="btn contained" type="button" id="tplGo">ใช้ template นี้ → ใส่ข้อมูลชุด</button></div>
+    </div></div>
+  </div>
+</div>
+
+</main>
+<section class="ux-notes">
+  <h6>หมายเหตุ UX</h6>
+  <ol>
+    <li><span class="pin">1</span><span>flow ใหม่ของการสร้างชุด: ① เลือก template → ② ใส่ข้อมูลชุด → ③ ตัวอย่าง/ส่งออกไฟล์พิมพ์ · กด “＋ สร้างชุดคูปอง” จากรายการชุดแล้วมาที่หน้านี้ก่อน</span></li>
+    <li><span class="pin">2</span><span>แกลเลอรี template 5 แบบ แสดงตัวอย่างหน้าบัตรจริง (ข้อมูลตัวอย่าง) · ตัวกรองชนิดสิทธิ์ ส่วนลด/ของฟรี จะทำให้แบบที่เหมาะขึ้นป้าย “แนะนำ” และแบบอื่นจางลง (ยังเลือกได้)</span></li>
+    <li><span class="pin">3</span><span>เลือกสีบัตรได้ 4 สี (แดง Pharmaplex / น้ำเงิน / เขียว / ส้ม) — ทุก template เปลี่ยนสีตามทันที</span></li>
+    <li><span class="pin">4</span><span>ตัวอย่างด้านขวาเป็นหน้า + หลังของ template ที่เลือก · ปุ่มด้านล่างสร้างชุดใหม่ที่ผูก template นี้แล้วไปหน้าใส่ข้อมูล · template “ตั๋วแลกของฟรี” ตั้งสิทธิ์เริ่มต้นเป็นของแถมให้</span></li>
+    <li><span class="pin">5</span><span>ทางลัด “ทำซ้ำชุดเดิม” คัดลอก template สี ผู้รับ เงื่อนไข ไปเป็นชุดใหม่ (รหัสชุดใหม่ ต้องตั้งเอง)</span></li>
+    <li><span class="pin">6</span><span>เปิดหน้านี้จากหน้าสร้าง/แก้ชุด (ปุ่ม “เปลี่ยน template”) จะเป็นโหมดเปลี่ยน — ตัวอย่างใช้ข้อมูลจริงของชุดนั้น ไม่มีส่วนทำซ้ำ และกดแล้วกลับไปหน้าแก้ไข</span></li>
+  </ol>
+  <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
+    <li>template กำหนดแค่หน้าตา (เลย์เอาต์/สี) — ข้อมูลชุด สิทธิ์ ผู้รับ ราคา ไม่เปลี่ยนตาม ยกเว้นตอนสร้างใหม่จาก “ตั๋วแลกของฟรี” ที่ตั้งสิทธิ์เริ่มต้นเป็นของแถม</li>
+    <li>ชุดที่เผยแพร่แล้วเปลี่ยน template/สีไม่ได้ (บัตรพิมพ์ไปแล้ว) ต้องทำซ้ำชุดเป็นชุดใหม่</li>
+    <li>ทุก template มีก้นคูปอง 22% และบาร์โค้ดรหัสชุดตำแหน่งเดิม — เครื่อง POS/ผู้นับก้นใช้ได้เหมือนกันทุกแบบ</li>
+  </ul></div>
+  <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
+    <li>ต้องการ template แบบไหนเพิ่ม (เช่น แนวตั้ง, ใส่โลโก้พาร์ทเนอร์ co-brand, ใส่รูปสินค้า) และให้แอดมินอัปโหลดโลโก้/รูปเองหรือให้ทีมออกแบบทำให้</li>
+    <li>ต้องการให้แอดมินสร้าง template ของตัวเองได้หรือไม่ (ตอนนี้เป็นชุดสำเร็จรูป 5 แบบ)</li>
+  </ul></div>
+</section>
+<script src="../assets/mockup.js"></script>
+</body></html>

@@ -21,7 +21,7 @@
   <div class="page-head">
     <div>
       <h4>กติกาพอยท์</h4>
-      <p class="muted">ตั้งพอยท์ต่อหน่วยของสินค้าแต่ละรายการ · ตัวคูณช่วงแคมเปญ · วันหมดอายุ · ปัดเศษ</p>
+      <p class="muted">ตั้งพอยท์ต่อหน่วยของสินค้าแต่ละรายการ · วันหมดอายุ · ปัดเศษ · (ตัวคูณพอยท์ตั้งที่โปรโมชั่น)</p>
     </div>
     <div class="row">
       <a class="btn outlined" href="03-admin-ledger.html">สมุดพอยท์ลูกค้า</a>
@@ -31,13 +31,12 @@
   </div>
 
   <div class="alert info mb16"><div><div class="a-title">พอยท์คิด "รายสินค้า ต่อหน่วย" ไม่ได้คิดจากยอดรวมบิล</div>
-    พอยท์ที่ได้ = Σ (จำนวนที่ซื้อ × พอยท์ต่อหน่วยของสินค้านั้น × ตัวคูณแคมเปญ) · สินค้าควบคุมราคา ยาน้ำ นมผง หรือสินค้าราคาพิเศษตั้งเป็น 0 ได้ · การเปลี่ยนอัตรามีผลกับออเดอร์ที่ชำระเงินหลังบันทึกเท่านั้น</div></div>
+    พอยท์ที่ได้ = Σ (จำนวนที่ซื้อ × พอยท์ต่อหน่วยของสินค้านั้น) · สินค้าที่ไม่ได้ตั้งพอยท์ได้ 0 พอยท์ · โปรโมชั่นเพิ่มพอยท์ได้ 2 แบบ: พอยท์ฟรีคงที่ หรือตัวคูณพอยท์ของสินค้าที่เข้าโปร (ตั้งที่โปรโมชั่น ไม่ใช่ที่นี่)</div></div>
 
   <div class="relative">
     <div class="tabs" data-tabs>
       <button class="on" data-tab="rates">① อัตราพอยท์รายสินค้า</button>
       <button data-tab="rules">② กติกาทั่วไป</button>
-      <button data-tab="mult">③ ตัวคูณแคมเปญ</button>
     </div>
 
     <!-- ============ TAB 1 ============ -->
@@ -46,7 +45,7 @@
         <div class="stat"><div class="l">สินค้าทั้งหมด</div><div class="v">1,284</div></div>
         <div class="stat"><div class="l">ตั้งเอง (รายสินค้า)</div><div class="v">412</div></div>
         <div class="stat"><div class="l">ตามแบรนด์ / ตามหมวด</div><div class="v">96</div></div>
-        <div class="stat"><div class="l">ใช้ค่าเริ่มต้น (1 พอยท์/หน่วย)</div><div class="v">745</div></div>
+        <div class="stat"><div class="l">ยังไม่ตั้ง (ได้ 0 พอยท์)</div><div class="v">745</div></div>
       </div>
 
       <div class="card" style="overflow:hidden">
@@ -55,7 +54,7 @@
             <input class="input" style="max-width:250px" placeholder="ค้นหา ชื่อสินค้า หรือ SKU">
             <select class="select" style="max-width:170px"><option>แบรนด์: ทั้งหมด</option><option>Blackmores</option><option>Dumex</option><option>Pampers</option></select>
             <select class="select" style="max-width:170px"><option>หมวด: ทั้งหมด</option><option>นมผง</option><option>วิตามิน</option><option>อนามัย</option><option>ยาน้ำ</option></select>
-            <select class="select" style="max-width:190px"><option>ที่มาของค่า: ทั้งหมด</option><option>ตั้งเอง</option><option>ตามแบรนด์/หมวด</option><option>ค่าเริ่มต้น</option><option>0 พอยท์ (ไม่ได้พอยท์)</option></select>
+            <select class="select" style="max-width:190px"><option>ที่มาของค่า: ทั้งหมด</option><option>ตั้งเอง</option><option>ตามแบรนด์/หมวด</option><option>ยังไม่ตั้ง (0 พอยท์)</option><option>0 พอยท์ (ไม่ได้พอยท์)</option></select>
           </div>
           <div class="row">
             <span class="relative"><button class="btn outlined primary">ตั้งพร้อมกันตามแบรนด์/หมวด</button><span class="pin abs">3</span></span>
@@ -67,29 +66,29 @@
             <th>สินค้า / SKU</th><th>แบรนด์</th><th>หมวด</th><th>หน่วย · ราคา</th>
             <th class="num"><span class="relative">พอยท์ต่อหน่วย<span class="pin" style="margin-left:6px">1</span></span></th>
             <th><span class="relative">ที่มาของค่า<span class="pin" style="margin-left:6px">2</span></span></th>
-            <th>ตัวคูณแคมเปญที่ active</th><th class="num">ได้จริงต่อหน่วย</th>
+            
           </tr></thead>
           <tbody>
             <tr><td><b>นมผงสูตร 3</b><span class="sub mono">NM-F3-CTN</span></td><td>Dumex</td><td>นมผง</td><td>ลัง · ฿1,200</td>
-              <td class="num"><input class="input pts" value="10"></td><td><span class="chip soft-primary">ตั้งเอง</span></td><td><span class="mult">×1.5</span></td><td class="num"><b>15</b></td></tr>
+              <td class="num"><input class="input pts" value="10"></td><td><span class="chip soft-primary">ตั้งเอง</span></td></tr>
             <tr><td><b>นมผงสูตร 3</b><span class="sub mono">NM-F3-CAN</span></td><td>Dumex</td><td>นมผง</td><td>กระป๋อง · ฿240</td>
-              <td class="num"><input class="input pts" value="2"></td><td><span class="chip soft-primary">ตั้งเอง</span></td><td><span class="mult">×1.5</span></td><td class="num"><b>3</b></td></tr>
+              <td class="num"><input class="input pts" value="2"></td><td><span class="chip soft-primary">ตั้งเอง</span></td></tr>
             <tr class="zero"><td><b>ผ้าอ้อมเด็ก</b><span class="sub mono">DI-PMP-PK</span></td><td>Pampers</td><td>ผ้าอ้อม</td><td>แพ็ค · ฿540</td>
-              <td class="num"><input class="input pts" value="0"></td><td><span class="chip soft-primary">ตั้งเอง</span> <span class="chip soft-error">ไม่ได้พอยท์</span></td><td class="muted">ไม่มีผล (0 × ตัวคูณ = 0)</td><td class="num"><b>0</b></td></tr>
+              <td class="num"><input class="input pts" value="0"></td><td><span class="chip soft-primary">ตั้งเอง</span> <span class="chip soft-error">ไม่ได้พอยท์</span></td></tr>
             <tr><td><b>Blackmores Vitamin C 500 mg</b><span class="sub mono">BM-VC500</span></td><td>Blackmores</td><td>วิตามิน</td><td>ขวด · ฿380</td>
-              <td class="num"><input class="input pts" value="5"></td><td><span class="chip soft-info">ตามแบรนด์</span><span class="sub">Blackmores = 5</span></td><td><span class="mult stack">×1.5 + ×2 = ×3.5</span></td><td class="num"><b>17.5</b></td></tr>
+              <td class="num"><input class="input pts" value="5"></td><td><span class="chip soft-info">ตามแบรนด์</span><span class="sub">Blackmores = 5</span></td></tr>
             <tr><td><b>Blackmores Fish Oil 1000 mg</b><span class="sub mono">BM-FO1000</span></td><td>Blackmores</td><td>วิตามิน</td><td>ขวด · ฿690</td>
-              <td class="num"><input class="input pts" value="8"></td><td><span class="chip soft-primary">ตั้งเอง</span><span class="sub">ทับค่าของแบรนด์</span></td><td><span class="mult stack">×1.5 + ×2 = ×3.5</span></td><td class="num"><b>28</b></td></tr>
+              <td class="num"><input class="input pts" value="8"></td><td><span class="chip soft-primary">ตั้งเอง</span><span class="sub">ทับค่าของแบรนด์</span></td></tr>
             <tr><td><b>พาราเซตามอล 500 มก.</b><span class="sub mono">PA-500</span></td><td>GPO</td><td>ยาสามัญ</td><td>กล่อง · ฿45</td>
-              <td class="num"><input class="input pts" value="1"></td><td><span class="chip outline">ค่าเริ่มต้น</span></td><td><span class="mult">×1.5</span></td><td class="num"><b>1.5</b></td></tr>
+              <td class="num"><input class="input pts" value="0"></td><td><span class="chip">ยังไม่ตั้ง</span> <span class="chip soft-error">ได้ 0 พอยท์</span></td></tr>
             <tr class="zero"><td><b>ยาน้ำแก้ไอ</b><span class="sub mono">CS-SYR</span></td><td>—</td><td>ยาน้ำ</td><td>ขวด · ฿85</td>
-              <td class="num"><input class="input pts" value="0"></td><td><span class="chip soft-info">ตามหมวด</span> <span class="chip soft-error">ไม่ได้พอยท์</span><span class="sub">ยาน้ำ = 0</span></td><td class="muted">ไม่มีผล</td><td class="num"><b>0</b></td></tr>
+              <td class="num"><input class="input pts" value="0"></td><td><span class="chip soft-info">ตามหมวด</span> <span class="chip soft-error">ไม่ได้พอยท์</span><span class="sub">ยาน้ำ = 0</span></td></tr>
             <tr><td><b>ขวดนม PP</b><span class="sub mono">BT-PP</span></td><td>Pigeon</td><td>อุปกรณ์เด็ก</td><td>ชิ้น · ฿60</td>
-              <td class="num"><input class="input pts" value="2"></td><td><span class="chip soft-info">ตามหมวด</span><span class="sub">อุปกรณ์เด็ก = 2</span></td><td><span class="mult">×1.5</span></td><td class="num"><b>3</b></td></tr>
+              <td class="num"><input class="input pts" value="2"></td><td><span class="chip soft-info">ตามหมวด</span><span class="sub">อุปกรณ์เด็ก = 2</span></td></tr>
             <tr><td><b>เจลแอลกอฮอล์</b><span class="sub mono">AL-GEL</span></td><td>Dettol</td><td>อนามัย</td><td>ขวด · ฿55</td>
-              <td class="num"><input class="input pts" value="2"></td><td><span class="chip soft-info">ตามหมวด</span><span class="sub">อนามัย = 2</span></td><td><span class="mult">×1.5</span></td><td class="num"><b>3</b></td></tr>
+              <td class="num"><input class="input pts" value="2"></td><td><span class="chip soft-info">ตามหมวด</span><span class="sub">อนามัย = 2</span></td></tr>
             <tr><td><b>ถุงมือยาง</b><span class="sub mono">GL-LTX</span></td><td>Sri Trang</td><td>อนามัย</td><td>กล่อง · ฿120</td>
-              <td class="num"><input class="input pts" value="4"></td><td><span class="chip soft-primary">ตั้งเอง</span><span class="sub">ทับค่าของหมวด</span></td><td><span class="mult">×1.5</span></td><td class="num"><b>6</b></td></tr>
+              <td class="num"><input class="input pts" value="4"></td><td><span class="chip soft-primary">ตั้งเอง</span><span class="sub">ทับค่าของหมวด</span></td></tr>
           </tbody>
         </table></div>
         <div class="pager"><span>แถวต่อหน้า 25</span><span>1–10 จาก 1,284</span><span>‹ ›</span></div>
@@ -131,12 +130,10 @@
           </div>
           <hr class="divider">
           <div class="form-sec">
-            <h6>ค่าเริ่มต้นและการปัดเศษ</h6>
+            <h6>การปัดเศษ</h6>
             <div class="form-grid">
-              <div class="field relative"><label>ค่าเริ่มต้นเมื่อสินค้าไม่ได้ตั้งไว้ <span class="pin">5</span></label>
-                <div class="input-adorn"><input class="input" value="1"><span class="adorn">พอยท์ / หน่วย</span></div>
                 <span class="help">ใช้กับสินค้าที่ไม่มีค่ารายสินค้า ไม่มีค่าตามแบรนด์/หมวด (ใส่ 0 = ไม่ได้พอยท์ถ้าไม่ได้ตั้ง)</span></div>
-              <div class="field relative"><label>ปัดเศษเมื่อคูณตัวคูณแล้วไม่ลงตัว <span class="pin">6</span></label>
+              <div class="field relative"><label>ปัดเศษเมื่อคูณตัวคูณโปรโมชั่นแล้วไม่ลงตัว <span class="pin">6</span></label>
                 <div class="seg"><button class="on">ปัดเศษทิ้ง</button><button>ปัดใกล้เคียง</button><button>ปัดขึ้น</button></div>
                 <span class="help">ปัดที่ระดับ "รายการสินค้าแต่ละบรรทัด" เพื่อให้รายการละเอียดบวกกันได้ยอดเดียวกับที่ลูกค้าเห็น</span></div>
             </div>
@@ -145,18 +142,18 @@
           <div class="form-sec">
             <h6>วันหมดอายุของพอยท์ <span class="pin">7</span></h6>
             <div class="form-grid">
-              <div class="field"><label>นโยบายเริ่มต้น (ใช้เมื่อรอบ/แคมเปญนั้นไม่ได้ตั้งเอง)</label>
+              <div class="field"><label>นโยบายเริ่มต้น (ใช้เมื่อโปรโมชั่นนั้นไม่ได้ตั้งเอง)</label>
                 <select class="select"><option>ไม่มีวันหมดอายุ</option><option selected>สิ้นปีปฏิทินที่ได้รับ (31 ธ.ค.)</option><option>สิ้นปีปฏิทินถัดไป</option><option>กี่เดือนนับจากวันที่ได้รับ…</option></select></div>
               <div class="field"><label>เตือนลูกค้าก่อนหมดอายุ (แสดงบนเว็บ)</label>
                 <div class="row wrap"><label class="check"><input type="checkbox" checked> 30 วันก่อน</label><label class="check"><input type="checkbox" checked> 7 วันก่อน</label></div>
-                <span class="help">ไม่ส่ง SMS / อีเมล / LINE — แสดงเป็นแถบในหน้าพอยท์ของฉันและตอนชำระเงิน</span></div>
+                <span class="help">แจ้งเตือนบนเว็บเท่านั้น — แสดงเป็นแถบในหน้าพอยท์ของฉันและตอนชำระเงิน</span></div>
             </div>
             <div class="table-wrap mt16" style="border:1px solid var(--g200)"><table class="table">
-              <thead><tr><th>รอบ / แคมเปญที่แจกพอยท์</th><th>วันหมดอายุของพอยท์ที่แจกในรอบนั้น</th><th>ใช้กับ</th><th></th></tr></thead>
+              <thead><tr><th>ออเดอร์ / โปรโมชั่นที่แจกพอยท์</th><th>วันหมดอายุของพอยท์ที่แจกในรอบนั้น</th><th>ใช้กับ</th><th></th></tr></thead>
               <tbody>
-                <tr><td><b>ปกติ (ออเดอร์ทั่วไป)</b></td><td>31 ธ.ค. 2569 <span class="chip outline">ตามนโยบายเริ่มต้น</span></td><td>พอยท์ฐาน</td><td></td></tr>
-                <tr><td><b>พอยท์ ×1.5 ทั้งเดือนตุลาคม</b></td><td>31 ธ.ค. 2569 <span class="chip outline">ตามนโยบายเริ่มต้น</span></td><td>พอยท์ส่วนเพิ่มจากตัวคูณ</td><td><a class="btn text sm" href="../campaign/01-admin-list.html">ตั้งในแคมเปญ</a></td></tr>
-                <tr><td><b>ส่งท้ายไตรมาส 3 (×2)</b></td><td>31 ต.ค. 2569 <span class="chip soft-warning">override ต่อแคมเปญ</span></td><td>พอยท์ส่วนเพิ่มจากตัวคูณ</td><td><a class="btn text sm" href="../campaign/01-admin-list.html">ตั้งในแคมเปญ</a></td></tr>
+                <tr><td><b>ปกติ (ออเดอร์ทั่วไป)</b></td><td>31 ธ.ค. 2569 <span class="chip outline">ตามนโยบายเริ่มต้น</span></td><td>พอยท์ฐาน (ต่อหน่วยสินค้า)</td><td></td></tr>
+                <tr><td><b>ซื้อสินค้ากลุ่มนมผง รับพอยท์ ×1.5</b></td><td>31 ธ.ค. 2569 <span class="chip outline">ตามนโยบายเริ่มต้น</span></td><td>พอยท์ส่วนเพิ่มจากตัวคูณ</td><td><a class="btn text sm" href="../promotion/01-admin-list.html">ตั้งในโปรโมชั่น</a></td></tr>
+                <tr><td><b>วันพิเศษ 10.27 (ลด 10% + พอยท์ ×2)</b></td><td>31 ต.ค. 2569 <span class="chip soft-warning">override ต่อโปรโมชั่น</span></td><td>พอยท์ส่วนเพิ่มจากตัวคูณ</td><td><a class="btn text sm" href="../promotion/01-admin-list.html">ตั้งในโปรโมชั่น</a></td></tr>
               </tbody>
             </table></div>
           </div>
@@ -165,11 +162,11 @@
             <h6>ยกเลิกออเดอร์ และการซ้อนตัวคูณ</h6>
             <div class="form-grid">
               <div class="field relative"><label>เมื่อยกเลิกออเดอร์ที่เคยให้พอยท์ <span class="pin">8</span></label>
-                <div class="seg"><button class="on">หักพอยท์คืนอัตโนมัติ</button><button>ไม่หักคืน</button></div>
-                <span class="help">หักเท่าที่ออเดอร์นั้นให้ไว้ ถ้าลูกค้าแลกไปแล้วจะหักได้เท่าที่คงเหลือ ไม่ทำให้ยอดติดลบ</span></div>
-              <div class="field"><label>เมื่อมีตัวคูณ active พร้อมกันหลายแคมเปญ</label>
+                <div class="input readonly" style="display:flex;align-items:center;min-height:40px">หักพอยท์ + ยอดสะสมคืนเสมอ</div>
+                <span class="help">ไม่ใช่ตัวเลือก — ระบบอ่านค่าจากฟิลด์ที่เก็บไว้ที่รายการสินค้าในออเดอร์ (พอยท์ที่ได้ · ยอดสะสมของแต่ละแคมเปญ) หักเท่าที่ออเดอร์นั้นให้ไว้ ถ้าลูกค้าแลกไปแล้วจะหักได้เท่าที่คงเหลือ</span></div>
+              <div class="field"><label>เมื่อมีตัวคูณจากโปรโมชั่นหลายโปรพร้อมกัน</label>
                 <div class="input readonly" style="display:flex;align-items:center;min-height:40px">บวกกัน (×1.5 + ×2 = ×3.5)</div>
-                <span class="help">ตามกติกาที่ตกลงไว้ ไม่ใช่ตัวเลือก — ตัวคูณของแต่ละสินค้าคิดเฉพาะแคมเปญที่ครอบคลุม SKU นั้น</span></div>
+                <span class="help">ตามกติกาที่ตกลงไว้ ไม่ใช่ตัวเลือก — ตัวคูณคิดเฉพาะสินค้าที่เข้าเงื่อนไขของแต่ละโปร</span></div>
             </div>
           </div>
         </div></div>
@@ -184,7 +181,7 @@
           <hr class="divider">
           <div class="calc">
             <div><b>รวม (ก่อนตัวคูณ)</b></div><div class="eq" style="font-size:16px">26 พอยท์</div>
-            <div><b>ถ้ามีตัวคูณ ×1.5 active</b><span class="sub">20×1.5 + 0 + 6×1.5</span></div><div class="eq" style="color:var(--primary);font-size:16px">39 พอยท์</div>
+            <div><b>ถ้ามีโปรโมชั่นตัวคูณ ×1.5</b><span class="sub">20×1.5 + 0 + 6×1.5</span></div><div class="eq" style="color:var(--primary);font-size:16px">39 พอยท์</div>
           </div>
           <div class="soft mt16 small">
             <b>ตัวอย่างการปัดเศษ (ปัดเศษทิ้ง)</b><br>
@@ -195,30 +192,6 @@
       </div>
     </div>
 
-    <!-- ============ TAB 3 ============ -->
-    <div data-panel="mult">
-      <div class="alert warning mb16"><div><div class="a-title">หน้านี้อ่านอย่างเดียว <span class="pin">9</span></div>ตัวคูณพอยท์ตั้งที่แคมเปญ (ช่วงเวลา + สินค้าที่ร่วม + วันหมดอายุของพอยท์ส่วนเพิ่ม) เพื่อไม่ให้มีสองที่ตั้งค่าเดียวกัน — กด "ไปแก้ในแคมเปญ" เพื่อแก้</div></div>
-      <div class="card" style="overflow:hidden">
-        <div class="table-toolbar"><b>แคมเปญที่มีตัวคูณพอยท์</b><a class="btn outlined primary sm" href="../campaign/01-admin-list.html">เปิดโมดูลแคมเปญ</a></div>
-        <div class="table-wrap"><table class="table">
-          <thead><tr><th>แคมเปญ</th><th class="num">ตัวคูณ</th><th>ขอบเขตสินค้า</th><th>ช่วงเวลา</th><th>สถานะ</th><th>วันหมดอายุพอยท์ส่วนเพิ่ม</th><th></th></tr></thead>
-          <tbody>
-            <tr><td><b>พอยท์ ×1.5 ทั้งเดือนตุลาคม</b></td><td class="num"><span class="mult">×1.5</span></td><td>ทุกสินค้าที่มีพอยท์ &gt; 0</td><td>1–31 ต.ค. 2569</td><td><span class="chip success">กำลังใช้งาน</span></td><td>ตามนโยบายเริ่มต้น (31 ธ.ค. 2569)</td><td><a class="btn text sm" href="../campaign/01-admin-list.html">ไปแก้ในแคมเปญ</a></td></tr>
-            <tr><td><b>Blackmores Week</b></td><td class="num"><span class="mult">×2</span></td><td>เฉพาะแบรนด์ Blackmores (38 SKU)</td><td>12–18 ต.ค. 2569</td><td><span class="chip success">กำลังใช้งาน</span></td><td>ตามนโยบายเริ่มต้น (31 ธ.ค. 2569)</td><td><a class="btn text sm" href="../campaign/01-admin-list.html">ไปแก้ในแคมเปญ</a></td></tr>
-            <tr><td><b>ปีใหม่ นมผง</b></td><td class="num"><span class="mult">×3</span></td><td>หมวดนมผง (24 SKU)</td><td>25–31 ธ.ค. 2569</td><td><span class="chip warning">ยังไม่เริ่มต้น</span></td><td>31 ม.ค. 2570 <span class="chip soft-warning">override</span></td><td><a class="btn text sm" href="../campaign/01-admin-list.html">ไปแก้ในแคมเปญ</a></td></tr>
-            <tr><td><b>ส่งท้ายไตรมาส 3</b></td><td class="num"><span class="mult">×2</span></td><td>ทุกสินค้าที่มีพอยท์ &gt; 0</td><td>20–30 ก.ย. 2569</td><td><span class="chip">สิ้นสุดแล้ว</span></td><td>31 ต.ค. 2569 <span class="chip soft-warning">override</span></td><td><a class="btn text sm" href="../campaign/01-admin-list.html">ดู</a></td></tr>
-          </tbody>
-        </table></div>
-      </div>
-      <div class="card mt16"><div class="card-b">
-        <h6 class="mb8">ตัวคูณรวมของสินค้าตัวอย่าง ณ วันนี้ (12 ต.ค. 2569)</h6>
-        <div class="grid g3">
-          <div class="soft"><b>Blackmores Vitamin C</b><div class="mt8"><span class="mult stack">×1.5 + ×2 = ×3.5</span></div><div class="small muted mt8">5 พอยท์ → 17.5 พอยท์/ขวด</div></div>
-          <div class="soft"><b>นมผงสูตร 3 (ลัง)</b><div class="mt8"><span class="mult">×1.5</span></div><div class="small muted mt8">10 พอยท์ → 15 พอยท์/ลัง</div></div>
-          <div class="soft"><b>ผ้าอ้อมเด็ก (แพ็ค)</b><div class="mt8"><span class="chip soft-error">0 พอยท์</span></div><div class="small muted mt8">0 × ตัวคูณใด ๆ = 0 พอยท์</div></div>
-        </div>
-      </div></div>
-    </div>
   </div>
 </main>
 
@@ -226,27 +199,25 @@
   <h6>หมายเหตุ UX</h6>
   <ol>
     <li><span class="pin">1</span><span><b>พอยท์ต่อหน่วย (แก้ในตารางได้ตรง ๆ):</b> จำนวนเต็ม ≥ 0 · ใส่ 0 = สินค้านี้ไม่ได้พอยท์ (แถวขึ้นสีเหลืองและมีป้าย "ไม่ได้พอยท์") · เปลี่ยนแล้วแถวขึ้นสถานะ "ยังไม่บันทึก" จนกด "บันทึกการเปลี่ยนแปลง"</span></li>
-    <li><span class="pin">2</span><span><b>ที่มาของค่า:</b> ตั้งเอง (รายสินค้า) &gt; ตามแบรนด์ &gt; ตามหมวด &gt; ค่าเริ่มต้น — ค่าที่เฉพาะเจาะจงกว่าชนะ · กดชิปเพื่อล้างค่าที่ตั้งเอง ให้กลับไปใช้ค่าของแบรนด์/หมวด/ค่าเริ่มต้น</span></li>
-    <li><span class="pin">3</span><span><b>ตั้งพร้อมกันตามแบรนด์/หมวด:</b> เลือกกลุ่ม + ค่า + วิธีใช้ แล้วระบบบอกจำนวน SKU ที่จะถูกเปลี่ยนก่อนกดนำไปใช้ · ค่าเริ่มต้นแนะนำให้ "ไม่ทับที่ตั้งเอง"</span></li>
+    <li><span class="pin">2</span><span><b>ที่มาของค่า:</b> ตั้งเอง (รายสินค้า) &gt; ตามแบรนด์ &gt; ตามหมวด &gt; ยังไม่ตั้ง (= 0 พอยท์ ไม่มีค่าเริ่มต้น) — ค่าที่เฉพาะเจาะจงกว่าชนะ · กดชิปเพื่อล้างค่าที่ตั้งเอง</span></li>
+    <li><span class="pin">3</span><span><b>ตั้งพร้อมกันตามแบรนด์/หมวด:</b> เลือกกลุ่ม + ค่า + วิธีใช้ แล้วระบบบอกจำนวน SKU ที่จะถูกเปลี่ยนก่อนกดนำไปใช้ · แนะนำให้ "ไม่ทับที่ตั้งเอง"</span></li>
     <li><span class="pin">4</span><span><b>นำเข้า/ส่งออก CSV:</b> คอลัมน์ sku, points_per_unit · นำเข้าแล้วแสดงสรุป "สำเร็จ X / ข้าม Y (SKU ไม่พบ, ค่าไม่ใช่จำนวนเต็ม)" ก่อนยืนยันจริง</span></li>
-    <li><span class="pin">5</span><span><b>ค่าเริ่มต้นเมื่อสินค้าไม่ได้ตั้งไว้:</b> กันสินค้าใหม่ที่ยังไม่มีใครตั้งค่าให้ได้พอยท์ผิดโดยไม่รู้ตัว — มอคอัพตั้ง 1 พอยท์/หน่วย (ดูข้อที่ต้องตัดสินใจ)</span></li>
-    <li><span class="pin">6</span><span><b>ปัดเศษ:</b> ตัวคูณ ×1.5 ทำให้เกิดทศนิยมได้ ระบบปัดที่ระดับบรรทัดสินค้า หลังคูณตัวคูณ ผลรวมที่ลูกค้าเห็นจึงเท่ากับยอดที่ได้จริง</span></li>
-    <li><span class="pin">7</span><span><b>วันหมดอายุตั้งต่อรอบ/แคมเปญ:</b> มีนโยบายเริ่มต้นไว้ 1 ค่า แต่แต่ละแคมเปญที่แจกพอยท์ override ได้ที่หน้าแคมเปญ — ตารางนี้แสดงผลที่ใช้จริงเพื่อให้ตรวจได้ที่เดียว</span></li>
-    <li><span class="pin">8</span><span><b>ยกเลิกออเดอร์ → หักคืน:</b> เปิด/ปิดได้ · การหักคืนบันทึกเป็นรายการ "หักคืน" อ้างเลขออเดอร์ในสมุดพอยท์ (ดูหน้า 03)</span></li>
-    <li><span class="pin">9</span><span><b>ตัวคูณแคมเปญ (อ่านอย่างเดียว):</b> ตั้งค่าที่เดียวคือในโมดูลแคมเปญ หน้านี้เป็นมุมมองสรุปว่าตอนนี้ตัวคูณไหน active และซ้อนกันแล้วได้เท่าไร</span></li>
+    <li><span class="pin">6</span><span><b>ปัดเศษ:</b> ตัวคูณจากโปรโมชั่น (เช่น ×1.5) ทำให้เกิดทศนิยมได้ ระบบปัดที่ระดับบรรทัดสินค้า หลังคูณตัวคูณ ผลรวมที่ลูกค้าเห็นจึงเท่ากับยอดที่ได้จริง</span></li>
+    <li><span class="pin">7</span><span><b>วันหมดอายุตั้งต่อโปรโมชั่น:</b> มีนโยบายเริ่มต้นไว้ 1 ค่า แต่แต่ละโปรโมชั่นที่แจกพอยท์ override ได้ที่หน้าโปรโมชั่น — ตารางนี้แสดงผลที่ใช้จริงเพื่อให้ตรวจได้ที่เดียว</span></li>
+    <li><span class="pin">8</span><span><b>ยกเลิกออเดอร์ → หักคืนเสมอ:</b> ไม่มีตัวเลือกเปิด/ปิด · หักพอยท์และยอดสะสมคืนตามฟิลด์ที่เก็บไว้ที่รายการสินค้าในออเดอร์ · บันทึกเป็นรายการ "หักคืน" อ้างเลขออเดอร์ในสมุดพอยท์ (ดูหน้า 03)</span></li>
     <li><span class="pin">10</span><span><b>ใครได้รับพอยท์</b> ค่าเริ่มต้น “ทุกคน” · เลือก “บางคน” เมื่อพอยท์เปิดเฉพาะบางกลุ่ม (เช่น ร้านสัญญา) — ใช้กลุ่มลูกค้าเดียวกับโปรโมชั่นและคูปอง · ใครแลกของรางวัลได้ตั้งแยกต่อรายการในแคตตาล็อกแลก</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
-    <li>อัตรา/ตัวคูณที่เปลี่ยน มีผลกับออเดอร์ที่ <b>ชำระเงินสำเร็จหลังบันทึก</b> เท่านั้น — พอยท์ที่ให้ไปแล้วไม่ถูกคำนวณย้อนหลัง</li>
-    <li>ตัวคูณของแคมเปญคิดเฉพาะ SKU ที่แคมเปญนั้นครอบคลุม; ถ้าสินค้าได้ 0 พอยท์ ตัวคูณไม่มีผล (0 × n = 0)</li>
+    <li>อัตราพอยท์ที่เปลี่ยน มีผลกับออเดอร์ที่ <b>ชำระเงินสำเร็จหลังบันทึก</b> เท่านั้น — พอยท์ที่ให้ไปแล้วไม่ถูกคำนวณย้อนหลัง</li>
+    <li>ตัวคูณของโปรโมชั่นคิดเฉพาะสินค้าที่เข้าเงื่อนไขโปรนั้น; ถ้าสินค้าได้ 0 พอยท์ ตัวคูณไม่มีผล (0 × n = 0) — แต่พอยท์ฟรีคงที่ของโปรยังได้</li>
     <li>ของแถมจากโปรโมชั่นไม่ให้พอยท์ (ไม่ได้ซื้อ) · สินค้าที่เกิดจากการแลกพอยท์ก็ไม่ให้พอยท์</li>
     <li>ช่องพอยท์ต่อหน่วยรับเฉพาะจำนวนเต็ม; ถ้าแก้ค่าที่มาจากแบรนด์/หมวดในตาราง ที่มาจะเปลี่ยนเป็น "ตั้งเอง"</li>
     <li>ผู้ที่แก้ได้: ฝ่ายการตลาดที่มีสิทธิ์ "จัดการพอยท์" · ทุกการแก้อัตราบันทึก audit (ค่าเดิม → ค่าใหม่, ใคร, เมื่อไหร่)</li>
   </ul></div>
   <div class="rules"><b>ข้อที่ต้องตัดสินใจกับลูกค้า</b><ul>
-    <li><b>ใช้อัตราตามยอดบิลแทนได้ไหม</b> (เช่น ทุก ฿100 ได้ 10 พอยท์ แบบต้นแบบสถิต admin.html เดิม) — spec ที่อนุมัติคิดรายสินค้า มอคอัพจึงยึดรายสินค้าเป็นหลัก และมีค่าเริ่มต้นไว้รองรับสินค้าที่ไม่ได้ตั้ง</li>
-    <li>ลำดับความสำคัญ แบรนด์ vs หมวด เมื่อขัดกัน (มอคอัพ: แบรนด์ชนะ) และค่าเริ่มต้นสำหรับสินค้าที่ไม่ได้ตั้ง (มอคอัพ: 1 พอยท์/หน่วย หรือจะให้เป็น 0 ก็ได้)</li>
-    <li>วันหมดอายุที่ override ต่อแคมเปญ ใช้กับ "เฉพาะพอยท์ส่วนเพิ่มจากตัวคูณ" (มอคอัพ) หรือกับพอยท์ทั้งออเดอร์ในช่วงแคมเปญ</li>
+    <li><b>ใช้อัตราตามยอดบิลแทนได้ไหม</b> (เช่น ทุก ฿100 ได้ 10 พอยท์ แบบต้นแบบสถิต admin.html เดิม) — spec ที่อนุมัติคิดรายสินค้า มอคอัพจึงยึดรายสินค้าเป็นหลัก สินค้าที่ไม่ได้ตั้ง = 0 พอยท์</li>
+    <li>ลำดับความสำคัญ แบรนด์ vs หมวด เมื่อขัดกัน (มอคอัพ: แบรนด์ชนะ)</li>
+    <li>วันหมดอายุที่ override ต่อโปรโมชั่น ใช้กับ "เฉพาะพอยท์ส่วนเพิ่มจากตัวคูณ" (มอคอัพ) หรือกับพอยท์ทั้งออเดอร์ในช่วงแคมเปญ</li>
     <li>ปัดเศษทิ้ง/ใกล้เคียง/ขึ้น และปัดรายบรรทัดหรือทั้งออเดอร์ (มอคอัพ: ปัดทิ้ง รายบรรทัด)</li>
   </ul></div>
 </section>

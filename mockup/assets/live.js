@@ -24,11 +24,22 @@
     var sm = $('.cust-top .small'); if (sm) sm.textContent = cust().name;
   }
   /* floating control: simulated customer + date (shared across pages) */
-  function ctl() {
+  function simCtl() {
     if ($('#liveCtl')) return;
     var cfg = PMP.cfg(), d = document.createElement('div'); d.id = 'liveCtl'; d.className = 'live-ctl';
-    d.innerHTML = '<b>จำลอง</b><select class="select" id="lcCust">' + PMP.customers.map(function (c) { return '<option value="' + c.id + '"' + (c.id === custId() ? ' selected' : '') + '>' + c.name + ' (' + c.type + ')</option>'; }).join('') + '</select><input class="input" id="lcNow" type="date" value="' + cfg.now + '"><button class="btn text sm grey" id="lcReset" type="button" title="รีเซ็ตข้อมูลจำลองทั้งหมด">รีเซ็ต</button>';
+    d.innerHTML = '<b>จำลอง</b><select class="select" id="lcCust">' + PMP.customers.map(function (c) { return '<option value="' + c.id + '"' + (c.id === custId() ? ' selected' : '') + '>' + c.name + ' (' + c.type + ')</option>'; }).join('') + '</select><input class="input" id="lcNow" type="date" value="' + cfg.now + '"><button class="btn text sm grey" id="lcReset" type="button" title="รีเซ็ตข้อมูลจำลองทั้งหมด">รีเซ็ต</button>' + (PMP.cfg().raffles.some(function (f) { return f.mode === 'B'; }) ? '<button class="btn outlined sm" id="lcAnn" type="button" title="เดโม: จับรางวัลโหมด B ให้ลูกค้าที่เลือกอยู่ถูกรางวัลแรก แล้วเด้งหน้าต่างลุ้นผล">ประกาศผล (ถูก)</button><button class="btn text sm grey" id="lcRv" type="button" title="เดโม: ให้ลูกค้าที่เลือกอยู่เปิดผลโหมด B ซ้ำได้">ลุ้นผลอีกครั้ง</button>' : '');
     document.body.appendChild(d);
+    var ann = $('#lcAnn'); if (ann) ann.onclick = function () {
+      var fs = PMP.cfg().raffles.filter(function (f) { return f.mode === 'B'; }), cid = custId(), st = PMP.state(), f = fs.filter(function (x) { return !(st.shared.drawResult || {})[x.id]; })[0];
+      if (!f) { alert('จับรางวัลโหมด B ครบแล้ว — กด “รีเซ็ต” เพื่อเริ่มใหม่ หรือ “ลุ้นผลอีกครั้ง” เพื่อเปิดผลซ้ำ'); return; }
+      var pool = st.shared.rafflePool[f.id] || (st.shared.rafflePool[f.id] = {}); if (!pool[cid]) pool[cid] = 1; PMP.saveState(st);
+      var r = PMP.drawB(f.id, cid); if (r.error) { alert(r.error); return; } PMP.resetReveal(cid, f.id); location.reload();
+    };
+    var rv = $('#lcRv'); if (rv) rv.onclick = function () {
+      var cid = custId(), st = PMP.state(), f = PMP.cfg().raffles.filter(function (x) { return x.mode === 'B' && (st.shared.drawResult || {})[x.id] && ((st.shared.rafflePool[x.id] || {})[cid] || 0) > 0; })[0];
+      if (!f) { alert('ลูกค้าคนนี้ยังไม่มีผลจับรางวัลโหมด B ให้ลุ้น — กด “ประกาศผล (ถูก)” ก่อน'); return; }
+      PMP.resetReveal(cid, f.id); location.reload();
+    };
     $('#lcCust').onchange = function () { U.wr('pmpc.sim.cust', this.value); location.reload(); };
     $('#lcNow').onchange = function () { var c = PMP.cfg(); c.now = this.value || c.now; PMP.saveCfg(c); location.reload(); };
     $('#lcReset').onclick = function () { if (confirm('รีเซ็ตข้อมูลจำลองทั้งหมดกลับค่าเริ่มต้น?')) { PMP.resetAll(); try { localStorage.removeItem('pmpc.sim.cart'); localStorage.removeItem('pmpc.sim.sel'); } catch (e) {} location.reload(); } };
@@ -97,9 +108,6 @@
     $('.pt-card .lots').innerHTML = L.map(function (l) { return '<div class="row between"><span>' + l.pts.toLocaleString() + ' พอยท์</span><b>หมดอายุ ' + dm(l.exp) + '</b></div>'; }).join('') || '<div class="row between"><span>ยังไม่มีพอยท์</span></div>';
     var soon = L.filter(function (l) { return (new Date(l.exp) - new Date(now)) / 864e5 <= 30; })[0], al = $('.alert.warning');
     if (al) { if (soon) { al.style.display = ''; $('.a-title', al).textContent = 'พอยท์ ' + soon.pts + ' พอยท์ จะหมดอายุวันที่ ' + dm(soon.exp) + ' (อีก ' + Math.round((new Date(soon.exp) - new Date(now)) / 864e5) + ' วัน)'; } else al.style.display = 'none'; }
-    var ls = ladderSum(c, cfg), acc = $('.acc-card');
-    $('.val', acc).textContent = B(ls.spent); $('.progress i', acc).style.width = Math.min(100, ls.spent / ls.top * 100) + '%';
-    $('.small.mt8', acc).innerHTML = ls.next ? 'อีก <b>' + B(ls.next.at - ls.spent) + '</b> ถึงรางวัลขั้นถัดไป (' + B(ls.next.at) + ')' : 'ถึงขั้นสูงสุดแล้ว';
     function hist(e) {
       var plus = e.t.charAt(0) === '+', cls = /หมดอายุ/.test(e.why) ? 'exp' : /ปรับ|ชดเชย/.test(e.why) ? 'adj' : plus ? 'in' : 'out';
       return '<div class="hist"><span class="ic ' + cls + '">' + (plus ? '＋' : '🎁') + '</span><div><b>' + E(e.why) + '</b><div class="sub">' + dm(e.d) + '</div></div><div class="amt ' + (plus ? 'p' : 'm') + '">' + e.t.replace('-', '−') + '</div></div>';
@@ -121,10 +129,9 @@
   var KICON = { coupon: ['c', 'คูปอง'], ship: ['s', 'ส่งฟรี'], gift: ['g', 'ของ'], offpos: ['g', 'ของ'], credit: ['m', 'เครดิต'], entitle: ['t', 'ลุ้น'], points: ['m', 'พอยท์'] };
   var rFilter = 'all', rOnly = false, rPend = null;
   H['points/05-customer-redeem.html'] = function () {
-    var cfg = PMP.cfg(), c = cs(), L = lots(c, cfg), ls = ladderSum(c, cfg);
+    var cfg = PMP.cfg(), c = cs(), L = lots(c, cfg);
     $('.bal-pts .v').innerHTML = c.points.toLocaleString() + '<small>พอยท์</small>';
     var soon = L[0]; $('.bal-pts .small[style*="right"]').innerHTML = (soon ? soon.pts + ' พอยท์ หมดอายุ ' + dm(soon.exp) : 'ยังไม่มีพอยท์') + '<br><a href="04-customer-dashboard.html" style="color:#fff;text-decoration:underline">ดูประวัติ</a>';
-    $('.bal-camp .v').textContent = B(ls.spent);
     var html = '';
     cfg.catalog.forEach(function (it) {
       if (!it.active) return;
@@ -206,12 +213,12 @@
     }
     var idx = L.tiers.indexOf(tier) + 1, left = tier.cap ? tier.cap - (tier.used || 0) : null;
     no.innerHTML = '<a href="06-customer-ladder.html">ขั้นบันไดรางวัลของฉัน</a> / ขอรับสิทธิ์ขั้น ' + idx;
-    $('.dialog-h', host).firstChild.textContent = 'ขอรับสิทธิ์ · ขั้น ' + idx + ' ' + tier.name;
+    $('.dialog-h', host).firstChild.textContent = 'ขอรับสิทธิ์ · ขั้น ' + idx + ' ' + tier.name; var nof = !fields.length; if (nof) { var fb = $('.dialog-b .alert', host); }
     var sb = $('.sum-box', host); sb.innerHTML = '<div><span class="small muted">ยอดเกณฑ์ขั้น ' + idx + '</span><b>' + B(tier.at) + ' <span style="color:var(--success-dark)">✓</span></b></div><div><span class="small muted">ยอดสะสมของคุณ</span><b>' + B(S.lv.spent) + '</b></div><div><span class="small muted">สิทธิ์คงเหลือ</span><b style="color:var(--warning-dark)">' + (tier.cap ? left + ' / ' + tier.cap : 'ไม่จำกัด') + '</b></div>';
     var er = $('.dialog-b .alert.error', host); if (er) er.style.display = 'none';
     var wrap = $('.dialog-b > .relative', host);
     wrap.innerHTML = fields.map(function (f, i) { return '<div class="field"><label>' + E(f.label) + (f.req ? ' <span style="color:var(--error-dark)">*</span>' : '') + '</label><input class="input" data-lans="' + i + '"></div>'; }).join('') || '<div class="muted small">ขั้นนี้ไม่มีฟอร์มขอข้อมูล</div>';
-    var cb = $('.dialog-b label.check input', host), btn = $('.dialog-f .btn.contained', host); btn.disabled = true; btn.setAttribute('data-lclaim', L.id + '|' + tier.id);
+    var cb = $('.dialog-b label.check input', host), btn = $('.dialog-f .btn.contained', host); btn.disabled = true; if (nof) btn.textContent = 'รับรางวัลเลย'; btn.setAttribute('data-lclaim', L.id + '|' + tier.id);
     cb.onchange = function () { btn.disabled = !cb.checked; };
     var ex = $('#claimReqs'); if (ex) ex.parentNode.removeChild(ex);
     host.parentNode.insertAdjacentHTML('afterend', '<div id="claimReqs">' + reqList(S) + '</div>');
@@ -225,32 +232,57 @@
     if (b && !b.disabled) { var p = b.getAttribute('data-lclaim').split('|'), ans = $$('[data-lans]').map(function (x) { return x.value; }), r = PMP.claimTier(custId(), p[0], p[1], ans); if (r.error) { toast(r.error, true); return; } toast(r.out[0]); rerender(); }
   });
 
-  /* ===== raffle/06 สิทธิ์ลุ้นของฉัน ===== */
-  H['raffle/06-customer-tickets.html'] = function () {
-    var cfg = PMP.cfg(), c = cs(), st = PMP.state(), now = cfg.now, cid = custId();
-    var tot = 0, inPool = 0, cards = '', rows = '';
-    cfg.raffles.forEach(function (f) {
-      var n = c.tickets[f.id] || 0, mine = (st.shared.rafflePool[f.id] || {})[cid] || 0, s = PMP.status(f, now); tot += n; inPool += mine;
-      cards += '<div class="card"><div class="card-b ev-card"><div><div class="tk-big">' + n + '</div><div class="small muted">ใบพร้อมใช้</div></div><div><div class="row wrap"><b style="font-size:16px">' + E(f.name) + '</b><span class="mode a">A ลุ้นทันที</span><span class="mode b">B จับตามรอบ</span>' + (s !== 'running' ? '<span class="chip">' + PMP.statusLabel[s] + '</span>' : '') + '</div><div class="small muted mt8">' + dm(f.start) + ' – ' + dm(f.end) + ' · ได้ 1 สิทธิ์ทุกยอดซื้อ ' + B(f.perBaht) + '</div><div class="src-chips mt8"><span>เข้ากองรอจับ (B) <b>' + mine + '</b></span><span>ของฉัน <b>' + n + '</b></span></div><div class="small muted mt8">กองโหมด B ทั้งหมด ' + (Object.keys(st.shared.rafflePool[f.id] || {}).reduce(function (a, k) { return a + st.shared.rafflePool[f.id][k]; }, 0) + f.poolOthers) + ' สิทธิ์ · รหัสยืนยัน ' + PMP.fnv('pool:' + f.id) + '</div></div><div class="stack s8" style="min-width:170px"><a class="btn contained' + (n < 1 ? ' disabled' : '') + '" href="07-customer-instant-draw.html">ลุ้นเลย (โหมด A)</a><button class="btn outlined primary" data-lpool="' + f.id + '"' + (n < 1 ? ' disabled' : '') + '>ลงกองรางวัลใหญ่ (B)</button></div></div></div>';
-      if (n) rows += '<tr><td class="mono">TK-' + f.id.toUpperCase() + '-×' + n + '</td><td>' + E(f.name) + '</td><td>ยอดซื้อ/โปร/แลกพอยท์ (รวม)</td><td>—</td><td>—</td><td><span class="chip soft-success">พร้อมใช้ ×' + n + '</span></td></tr>';
-      if (mine) rows += '<tr><td class="mono">TK-' + f.id.toUpperCase() + '-B×' + mine + '</td><td>' + E(f.name) + '</td><td>ลงกองโหมด B</td><td>—</td><td>—</td><td><span class="chip soft-info">เข้ากองรอจับ ×' + mine + '</span></td></tr>';
-    });
-    var stats = $$('.grid.g3 .stat'); stats[0].innerHTML = '<div class="l">สิทธิ์พร้อมใช้</div><div class="v num">' + tot + ' ใบ</div><div class="small muted">' + cfg.raffles.map(function (f) { return E(f.name) + ' ' + (c.tickets[f.id] || 0) + ' ใบ'; }).join(' · ') + '</div>';
-    stats[1].innerHTML = '<div class="l">เข้ากองรอจับ (โหมด B)</div><div class="v num">' + inPool + ' ใบ</div><div class="small muted">แอดมินกดจับที่หน้าจับรางวัล</div>'; stats[2].querySelector('.v').textContent = '0 ใบ'; stats[2].querySelector('.small').textContent = 'สิทธิ์ที่ได้ตอนนี้ไม่มีวันหมดอายุ';
-    $('[data-panel="byevent"]').innerHTML = cards || '<div class="muted small">ยังไม่มีกิจกรรม</div>';
-    $('[data-panel="all"] tbody').innerHTML = rows || '<tr><td colspan="6" class="center muted" style="padding:20px">ยังไม่มีสิทธิ์ลุ้น — ซื้อสินค้า/แลกพอยท์เพื่อรับสิทธิ์</td></tr>';
-    relabelCustomer();
-  };
-  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-lpool]'); if (b) { var r = PMP.enterPool(custId(), b.getAttribute('data-lpool'), 1); toast(r.error || 'ใส่ 1 สิทธิ์ลงกองโหมด B แล้ว (ถอนคืนไม่ได้)', !!r.error); rerender(); } });
-
-  /* ===== raffle/07 ลุ้นทันที (โหมด A) ===== */
-  var spinning = false;
+  /* ===== raffle/07 ลุ้นทันที (โหมด A) — ภาพเปิดผล 3 แบบ admin เลือกต่อกิจกรรม: วงล้อ / กล่องของขวัญ / บัตรขูด (ผลตัดสินที่ระบบก่อนเสมอ) ===== */
+  var spinning = false, STY = { wheel: ['วงล้อ', '🎡', 'วงล้อหมุนแล้วค่อย ๆ หยุดที่ช่องรางวัล'], box: ['กล่องของขวัญ', '🎁', 'กล่องสั่น แล้วเปิดกล่องเผยรางวัล'], scratch: ['บัตรขูด', '🎟️', 'ลูกค้าใช้นิ้ว/เมาส์ขูดเปิดผลเอง'] };
+  function rfStyle(f) { return STY[f.style] ? f.style : 'wheel'; }
+  function rfMs(f, normal, fast) { return f.speed === 'fast' ? fast : normal; }
+  function zShort(z) { return z.name.replace('คูปองลด ', '฿').slice(0, 12); }
+  function buildArt(f) {
+    var art = $('#rfArt'), sty = rfStyle(f), h = '';
+    if (sty === 'wheel') {
+      h = '<div class="wheel-wrap"><div class="pointer"></div><div class="wheel">';
+      for (var i = 0; i < 8; i++) h += '<div class="lb' + (i % 2 ? ' dk' : '') + '" style="transform:rotate(' + (22.5 + 45 * i) + 'deg)"><span>' + E(zShort(f.prizes[i % f.prizes.length])) + '</span></div>';
+      h += '<div class="hub">หมุน</div></div></div>';
+    } else if (sty === 'box') {
+      h = '<div class="gift-grid">'; for (var j = 0; j < 6; j++) h += '<div class="gift" data-gi="' + j + '"><span class="g-ic">🎁</span><div class="g-pz"><b>🎉</b><span></span></div></div>'; h += '</div><div class="scr-hint"><b>แตะกล่องที่ชอบเพื่อเปิด</b> (ใช้ 1 สิทธิ์) — หรือกดปุ่มด้านล่างให้ระบบสุ่มกล่องให้</div>';
+    } else {
+      h = '<div class="scr-card" id="scrCard"><div class="scr-prize"><small>รางวัลของคุณคือ</small><b>?</b></div><canvas width="340" height="170"></canvas></div><div class="scr-hint" id="scrHint">กด “ซื้อบัตรขูด” แล้วใช้นิ้วหรือเมาส์ขูดเปิดผล</div>';
+    }
+    art.innerHTML = h; art.setAttribute('data-key', f.id + ':' + sty); art._busy = 0;
+    if (sty === 'scratch') paintFoil($('canvas', art));
+  }
+  function paintFoil(cv) {
+    var g = cv.getContext('2d'), gr = g.createLinearGradient(0, 0, cv.width, cv.height); gr.addColorStop(0, '#9E9E9E'); gr.addColorStop(.5, '#E0E0E0'); gr.addColorStop(1, '#BDBDBD');
+    g.globalCompositeOperation = 'source-over'; g.fillStyle = gr; g.fillRect(0, 0, cv.width, cv.height);
+    g.fillStyle = 'rgba(255,255,255,.55)'; g.font = '800 22px "Noto Sans Thai",sans-serif'; g.textAlign = 'center'; g.fillText('ขูดตรงนี้', cv.width / 2, cv.height / 2 + 8);
+    for (var i = 0; i < 40; i++) { g.fillStyle = 'rgba(255,255,255,.25)'; g.fillRect(Math.random() * cv.width, Math.random() * cv.height, 2, 2); }
+  }
+  function armScratch(art, onClear) {
+    var cv = $('canvas', art), card = $('#scrCard'), g = cv.getContext('2d'), down = false, n = 0; card.classList.add('armed'); art._armed = 1;
+    function pos(ev) { var r = cv.getBoundingClientRect(), t = ev.touches ? ev.touches[0] : ev; return { x: (t.clientX - r.left) * cv.width / r.width, y: (t.clientY - r.top) * cv.height / r.height }; }
+    function check() { var d = g.getImageData(0, 0, cv.width, cv.height).data, c = 0, tot = 0; for (var i = 3; i < d.length; i += 64) { tot++; if (d[i] < 128) c++; } return c / tot; }
+    function dot(ev) { if (!art._armed) return; var p = pos(ev); g.globalCompositeOperation = 'destination-out'; g.beginPath(); g.arc(p.x, p.y, 24, 0, 7); g.fill(); if (++n % 4 === 0 && check() > .45) onClear(); }
+    cv.onmousedown = function (e) { down = true; dot(e); }; cv.onmousemove = function (e) { if (down) dot(e); }; cv.onmouseup = cv.onmouseleave = function () { down = false; };
+    cv.ontouchstart = function (e) { e.preventDefault(); dot(e); }; cv.ontouchmove = function (e) { e.preventDefault(); dot(e); };
+  }
+  function showResult(r, f) {
+    spinning = false; var bd = $('.backdrop.relative'); bd._shown = 1; bd.style.display = '';
+    $('.dialog-h', bd).firstChild.textContent = r.prize.name === f.prizes[0].name ? 'ขอบคุณที่ร่วมลุ้น' : 'ยินดีด้วย!';
+    $('.res-win', bd).innerHTML = '<div class="center" style="padding:6px 0 14px"><div class="small muted">ผลการลุ้น</div><div style="font-size:22px;font-weight:800;margin:4px 0">' + E(r.prize.name) + '</div><div class="small muted">โอกาสถูก ' + r.odds + '%</div><div class="soft mt8" style="text-align:left"><b>ได้รับเข้าบัญชีแล้ว</b><ul class="st-log" style="margin:6px 0 0;padding-left:18px">' + r.out.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ul></div></div><div class="small muted center">เหลือสิทธิ์ ' + (cs().tickets[f.id] || 0) + ' ใบ</div>';
+    var cont = $$('.dialog-f .btn.contained', bd)[0]; cont.textContent = 'ลุ้นต่อ (' + (cs().tickets[f.id] || 0) + ' ใบ)'; cont.setAttribute('data-lcont', 1);
+    $('#rfArt')._busy = 0; rerender();
+  }
   H['raffle/07-customer-instant-draw.html'] = function () {
-    var cfg = PMP.cfg(), c = cs(), f = cfg.raffles[0], st = PMP.state(); if (!f) return;
-    var n = c.tickets[f.id] || 0;
+    var cfg = PMP.cfg(), c = cs(), f = rfCur('A', 'raffleA'), st = PMP.state(); if (!f) { $('.stage').innerHTML = '<div class="muted center" style="padding:30px">ตอนนี้ยังไม่มีกิจกรรมลุ้นทันที</div>'; return; }
+    var as = cfg.raffles.filter(function (x) { return x.mode === 'A'; }); if (as.length > 1) pickBar2($('.page-head') || $('h4').parentNode, 'livePick', as.map(function (x) { return { id: x.id, label: x.name }; }), f.id, function (v) { U.wr(selKey('raffleA'), v); history.replaceState(null, '', location.pathname); rerender(); }, null);
+    var n = c.tickets[f.id] || 0, sty = rfStyle(f), stage = $('.stage');
     $('.tk-chip').lastChild.textContent = 'สิทธิ์ของฉัน ' + n + ' ใบ';
-    var wheel = $('.wheel'); if (!wheel.getAttribute('data-built')) { wheel.setAttribute('data-built', 1); $$('.lb', wheel).forEach(function (lb, i) { $('span', lb).textContent = f.prizes[i % f.prizes.length].name.replace('คูปองลด ', '฿').slice(0, 12); }); }
-    var go = $('.stage > .btn.contained.lg'); go.setAttribute('data-ldraw', f.id); go.disabled = n < 1 || spinning; go.textContent = n < 1 ? 'ไม่มีสิทธิ์ลุ้น — ซื้อสินค้าเพื่อรับสิทธิ์' : 'ใช้ 1 สิทธิ์ ลุ้นเลย';
+    var seg = $('.seg', stage); if (seg) seg.outerHTML = '<div class="sty-chip" id="rfSty"></div>';
+    var ww = $('.wheel-wrap', stage); if (ww) ww.outerHTML = '<div id="rfArt" style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%"></div>';
+    $('#rfSty').textContent = STY[sty][1] + ' รูปแบบ: ' + STY[sty][0];
+    var art = $('#rfArt'); if (!art._busy && art.getAttribute('data-key') !== f.id + ':' + sty) buildArt(f);
+    var go = $('.stage > .btn.contained.lg'); go.setAttribute('data-ldraw', f.id); go.removeAttribute('data-lskip'); go.disabled = n < 1 || spinning; go.textContent = n < 1 ? 'ไม่มีสิทธิ์ลุ้น — ซื้อสินค้าเพื่อรับสิทธิ์' : sty === 'scratch' ? 'ใช้ 1 สิทธิ์ ซื้อบัตรขูด' : sty === 'box' ? 'สุ่มกล่องให้ (ใช้ 1 สิทธิ์)' : 'ใช้ 1 สิทธิ์ ลุ้นเลย';
+    if (art._busy) { go.disabled = false; }
     $('.stage > .small.muted').textContent = n ? 'เหลือ ' + n + ' ใบ → หลังกด เหลือ ' + (n - 1) + ' ใบ' : 'สิทธิ์หมด';
     var tw = f.prizes.reduce(function (a, z) { return a + z.weight; }, 0);
     var card = $$('.odds-row').filter(function (r) { return !r.classList.contains('small'); }); card.forEach(function (r) { r.parentNode.removeChild(r); });
@@ -258,18 +290,34 @@
     var bd = $('.backdrop.relative'); if (bd && !bd._shown) bd.style.display = 'none';
   };
   document.addEventListener('click', function (e) {
-    var b = e.target.closest && e.target.closest('[data-ldraw]'); if (!b || spinning) return;
-    var r = PMP.drawA(custId(), b.getAttribute('data-ldraw')); if (r.error) { toast(r.error, true); return; }
-    spinning = true; var wheel = $('.wheel'), f = PMP.cfg().raffles[0], idx = 0; for (var i = 0; i < 8; i++) { if (f.prizes[i % f.prizes.length].id === r.prize.id) { idx = i; break; } }
-    wheel.style.transition = 'transform 3.2s cubic-bezier(.17,.67,.2,1)'; wheel.style.transform = 'rotate(' + (1440 - (22.5 + 45 * idx)) + 'deg)';
-    setTimeout(function () {
-      spinning = false; wheel.style.transition = 'none'; wheel.style.transform = 'rotate(' + (-(22.5 + 45 * idx)) + 'deg)';
-      var bd = $('.backdrop.relative'); bd._shown = 1; bd.style.display = '';
-      $('.dialog-h', bd).firstChild.textContent = r.prize.name === f.prizes[0].name ? 'ขอบคุณที่ร่วมลุ้น' : 'ยินดีด้วย!';
-      $('.res-win', bd).innerHTML = '<div class="center" style="padding:6px 0 14px"><div class="small muted">ผลการลุ้น</div><div style="font-size:22px;font-weight:800;margin:4px 0">' + E(r.prize.name) + '</div><div class="small muted">โอกาสถูก ' + r.odds + '%</div><div class="soft mt8" style="text-align:left"><b>ได้รับเข้าบัญชีแล้ว</b><ul class="st-log" style="margin:6px 0 0;padding-left:18px">' + r.out.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ul></div></div><div class="small muted center">เหลือสิทธิ์ ' + (cs().tickets[f.id] || 0) + ' ใบ</div>';
-      var cont = $$('.dialog-f .btn.contained', bd)[0]; cont.textContent = 'ลุ้นต่อ (' + (cs().tickets[f.id] || 0) + ' ใบ)'; cont.setAttribute('data-lcont', 1);
-      rerender();
-    }, 3300);
+    var sk = e.target.closest && e.target.closest('[data-lskip]');
+    if (sk) { var a0 = $('#rfArt'); if (a0 && a0._reveal) a0._reveal(); return; }
+    var gp = e.target.closest && e.target.closest('[data-gi]'), b = gp ? $('.stage > .btn.contained.lg') : e.target.closest && e.target.closest('[data-ldraw]'); if (!b || spinning || !b.getAttribute('data-ldraw')) return;
+    var gpick = gp ? +gp.getAttribute('data-gi') : -1;
+    var fid = b.getAttribute('data-ldraw'), f = PMP.raffle(fid), sty = rfStyle(f), art = $('#rfArt'), bd0 = $('.backdrop.relative'); if (bd0) bd0.style.display = 'none';
+    var r = PMP.drawA(custId(), fid); if (r.error) { toast(r.error, true); return; }
+    spinning = true; art._busy = 1; b.disabled = true; var idx = 0; for (var i = 0; i < 8; i++) { if (f.prizes[i % f.prizes.length].id === r.prize.id) { idx = i; break; } }
+    function done() { showResult(r, f); }
+    if (sty === 'wheel') {
+      var wheel = $('.wheel', art), ms = rfMs(f, 3200, 1600);
+      wheel.style.transition = 'none'; wheel.style.transform = 'rotate(0deg)'; void wheel.offsetWidth;
+      wheel.style.transition = 'transform ' + ms / 1000 + 's cubic-bezier(.17,.67,.2,1)'; wheel.style.transform = 'rotate(' + (1440 - (22.5 + 45 * idx)) + 'deg)';
+      setTimeout(function () { wheel.style.transition = 'none'; wheel.style.transform = 'rotate(' + (-(22.5 + 45 * idx)) + 'deg)'; done(); }, ms + 100);
+    } else if (sty === 'box') {
+      buildArt(f); art._busy = 1; var gs = $$('.gift', art), pick = gpick >= 0 ? gpick : Math.floor(Math.random() * gs.length), win = r.prize.name !== f.prizes[0].name;
+      gs.forEach(function (x) { x.classList.add('shake'); });
+      setTimeout(function () {
+        gs.forEach(function (x, i) { x.classList.remove('shake'); if (i !== pick) x.classList.add('dim'); });
+        var g = gs[pick]; $('.g-pz b', g).textContent = win ? '🎉' : '🍀'; $('.g-pz span', g).textContent = zShort(r.prize); g.classList.add('open');
+        setTimeout(done, 1500);
+      }, rfMs(f, 1100, 600));
+    } else {
+      buildArt(f); art._busy = 1; var win2 = r.prize.name !== f.prizes[0].name;
+      $('.scr-prize', art).innerHTML = '<small>' + (win2 ? 'ยินดีด้วย! คุณได้' : 'ครั้งนี้ได้') + '</small><b>' + E(r.prize.name) + '</b>';
+      var finished = 0; function reveal() { if (finished) return; finished = 1; art._armed = 0; $('#scrCard').classList.add('revealed'); $('#scrHint').textContent = ''; setTimeout(done, 900); }
+      art._reveal = reveal; armScratch(art, reveal); $('#scrHint').textContent = 'ขูดให้เกิน 45% เพื่อเปิดผล — หรือกด “เปิดทั้งหมด” ด้านล่าง';
+      b.disabled = false; b.removeAttribute('data-ldraw'); b.setAttribute('data-lskip', 1); b.textContent = 'เปิดทั้งหมด (ข้ามการขูด)';
+    }
   });
   document.addEventListener('click', function (e) { if (e.target.closest && e.target.closest('[data-lcont]')) { var bd = $('.backdrop.relative'); bd.style.display = 'none'; } });
 
@@ -295,13 +343,13 @@
   H['coupon/05-admin-paper-claims.html'] = function () {
     var cfg = PMP.cfg(), st = PMP.state(), pcs = st.paperClaims || [];
     var rows = pcs.map(function (c, i) {
-      var pp = cfg.paper.filter(function (x) { return x.id === c.ppId; })[0], su = PMP.stores.filter(function (x) { return x.id === c.storeId; })[0], fl = c.flags.map(function (f) { return '<div style="margin-top:4px"><span class="chip soft-error">' + E(f) + '</span></div>'; }).join('');
+      var pp = cfg.paper.filter(function (x) { return x.id === c.ppId; })[0], su = PMP.partners().filter(function (x) { return x.id === c.storeId; })[0], fl = c.flags.map(function (f) { return '<div style="margin-top:4px"><span class="chip soft-error">' + E(f) + '</span></div>'; }).join('');
       var act = c.status === 'รอตรวจนับ' ? '<input class="input" data-lpcn="' + c.id + '" type="number" placeholder="นับได้" style="width:80px;min-height:30px"> <a href="#" data-lpcact="count|' + c.id + '">บันทึกนับ</a> · <a href="#" data-lpcact="reject|' + c.id + '" style="color:var(--error-dark)">ปฏิเสธ</a>' : c.status === 'ตรวจนับแล้ว' ? '<a href="#" data-lpcact="pay|' + c.id + '">บันทึกจ่ายเงิน</a>' : '—';
       return '<tr><td><b class="mono">C-' + String(131 + pcs.length - i).padStart(4, '0') + '</b></td><td><b>' + E(su.name) + '</b></td><td class="mono">' + E(pp.code) + '</td><td class="num">' + c.stubs + '</td><td class="num">' + (c.counted != null ? c.counted : '—') + '</td><td class="num">' + B(pp.value) + '</td><td class="num"><b>' + B(c.amount) + (c.counted == null ? '*' : '') + '</b></td><td><span class="chip ' + ({ 'รอตรวจนับ': 'warning', 'ตรวจนับแล้ว': 'info', 'จ่ายแล้ว': 'success', 'ปฏิเสธ': 'error' }[c.status]) + '">' + c.status + '</span>' + fl + '</td><td class="nowrap">' + dmy(c.d) + '</td><td class="nowrap">' + act + '</td></tr>';
     }).join('');
     var tb = $$('table.table tbody')[0]; tb.innerHTML = rows || '<tr><td colspan="10" class="center muted" style="padding:24px">ยังไม่มีคำขอเบิก — ร้านส่งก้นที่แท็บ “คูปองกระดาษ” ของหน้า <a href="../simulator/03-state.html#paper">สิทธิ์ & ผลลัพธ์</a></td></tr>';
     // per-store summary table
-    var t2 = $$('table.table tbody')[1]; if (t2) t2.innerHTML = PMP.stores.map(function (su) { var tot = pcs.filter(function (c) { return c.storeId === su.id && c.status !== 'ปฏิเสธ'; }).reduce(function (a, c) { return a + c.stubs; }, 0), mx = Math.max.apply(null, cfg.paper.map(function (p) { return p.maxPerStore; })); return '<tr><td>' + E(su.name) + '</td><td class="num">' + tot + '</td><td class="num">' + mx + '</td><td style="width:140px"><div class="progress ' + (tot > mx ? '' : 'green') + '"><i style="width:' + Math.min(100, tot / mx * 100) + '%"></i></div></td><td><span class="chip ' + (tot > mx ? 'soft-error' : 'soft-success') + '">' + (tot > mx ? 'เกินใบสูงสุด' : 'ปกติ') + '</span></td></tr>'; }).join('');
+    var t2 = $$('table.table tbody')[1]; if (t2) t2.innerHTML = PMP.partners().map(function (su) { var tot = pcs.filter(function (c) { return c.storeId === su.id && c.status !== 'ปฏิเสธ'; }).reduce(function (a, c) { return a + c.stubs; }, 0), mx = Math.max.apply(null, cfg.paper.map(function (p) { return p.maxPerStore || 0; })); return '<tr><td>' + E(su.name) + '</td><td class="num">' + tot + '</td><td class="num">' + (mx || '—') + '</td><td style="width:140px"><div class="progress ' + (tot > mx ? '' : 'green') + '"><i style="width:' + Math.min(100, tot / mx * 100) + '%"></i></div></td><td><span class="chip ' + (mx && tot > mx ? 'soft-error' : 'soft-success') + '">' + (mx && tot > mx ? 'เกินใบสูงสุดต่อร้าน' : 'ปกติ') + '</span></td></tr>'; }).join('');
   };
   document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('[data-lpcact]'); if (!a) return; e.preventDefault(); var d = a.getAttribute('data-lpcact').split('|'), inp = $('[data-lpcn="' + d[1] + '"]'), r = PMP.paperAct(d[1], d[0], inp ? +inp.value : null); toast(r.error || 'บันทึกแล้ว', !!r.error); rerender(); });
 
@@ -311,11 +359,7 @@
     cfg.ladders.forEach(function (L) {
       var users = Object.keys(st.customers).map(function (k) { return st.customers[k].ladder[L.id]; }).filter(function (v) { return v && v.spent > 0; }), req = (st.claims || []).filter(function (c) { return c.lid === L.id && c.status === 'รอตรวจ'; }).length;
       var days = Math.max(0, Math.round((new Date(L.end) - new Date(now)) / 864e5));
-      rows += '<tr><td><b>' + E(L.name) + '</b><div class="sub">' + L.tiers.length + ' ขั้นรางวัล · ' + users.length + ' ร้านที่มียอด</div></td><td><span class="chip soft-primary">สะสมยอดรายปี</span></td><td><b>' + dmy(L.start) + ' – ' + dmy(L.end) + '</b><div class="sub">เหลือ ' + days + ' วัน</div></td><td>' + (L.scope.mode === 'all' ? 'ทุกสินค้า' : L.scope.mode === 'pset' ? 'กลุ่มสินค้าที่ตั้งไว้' : 'เลือกรายสินค้า') + '<div class="sub">กลุ่มเป้าหมาย: ' + E(L.aud) + '</div></td><td>' + statusChip(L, now) + '</td><td class="prog-cell"><b>' + users.length + ' ร้านเข้าร่วม</b><div class="mini-steps">' + L.tiers.map(function (t, i) { return '<span>ขั้น ' + (i + 1) + ' · ' + users.filter(function (v) { return v.unlocked.indexOf(t.id) > -1; }).length + '</span>'; }).join('') + '</div><div class="sub mt8">คำขอรอตรวจ ' + req + '</div></td><td><div class="acts"><a class="btn text sm" href="03-admin-ladder-editor.html">จัดการขั้น</a><a class="btn text sm" href="04-admin-claims.html">คิวคำขอ</a><a class="btn text sm" href="05-admin-progress.html">ความคืบหน้า</a></div></td></tr>';
-    });
-    cfg.quota.forEach(function (q) {
-      var p = PMP.product(q.sku);
-      rows += '<tr><td><b>' + E(q.name) + '</b><div class="sub">ราคาพิเศษ ' + B(q.special) + ' · ต่อคน ' + q.perCust + '</div></td><td><span class="chip soft-info">ช่วงเวลา + โควตา</span></td><td><b>' + dmy(q.start) + ' – ' + dmy(q.end) + '</b></td><td>1 SKU<div class="sub">' + E(p.name) + '</div></td><td>' + statusChip({ active: q.active, start: q.start, end: q.end, quotaTotal: q.quotaTotal, used: q.used }, now) + '</td><td class="prog-cell"><b>ใช้โควตา ' + q.used + ' / ' + q.quotaTotal + '</b><div class="progress mt8"><i style="width:' + Math.min(100, q.used / q.quotaTotal * 100) + '%"></i></div></td><td><div class="acts"><a class="btn text sm" href="02-admin-quota-editor.html" data-lsel-quota="' + q.id + '">แก้ไข</a></div></td></tr>';
+      rows += '<tr><td><b>' + E(L.name) + '</b><div class="sub">' + L.tiers.length + ' ขั้นรางวัล · ' + users.length + ' ร้านที่มียอด</div></td><td><b>' + dmy(L.start) + ' – ' + dmy(L.end) + '</b><div class="sub">เหลือ ' + days + ' วัน</div></td><td>' + (L.scope.mode === 'all' ? 'ทุกสินค้า' : L.scope.mode === 'pset' ? 'กลุ่มสินค้าที่ตั้งไว้' : 'เลือกรายสินค้า') + '<div class="sub">กลุ่มเป้าหมาย: ' + E(L.aud) + '</div></td><td>' + statusChip(L, now) + '</td><td class="prog-cell"><b>' + users.length + ' ร้านเข้าร่วม</b><div class="mini-steps">' + L.tiers.map(function (t, i) { return '<span>ขั้น ' + (i + 1) + ' · ' + users.filter(function (v) { return v.unlocked.indexOf(t.id) > -1; }).length + '</span>'; }).join('') + '</div><div class="sub mt8">คำขอรอตรวจ ' + req + '</div></td><td><div class="acts"><a class="btn text sm" href="03-admin-ladder-editor.html">จัดการขั้น</a><a class="btn text sm" href="04-admin-claims.html">คิวคำขอ</a><a class="btn text sm" href="05-admin-progress.html">ความคืบหน้า</a></div></td></tr>';
     });
     tbody('table.table tbody', rows, 7);
   };
@@ -331,24 +375,15 @@
   };
   document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('[data-lcact]'); if (!a) return; var d = a.getAttribute('data-lcact').split('|'), rs = d[0] === 'reject' ? prompt('เหตุผลที่ปฏิเสธ (ต้องระบุ)') : null, r = PMP.claimAct(d[1], d[0], rs); toast(r.error || r.out.join(' · '), !!r.error); rerender(); });
 
-  /* ---- raffle/01 รายการกิจกรรม ---- */
-  H['raffle/01-admin-list.html'] = function () {
-    var cfg = PMP.cfg(), st = PMP.state(), now = cfg.now;
-    tbody('table.table tbody', cfg.raffles.map(function (f) {
-      var held = Object.keys(st.customers).reduce(function (a, k) { return a + (st.customers[k].tickets[f.id] || 0); }, 0), draws = Object.keys(st.customers).reduce(function (a, k) { return a + st.customers[k].draws.filter(function (d) { return d.f === f.name; }).length; }, 0), pool = Object.keys(st.shared.rafflePool[f.id] || {}).reduce(function (a, k) { return a + st.shared.rafflePool[f.id][k]; }, 0);
-      var cost = f.prizes.reduce(function (a, z) { return a + (st.shared.prizeUsed[z.id] || 0); }, 0);
-      return '<tr><td><b>' + E(f.name) + '</b><div class="ev-id">' + f.id.toUpperCase() + ' · ทางเข้า: ยอดซื้อ · ผลตอบแทนโปร · แลกพอยท์</div></td><td><span class="mode a">A</span> <span class="mode b">B</span></td><td class="nowrap">' + dmy(f.start) + ' – ' + dmy(f.end) + '<div class="small muted">กองโหมด B ' + (pool + f.poolOthers) + ' สิทธิ์</div></td><td class="num">' + (held + draws + pool).toLocaleString() + ' / ' + (draws + pool).toLocaleString() + '</td><td class="budget"><div class="row between small"><b>ถูกรางวัลแล้ว ' + cost + '</b><span class="muted">/ ' + f.prizes.reduce(function (a, z) { return a + z.stock; }, 0).toLocaleString() + ' ชิ้น</span></div><div class="progress green"><i style="width:' + Math.min(100, cost / Math.max(1, f.prizes.reduce(function (a, z) { return a + z.stock; }, 0)) * 100) + '%"></i></div></td><td>' + statusChip(f, now).replace('กำลังใช้งาน', 'เปิด') + '</td><td class="nowrap"><a class="btn text sm" href="02-admin-editor.html" data-lsel-raffle="' + f.id + '">แก้ไข</a><a class="btn text sm" href="03-admin-prizes-budget.html" data-lsel-raffle="' + f.id + '">รางวัล/งบ</a><a class="btn text sm grey" href="05-admin-audit.html">บันทึก</a></td></tr>';
-    }).join(''), 7);
-  };
 
   /* ---- foundation/01 กลุ่มลูกค้า ---- */
   H['foundation/01-admin-customer-sets.html'] = function () {
     var cfg = PMP.cfg();
-    function usage(id) { var a = 'set:' + id, p = cfg.promos.filter(function (x) { return x.aud === a; }).length, k = cfg.coupons.filter(function (x) { return x.aud === a; }).length, c = cfg.quota.filter(function (x) { return x.aud === a; }).length + cfg.ladders.filter(function (x) { return x.aud === a; }).length; return 'โปรโมชั่น ' + p + ' · คูปอง ' + k + ' · แคมเปญ ' + c; }
+    function usage(id) { var a = 'set:' + id, p = cfg.promos.filter(function (x) { return x.aud === a; }).length, k = cfg.coupons.filter(function (x) { return x.aud === a; }).length, c = cfg.ladders.filter(function (x) { return x.aud === a; }).length; return 'โปรโมชั่น ' + p + ' · คูปอง ' + k + ' · แคมเปญ ' + c; }
     tbody('table.table tbody', cfg.csets.map(function (c, i) { return '<tr><td><div class="nm">' + E(c.name) + '</div><div class="sub">' + E(c.note || '-') + '</div></td><td><b>' + (c.members.length + c.extra) + '</b> ราย</td><td>' + usage(c.id) + '</td><td>' + dm(cfg.now) + ' · staff1</td><td><a class="btn text sm" href="02-admin-customer-set-editor.html" data-lsel-cset="' + c.id + '">แก้ไข</a><button class="btn text sm grey" data-lcsdel="' + c.id + '">ลบกลุ่ม</button></td></tr>'; }).join(''), 5);
   };
   document.addEventListener('click', function (e) {
-    var d = e.target.closest && e.target.closest('[data-lcsdel]'); if (d) { if (!confirm('ลบกลุ่มลูกค้านี้? (รายการที่ใช้กลุ่มนี้จะกลับเป็น “ทุกคน”)')) return; var cfg = PMP.cfg(), id = d.getAttribute('data-lcsdel'), a = 'set:' + id; cfg.csets = cfg.csets.filter(function (c) { return c.id !== id; }); [].concat(cfg.promos, cfg.coupons, cfg.quota, cfg.ladders).forEach(function (x) { if (x.aud === a) x.aud = 'all'; }); PMP.saveCfg(cfg); rerender(); toast('ลบกลุ่มแล้ว'); return; }
+    var d = e.target.closest && e.target.closest('[data-lcsdel]'); if (d) { if (!confirm('ลบกลุ่มลูกค้านี้? (รายการที่ใช้กลุ่มนี้จะกลับเป็น “ทุกคน”)')) return; var cfg = PMP.cfg(), id = d.getAttribute('data-lcsdel'), a = 'set:' + id; cfg.csets = cfg.csets.filter(function (c) { return c.id !== id; }); [].concat(cfg.promos, cfg.coupons, cfg.ladders).forEach(function (x) { if (x.aud === a) x.aud = 'all'; }); PMP.saveCfg(cfg); rerender(); toast('ลบกลุ่มแล้ว'); return; }
     var l = e.target.closest && e.target.closest('[data-lcs]'); if (l) U.wr('pmpc.live.cset', l.getAttribute('data-lcs'));
   });
 
@@ -458,7 +493,7 @@
     function swap(a, b) { if (a !== b) html = html.split(a).join(b); }
     swap('>' + shown.code + '<', '>' + next.code + '<'); swap('ชุด ' + shown.code, 'ชุด ' + next.code); swap('>' + shown.val + '<', '>' + next.val + '<'); swap('ครบ ' + shown.min, 'ครบ ' + next.min); swap(shown.name, next.name); swap('value="' + shown.code + '"', 'value="' + next.code + '"');
     if (html !== main.innerHTML) { main.innerHTML = html; shown = next; inp = $('input.mono'); inp._b = 0; btn = inp.nextElementSibling; btn.addEventListener('click', function () { var v = inp.value.trim().toUpperCase(), q = PMP.cfg().paper.filter(function (x) { return x.code === v; })[0]; if (!q) { toast('ไม่พบรหัสคูปองกระดาษ “' + v + '”', true); return; } U.wr('pmpc.live.paper', q.id); rerender(); }); inp._b = 1; }
-    var stores = pp.stores.mode === 'all' ? PMP.stores : PMP.stores.filter(function (s) { return pp.stores.ids.indexOf(s.id) > -1; });
+    var stores = pp.stores.mode === 'all' ? PMP.partners() : PMP.partners().filter(function (s) { return pp.stores.ids.indexOf(s.id) > -1; });
     $$('.pb-cols ul')[0].innerHTML = stores.map(function (s) { return '<li>' + E(s.name) + '</li>'; }).join('') + (pp.stores.mode === 'all' ? '<li class="ln">ทุกร้านที่ลงทะเบียนในระบบ</li>' : '');
     var al = $('.alert.success .a-title'); if (al) { al.textContent = 'ชุด ' + pp.code + ' · ' + (pp.active ? 'ใช้ได้' : 'ปิดชุดแล้ว') + ' — ลด ' + B(pp.value) + ' เมื่อซื้อครบ ' + B(pp.min); al.parentNode.lastChild.textContent = pp.name + ' · ส่งก้นเบิกภายใน ' + pp.payDays + ' วัน · ใช้ที่ร้านที่ร่วมรายการ ' + (pp.stores.mode === 'all' ? 'ทุกแห่ง' : stores.length + ' แห่ง'); }
     var n = PMP.cfg(); // channel text kept as is
@@ -590,7 +625,7 @@
     var F = function () { return recOf('flash', id); };
     pickBar2($('.page-head'), 'livePick', cfg.flash.map(function (f) { return { id: f.id, label: f.name }; }), id, function (v) { U.wr(selKey('flash'), v); location.reload(); }, function () { var nid = U.uid('fl'); setCfg(function (c) { c.flash.push({ id: nid, name: 'Flash Sale ใหม่', start: c.now, end: PMP.addDays(c.now, 1), active: true, quota: 50, used: 0, rules: [{ ps: c.psets[0].id, pct: 10 }] }); }); U.wr(selKey('flash'), nid); location.reload(); }, '＋ สร้างแคมเปญ');
     function S(fn) { editRec('flash', id, fn); }
-    bindc(ctl(root, 'ชื่อแคมเปญ'), function () { return F().name; }, function (v) { S(function (r) { r.name = v; }); }, 'text');
+    bindc(ctl(root, 'ชื่อโปรโมชั่น'), function () { return F().name; }, function (v) { S(function (r) { r.name = v; }); }, 'text');
     bindc(ctl(root, 'เริ่ม'), function () { return F().start; }, function (v) { S(function (r) { r.start = v; }); }, 'date');
     bindc(ctl(root, 'สิ้นสุด'), function () { return F().end; }, function (v) { S(function (r) { r.end = v; }); }, 'date');
     function draw() {
@@ -688,7 +723,7 @@
   H['coupon/03-admin-paper-editor.html'] = function () {
     var cfg = PMP.cfg(), id = U.rd('pmpc.live.paper', null), list = cfg.paper; id = list.filter(function (x) { return x.id === id; })[0] ? id : list[0].id; var root = $('#screen');
     var P = function () { return recOf('paper', id); }, S = function (fn) { editRec('paper', id, fn); };
-    pickBar2($('.page-head'), 'livePick', list.map(function (p) { return { id: p.id, label: p.code + ' · ' + p.name }; }), id, function (v) { U.wr('pmpc.live.paper', v); location.reload(); }, function () { var nid = U.uid('pp'); setCfg(function (c) { c.paper.push({ id: nid, code: 'NEW' + nid.slice(2, 5).toUpperCase(), name: 'คูปองกระดาษชุดใหม่', value: 50, min: 500, issued: 500, maxPerStore: 100, stores: { mode: 'all', ids: [] }, active: true, payDays: 30, back: '' }); }); U.wr('pmpc.live.paper', nid); location.reload(); }, '＋ สร้างชุดใหม่');
+    pickBar2($('.page-head'), 'livePick', list.map(function (p) { return { id: p.id, label: p.code + ' · ' + p.name }; }), id, function (v) { U.wr('pmpc.live.paper', v); location.href = location.pathname; }, function () { var nid = U.uid('pp'); setCfg(function (c) { c.paper.push({ id: nid, code: 'NEW' + nid.slice(2, 5).toUpperCase(), name: 'คูปองกระดาษชุดใหม่', value: 50, min: 500, issued: 500, maxPerStore: 100, stores: { mode: 'all', ids: [] }, active: true, payDays: 30, back: '' }); }); U.wr('pmpc.live.paper', nid); location.reload(); }, '＋ สร้างชุดใหม่');
     bindc(ctl(root, 'รหัสชุด'), function () { return P().code; }, function (v) { S(function (r) { r.code = String(v).toUpperCase(); }); }, 'text');
     bindc(ctl(root, 'ชื่อ/ที่มาของชุด'), function () { return P().name; }, function (v) { S(function (r) { r.name = v; }); }, 'text');
     bindc(ctl(root, 'จำนวนที่ออก'), function () { return P().issued; }, function (v) { S(function (r) { r.issued = v; }); }, 'num');
@@ -698,52 +733,10 @@
     bindc(ctl(root, 'ชื่อสั้นที่พิมพ์ด้านหน้า'), function () { return P().name.slice(0, 30); }, function (v) { }, 'text');
     bindRadio(root, 'shopmode', function () { return P().stores.mode; }, function (v) { S(function (r) { r.stores.mode = v === 'pick' ? 'pick' : 'all'; }); updateReveal(); }, function (m) { return m; });
     updateReveal();
-    var pk = $('[data-reveal="shopmode=pick"]', root); if (pk) { var tbl = $('table.table tbody', pk); var html = PMP.stores.map(function (u) { return '<tr><td><input type="checkbox" data-lps="' + u.id + '"' + (P().stores.ids.indexOf(u.id) > -1 ? ' checked' : '') + '></td><td>' + E(u.name) + '</td><td>ร้านที่ลงทะเบียนแล้ว</td></tr>'; }).join(''); if (tbl) { tbl.innerHTML = html; } else { var tc = $('.card,.table-wrap', pk); (tc || pk).insertAdjacentHTML('beforeend', '<table class="table"><thead><tr><th></th><th>ร้าน/สาขา</th><th>ที่มา</th></tr></thead><tbody>' + html + '</tbody></table>'); }
+    var pk = $('[data-reveal="shopmode=pick"]', root); if (pk) { var tbl = $('table.table tbody', pk); var html = PMP.partners().map(function (u) { return '<tr><td><input type="checkbox" data-lps="' + u.id + '"' + (P().stores.ids.indexOf(u.id) > -1 ? ' checked' : '') + '></td><td>' + E(u.name) + '</td><td>ร้านที่ลงทะเบียนแล้ว</td></tr>'; }).join(''); if (tbl) { tbl.innerHTML = html; } else { var tc = $('.card,.table-wrap', pk); (tc || pk).insertAdjacentHTML('beforeend', '<table class="table"><thead><tr><th></th><th>ร้าน/สาขา</th><th>ที่มา</th></tr></thead><tbody>' + html + '</tbody></table>'); }
       $$('[data-lps]', pk).forEach(function (cb) { bindc(cb, function () { return P().stores.ids.indexOf(cb.getAttribute('data-lps')) > -1; }, function (v) { S(function (r) { var i = r.stores.ids.indexOf(cb.getAttribute('data-lps')); if (v && i < 0) r.stores.ids.push(cb.getAttribute('data-lps')); if (!v && i > -1) r.stores.ids.splice(i, 1); }); }, 'chk'); }); }
   };
 
-  /* ===== campaign/02 แคมเปญช่วงเวลา + โควตา ===== */
-  H['campaign/02-admin-quota-editor.html'] = function () {
-    var cfg = PMP.cfg(), id = pickId('quota', cfg.quota), root = $('#screen'); if (!id) return;
-    var Q = function () { return recOf('quota', id); }, S = function (fn) { editRec('quota', id, fn); };
-    pickBar2($('.page-head'), 'livePick', cfg.quota.map(function (q) { return { id: q.id, label: q.name }; }), id, function (v) { U.wr(selKey('quota'), v); location.reload(); }, function () { var nid = U.uid('q'); setCfg(function (c) { c.quota.push({ id: nid, name: 'แคมเปญราคาพิเศษใหม่', start: c.now, end: PMP.addDays(c.now, 14), active: true, sku: 'BM-VC500', special: 350, quotaTotal: 30, used: 0, perCust: 5, holdMin: 15, aud: 'all' }); }); U.wr(selKey('quota'), nid); location.reload(); }, '＋ สร้างแคมเปญ');
-    bindc(ctl(root, 'ชื่อแคมเปญ'), function () { return Q().name; }, function (v) { S(function (r) { r.name = v; }); }, 'text');
-    var st = ctl(root, 'สถานะ'); if (st) { st.innerHTML = '<option value="1">เปิดใช้งาน</option><option value="0">ปิด/ร่าง</option>'; bindc(st, function () { return Q().active ? '1' : '0'; }, function (v) { S(function (r) { r.active = v === '1'; }); }, 'sel'); }
-    bindc(ctl(root, 'เริ่ม'), function () { return Q().start; }, function (v) { S(function (r) { r.start = v; }); }, 'date');
-    bindc(ctl(root, 'สิ้นสุด'), function () { return Q().end; }, function (v) { S(function (r) { r.end = v; }); }, 'date');
-    bindc(ctl(root, 'โควตารวมทั้งระบบ'), function () { return Q().quotaTotal; }, function (v) { S(function (r) { r.quotaTotal = v; }); }, 'num');
-    bindc(ctl(root, 'โควตาต่อร้านค้า'), function () { return Q().perCust; }, function (v) { S(function (r) { r.perCust = v; }); }, 'num');
-    bindc(ctl(root, 'พักโควตาระหว่างชำระเงิน'), function () { return Q().holdMin; }, function (v) { S(function (r) { r.holdMin = v; }); }, 'num');
-    var pr = ctl(root, 'ราคาแคมเปญ'); if (pr) { var f = pr.closest('.field') || pr.parentElement, ip = f.querySelector('input:not([type=radio]):not([type=checkbox])'); if (ip) bindc(ip, function () { return Q().special; }, function (v) { S(function (r) { r.special = v; }); }, 'num'); }
-    var sk = $$('.field', root).filter(function (x) { return x.textContent.indexOf('สินค้า') > -1 && $('select', x) && !$('input', x); })[0]; if (sk && $('select', sk)) { var se = $('select', sk); se.innerHTML = PMP.products.map(function (p) { return '<option value="' + p.sku + '">' + E(p.sku + ' · ' + p.name) + '</option>'; }).join(''); bindc(se, function () { return Q().sku; }, function (v) { S(function (r) { r.sku = v; }); }, 'sel'); }
-    bindRadio(root, 'aud', function () { return Q().aud; }, function (v) { S(function (r) { r.aud = v === 'all' ? 'all' : 'set:' + cfg.csets[0].id; }); updateReveal(); }, function (a) { return String(a).indexOf('set:') === 0 ? 'some' : 'all'; });
-    updateReveal();
-  };
-  hl('quota');
-
-  /* ===== raffle/02 ตั้งค่ากิจกรรม + raffle/03 รางวัล ===== */
-  H['raffle/02-admin-editor.html'] = function () {
-    var cfg = PMP.cfg(), id = pickId('raffle', cfg.raffles), root = $('#screen'); if (!id) return;
-    var R = function () { return recOf('raffles', id); }, S = function (fn) { editRec('raffles', id, fn); };
-    pickBar2($('.page-head') || $('h4', root).parentNode, 'livePick', cfg.raffles.map(function (f) { return { id: f.id, label: f.name }; }), id, function (v) { U.wr(selKey('raffle'), v); location.reload(); }, function () { var nid = U.uid('f'); setCfg(function (c) { c.raffles.push({ id: nid, name: 'กิจกรรมใหม่', start: c.now, end: PMP.addDays(c.now, 30), active: true, perBaht: 1000, mode: 'A', poolOthers: 100, prizes: [{ id: U.uid('z'), name: 'รางวัลปลอบใจ', weight: 100, stock: 999 }] }); }); U.wr(selKey('raffle'), nid); location.reload(); }, '＋ สร้างกิจกรรม');
-    bindc(ctl(root, 'ชื่อกิจกรรม'), function () { return R().name; }, function (v) { S(function (r) { r.name = v; }); }, 'text');
-    bindc(ctl(root, 'ชื่อที่ลูกค้าเห็น'), function () { return R().name; }, function (v) { S(function (r) { r.name = v; }); }, 'text');
-    var dts = $$('input[type=date]', root); if (dts[0]) bindc(dts[0], function () { return R().start; }, function (v) { S(function (r) { r.start = v; }); }, 'date'); if (dts[1]) bindc(dts[1], function () { return R().end; }, function (v) { S(function (r) { r.end = v; }); }, 'date');
-    $$('table.table tbody tr', root).forEach(function (tr) { if (/ยอดซื้อ/.test(tr.textContent)) { var ip = $('.rate input', tr); bindc(ip, function () { return R().perBaht; }, function (v) { S(function (r) { r.perBaht = v || 1; }); }, 'num'); var sp = ip && ip.nextSibling; if (sp) sp.textContent = ' บาท / สิทธิ์'; } });
-  };
-  hl('raffle');
-  H['raffle/03-admin-prizes-budget.html'] = function () {
-    var cfg = PMP.cfg(), id = pickId('raffle', cfg.raffles), root = $('#screen'); if (!id) return; var st = PMP.state();
-    pickBar2($('.page-head') || $('h4', root).parentNode, 'livePick', cfg.raffles.map(function (f) { return { id: f.id, label: f.name }; }), id, function (v) { U.wr(selKey('raffle'), v); location.reload(); }, null);
-    function draw() {
-      var f = recOf('raffles', id), tb = $$('table.table', root)[0].querySelector('tbody'), tw = f.prizes.reduce(function (a, z) { return a + z.weight; }, 0) || 1;
-      tb.innerHTML = f.prizes.map(function (z, i) { var items = PMP.rewardsOf('raffle', z.id), used = (PMP.state().shared.prizeUsed[z.id] || 0), val = items.reduce(function (a, it) { return a + (it.k === 'points' ? it.pts : it.k === 'credit' ? it.amount : it.k === 'coupon' ? 100 : 0); }, 0); return '<tr><td><b>' + E(z.name) + '</b></td><td>' + E(items.map(function (x) { return PMP.kindLabel[x.k]; }).join(' + ') || '—') + '</td><td><span class="mode a">A</span></td><td class="num"><input class="input w-in num" data-lzw="' + i + '" value="' + z.weight + '"></td><td class="num odds">' + (z.weight / tw * 100).toFixed(1) + '%</td><td class="num"><input class="input w-in num" data-lzs="' + i + '" value="' + z.stock + '"></td><td class="num">' + (z.stock - used) + '</td><td class="num">' + B(val) + '</td><td class="num">' + B(val * z.weight / tw) + '</td><td><button class="btn text sm grey" data-lzd="' + i + '">ลบ</button></td></tr>'; }).join('') + '<tr><td colspan="10"><button class="btn outlined primary sm" data-lza="1">＋ เพิ่มรางวัล</button></td></tr>';
-    }
-    draw();
-    if (!root._lz) { root._lz = 1; root.addEventListener('input', function (e) { var t = e.target, a; if ((a = t.getAttribute('data-lzw')) != null) { editRec('raffles', id, function (r) { r.prizes[+a].weight = +t.value || 0; }); flashSaved(); } if ((a = t.getAttribute('data-lzs')) != null) { editRec('raffles', id, function (r) { r.prizes[+a].stock = +t.value || 0; }); flashSaved(); } });
-      root.addEventListener('change', function (e) { if (e.target.getAttribute('data-lzw') != null) draw(); });
-      root.addEventListener('click', function (e) { var d = e.target.closest('[data-lzd]'); if (d) { editRec('raffles', id, function (r) { r.prizes.splice(+d.getAttribute('data-lzd'), 1); }); draw(); return; } if (e.target.closest('[data-lza]')) { var zid = U.uid('z'); editRec('raffles', id, function (r) { r.prizes.push({ id: zid, name: 'รางวัลใหม่', weight: 10, stock: 50 }); }); PMP.saveRewards('raffle', zid, [{ k: 'points', pts: 100 }]); draw(); toast('เพิ่มรางวัลแล้ว — ตั้งผลตอบแทนด้านล่าง'); } }); }
-  };
 
   /* ===== campaign/03 แคมเปญสะสมยอดรายปี (ขั้นบันได) ===== */
   H['campaign/03-admin-ladder-editor.html'] = function () {
@@ -774,7 +767,7 @@
           '<div class="field span2"><div data-rwd data-module="campaign" data-ref="' + id + '-' + t.id + '" data-title="รางวัลของขั้นนี้" data-kinds="gift,points,coupon,credit,entitle,offpos"></div></div>' +
           '<div class="form-grid"><div class="field"><label>จำนวนสิทธิ์ทั้งหมด (เว้นว่าง = ไม่จำกัด)</label><input class="input" data-ltf="cap|' + i + '" value="' + (t.cap || '') + '" placeholder="ไม่จำกัด"><span class="help">ใช้ไปแล้ว ' + (t.used || 0) + ' · ลดต่ำกว่านี้ไม่ได้</span></div></div>' +
           '<div class="hint">' + (t.cap ? 'ตั้งจำนวนน้อย = ใครถึงเกณฑ์แล้วกดขอก่อนได้ก่อน · ลูกค้าเห็น <b>"เหลือ ' + left + '/' + t.cap + ' สิทธิ์"</b>' : '<b>ไม่จำกัดสิทธิ์</b> — ทุกคนที่ถึงยอดกดขอได้เสมอ ทีมงานคัดเลือกเอง') + '</div>' +
-          '<div class="fb"><div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์ (ลูกค้าทุกคนที่ปลดล็อกขั้นนี้เห็นฟอร์มเดียวกัน)</div>' + form.map(function (f, j) { return '<div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>ข้อความ</option></select><input class="input" data-ltform="' + i + '|' + j + '" value="' + E(f.label) + '"><label class="check"><input type="checkbox" data-ltreq="' + i + '|' + j + '"' + (f.req ? ' checked' : '') + '> จำเป็น</label><button class="iconbtn" data-ltfd="' + i + '|' + j + '">✕</button></div>'; }).join('') + '<button class="btn text sm" data-ltfa="' + i + '">＋ เพิ่มช่องข้อมูล</button></div></div>';
+          '<div class="fb"><div class="small semi mb8">ฟอร์มขอข้อมูลตอนกดรับสิทธิ์ (ลูกค้าทุกคนที่ปลดล็อกขั้นนี้เห็นฟอร์มเดียวกัน)</div><div class="small muted mb8">'+(form.length ? 'มีช่องข้อมูล = ลูกค้ากรอกแล้วคำขอเข้าคิวให้ทีมงานตรวจ' : '<b>ไม่มีช่องข้อมูล = ลูกค้ากด “รับรางวัล” ได้ทันที</b> ระบบอนุมัติและส่งรางวัลให้อัตโนมัติ ไม่เข้าคิวตรวจ (เหมาะกับพอยท์ คูปอง เครดิตเงินคืน สิทธิ์ลุ้น)')+'</div>' + form.map(function (f, j) { return '<div class="fb-row"><span class="drag">⋮⋮</span><select class="select"><option>ข้อความ</option></select><input class="input" data-ltform="' + i + '|' + j + '" value="' + E(f.label) + '"><label class="check"><input type="checkbox" data-ltreq="' + i + '|' + j + '"' + (f.req ? ' checked' : '') + '> จำเป็น</label><button class="iconbtn" data-ltfd="' + i + '|' + j + '">✕</button></div>'; }).join('') + '<button class="btn text sm" data-ltfa="' + i + '">＋ เพิ่มช่องข้อมูล</button></div></div>';
         return '<div class="scard open" data-lt="' + i + '">' + head + body + '</div>';
       }).join('');
       if (PMP.Reward) PMP.Reward.init();
@@ -803,25 +796,7 @@
     var top = L.tiers[L.tiers.length - 1].at;
     var rows = PMP.customers.map(function (c) { var lv = st.customers[c.id].ladder[L.id] || { spent: 0, unlocked: [], claimed: [] }, nxt = L.tiers.filter(function (t) { return t.at > lv.spent; })[0], pct = nxt ? lv.spent / nxt.at * 100 : 100; return { c: c, lv: lv, nxt: nxt, pct: pct }; }).sort(function (a, b) { return b.lv.spent - a.lv.spent; });
     var h = $$('thead th', tb.parentNode).map(function (x) { return norm(x.textContent); });
-    tb.innerHTML = rows.map(function (r) { var last = r.lv.unlocked.length ? L.tiers.filter(function (t) { return r.lv.unlocked.indexOf(t.id) > -1; }).pop() : null, hot = r.pct >= 95 && r.nxt; return '<tr' + (hot ? ' class="hot95"' : '') + '><td><b>' + E(r.c.name) + '</b><div class="sub">' + r.c.type + '</div></td><td class="num"><b>' + B(r.lv.spent) + '</b></td><td>' + (last ? E(last.name) : '—') + '</td><td class="pbar"><div class="row between"><b' + (hot ? ' style="color:var(--error-dark)"' : '') + '>' + r.pct.toFixed(1) + '%</b><span class="small muted">' + (r.nxt ? '→ ' + E(r.nxt.name) + ' · ' + B(r.nxt.at) : 'ครบทุกขั้น') + '</span></div><div class="progress ' + (hot ? 'red' : 'green') + '"><i style="width:' + Math.min(100, r.pct) + '%"></i></div>' + (r.nxt ? '<div class="small">อีก <b>' + B(r.nxt.at - r.lv.spent) + '</b></div>' : '') + '</td><td>' + dmy(cfg.now) + '</td><td>' + dmy(L.end) + '</td><td>' + (hot ? '<span class="chip soft-success">LINE · ถึง 95%</span>' : r.pct >= 80 && r.nxt ? '<span class="chip soft-success">ในเว็บ · ถึง 80%</span>' : '—') + '</td></tr>'; }).join('');
-  };
-
-  /* ===== raffle/04 จับรางวัลโหมด B ===== */
-  H['raffle/04-admin-draw-run.html'] = function () {
-    var cfg = PMP.cfg(), st = PMP.state(), f = cfg.raffles[0]; if (!f) return;
-    var pool = st.shared.rafflePool[f.id] || {}, mine = Object.keys(pool).reduce(function (a, k) { return a + pool[k]; }, 0), tot = mine + f.poolOthers;
-    $$('h4,h5,h6,.mono,b,.big,.v,.num,.small').forEach(function (e) { if (e.childElementCount) return; var t = e.textContent; if (/กอง.*[\d,]{4,}\s*(ใบ|สิทธิ์)/.test(t) && !e._lr) { e._lr = 1; } });
-    var btn = $$('button.btn').filter(function (b) { return /จับรางวัล/.test(b.textContent) && !b.disabled; })[0] || $$('button.btn').filter(function (b) { return /จับรางวัล/.test(b.textContent); })[0];
-    var bar = document.createElement('div'); bar.className = 'card mb16'; bar.innerHTML = '<div class="card-b"><div class="row between"><div><b>กองสิทธิ์ ' + E(f.name) + '</b><div class="small muted">กองทั้งหมด ' + tot.toLocaleString() + ' สิทธิ์ (ของลูกค้าในจำลอง ' + mine + ' · อื่นๆ ' + f.poolOthers + ') · รหัสยืนยัน <span class="mono">' + PMP.fnv(tot + ':' + f.id) + '</span></div></div><button class="btn contained" id="lDrawB">จับรางวัลโหมด B (ยืนยันแล้วย้อนกลับไม่ได้)</button></div><div id="lDrawRes"></div></div>';
-    if (!$('#lDrawB')) $('.page-head').insertAdjacentElement('afterend', bar);
-    $('#lDrawB').onclick = function () { if (!confirm('จับรางวัลโหมด B? ยืนยันแล้วย้อนกลับไม่ได้')) return; var r = PMP.drawB(f.id); $('#lDrawRes').innerHTML = '<div class="st-res" style="background:var(--success-lighter);border-radius:10px;padding:10px 12px;margin-top:10px"><b>จับรางวัลแล้ว</b><ul style="margin:6px 0 0;padding-left:18px;font-size:12.5px"><li>seed: <span class="mono">' + r.seed + '</span> (เปิดเผยหลังจับ)</li><li>ตำแหน่งที่จับได้ #' + r.idx + ' จากกอง ' + r.total + '</li><li>ผู้ชนะ: ' + (r.winner.indexOf('other-') === 0 ? 'ผู้เข้าร่วมรายอื่น (' + r.winner + ')' : '<b>' + E(PMP.customers.filter(function (c) { return c.id === r.winner; })[0].name) + '</b> — รางวัลเข้าบัญชี/คิวแล้ว') + '</li></ul></div>'; toast('จับรางวัลแล้ว'); };
-  };
-
-  /* ===== raffle/05 บันทึกการลุ้น / ตรวจสอบย้อนหลัง ===== */
-  H['raffle/05-admin-audit.html'] = function () {
-    var st = PMP.state(), tb = $('table.table tbody'); if (!tb) return;
-    var rows = []; Object.keys(st.customers).forEach(function (k) { var c = PMP.customers.filter(function (x) { return x.id === k; })[0]; st.customers[k].draws.forEach(function (d, i) { rows.push({ c: c, d: d, i: i }); }); });
-    tb.innerHTML = rows.map(function (r, n) { var f = PMP.cfg().raffles.filter(function (x) { return x.name === r.d.f; })[0], z = f && f.prizes.filter(function (y) { return y.name === r.d.prize; })[0]; return '<tr><td class="nowrap">' + dmy(r.d.d) + '</td><td><b>' + E(r.c.name) + '</b><div class="small muted">' + r.c.id.toUpperCase() + '</div></td><td>ยอดซื้อ/โปร/แลกพอยท์ <span class="small muted">(1 สิทธิ์)</span></td><td><span class="mode a">A</span></td><td><span class="chip success">ถูก</span> ' + E(r.d.prize) + '</td><td class="num">' + (z ? z.weight + ' · คงเหลือ ' + (z.stock - (st.shared.prizeUsed[z.id] || 0)) : '—') + '</td><td class="mono small">DR-' + String(4899 - n).padStart(6, '0') + '<br>' + E(r.d.out.join(', ')) + '</td></tr>'; }).join('') || '<tr><td colspan="7" class="center muted" style="padding:24px">ยังไม่มีการลุ้น — ลุ้นที่หน้า “ลุ้นทันที”</td></tr>';
+    tb.innerHTML = rows.map(function (r) { var last = r.lv.unlocked.length ? L.tiers.filter(function (t) { return r.lv.unlocked.indexOf(t.id) > -1; }).pop() : null, hot = r.pct >= 95 && r.nxt; return '<tr' + (hot ? ' class="hot95"' : '') + '><td><b>' + E(r.c.name) + '</b><div class="sub">' + r.c.type + '</div></td><td class="num"><b>' + B(r.lv.spent) + '</b></td><td>' + (last ? E(last.name) : '—') + '</td><td class="pbar"><div class="row between"><b' + (hot ? ' style="color:var(--error-dark)"' : '') + '>' + r.pct.toFixed(1) + '%</b><span class="small muted">' + (r.nxt ? '→ ' + E(r.nxt.name) + ' · ' + B(r.nxt.at) : 'ครบทุกขั้น') + '</span></div><div class="progress ' + (hot ? 'red' : 'green') + '"><i style="width:' + Math.min(100, r.pct) + '%"></i></div>' + (r.nxt ? '<div class="small">อีก <b>' + B(r.nxt.at - r.lv.spent) + '</b></div>' : '') + '</td><td>' + dmy(cfg.now) + '</td><td>' + dmy(L.end) + '</td><td>' + (hot ? '<span class="chip soft-success">ในเว็บ · ถึง 95%</span>' : r.pct >= 80 && r.nxt ? '<span class="chip soft-success">ในเว็บ · ถึง 80%</span>' : '—') + '</td></tr>'; }).join('');
   };
 
   /* ===== promotion/09 ตะกร้า: การ์ดเลือกโปร + สรุปยอด (ชำระได้จริง) ===== */
@@ -862,55 +837,62 @@
     R.gifts.forEach(function (g) { rows += '<div class="sum-row"><span>ของแถมโปรโมชั่น<small>' + E(PMP.product(g.sku).name) + ' × ' + g.qty + '</small></span><span>฿0</span></div>'; });
     rows += '<div class="sum-sep">คูปองและพอยท์ (แยกจากโปรโมชั่น)</div><div class="sum-row"><span>ส่วนลดคูปอง<small><a href="#" id="lcCoupon">เลือก/ใส่คูปอง</a> · ' + (R.coupon ? E(R.coupon.code) + ' ใช้แล้ว' : R.couponErr ? '<span style="color:var(--error-dark)">' + E(R.couponErr) + '</span>' : 'ยังไม่ได้ใช้') + '</small></span><span>' + (R.coupon ? (R.coupon.ship ? 'ส่งฟรี' : '−' + B(R.coupon.discount)) : '−฿0') + '</span></div>';
     rows += '<div class="sum-row"><span>ใช้พอยท์ชำระ<small>มี ' + cs0.points.toLocaleString() + ' พอยท์ · <a href="#" id="lcPts">ตั้งจำนวน</a>' + (R.pointsBlocked ? ' · ใช้ไม่ได้ (' + E(R.pointsBlocked) + ')' : ' · ใช้ได้สูงสุด ' + R.pointsMax) + '</small></span><span>−' + B(R.pointsDisc) + '</span></div>';
+    rows += '<div class="sum-row"><span>เครดิตเงินคืน<small>มี ' + B(cs0.credit) + ' · <a href="#" id="lcCredit">' + (selGet().useCredit ? 'ยกเลิกการใช้เครดิต' : 'ใช้เครดิต') + '</a></small></span><span>−' + B(R.creditUsed || 0) + '</span></div>';
     rows += '<div class="sum-sep">การจัดส่ง</div><div class="sum-row"><span>ค่าจัดส่ง<small>' + (R.shipFree ? 'ฟรีจากโปร/คูปอง' : 'ฟรีเมื่อยอดสินค้า ≥ ' + B(cfg.shipping.freeOver)) + '</small></span><span>' + (R.shipping ? B(R.shipping) : 'ฟรี') + '</span></div>';
     rows += '<div class="sum-row total"><span>ยอดสุทธิ</span><span>' + B(R.total) + '</span></div><div class="save relative">คุณประหยัดจากโปรโมชั่น Flash และคูปองไปแล้ว ' + B(fl + qd + R.promoDisc + R.couponDisc) + '</div>';
     var earn = []; if (R.earnBase) earn.push('พอยท์ +' + R.earnBase); R.grants.forEach(function (g) { earn.push(PMP.describe(g.it, cfg)); }); Object.keys(R.ticketsBuy).forEach(function (f) { earn.push('สิทธิ์ลุ้น +' + R.ticketsBuy[f]); });
     rows += (earn.length ? '<div class="small mt8" style="background:var(--success-lighter);border-radius:8px;padding:8px 10px"><b>หลังชำระจะได้:</b> ' + E(earn.join(' · ')) + '</div>' : '') + '<button class="btn contained lg block mt16" id="lcPay"' + (R.lines.length ? '' : ' disabled') + '>ดำเนินการชำระเงิน</button><a class="btn text block mt8" href="06-customer-list.html">ดูโปรโมชั่นอื่น</a><div class="small muted mt8 center">ยอดชำระจริงคำนวณที่ระบบอีกครั้งตอนยืนยันคำสั่งซื้อ</div>';
     sm.innerHTML = rows; relabelCustomer();
   };
+  function cartDlg(kind) {
+    var cfg = PMP.cfg(), c = cs(), sel = selGet(), R = PMP.price(cartArr(), cartOpts()), mod = $('#lcMod');
+    if (!mod) { mod = document.createElement('div'); mod.id = 'lcMod'; mod.className = 'modal'; document.body.appendChild(mod); mod.addEventListener('click', function (e) { if (e.target === mod || e.target.closest('[data-close]')) mod.classList.remove('on'); }); }
+    var body, foot;
+    if (kind === 'coupon') {
+      var w = c.wallet.filter(function (x) { return !x.used; });
+      body = '<div class="field"><label>กรอกโค้ดคูปอง</label><div class="row"><input class="input" id="lcCode" placeholder="เช่น SAVE100" style="text-transform:uppercase" value="' + E(sel.couponRef && sel.couponRef.type === 'code' ? sel.couponRef.value : '') + '"><button class="btn contained" type="button" id="lcCodeOk">ใช้โค้ด</button></div><span class="help">ลองใส่ SAVE100 หรือ FREESHIP · ระบบตรวจเงื่อนไข ยอดขั้นต่ำ และโควตาให้</span></div>' +
+        '<div class="label mt16 mb8">คูปองในกระเป๋าของฉัน (' + w.length + ')</div>' + (w.map(function (x) { var k = cfg.coupons.filter(function (y) { return y.id === x.couponId; })[0], on = sel.couponRef && sel.couponRef.type === 'wallet' && sel.couponRef.value === x.id; return '<div class="nf-it ' + (on ? 'success' : 'info') + '" style="margin-bottom:8px"><span></span><div><b>' + E(k.code) + '</b> · ' + E(k.name) + '<div class="small muted">ได้จาก ' + E(x.src) + '</div></div><button class="btn ' + (on ? 'outlined' : 'contained') + ' sm" type="button" data-lcw="' + x.id + '">' + (on ? 'ยกเลิก' : 'ใช้คูปองนี้') + '</button></div>'; }).join('') || '<div class="muted small">กระเป๋าว่าง — เก็บคูปองได้ที่ศูนย์คูปอง</div>') +
+        (R.couponErr ? '<div class="alert error mt8"><div>' + E(R.couponErr) + '</div></div>' : '');
+      foot = '<button class="btn text grey" type="button" id="lcCodeClr">ไม่ใช้คูปอง</button><button class="btn contained" type="button" data-close>เสร็จสิ้น</button>';
+    } else {
+      var mx = R.pointsMax, cur = sel.usePoints || 0;
+      body = R.pointsBlocked ? '<div class="alert error"><div>ใช้พอยท์ชำระไม่ได้ — “' + E(R.pointsBlocked) + '” ไม่อนุญาตให้ใช้ร่วมกับพอยท์</div></div>' : '<div class="small mb8">มี <b>' + c.points.toLocaleString() + '</b> พอยท์ · 1 พอยท์ = ' + B(cfg.pay.ptBaht) + ' · ใช้ได้ไม่เกิน ' + cfg.pay.maxPct + '% ของยอดสินค้า (สูงสุดตอนนี้ ' + mx.toLocaleString() + ' พอยท์)</div><div class="row"><input type="range" id="lcRange" min="0" max="' + mx + '" value="' + Math.min(cur, mx) + '" style="flex:1"><input class="input" id="lcNum" type="number" min="0" max="' + mx + '" value="' + Math.min(cur, mx) + '" style="width:110px"></div><div class="row mt8" style="gap:8px"><button class="btn outlined sm" type="button" id="lcMax">ใช้สูงสุด</button><button class="btn text sm grey" type="button" id="lcZero">ไม่ใช้พอยท์</button></div>';
+      foot = '<button class="btn text grey" type="button" data-close>ยกเลิก</button><button class="btn contained" type="button" id="lcPtsOk"' + (R.pointsBlocked ? ' disabled' : '') + '>ยืนยัน</button>';
+    }
+    mod.innerHTML = '<div class="dialog md"><div class="dialog-h"><span>' + (kind === 'coupon' ? 'คูปอง / โค้ดส่วนลด' : 'ใช้พอยท์ชำระ') + '</span><button class="x" type="button" data-close>✕</button></div><div class="dialog-b">' + body + '</div><div class="dialog-f">' + foot + '</div></div>'; mod.classList.add('on');
+    function save(fn) { var s2 = selGet(); fn(s2); U.wr('pmpc.sim.sel', s2); }
+    var ok = $('#lcCodeOk'); if (ok) ok.onclick = function () { var v = $('#lcCode').value.trim().toUpperCase(); save(function (s2) { s2.couponRef = v ? { type: 'code', value: v } : null; }); mod.classList.remove('on'); rerender(); };
+    var cl = $('#lcCodeClr'); if (cl) cl.onclick = function () { save(function (s2) { s2.couponRef = null; }); mod.classList.remove('on'); rerender(); };
+    $$('[data-lcw]', mod).forEach(function (b) { b.onclick = function () { var id = b.getAttribute('data-lcw'); save(function (s2) { s2.couponRef = (s2.couponRef && s2.couponRef.value === id) ? null : { type: 'wallet', value: id }; }); mod.classList.remove('on'); rerender(); }; });
+    var rg = $('#lcRange'), nm = $('#lcNum'); if (rg) { rg.oninput = function () { nm.value = rg.value; }; nm.oninput = function () { rg.value = nm.value; }; $('#lcMax').onclick = function () { nm.value = rg.value = rg.max; }; $('#lcZero').onclick = function () { nm.value = rg.value = 0; }; $('#lcPtsOk').onclick = function () { var v = Math.max(0, Math.min(+nm.value || 0, +rg.max)); save(function (s2) { s2.usePoints = v; }); mod.classList.remove('on'); rerender(); }; }
+  }
   document.addEventListener('click', function (e) {
     if (KEY !== 'promotion/09-customer-cart.html') return;
     var q = e.target.closest('[data-lq]'), pc = e.target.closest('[data-lpc]'), cart = U.rd('pmpc.sim.cart', {}), sel = selGet();
     if (q) { var p = q.getAttribute('data-lq').split('|'); cart[p[1]] = Math.max(0, (cart[p[1]] || 0) + (+p[0])); U.wr('pmpc.sim.cart', cart); rerender(); return; }
     if (e.target.id === 'lcAdd') { var sku = $('#lcAddSel').value; cart[sku] = (cart[sku] || 0) + 1; U.wr('pmpc.sim.cart', cart); rerender(); return; }
     if (pc) { if (pc.classList.contains('dim')) { toast($('.pc-w', pc).textContent, true); return; } var id = pc.getAttribute('data-lpc'), i = sel.promos.indexOf(id); if (i > -1) sel.promos.splice(i, 1); else sel.promos.push(id); U.wr('pmpc.sim.sel', sel); rerender(); return; }
-    if (e.target.id === 'lcCoupon') { e.preventDefault(); var w = cs().wallet.filter(function (x) { return !x.used; }).map(function (x) { return PMP.cfg().coupons.filter(function (k) { return k.id === x.couponId; })[0].code; }), v = prompt('กรอกโค้ดคูปอง' + (w.length ? ' (ในกระเป๋า: ' + w.join(', ') + ')' : '') + ' — เว้นว่าง = ยกเลิกคูปอง', w[0] || ''); if (v == null) return; sel.couponRef = v.trim() ? { type: 'code', value: v.trim() } : null; U.wr('pmpc.sim.sel', sel); rerender(); return; }
-    if (e.target.id === 'lcPts') { e.preventDefault(); var n = prompt('ใช้พอยท์กี่พอยท์ (0 = ไม่ใช้)', sel.usePoints || 0); if (n == null) return; sel.usePoints = Math.max(0, +n || 0); U.wr('pmpc.sim.sel', sel); rerender(); return; }
+    if (e.target.id === 'lcCoupon') { e.preventDefault(); cartDlg('coupon'); return; }
+    if (e.target.id === 'lcPts') { e.preventDefault(); cartDlg('points'); return; }
+    if (e.target.id === 'lcCredit') { e.preventDefault(); sel.useCredit = !sel.useCredit; U.wr('pmpc.sim.sel', sel); rerender(); return; }
     if (e.target.id === 'lcPay') { var r = PMP.checkout(cartArr(), cartOpts()); if (r.error) { toast(r.error, true); return; } U.wr('pmpc.sim.cart', {}); U.wr('pmpc.sim.sel', { promos: [], couponRef: null, usePoints: 0, useCredit: false }); toast('ชำระเงินสำเร็จ ' + r.order.no + ': ' + r.order.effects.slice(0, 4).join(' · ')); rerender(); }
   });
 
-  /* ===== points/01 กติกาพอยท์ + อัตรารายสินค้า ===== */
+  /* ===== points/01 กติกาพอยท์ + อัตรารายสินค้า · ตัวคูณมาจากโปรโมชั่นเท่านั้น ===== */
   H['points/01-admin-rules.html'] = function () {
-    var cfg = PMP.cfg(), tbs = $$('table.table'), now = cfg.now; cfg.pts = cfg.pts || {};
-    var mults = cfg.points.mults.filter(function (m) { return PMP.status({ active: true, start: m.start, end: m.end }, now) === 'running'; });
-    function multFor(p) { var f = 1; mults.forEach(function (m) { if (PMP.inScope(cfg, m.scope, p)) f += m.mult - 1; }); return f; }
+    var cfg = PMP.cfg(), tbs = $$('table.table'); cfg.pts = cfg.pts || {};
     var t1 = tbs.filter(function (t) { return /พอยท์ต่อหน่วย/.test(t.textContent); })[0];
     if (t1) {
+      var th = $$('thead th', t1); if (th.length > 6) th.slice(6).forEach(function (x) { x.parentNode.removeChild(x); });
       $('tbody', t1).innerHTML = PMP.products.map(function (p) {
-        var own = cfg.pts[p.sku] != null, v = own ? cfg.pts[p.sku] : p.pts, f = multFor(p);
-        return '<tr><td><b>' + E(p.name) + '</b><span class="sub mono">' + p.sku + '</span></td><td>' + E(p.brand) + '</td><td>' + E(p.cat) + '</td><td>' + p.unit + ' · ' + B(p.price) + '</td><td class="num"><input class="input pts" data-lpts="' + p.sku + '" value="' + v + '"></td><td><span class="chip ' + (own ? 'soft-primary' : '') + '">' + (own ? 'ตั้งเอง' : 'ค่าเริ่มต้น') + '</span></td><td>' + (f > 1 ? '<span class="mult">×' + f + '</span>' : '<span class="muted">—</span>') + '</td><td class="num"><b>' + (v * f) + '</b></td></tr>';
+        var own = cfg.pts[p.sku] != null, v = own ? cfg.pts[p.sku] : p.pts;
+        return '<tr class="' + (v ? '' : 'zero') + '"><td><b>' + E(p.name) + '</b><span class="sub mono">' + p.sku + '</span></td><td>' + E(p.brand) + '</td><td>' + E(p.cat) + '</td><td>' + p.unit + ' · ' + B(p.price) + '</td><td class="num"><input class="input pts" data-lpts="' + p.sku + '" value="' + v + '"></td><td>' + (own ? '<span class="chip soft-primary">ตั้งเอง</span>' : v ? '<span class="chip soft-info">ตามที่ตั้งไว้เดิม</span>' : '<span class="chip">ยังไม่ตั้ง</span>') + (v ? '' : ' <span class="chip soft-error">ได้ 0 พอยท์</span>') + '</td></tr>';
       }).join('');
     }
-    var t3 = tbs.filter(function (t) { return /ตัวคูณ/.test(t.textContent) && /ขอบเขตสินค้า/.test(t.textContent); })[0];
-    if (t3) {
-      $('tbody', t3).innerHTML = cfg.points.mults.map(function (m, i) {
-        var s = PMP.status({ active: true, start: m.start, end: m.end }, now), ps = m.scope.mode === 'pset' ? (cfg.psets.filter(function (x) { return x.id === m.scope.ref; })[0] || {}).name : 'ทุกสินค้าที่มีพอยท์ > 0';
-        return '<tr><td><b>' + E(m.name) + '</b></td><td class="num"><input class="input pts" style="width:70px" data-lpm="' + i + '" value="' + m.mult + '"></td><td>' + E(ps) + '</td><td>' + dmy(m.start) + ' – ' + dmy(m.end) + '</td><td><span class="chip ' + (s === 'running' ? 'success' : s === 'upcoming' ? 'warning' : '') + '">' + (s === 'running' ? 'กำลังใช้งาน' : s === 'upcoming' ? 'ยังไม่เริ่ม' : 'หมดอายุ') + '</span></td><td>ตามนโยบายเริ่มต้น (' + dm(PMP.addDays(now, cfg.points.expiryDays)) + ')</td><td><button class="btn text sm grey" data-lpmd="' + i + '">ลบ</button></td></tr>';
-      }).join('') + '<tr><td colspan="7"><button class="btn outlined sm" id="lpmAdd">＋ เพิ่มตัวคูณ</button></td></tr>';
-    }
-    var ed = $$('.field', document).filter(function (f) { return /พอยท์หมดอายุ|หมดอายุ/.test(f.textContent) && $('input', f); });
     var root = $('#screen'); if (!root._lp) { root._lp = 1;
-      root.addEventListener('input', function (e) { var t = e.target, a; if ((a = t.getAttribute('data-lpts'))) { setCfg(function (c) { c.pts = c.pts || {}; c.pts[a] = +t.value || 0; }); flashSaved(); } if ((a = t.getAttribute('data-lpm'))) { setCfg(function (c) { c.points.mults[+a].mult = +t.value || 1; }); flashSaved(); } });
-      root.addEventListener('change', function (e) { var t = e.target; if (t.getAttribute('data-lpts') != null || t.getAttribute('data-lpm') != null) rerender(); });
-      root.addEventListener('click', function (e) { var d = e.target.closest('[data-lpmd]'); if (d) { setCfg(function (c) { c.points.mults.splice(+d.getAttribute('data-lpmd'), 1); }); rerender(); return; } if (e.target.id === 'lpmAdd') { setCfg(function (c) { c.points.mults.push({ id: U.uid('m'), name: 'ตัวคูณใหม่', start: c.now, end: PMP.addDays(c.now, 30), mult: 2, scope: { mode: 'all', ref: null } }); }); rerender(); } });
+      root.addEventListener('input', function (e) { var t = e.target, a; if ((a = t.getAttribute('data-lpts'))) { setCfg(function (c) { c.pts = c.pts || {}; c.pts[a] = +t.value || 0; }); flashSaved(); } });
+      root.addEventListener('change', function (e) { if (e.target.getAttribute('data-lpts') != null) rerender(); });
     }
-  };
-
-  /* ===== raffle/09 ประวัติการลุ้น + รางวัลของฉัน ===== */
-  H['raffle/09-customer-history.html'] = function () {
-    var c = cs(), tb = $('table.table tbody'); if (!tb) return;
-    tb.innerHTML = (c.draws || []).map(function (d, n) { return '<tr><td class="nowrap">' + dmy(d.d) + '</td><td>' + E(d.f) + '</td><td><b>ยอดซื้อ/โปร/แลกพอยท์</b><div class="trace"><span>TK-' + (n + 1) + '</span><i>→</i><span>DR-' + String(4899 - n).padStart(6, '0') + '</span></div></td><td><span class="mode a">A</span></td><td><span class="chip success">ถูก</span> ' + E(d.prize) + '<div class="small muted">' + E(d.out.join(', ')) + '</div></td></tr>'; }).join('') || '<tr><td colspan="5" class="center muted" style="padding:24px">ยังไม่มีประวัติการลุ้น</td></tr>';
-    relabelCustomer();
   };
 
   /* ===== starterkit/04 เลือกเซตร้านยา (ลูกค้า) ===== */
@@ -998,7 +980,6 @@
   function promoTagsFor(p, cfg) {
     var now = cfg.now, tags = [], hint = '', flash = null, price = p.price;
     cfg.flash.forEach(function (f) { if (PMP.status({ active: f.active, start: f.start, end: f.end, quotaTotal: f.quota, used: f.used }, now) !== 'running') return; var r = f.rules.filter(function (x) { return PMP.inScope(cfg, { mode: 'pset', ref: x.ps }, p); })[0]; if (r && !flash) { flash = { pct: r.pct, f: f }; price = p.price * (100 - r.pct) / 100; tags.push('<span class="promo-tag flash">Flash −' + r.pct + '%</span>'); hint = '<div class="hint flash">เหลือ ' + (f.quota ? f.quota - f.used : '∞') + ' ชิ้นในราคา Flash · ถึง ' + dm(f.end) + '</div>'; } });
-    var q = cfg.quota.filter(function (x) { return x.sku === p.sku && PMP.status(x, now) === 'running'; })[0]; if (q) { price = q.special; tags.push('<span class="promo-tag flash">ราคาพิเศษ จำนวนจำกัด</span>'); hint = '<div class="hint flash">โควตาเหลือ ' + (q.quotaTotal - q.used) + ' ชิ้น · ถึง ' + dm(q.end) + '</div>'; }
     var kinds = {}; cfg.promos.forEach(function (pr) { if (PMP.status(pr, now) !== 'running') return; if (!PMP.inScope(cfg, pr.scope, p)) return; PMP.rewardsOf('promotion', pr.id).forEach(function (i) { if (!kinds[i.k]) { kinds[i.k] = pr; } }); if (!hint) hint = '<div class="hint">' + E(pr.name) + '</div>'; });
     Object.keys(kinds).forEach(function (k) { var L = { gift: ['gift', 'ซื้อครบรับฟรี'], disc: ['', 'ส่วนลด'], ship: ['ship', 'ส่งฟรี'], points: ['', 'พอยท์'], coupon: ['', 'คูปอง'], credit: ['', 'เครดิต'], entitle: ['', 'สิทธิ์ลุ้น'], offpos: ['gift', 'ของนอก POS'] }[k]; tags.push('<span class="promo-tag ' + L[0] + '">' + L[1] + '</span>'); });
     return { tags: tags, hint: hint, price: price, flash: !!flash, has: tags.length > 0, kinds: Object.keys(kinds) };
@@ -1059,7 +1040,7 @@
     // coupons (cards3 second)
     if (c3[1]) { var cps = cfg.coupons.filter(function (k) { return k.kind !== 'code' && PMP.status(k, now) === 'running'; }).slice(0, 3); c3[1].innerHTML = cps.map(function (k) { var have = c.wallet.some(function (w) { return w.couponId === k.id; }); return '<div class="cpn"><div class="a">' + kindVal(k) + '<small>' + (k.min ? 'ซื้อครบ ' + B(k.min) : '') + '</small></div><div class="b"><b>' + E(k.name) + '</b><span>' + (k.quotaTotal ? 'เหลือ ' + (k.quotaTotal - k.used) + ' / ' + k.quotaTotal + ' สิทธิ์ · ' : '') + 'ถึง ' + dmy(k.end) + '</span>' + (have ? '<span class="chip soft-success sq" style="align-self:flex-start">ได้รับแล้ว</span>' : k.kind === 'collect' ? '<button class="btn contained sm" style="align-self:flex-start" data-lcollect="' + k.id + '">เก็บคูปอง</button>' : '<span class="chip soft-info sq" style="align-self:flex-start">แจกอัตโนมัติรายเดือน</span>') + '</div></div>'; }).join(''); }
     // campaigns
-    var c2 = $('.cards2'); if (c2 && L) { var q = cfg.quota[0], qp = q && PMP.product(q.sku); c2.innerHTML = '<a class="pcard" href="../campaign/06-customer-ladder.html"><span class="chip soft-primary sq" style="align-self:flex-start">สะสมยอดรายปี</span><h6>' + E(L.name) + '</h6><div class="step-mini">' + L.tiers.map(function (t) { return '<i class="' + (lv.unlocked.indexOf(t.id) > -1 ? 'done' : '') + '"></i>'; }).join('') + '</div><p>ปลดล็อกแล้ว ' + lv.unlocked.length + ' / ' + L.tiers.length + ' ขั้น · ยอดสะสม ' + B(lv.spent) + '</p><div class="ft"><span>ถึง ' + dm(L.end) + '</span><b style="color:var(--primary)">ดูความคืบหน้า</b></div></a>' + (q ? '<a class="pcard" href="../campaign/08-customer-quota-product.html"><span class="chip soft-warning sq" style="align-self:flex-start">ราคาพิเศษ · จำนวนจำกัด</span><h6>' + E(qp.name) + ' ' + B(q.special) + ' <s style="font-weight:400;color:var(--g500);font-size:12px">' + B(qp.price) + '</s></h6><div class="progress warn"><i style="width:' + Math.min(100, (q.quotaTotal - q.used) / q.quotaTotal * 100) + '%"></i></div><p>เหลือ ' + (q.quotaTotal - q.used) + ' / ' + q.quotaTotal + ' ชิ้น · ร้านคุณซื้อได้อีก ' + (q.perCust - (c.quotaUse[q.id] || 0)) + ' ชิ้น</p><div class="ft"><span>ถึง ' + dm(q.end) + '</span><b style="color:var(--primary)">ดูสินค้า</b></div></a>' : ''); }
+    var c2 = $('.cards2'); if (c2 && L) { c2.innerHTML = '<a class="pcard" href="../campaign/06-customer-ladder.html"><span class="chip soft-primary sq" style="align-self:flex-start">สะสมยอดรายปี</span><h6>' + E(L.name) + '</h6><div class="step-mini">' + L.tiers.map(function (t) { return '<i class="' + (lv.unlocked.indexOf(t.id) > -1 ? 'done' : '') + '"></i>'; }).join('') + '</div><p>ปลดล็อกแล้ว ' + lv.unlocked.length + ' / ' + L.tiers.length + ' ขั้น · ยอดสะสม ' + B(lv.spent) + '</p><div class="ft"><span>ถึง ' + dm(L.end) + '</span><b style="color:var(--primary)">ดูความคืบหน้า</b></div></a>'; }
     // starter kits
     var kit = $('.kit'); if (kit) kit.innerHTML = cfg.kits.map(function (k) { var r = PMP.kitCalc(k, null); return '<a class="pcard" href="../starterkit/05-customer-builder.html" data-lsel-kit="' + k.id + '"><h6>' + E(k.name) + '</h6><p>' + k.items.length + ' รายการ · ส่วนลดเซต ' + k.disc + '%</p><div class="ft"><span>เริ่มต้น</span><b>' + B(k.items.filter(function (x) { return x.req; }).reduce(function (a, x) { return a + x.min * PMP.product(x.sku).price; }, 0) * (1 - k.disc / 100)) + '</b></div></a>'; }).join('');
     // raffle
@@ -1101,7 +1082,7 @@
   H['points/06-customer-earn-preview.html'] = function () {
     var cfg = PMP.cfg(), now = cfg.now; cfg.pts = cfg.pts || {};
     function pv(p) { return cfg.pts[p.sku] != null ? cfg.pts[p.sku] : p.pts; }
-    var mults = cfg.points.mults.filter(function (m) { return PMP.status({ active: true, start: m.start, end: m.end }, now) === 'running'; });
+    var mults = []; cfg.promos.forEach(function (pr) { if (PMP.status(pr, now) !== 'running') return; PMP.rewardsOf('promotion', pr.id).forEach(function (i) { if (i.k === 'points' && i.mode === 'mult') mults.push({ mult: i.value, scope: pr.scope, name: pr.name }); }); });
     function mf(p) { var f = 1, parts = []; mults.forEach(function (m) { if (PMP.inScope(cfg, m.scope, p)) { f += m.mult - 1; parts.push('×' + m.mult); } }); return { f: f, parts: parts }; }
     var g = $('.product-grid'); var show = [PMP.product('DX-MP1'), PMP.product('BM-VC500'), PMP.product('PP-DM')];
     g.innerHTML = show.map(function (p, i) { var m = mf(p), v = pv(p); return '<div class="relative"><div class="product-card" style="height:100%"><div class="img">' + (m.f > 1 ? '<div class="tags"><span class="promo-tag flash">×' + m.f + '</span></div>' : '') + 'รูปสินค้า</div><div class="pc-b"><b>' + E(p.name) + '</b><div class="price">' + B(p.price) + '</div><div class="row wrap" style="gap:6px">' + (v ? '<span class="pt-badge"><i></i>ได้ ' + v + ' พอยท์/' + p.unit + '</span>' : '<span class="pt-badge zero"><i></i>ไม่ได้พอยท์</span>') + (m.f > 1 ? '<span class="mult' + (m.parts.length > 1 ? ' stack' : '') + '">' + m.parts.join(' + ') + (m.parts.length > 1 ? ' = ×' + m.f : '') + '</span>' : '') + '</div><div class="small muted">' + (v ? 'รวมตัวคูณแล้วได้ <b style="color:var(--primary)">' + (v * m.f) + ' พอยท์/' + p.unit + '</b>' : 'สินค้านี้ไม่ร่วมรายการสะสมพอยท์') + '</div><button class="btn contained sm block mt8" data-lpadd="' + p.sku + '">ใส่ตะกร้า</button></div></div></div>'; }).join('');
@@ -1115,36 +1096,6 @@
   };
   document.addEventListener('click', function (e) { if (KEY !== 'points/06-customer-earn-preview.html') return; var b = e.target.closest('.pd .qty button, .qty button'); if (b && !e.target.closest('.product-card')) { var t = b.textContent.trim(); P6qty = Math.max(1, P6qty + (t === '+' ? 1 : t === '−' ? -1 : 0)); rerender(); } });
 
-  /* ================= campaign/08 สินค้าแคมเปญ: โควตา + พักโควตา ================= */
-  var C8qty = 25, holdT = null, holdEnd = 0;
-  H['campaign/08-customer-quota-product.html'] = function () {
-    var cfg = PMP.cfg(), q = cfg.quota[0], c = cs(); if (!q) return; var p = PMP.product(q.sku), left = q.quotaTotal - q.used, mine = q.perCust - (c.quotaUse[q.id] || 0), st = PMP.status({ active: q.active, start: q.start, end: q.end, quotaTotal: q.quotaTotal, used: q.used }, cfg.now);
-    var pd = $('.pd'); $('h4', pd).textContent = p.name; $('.small.muted', pd).textContent = p.brand + ' · ' + p.cat;
-    $('.bigprice', pd).innerHTML = B(q.special) + ' <s>' + B(p.price) + '</s> <span class="chip soft-primary" style="vertical-align:middle">ลด ' + Math.round((1 - q.special / p.price) * 100) + '%</span>';
-    var sm = $('.bigprice', pd).nextElementSibling; if (sm) sm.textContent = 'ราคาแคมเปญถึง ' + dm(q.end) + ' · ' + (st === 'running' ? 'กำลังดำเนินการ' : PMP.statusLabel[st]);
-    var qb = $('.quota-box', pd); $('.chip.warning', qb).textContent = left < q.quotaTotal * .3 ? 'เหลือน้อย' : st === 'running' ? 'ปกติ' : PMP.statusLabel[st]; $('.meter i', qb).style.width = Math.max(0, left / q.quotaTotal * 100) + '%'; $('.row.between b', qb).textContent = 'เหลือ ' + left.toLocaleString() + ' / ' + q.quotaTotal.toLocaleString() + ' ชิ้น'; var mb = $('.relative b', qb); if (mb) { mb.textContent = 'ร้านคุณซื้อได้อีก ' + mine + ' ' + p.unit; mb.nextElementSibling.textContent = '· สิทธิ์ต่อร้าน ' + q.perCust + ' ซื้อไปแล้ว ' + (c.quotaUse[q.id] || 0); }
-    var maxQ = Math.max(0, Math.min(left, mine)), over = C8qty > maxQ; $('.qty span', pd).textContent = C8qty; var add = $('.qty-err .btn.contained', pd); add.disabled = over || st !== 'running' || maxQ < 1; add.setAttribute('data-lc8add', 1); var er = $('.qty-err .err', pd); er.style.display = over ? '' : 'none'; er.innerHTML = '<b>เกินสิทธิ์ร้านคุณ</b> — ซื้อราคาแคมเปญได้อีกไม่เกิน ' + maxQ + ' ' + p.unit + ' <button class="btn text sm" data-lc8fit="' + maxQ + '">ปรับเป็น ' + maxQ + '</button>';
-    var hold = $('.hold'); if (hold) { var secs = Math.max(0, Math.round((holdEnd - Date.now()) / 1000)); $('.clock', hold).textContent = String(Math.floor(secs / 60)).padStart(2, '0') + ':' + String(secs % 60).padStart(2, '0'); $('.meter i', hold).style.width = (secs / 900 * 100) + '%'; }
-    relabelCustomer();
-  };
-  document.addEventListener('click', function (e) {
-    if (KEY !== 'campaign/08-customer-quota-product.html') return; var b = e.target.closest('.pd .qty button'); if (b) { var t = b.textContent.trim(); C8qty = Math.max(1, C8qty + (t === '+' ? 1 : t === '−' ? -1 : 0)); rerender(); return; }
-    var f = e.target.closest('[data-lc8fit]'); if (f) { C8qty = +f.getAttribute('data-lc8fit') || 1; rerender(); return; }
-    if (e.target.closest('[data-lc8add]')) { var q = PMP.cfg().quota[0], c = U.rd('pmpc.sim.cart', {}); c[q.sku] = (c[q.sku] || 0) + C8qty; U.wr('pmpc.sim.cart', c); holdEnd = Date.now() + 900000; clearInterval(holdT); holdT = setInterval(function () { if (Date.now() > holdEnd) { clearInterval(holdT); } rerender(); }, 1000); toast('ใส่ตะกร้าแล้ว — พักโควตา 15 นาที ไปชำระที่ตะกร้า'); rerender(); }
-  });
-
-  /* ================= raffle/08 จับตามรอบ (โหมด B) ================= */
-  H['raffle/08-customer-scheduled.html'] = function () {
-    var cfg = PMP.cfg(), st = PMP.state(), f = cfg.raffles[0], c = cs(), cid = custId(); if (!f) return;
-    var pool = st.shared.rafflePool[f.id] || {}, mine = pool[cid] || 0, tot = Object.keys(pool).reduce(function (a, k) { return a + pool[k]; }, 0) + f.poolOthers;
-    $('.hero h5').textContent = f.name; var cards = $$('.grid.g2 > .card'); var c1 = cards[0], c2 = cards[1];
-    $('.chip.soft-info', c1).textContent = 'เข้ากองแล้ว ' + mine + ' ใบ'; var cb = $('.card-b', c1);
-    cb.innerHTML = '<div class="stack s8">' + (mine ? '<div class="row between"><span class="mono">TK-' + f.id.toUpperCase() + '-B × ' + mine + '</span><span class="small muted">ลงกองโหมด B</span></div>' : '<div class="muted small">ยังไม่มีสิทธิ์ในกองนี้ — คุณมี ' + (c.tickets[f.id] || 0) + ' สิทธิ์พร้อมใช้</div>') + '</div><div class="row mt8" style="gap:8px"><button class="btn contained sm" data-lpool2="' + f.id + '"' + ((c.tickets[f.id] || 0) < 1 ? ' disabled' : '') + '>ลง 1 สิทธิ์เข้ากอง</button></div><hr class="divider"><div class="row between"><span>โอกาสโดยประมาณที่จะถูกอย่างน้อย 1 รางวัล</span><b>≈ ' + (Math.min(100, mine * f.prizes.length / tot * 100)).toFixed(1) + '%</b></div><div class="small muted mt8">คำนวณจาก ' + mine + ' ใบ ในกอง ' + tot.toLocaleString() + ' ใบ — สิทธิ์ที่เข้ากองแล้วถอนคืนหรือโอนไม่ได้</div>';
-    var wn = $$('.winners-n', c2); if (wn[0]) wn[0].textContent = tot.toLocaleString() + ' ใบ'; if (wn[1]) wn[1].textContent = (Object.keys(pool).length + Math.round(f.poolOthers / 8)) + ' ร้าน'; var hs = $('.hash', c2); if (hs) hs.textContent = PMP.fnv(tot + ':' + f.id) + PMP.fnv('a' + tot) + PMP.fnv('b' + tot) + PMP.fnv('c' + tot) + PMP.fnv('d' + tot) + PMP.fnv('e' + tot) + PMP.fnv('f' + tot) + PMP.fnv('g' + tot);
-    relabelCustomer();
-  };
-  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-lpool2]'); if (b) { var r = PMP.enterPool(custId(), b.getAttribute('data-lpool2'), 1); toast(r.error || 'ลงกองแล้ว (ถอนคืนไม่ได้)', !!r.error); rerender(); } });
-
   /* ================= coupon/04 ตัวอย่างคูปองกระดาษ (หน้า-หลัง) ================= */
   var shown4 = { code: 'NOV80', val: '฿80', min: '฿600', name: 'บูทสัมมนาเภสัช พ.ย. 69', issued: '1,500' };
   H['coupon/04-admin-paper-preview.html'] = function () {
@@ -1154,7 +1105,7 @@
     function sw(a, b) { if (a !== b) html = html.split(a).join(b); }
     sw('>' + shown4.code + '<', '>' + next.code + '<'); sw('ชุด ' + shown4.code, 'ชุด ' + next.code); sw('>' + shown4.val + '<', '>' + next.val + '<'); sw('ครบ ' + shown4.min, 'ครบ ' + next.min); sw(shown4.name, next.name); sw(shown4.issued + ' ใบ', next.issued + ' ใบ'); sw('฿80/ใบ', B(pp.value) + '/ใบ');
     if (html !== main.innerHTML) { var pk = $('#livePick'), pkp = pk && pk.previousElementSibling; main.innerHTML = html; shown4 = next; var ah = $('.page-head'); if (ah && !$('#livePick')) pickBar2(ah, 'livePick', cfg.paper.map(function (x) { return { id: x.id, label: x.code + ' · ' + x.name }; }), pp.id, function (v) { U.wr('pmpc.live.paper', v); rerender(); }, null); }
-    var stores = pp.stores.mode === 'all' ? PMP.stores : PMP.stores.filter(function (s) { return pp.stores.ids.indexOf(s.id) > -1; });
+    var stores = pp.stores.mode === 'all' ? PMP.partners() : PMP.partners().filter(function (s) { return pp.stores.ids.indexOf(s.id) > -1; });
     $$('.pb-cols ul').forEach(function (u, i) { if (i % 2 === 0) u.innerHTML = stores.map(function (s) { return '<li>' + E(s.name) + '</li>'; }).join('') + (pp.stores.mode === 'all' ? '<li class="ln">ทุกร้านที่ลงทะเบียนในระบบ</li>' : ''); });
     var chip = $('.page-head h4 .chip'); if (chip) { chip.className = 'chip ' + (pp.active ? 'success' : 'warning'); chip.textContent = pp.active ? 'ใช้งาน' : 'ร่าง/ปิด'; }
   };
@@ -1164,7 +1115,7 @@
   H['foundation/04-admin-product-sets.html'] = function () {
     var cfg = PMP.cfg(), id = PSsel || cfg.psets[0].id, p = cfg.psets.filter(function (x) { return x.id === id; })[0] || cfg.psets[0]; id = p.id;
     function count(x) { return PMP.products.filter(function (pr) { return PMP.inScope(cfg, { mode: 'pset', ref: x.id }, pr); }).length; }
-    function usage(x) { var a = cfg.promos.filter(function (y) { return y.scope.mode === 'pset' && y.scope.ref === x.id; }).length, k = cfg.coupons.filter(function (y) { return (y.except || []).indexOf(x.id) > -1 || (y.scope.mode === 'pset' && y.scope.ref === x.id); }).length, m = cfg.points.mults.filter(function (y) { return y.scope.mode === 'pset' && y.scope.ref === x.id; }).length, f = cfg.flash.filter(function (y) { return y.rules.some(function (r) { return r.ps === x.id; }); }).length; return 'โปรโมชั่น ' + a + ' · คูปอง ' + k + ' · ตัวคูณพอยท์ ' + m + ' · Flash ' + f; }
+    function usage(x) { var a = cfg.promos.filter(function (y) { return y.scope.mode === 'pset' && y.scope.ref === x.id; }).length, k = cfg.coupons.filter(function (y) { return (y.except || []).indexOf(x.id) > -1 || (y.scope.mode === 'pset' && y.scope.ref === x.id); }).length, f = cfg.flash.filter(function (y) { return y.rules.some(function (r) { return r.ps === x.id; }); }).length; return 'โปรโมชั่น ' + a + ' · คูปอง ' + k + ' · Flash ' + f; }
     $('table.table tbody').innerHTML = cfg.psets.map(function (x) { return '<tr class="' + (x.id === id ? 'sel' : '') + '" data-lps="' + x.id + '" style="cursor:pointer"><td><div class="nm">' + E(x.name) + '</div></td><td>แบรนด์ ' + x.brands.length + ' · หมวด ' + x.cats.length + ' · SKU ' + x.skus.length + (x.exclude.length ? ' · ยกเว้น SKU ' + x.exclude.length : '') + '</td><td><b>' + count(x) + '</b></td><td>' + usage(x) + '</td></tr>'; }).join('');
     var card = $$('.card')[1].querySelector('.card-b'), brands = PMP.products.map(function (x) { return x.brand; }).filter(function (v, i, a) { return a.indexOf(v) === i; }), cats = PMP.products.map(function (x) { return x.cat; }).filter(function (v, i, a) { return a.indexOf(v) === i; });
     function rl(kind, type, val, idx) { var opts = type === 'brand' ? brands : type === 'cat' ? cats : PMP.products.map(function (x) { return x.sku; }); return '<div class="rl"><span class="chip ' + (kind === 'inc' ? 'soft-success' : 'soft-error') + '">' + (kind === 'inc' ? 'รวม' : 'ยกเว้น') + '</span><select class="select" data-lpst="' + kind + '|' + idx + '"><option value="brand"' + (type === 'brand' ? ' selected' : '') + '>แบรนด์</option><option value="cat"' + (type === 'cat' ? ' selected' : '') + '>หมวด</option><option value="sku"' + (type === 'sku' ? ' selected' : '') + '>SKU</option></select><select class="select" data-lpsv="' + kind + '|' + idx + '">' + opts.map(function (o) { var lbl = type === 'sku' ? o + ' · ' + PMP.product(o).name : o; return '<option value="' + E(o) + '"' + (o === val ? ' selected' : '') + '>' + E(lbl) + '</option>'; }).join('') + '</select><button class="btn text sm grey" data-lpsd="' + kind + '|' + idx + '">✕</button></div>'; }
@@ -1200,10 +1151,941 @@
     var top = code.sort(function (a, b) { return (b.quotaTotal ? b.used / b.quotaTotal : 0) - (a.quotaTotal ? a.used / a.quotaTotal : 0); })[0]; if (top && todo[2]) todo[2].textContent = 'โควตาใกล้หมด: ' + top.code + ' ใช้แล้ว ' + top.used + ' / ' + (top.quotaTotal || '∞');
   };
 
+  /* ================= PAPER COUPON v2: discount / free-item · in-system stores + external partners · serials ================= */
+  function ppSel() { var cfg = PMP.cfg(), q = /[?&]set=(\w+)/.exec(location.search), id = q ? q[1] : U.rd('pmpc.live.paper', null), p = cfg.paper.filter(function (x) { return x.id === id; })[0] || cfg.paper[0]; return p; }
+  function kindChipP(u) { return '<span class="chip ' + (u.kind === 'ext' ? 'soft-warning' : 'soft-info') + '">' + (u.kind === 'ext' ? 'นอกระบบ' : 'ในระบบ') + '</span>'; }
+  function ppRecipients(pp) { return pp.stores.mode === 'all' ? PMP.partners().filter(function (x) { return x.kind === 'sys'; }) : PMP.partners().filter(function (x) { return pp.stores.ids.indexOf(x.id) > -1; }); }
+  /* paint the front/back preview of every .pcw on the page for a given set */
+  function paperPreview(pp) {
+    var rec = ppRecipients(pp), item = pp.benefit === 'item';
+    $$('.pface.front').forEach(function (f) {
+      var br = $('.pf-brand', f); if (br) br.textContent = 'PHARMAPLEX · ' + (item ? 'คูปองของแถม' : 'คูปองส่วนลด');
+      var big = $('.big', f); if (big) big.textContent = item ? 'ฟรี!' : B(pp.value);
+      var sub = $('.pf-sub', f); if (sub) sub.textContent = item ? 'แลก ' + (pp.item || 'ของแถม') + ' ฟรี 1 สิทธิ์' : 'ส่วนลดทันที เมื่อซื้อสินค้าครบ ' + B(pp.min);
+      var ch = $$('.pf-chips span', f); if (ch[0]) ch[0].textContent = item ? 'แลกที่ร้านพาร์ทเนอร์ (ดูด้านหลัง)' : 'ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)'; if (ch[2]) ch[2].textContent = item ? '1 ใบ/1 สิทธิ์' : '1 ใบ/บิล';
+      var ft = $('.pf-foot', f); if (ft) ft.textContent = pp.name.replace('คูปองกระดาษ ', '') + (pp.serial && pp.serial.on ? ' · เลขที่ ' + PMP.serialLabel(pp, pp.serial.from) : '');
+      var cd = $('.stub .cd', f); if (cd) cd.textContent = pp.code;
+    });
+    $$('.pface.rear').forEach(function (r) {
+      var h = $('.pb-h span', r); if (h) h.textContent = 'ชุด ' + pp.code;
+      var cols = $$('.pb-cols > div', r), ul = cols[0] && $('ul', cols[0]);
+      if (cols[0]) { var hh = $('h6', cols[0]); if (hh) hh.textContent = item ? 'แลกได้ที่ร้านพาร์ทเนอร์' : 'ใช้ได้ที่ร้าน/สาขา'; }
+      if (ul) ul.innerHTML = rec.slice(0, 6).map(function (u) { return '<li>' + E(u.name) + (u.kind === 'ext' && u.branches ? ' — ' + E(u.branches) : '') + '</li>'; }).join('') + (pp.stores.mode === 'all' ? '<li class="ln">ทุกร้านที่ลงทะเบียนในระบบ</li>' : '');
+      if (cols[1]) { var cu = $('ul', cols[1]); if (cu) cu.innerHTML = (item ? '<li>แลก ' + E(pp.item || '') + ' ฟรี 1 ใบต่อ 1 สิทธิ์ · ไม่ต้องซื้อขั้นต่ำ</li><li>' + E(pp.back || 'ไม่แลกเป็นเงินสด') + '</li>' : '<li>ซื้อครบ ' + B(pp.min) + ' ขึ้นไปต่อบิล · ใช้ได้ 1 ใบ/บิล</li><li>' + E(pp.back || '') + '</li>') + '<li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ร้านส่งก้นเบิกภายใน ' + pp.payDays + ' วัน</li>' + (pp.serial && pp.serial.on ? '<li>มีเลขใบกำกับ ' + PMP.serialLabel(pp, pp.serial.from) + ' ถึง ' + PMP.serialLabel(pp, pp.serial.to) + '</li>' : ''); }
+    });
+  }
+
+  /* ---- coupon/02 รายการชุดคูปองกระดาษ ---- */
+  H['coupon/02-admin-paper-list.html'] = function () {
+    var cfg = PMP.cfg(), st = PMP.state(), pcs = st.paperClaims || [];
+    var th = $$('table.table thead th'); if (th[2]) th[2].innerHTML = 'สิทธิ์ที่ได้รับ'; if (th[3]) th[3].textContent = 'ขั้นต่ำ'; var th7 = th.filter(function (x) { return /ช่องทาง/.test(x.textContent); })[0]; if (th7) th7.textContent = 'ผู้รับ';
+    tbody('table.table tbody', cfg.paper.map(function (p) {
+      var got = pcs.filter(function (c) { return c.ppId === p.id && c.status !== 'ปฏิเสธ'; }).reduce(function (a, c) { return a + (c.counted != null ? c.counted : c.stubs); }, 0), pct = p.issued ? Math.min(100, Math.round(got / p.issued * 100)) : 0, rec = ppRecipients(p), ext = rec.filter(function (x) { return x.kind === 'ext'; }).length, item = p.benefit === 'item';
+      return '<tr><td><b class="mono">' + E(p.code) + '</b>' + (p.serial && p.serial.on ? '<div><span class="chip outline" style="height:18px;font-size:10px">serial</span></div>' : '') + '</td><td><b>' + E(p.name) + '</b></td><td class="num">' + (item ? '<span class="chip soft-warning">ของฟรี</span><div class="small">' + E(p.item) + '</div>' : B(p.value)) + '</td><td class="num">' + (item ? '—' : B(p.min)) + '</td><td class="num">' + p.issued.toLocaleString() + '</td><td><div style="min-width:120px"><div class="progress "><i style="width:' + pct + '%"></i></div><div class="small muted mt8" style="margin-top:4px">' + got.toLocaleString() + ' / ' + p.issued.toLocaleString() + ' (' + pct + '%)</div></div></td><td>' + (p.stores.mode === 'all' ? 'ทุกร้านในระบบ' : (rec.length - ext) + ' ในระบบ') + (ext ? '<div class="small"><span class="chip soft-warning" style="height:18px;font-size:10px">+ ' + ext + ' นอกระบบ</span></div>' : '') + '</td><td><span class="chip soft-success">หน้าร้าน/พาร์ทเนอร์</span>' + (p.settle === 'sponsored' ? '<div class="small muted">พาร์ทเนอร์ออกเอง</div>' : item ? '<div class="small muted">จ่าย ' + B(p.cost) + '/ใบ</div>' : '') + '</td><td class="nowrap">ส่งก้นภายใน ' + p.payDays + ' วัน</td><td><span class="chip ' + (p.active ? 'success' : '') + '">' + (p.active ? 'ใช้งาน' : 'ปิดชุด') + '</span></td><td><div class="small nowrap" style="line-height:2"><a href="04-admin-paper-preview.html" data-lpp="' + p.id + '">ดูหน้า-หลัง</a> · <a href="03-admin-paper-editor.html" data-lpp="' + p.id + '">แก้ไข</a><br><a href="#" data-lppact="dup|' + p.id + '">ทำซ้ำชุด</a> · <a href="#" data-lppact="tog|' + p.id + '" style="color:var(--error-dark)">' + (p.active ? 'ปิดชุด' : 'เปิดชุด') + '</a></div></td></tr>';
+    }).join(''), 11);
+  };
+
+  /* ---- coupon/03 สร้างชุดคูปองกระดาษ ---- */
+  H['coupon/03-admin-paper-editor.html'] = function () {
+    var cfg = PMP.cfg(), pp0 = ppSel(), id = pp0.id, root = $('#screen');
+    var P = function () { return recOf('paper', id); }, S = function (fn) { editRec('paper', id, fn); paperPreview(P()); updateSummary(); };
+    pickBar2($('.page-head'), 'livePick', cfg.paper.map(function (p) { return { id: p.id, label: p.code + ' · ' + p.name }; }), id, function (v) { U.wr('pmpc.live.paper', v); location.href = location.pathname; }, function () { var nid = U.uid('pp'); setCfg(function (c) { c.paper.push({ id: nid, benefit: 'discount', item: '', settle: 'pay', cost: 0, serial: { on: false, prefix: '', from: 1, to: 0 }, code: 'NEW' + nid.slice(2, 5).toUpperCase(), name: 'คูปองกระดาษชุดใหม่', value: 50, min: 500, issued: 500, maxPerStore: 100, stores: { mode: 'all', ids: [] }, active: true, payDays: 30, back: '' }); }); U.wr('pmpc.live.paper', nid); location.reload(); }, '＋ สร้างชุดใหม่');
+    var h4 = $('.page-head h4 .mono-b'); if (h4) h4.textContent = P().code;
+    bindc(ctl(root, 'รหัสชุด'), function () { return P().code; }, function (v) { S(function (r) { r.code = String(v).toUpperCase(); }); if (h4) h4.textContent = String(v).toUpperCase(); }, 'text');
+    bindc(ctl(root, 'ชื่อ/ที่มาของชุด'), function () { return P().name; }, function (v) { S(function (r) { r.name = v; }); }, 'text');
+    bindc(ctl(root, 'จำนวนที่ออก'), function () { return P().issued; }, function (v) { S(function (r) { r.issued = v; }); }, 'num');
+    bindc(ctl(root, 'มูลค่าส่วนลดต่อใบ'), function () { return P().value; }, function (v) { S(function (r) { r.value = v; }); }, 'num');
+    bindc(ctl(root, 'ยอดซื้อขั้นต่ำ', 0), function () { return P().min; }, function (v) { S(function (r) { r.min = v; }); }, 'num');
+    bindc(ctl(root, 'ร้านต้องส่งก้นเบิกภายใน'), function () { return P().payDays; }, function (v) { S(function (r) { r.payDays = v; }); }, 'num');
+    bindc(ctl(root, 'ชื่อสั้นที่พิมพ์ด้านหน้า'), function () { return P().name.replace('คูปองกระดาษ ', '').slice(0, 30); }, function () { }, 'text');
+    bindc(ctl(root, 'รายการที่แลกได้ฟรี'), function () { return P().item || ''; }, function (v) { S(function (r) { r.item = v; }); }, 'text');
+    bindc(ctl(root, 'ราคาตกลงต่อใบที่แลก'), function () { return P().cost || ''; }, function (v) { S(function (r) { r.cost = v; }); }, 'num');
+    bindc(ctl(root, 'จำกัดใบต่อผู้รับ'), function () { return P().maxPerStore || ''; }, function (v) { S(function (r) { r.maxPerStore = v; }); }, 'num');
+    bindRadio(root, 'benefit', function () { return P().benefit; }, function (v) { S(function (r) { r.benefit = v; if (v === 'item' && !r.item) r.item = 'ของแถม 1 ชิ้น'; }); updateReveal(); }, function (m) { return m; });
+    bindRadio(root, 'settle', function () { return P().settle; }, function (v) { S(function (r) { r.settle = v; }); updateReveal(); }, function (m) { return m; });
+    bindRadio(root, 'shopmode', function () { return P().stores.mode; }, function (v) { S(function (r) { r.stores.mode = v === 'pick' ? 'pick' : 'all'; }); updateReveal(); }, function (m) { return m; });
+    function updateSummary() { var p = P(), box = $('.soft', sp); if (box) box.innerHTML = '<b>ยอดรับผิดชอบสูงสุด (ถ้าแลกครบทุกใบ)</b><div class="small muted mt8">' + p.issued.toLocaleString() + ' ใบ × ' + B(PMP.paperUnit(p)) + ' = <b>' + B(p.issued * PMP.paperUnit(p)) + '</b>' + (p.settle === 'sponsored' && p.benefit === 'item' ? ' (พาร์ทเนอร์ออกเอง — ไม่มีการจ่าย)' : '') + ' · ใช้ประกอบการอนุมัติงบก่อนเผยแพร่ชุด</div>'; var hp = $$('.help', sp).filter(function (x) { return /ต้องเท่ากับจำนวนที่ออก/.test(x.textContent); })[0]; if (hp) hp.textContent = 'ต้องเท่ากับจำนวนที่ออก (' + p.issued.toLocaleString() + ' ใบ)'; var chips = $$('.page-head .chip')[0]; }
+    updateReveal();
+    // recipients table: in-system + external partners
+    var pk = $('[data-reveal="shopmode=pick"]', root);
+    if (pk) { var tb = $('table.table tbody', pk), thead = $('table.table thead tr', pk), rows = function () { return PMP.partners().map(function (u) { return '<tr><td><input type="checkbox" data-lps="' + u.id + '"' + (P().stores.ids.indexOf(u.id) > -1 ? ' checked' : '') + '></td><td><b>' + E(u.name) + '</b>' + (u.kind === 'ext' ? '<div class="small muted">' + E(u.cat || '') + ' · ' + E(u.contact || '') + '</div>' : '') + '</td><td>' + kindChipP(u) + '</td><td>' + E(u.kind === 'ext' ? (u.branches || '-') : 'ในระบบ') + '</td></tr>'; }).join(''); };
+      if (thead) thead.innerHTML = '<th style="width:36px"></th><th>ผู้รับคูปอง</th><th>ประเภท</th><th>สาขา/หมายเหตุ</th>';
+      var wrap = $('.table-wrap', pk) || pk;
+      function draw() { if (tb) tb.innerHTML = rows(); else wrap.innerHTML = '<table class="table"><thead><tr><th></th><th>ผู้รับคูปอง</th><th>ประเภท</th><th>สาขา/หมายเหตุ</th></tr></thead><tbody>' + rows() + '</tbody></table>'; $$('[data-lps]', pk).forEach(function (cb) { bindc(cb, function () { return P().stores.ids.indexOf(cb.getAttribute('data-lps')) > -1; }, function (v) { S(function (r) { var i = r.stores.ids.indexOf(cb.getAttribute('data-lps')); if (v && i < 0) r.stores.ids.push(cb.getAttribute('data-lps')); if (!v && i > -1) r.stores.ids.splice(i, 1); }); var c = $('.chip.soft-primary', pk); if (c) c.textContent = 'เลือกแล้ว ' + P().stores.ids.length + ' จาก ' + PMP.partners().length; }, 'chk'); }); var c2 = $('.chip.soft-primary', pk); if (c2) c2.firstChild.textContent = 'เลือกแล้ว ' + P().stores.ids.length + ' จาก ' + PMP.partners().length + ' '; }
+      draw();
+      if (!$('#lpAddBox')) pk.insertAdjacentHTML('beforeend', '<div id="lpAddBox" style="padding:12px 16px;border-top:1px solid var(--g200)"><b class="small">＋ เพิ่มพาร์ทเนอร์นอกระบบ</b><div class="row mt8" style="gap:8px;flex-wrap:wrap"><input class="input" id="lpnN" placeholder="ชื่อพาร์ทเนอร์ เช่น ร้านไอศกรีม…" style="max-width:240px"><input class="input" id="lpnC" placeholder="ผู้ติดต่อ/เบอร์" style="max-width:180px"><input class="input" id="lpnB" placeholder="สาขาที่รับแลก" style="max-width:220px"><button class="btn outlined sm" id="lpnAdd" type="button">เพิ่มและเลือกในชุดนี้</button></div></div>');
+      $('#lpnAdd').onclick = function () { var n = $('#lpnN').value.trim(); if (!n) { toast('กรอกชื่อพาร์ทเนอร์', true); return; } var nid = U.uid('x'); setCfg(function (c) { c.partners = c.partners || []; c.partners.push({ id: nid, name: n, kind: 'ext', cat: '', contact: $('#lpnC').value, branches: $('#lpnB').value }); var p = c.paper.filter(function (x) { return x.id === id; })[0]; p.stores.mode = 'pick'; p.stores.ids.push(nid); }); toast('เพิ่มพาร์ทเนอร์แล้ว'); location.reload(); };
+    }
+    paperPreview(P()); updateSummary();
+  };
+
+  /* ---- coupon/04 ตัวอย่างคูปองกระดาษ ---- */
+  H['coupon/04-admin-paper-preview.html'] = function () {
+    var cfg = PMP.cfg(), pp = ppSel();
+    pickBar2($('.page-head'), 'livePick', cfg.paper.map(function (x) { return { id: x.id, label: x.code + ' · ' + x.name }; }), pp.id, function (v) { U.wr('pmpc.live.paper', v); rerender(); }, null);
+    var h4 = $('.page-head h4 .mono-b'); if (h4) h4.textContent = pp.code; var sub = $('.page-head p.muted'); if (sub) sub.textContent = pp.name + ' · ' + PMP.paperBenefitText(pp) + ' · ' + pp.issued.toLocaleString() + ' ใบ' + (pp.settle === 'sponsored' ? ' · พาร์ทเนอร์ออกเอง' : '');
+    var chip = $('.page-head h4 .chip'); if (chip) { chip.className = 'chip ' + (pp.active ? 'success' : 'warning'); chip.textContent = pp.active ? 'ใช้งาน' : 'ร่าง/ปิด'; }
+    paperPreview(pp);
+  };
+
+  /* ---- coupon/05 คิวเบิกเงิน/เบิกจ่าย ---- */
+  H['coupon/05-admin-paper-claims.html'] = function () {
+    var cfg = PMP.cfg(), st = PMP.state(), pcs = st.paperClaims || [];
+    var tb = $$('table.table tbody')[0];
+    tb.innerHTML = pcs.map(function (c, i) {
+      var pp = cfg.paper.filter(function (x) { return x.id === c.ppId; })[0], su = PMP.partner(c.storeId), payable = !(pp.benefit === 'item' && pp.settle !== 'pay'), unit = PMP.paperUnit(pp);
+      var fl = c.flags.map(function (f) { return '<div style="margin-top:4px"><span class="chip soft-error">' + E(f) + '</span></div>'; }).join('');
+      var ser = c.serials && c.serials.length ? '<div class="small muted mono" style="margin-top:2px">' + c.serials.slice(0, 4).map(function (x) { return PMP.serialLabel(pp, x); }).join(', ') + (c.serials.length > 4 ? ' … (' + c.serials.length + ' ใบ)' : '') + '</div>' : '';
+      var act = c.status === 'รอตรวจนับ' ? '<input class="input" data-lpcn="' + c.id + '" type="number" placeholder="นับได้" style="width:80px;min-height:30px"> <a href="#" data-lpcact="count|' + c.id + '">บันทึกนับ</a> · <a href="#" data-lpcact="reject|' + c.id + '" style="color:var(--error-dark)">ปฏิเสธ</a>' : c.status === 'ตรวจนับแล้ว' ? '<a href="#" data-lpcact="pay|' + c.id + '">' + (payable ? 'บันทึกจ่ายเงิน' : 'ปิดงาน') + '</a>' : '—';
+      return '<tr><td><b class="mono">C-' + String(131 + pcs.length - i).padStart(4, '0') + '</b></td><td><b>' + E(su.name) + '</b><div style="margin-top:2px">' + kindChipP(su) + '</div>' + (c.by ? '<div class="small muted">' + E(c.by) + '</div>' : '') + '</td><td class="mono">' + E(pp.code) + ser + '</td><td class="num">' + c.stubs + '</td><td class="num">' + (c.counted != null ? c.counted : '—') + '</td><td class="num">' + (pp.benefit === 'item' ? (payable ? B(unit) + '<div class="xs muted">ราคาตกลง</div>' : '—') : B(unit)) + '</td><td class="num"><b>' + (payable ? B(c.amount) + (c.counted == null ? '*' : '') : 'ไม่มีการจ่าย') + '</b></td><td><span class="chip ' + ({ 'รอตรวจนับ': 'warning', 'ตรวจนับแล้ว': 'info', 'จ่ายแล้ว': 'success', 'ปิดงานแล้ว': 'success', 'ปฏิเสธ': 'error' }[c.status]) + '">' + c.status + '</span>' + fl + '</td><td class="nowrap">' + dmy(c.d) + '</td><td class="nowrap">' + act + '</td></tr>';
+    }).join('') || '<tr><td colspan="10" class="center muted" style="padding:24px">ยังไม่มีคำขอเบิก — บันทึกด้านบน</td></tr>';
+    // admin entry form (on behalf of external partners)
+    var card = $('table.table').closest('.card'); if (!$('#lpcForm')) card.insertAdjacentHTML('beforebegin', '<div class="card mb16" id="lpcForm"><div class="card-b"><h6 class="mb8">บันทึกก้นคูปองที่ส่งเข้ามา <span class="chip soft-primary sq">ใหม่: รวมพาร์ทเนอร์นอกระบบ</span></h6><div class="small muted mb8">ร้านในระบบส่งเองได้ · พาร์ทเนอร์นอกระบบ (เช่น ร้านไอศกรีม) ส่งก้นให้ทีมงาน แอดมินบันทึกแทนและเก็บหลักฐาน</div><div class="row" style="gap:8px;flex-wrap:wrap"><select class="select" id="lpcSet" style="max-width:300px"></select><select class="select" id="lpcWho" style="max-width:300px"></select><input class="input" id="lpcN" type="number" min="1" placeholder="จำนวนก้น" style="width:110px"><button class="btn contained" id="lpcGo" type="button">บันทึกส่งเบิก</button></div><div id="lpcRes"></div></div></div>');
+    $('#lpcSet').innerHTML = cfg.paper.map(function (p) { return '<option value="' + p.id + '">' + E(p.code + ' · ' + p.name) + '</option>'; }).join(''); $('#lpcWho').innerHTML = PMP.partners().map(function (u) { return '<option value="' + u.id + '">' + E(u.name) + (u.kind === 'ext' ? ' · นอกระบบ' : '') + '</option>'; }).join('');
+    $('#lpcGo').onclick = function () { var r = PMP.paperClaim($('#lpcSet').value, $('#lpcWho').value, +$('#lpcN').value); if (r.error) { toast(r.error, true); return; } toast('บันทึกแล้ว ' + r.n + ' ใบ' + (r.flags.length ? ' — มีธง ' + r.flags.length : '')); rerender(); };
+    var t2 = $$('table.table tbody')[1]; if (t2) t2.innerHTML = PMP.partners().map(function (su) { var tot = pcs.filter(function (c) { return c.storeId === su.id && c.status !== 'ปฏิเสธ'; }).reduce(function (a, c) { return a + c.stubs; }, 0), mx = Math.max.apply(null, cfg.paper.map(function (p) { return p.maxPerStore || 0; })); return '<tr><td>' + E(su.name) + ' ' + kindChipP(su) + '</td><td class="num">' + tot + '</td><td class="num">' + (mx || '—') + '</td><td style="width:140px"><div class="progress ' + (tot > mx ? '' : 'green') + '"><i style="width:' + Math.min(100, tot / mx * 100) + '%"></i></div></td><td><span class="chip ' + (mx && tot > mx ? 'soft-error' : 'soft-success') + '">' + (mx && tot > mx ? 'เกินใบสูงสุดต่อร้าน' : 'ปกติ') + '</span></td></tr>'; }).join('');
+  };
+
+  /* ---- coupon/10 ตรวจสอบคูปองกระดาษ (ลูกค้า) ---- */
+  H['coupon/10-customer-paper-info.html'] = function () {
+    var cfg = PMP.cfg(), pp = ppSel(), inp = $('input.mono'), btn = inp.nextElementSibling; if (!pp) return;
+    inp.value = pp.code; if (!btn._l) { btn._l = 1; btn.addEventListener('click', function () { var v = inp.value.trim().toUpperCase(), q = PMP.cfg().paper.filter(function (x) { return x.code === v; })[0]; if (!q) { toast('ไม่พบรหัสคูปองกระดาษ “' + v + '”', true); return; } U.wr('pmpc.live.paper', q.id); rerender(); }); }
+    var rec = ppRecipients(pp), item = pp.benefit === 'item', al = $('.alert.success');
+    al.className = 'alert ' + (pp.active ? 'success' : 'warning') + ' mb16 relative'; al.innerHTML = '<span class="pin">2</span><div><div class="a-title">ชุด ' + E(pp.code) + ' · ' + (pp.active ? 'ใช้ได้' : 'ปิดชุดแล้ว') + ' — ' + E(PMP.paperBenefitText(pp)) + '</div>' + E(pp.name) + ' · ' + (item ? 'แลกที่ร้านพาร์ทเนอร์ ' + rec.length + ' แห่ง' : 'ใช้ที่ร้านที่ร่วมรายการ ' + rec.length + ' แห่ง') + (pp.serial && pp.serial.on ? ' · มีเลขใบกำกับ' : '') + '</div>';
+    paperPreview(pp);
+    var ch = $$('.chan'); if (ch[0]) { $('b', ch[0]).textContent = item ? 'แลกที่ร้านพาร์ทเนอร์ที่ร่วมรายการ' : 'หน้าร้าน / POS ของร้านที่ร่วมรายการ'; $('.small', ch[0]).textContent = item ? 'ยื่นคูปองที่ร้าน ร้านจะฉีกก้นคูปองเก็บไว้ แล้วให้ ' + (pp.item || 'ของแถม') + ' · ไม่ต้องซื้อขั้นต่ำ' : 'ยื่นคูปองที่แคชเชียร์ ร้านจะฉีกก้นคูปองเก็บไว้'; }
+    var cond = $('.cond'); if (cond) cond.innerHTML = (item ? '<li>แลก ' + E(pp.item) + ' ฟรี</li>' : '') + (pp.min ? '<li>ซื้อครบ ' + B(pp.min) + ' ขึ้นไป</li>' : '') + (pp.back ? '<li>' + E(pp.back) + '</li>' : '') + '<li>ใช้ที่หน้าร้านที่ร่วมรายการเท่านั้น</li><li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li>' + (pp.serial && pp.serial.on ? '<li>ใบนี้มีเลขกำกับ ใช้ได้ครั้งเดียว</li>' : '');
+    var place = $('#lpPlaces'); if (!place) { var sc = $$('.card')[2] || $$('.card').pop(); (ch[0] ? ch[0].closest('.card') : sc).insertAdjacentHTML('afterend', '<div class="card" id="lpPlaces"><div class="card-b"></div></div>'); place = $('#lpPlaces'); }
+    $('.card-b', place).innerHTML = '<h6 class="mb8">ร้านที่รับคูปองนี้ (' + rec.length + ')</h6>' + rec.map(function (u) { return '<div class="row between" style="padding:6px 0;border-bottom:1px solid var(--g200)"><div><b>' + E(u.name) + '</b>' + (u.kind === 'ext' ? '<div class="small muted">' + E(u.branches || '') + '</div>' : '') + '</div>' + kindChipP(u) + '</div>'; }).join('');
+  };
+
+  /* ===== PAPER COUPON v3 (simplified): 2 groups — card info / conditions & price ===== */
+  function paperPreview(pp) {
+    var rec = ppRecipients(pp), item = pp.benefit === 'item';
+    $$('.pface.front').forEach(function (f) {
+      var br = $('.pf-brand', f); if (br) br.textContent = 'PHARMAPLEX · ' + (item ? 'คูปองของแถม' : 'คูปองส่วนลด');
+      var big = $('.big', f); if (big) big.textContent = item ? 'ฟรี!' : B(pp.value);
+      var sub = $('.pf-sub', f); if (sub) sub.textContent = item ? 'แลก ' + (pp.item || 'ของแถม') + ' ฟรี' + (pp.min ? ' เมื่อซื้อครบ ' + B(pp.min) : '') : 'ส่วนลดทันที' + (pp.min ? ' เมื่อซื้อสินค้าครบ ' + B(pp.min) : '');
+      var ch = $$('.pf-chips span', f); if (ch[0]) ch[0].textContent = item ? 'แลกที่ร้านพาร์ทเนอร์ (ดูด้านหลัง)' : 'ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)'; if (ch[2]) ch[2].style.display = 'none';
+      var ft = $('.pf-foot', f); if (ft) ft.textContent = (pp.end ? 'ใช้ได้ถึง ' + dm(pp.end) + ' · ' : '') + pp.name.replace('คูปองกระดาษ ', '') + (pp.serial && pp.serial.on ? ' · เลขที่ ' + PMP.serialLabel(pp, pp.serial.from) : '');
+      var cd = $('.stub .cd', f); if (cd) cd.textContent = pp.code;
+    });
+    $$('.pface.rear').forEach(function (r) {
+      var h = $('.pb-h span', r); if (h) h.textContent = 'ชุด ' + pp.code;
+      var cols = $$('.pb-cols > div', r), ul = cols[0] && $('ul', cols[0]);
+      if (cols[0]) { var hh = $('h6', cols[0]); if (hh) hh.textContent = item ? 'แลกได้ที่ร้านพาร์ทเนอร์' : 'ใช้ได้ที่ร้าน/สาขา'; var ch2 = $('.pb-chan', cols[0]); if (ch2) ch2.innerHTML = '<div class="y">✔ ใช้ที่หน้าร้านเท่านั้น</div><div class="n">✘ ใช้สั่งซื้อออนไลน์ไม่ได้</div>'; }
+      if (ul) ul.innerHTML = rec.slice(0, 6).map(function (u) { return '<li>' + E(u.name) + (u.kind === 'ext' && u.branches ? ' — ' + E(u.branches) : '') + '</li>'; }).join('') + (pp.stores.mode === 'all' ? '<li class="ln">ทุกร้านที่ลงทะเบียนในระบบ</li>' : '');
+      if (cols[1]) { var cu = $('ul', cols[1]); if (cu) cu.innerHTML = (item ? '<li>แลก ' + E(pp.item || '') + ' ฟรี</li>' : '') + (pp.min ? '<li>ซื้อครบ ' + B(pp.min) + ' ขึ้นไป</li>' : '') + (pp.back ? '<li>' + E(pp.back) + '</li>' : '') + '<li>ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้</li><li>ร้านส่งก้นเบิกภายใน ' + pp.payDays + ' วัน</li>' + (pp.end ? '<li>ใช้ได้ ' + (pp.start ? dm(pp.start) + ' – ' : 'ถึง ') + dm(pp.end) + '</li>' : ''); }
+    });
+  }
+  H['coupon/03-admin-paper-editor.html'] = function () {
+    var cfg = PMP.cfg(), pp0 = ppSel(), id = pp0.id, root = $('#screen');
+    var P = function () { return recOf('paper', id); };
+    function S(fn) { editRec('paper', id, fn); paperPreview(P()); refresh(); }
+    pickBar2($('.page-head'), 'livePick', cfg.paper.map(function (p) { return { id: p.id, label: p.code + ' · ' + p.name }; }), id, function (v) { U.wr('pmpc.live.paper', v); location.href = location.pathname; }, function () { location.href = '12-admin-paper-template.html'; }, '＋ สร้างชุดใหม่');
+    var h4 = $('.page-head h4 .mono-b'); if (h4) h4.textContent = P().code;
+    bindc(ctl(root, 'รหัสชุด'), function () { return P().code; }, function (v) { S(function (r) { r.code = String(v).toUpperCase(); }); if (h4) h4.textContent = String(v).toUpperCase(); }, 'text');
+    bindc(ctl(root, 'ชื่อ/ที่มาของชุด'), function () { return P().name; }, function (v) { S(function (r) { r.name = v; }); }, 'text');
+    bindc(ctl(root, 'จำนวนที่ออก'), function () { return P().issued; }, function (v) { S(function (r) { r.issued = v; }); }, 'num');
+    var df = $$('.field', root).filter(function (f) { return /ใช้ได้ตั้งแต่/.test(f.textContent); })[0], dd = df ? $$('input', df) : [];
+    bindc(dd[0], function () { return P().start || ''; }, function (v) { S(function (r) { r.start = v; }); }, 'date'); bindc(dd[1], function () { return P().end || ''; }, function (v) { S(function (r) { r.end = v; }); }, 'date');
+    // price / benefit
+    bindRadio(root, 'benefit', function () { return P().benefit; }, function (v) { S(function (r) { r.benefit = v; if (v === 'item' && !r.item) r.item = 'ของแถม 1 ชิ้น'; }); updateReveal(); }, function (m) { return m; });
+    bindRadio(root, 'settle', function () { return P().settle; }, function (v) { S(function (r) { r.settle = v; }); updateReveal(); }, function (m) { return m; });
+    bindRadio(root, 'shopmode', function () { return P().stores.mode; }, function (v) { S(function (r) { r.stores.mode = v === 'pick' ? 'pick' : 'all'; }); updateReveal(); }, function (m) { return m; });
+    bindc(ctl(root, 'มูลค่าส่วนลดต่อใบ'), function () { return P().value; }, function (v) { S(function (r) { r.value = v; if (r.benefit === 'discount') r.cost = v; }); }, 'num');
+    bindc(ctl(root, 'รายการที่แลกได้ฟรี'), function () { return P().item || ''; }, function (v) { S(function (r) { r.item = v; }); }, 'text');
+    bindc(ctl(root, 'ยอดซื้อขั้นต่ำ'), function () { return P().min || ''; }, function (v) { S(function (r) { r.min = v; }); }, 'num');
+    bindc(ctl(root, 'ราคาจ่ายต่อใบ'), function () { var p = P(); return p.benefit === 'item' ? (p.cost || '') : p.value; }, function (v) { S(function (r) { if (r.benefit === 'item') r.cost = v; else { r.value = v; r.cost = v; } }); }, 'num');
+    bindc(ctl(root, 'ส่งก้นเบิกภายใน'), function () { return P().payDays; }, function (v) { S(function (r) { r.payDays = v; }); }, 'num');
+    updateReveal();
+    // recipients
+    var pk = $('[data-reveal="shopmode=pick"]', root);
+    function rows() { return PMP.partners().map(function (u) { return '<tr><td><input type="checkbox" data-lps="' + u.id + '"' + (P().stores.ids.indexOf(u.id) > -1 ? ' checked' : '') + '></td><td><b>' + E(u.name) + '</b>' + (u.kind === 'ext' ? '<div class="small muted">' + E(u.cat || '') + (u.contact ? ' · ' + E(u.contact) : '') + '</div>' : '') + '</td><td>' + kindChipP(u) + '</td><td>' + E(u.kind === 'ext' ? (u.branches || '-') : 'ในระบบ') + '</td><td>' + (u.kind === 'ext' ? '<button class="btn text sm grey" type="button" data-lpdel="' + u.id + '">✕ ลบพาร์ทเนอร์</button>' : '') + '</td></tr>'; }).join(''); }
+    function drawRec() { var tb = $('table.table tbody', pk); tb.innerHTML = rows(); $$('[data-lps]', pk).forEach(function (cb) { bindc(cb, function () { return P().stores.ids.indexOf(cb.getAttribute('data-lps')) > -1; }, function (v) { S(function (r) { var i = r.stores.ids.indexOf(cb.getAttribute('data-lps')); if (v && i < 0) r.stores.ids.push(cb.getAttribute('data-lps')); if (!v && i > -1) r.stores.ids.splice(i, 1); }); }, 'chk'); }); }
+    if (pk) {
+      drawRec(); var ab = $$('button', pk).filter(function (b) { return /เพิ่มและเลือก/.test(b.textContent); })[0], ai = $$('.row input', pk);
+      ab.onclick = function () { var n = ai[0].value.trim(); if (!n) { toast('กรอกชื่อพาร์ทเนอร์', true); return; } var nid = U.uid('x'); setCfg(function (c) { c.partners = c.partners || []; c.partners.push({ id: nid, name: n, kind: 'ext', cat: '', contact: ai[1].value, branches: ai[2].value }); var p = c.paper.filter(function (x) { return x.id === id; })[0]; p.stores.mode = 'pick'; p.stores.ids.push(nid); }); ai.forEach(function (x) { x.value = ''; }); drawRec(); paperPreview(P()); refresh(); toast('เพิ่มพาร์ทเนอร์แล้ว'); };
+      if (!pk._ld) { pk._ld = 1; pk.addEventListener('click', function (e) { var d = e.target.closest('[data-lpdel]'); if (!d) return; var pid = d.getAttribute('data-lpdel'), who = PMP.partner(pid); if (!confirm('ลบพาร์ทเนอร์ “' + who.name + '” ออกจากทะเบียน? (จะถูกถอดออกจากทุกชุด · คำขอเบิกเดิมยังอยู่)')) return; setCfg(function (c) { c.partners = (c.partners || []).filter(function (x) { return x.id !== pid; }); c.paper.forEach(function (p) { p.stores.ids = p.stores.ids.filter(function (x) { return x !== pid; }); }); }); drawRec(); paperPreview(P()); refresh(); toast('ลบพาร์ทเนอร์แล้ว'); }); }
+    }
+    function refresh() {
+      var p = P(), soft = $('.soft', root), n = p.stores.mode === 'all' ? ppRecipients(p).length : p.stores.ids.length, len = 0;
+      if (soft) soft.innerHTML = '<b>ยอดรับผิดชอบสูงสุด (ถ้าแลกครบทุกใบ)</b><div class="small muted mt8">' + p.issued.toLocaleString() + ' ใบ × ' + B(PMP.paperUnit(p)) + ' = <b>' + B(p.issued * PMP.paperUnit(p)) + '</b>' + (p.settle === 'sponsored' && p.benefit === 'item' ? ' (พาร์ทเนอร์ออกให้เอง — ไม่มีการจ่าย)' : '') + ' — ใช้ประกอบการอนุมัติงบ</div>';
+      var ck = $$('.vlist > div'); function setCk(i, ok, txt, warn) { if (!ck[i]) return; var b = $('.ck', ck[i]); b.className = 'ck ' + (ok ? 'y' : warn ? 'w' : 'n'); b.textContent = ok ? '✓' : warn ? '!' : '✕'; $('span:last-child', ck[i]).innerHTML = txt; }
+      setCk(0, !!(p.code && p.name && p.issued > 0 && p.end), '① ข้อมูลบนบัตรครบ · รหัส ' + E(p.code) + ' ไม่ซ้ำ');
+      setCk(1, (p.benefit === 'discount' ? p.value > 0 : !!p.item) && n > 0, '② สิทธิ์และราคาครบ · ผู้รับ ' + n + ' ราย' + (n ? '' : ' — เลือกอย่างน้อย 1 ราย'));
+      var pub = $$('.btn.contained', root).filter(function (b) { return /เผยแพร่/.test(b.textContent); })[0]; if (pub) pub.disabled = len > 160 || n < 1;
+      if (window.__ppChk) window.__ppChk();
+    }
+    paperPreview(P()); refresh();
+  };
+  /* ===== PAPER COUPON v4: numbered back conditions · editable fine print · stub barcode rotated 90° · print export ===== */
+  var PT_MAX = 8, PT_LEN = 80, NOTE_MAX = 240;
+  function paperTermsList(pp) {
+    var a = [];
+    if (pp.benefit === 'item') a.push('แลก ' + (pp.item || 'ของแถม') + ' ฟรี');
+    if (pp.min) a.push('ซื้อครบ ' + B(pp.min) + ' ขึ้นไป');
+    (pp.terms || []).forEach(function (t) { if (t) a.push(t); });
+    a.push('ไม่ทอนเงินสด · แลกเป็นเงินสดไม่ได้');
+    if (pp.end) a.push('ใช้ได้ ' + (pp.start ? dm(pp.start) + ' – ' : 'ถึง ') + dm(pp.end));
+    return a;
+  }
+  function paperNote(pp) { return pp.note != null ? pp.note : PMP.PAPER_NOTE; }
+  function paperPreview(pp, root) {
+    root = root || document;
+    var rec = ppRecipients(pp), item = pp.benefit === 'item', bc = PMP.code128svg(pp.code, 40);
+    $$('.pface', root).forEach(function (f) { var t = f.getAttribute('data-tpl') || pp.tpl || 'classic', th = f.getAttribute('data-theme') || pp.theme || 'red'; f.className = f.className.replace(/\b(?:t|th)-[a-z]+\b/g, '').replace(/\s+/g, ' ').trim() + ' t-' + t + ' th-' + th; });
+    $$('.pface.front', root).forEach(function (f) {
+      var br = $('.pf-brand', f); if (br) br.textContent = 'PHARMAPLEX · ' + (item ? 'คูปองของแถม' : 'คูปองส่วนลด');
+      var big = $('.big', f); if (big) big.textContent = item ? 'ฟรี!' : B(pp.value);
+      var sub = $('.pf-sub', f); if (sub) sub.textContent = item ? 'แลก ' + (pp.item || 'ของแถม') + ' ฟรี' + (pp.min ? ' เมื่อซื้อครบ ' + B(pp.min) : '') : 'ส่วนลดทันที' + (pp.min ? ' เมื่อซื้อสินค้าครบ ' + B(pp.min) : '');
+      var ch = $$('.pf-chips span', f); if (ch[0]) ch[0].textContent = item ? 'แลกที่ร้านพาร์ทเนอร์ (ดูด้านหลัง)' : 'ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)'; if (ch[1]) ch[1].style.display = 'none'; if (ch[2]) ch[2].style.display = 'none';
+      var ft = $('.pf-foot', f); if (ft) ft.textContent = (pp.end ? 'ใช้ได้ถึง ' + dm(pp.end) + ' · ' : '') + pp.name.replace('คูปองกระดาษ ', '');
+      var st = $('.stub', f); if (st) st.innerHTML = '<div class="stub-in"><div class="barcode svg">' + bc.svg + '</div><div class="cd">' + E(pp.code) + '</div><div class="tr">✂ ก้นคูปอง · ร้านฉีกเก็บไว้เบิก</div></div>';
+    });
+    $$('.pface.rear', root).forEach(function (r) {
+      var h = $('.pb-h span', r); if (h) h.textContent = 'ชุด ' + pp.code;
+      var cols = $$('.pb-cols > div', r), ul = cols[0] && $('ul', cols[0]);
+      if (cols[0]) { var hh = $('h6', cols[0]); if (hh) hh.textContent = item ? 'แลกได้ที่ร้านพาร์ทเนอร์' : 'ใช้ได้ที่ร้าน/สาขา'; var ch2 = $('.pb-chan', cols[0]); if (ch2) ch2.innerHTML = '<div class="y">✔ ใช้ที่หน้าร้านเท่านั้น</div>'; }
+      if (ul) ul.innerHTML = rec.slice(0, 6).map(function (u) { return '<li>' + E(u.name) + (u.kind === 'ext' && u.branches ? ' — ' + E(u.branches) : '') + '</li>'; }).join('') + (pp.stores.mode === 'all' ? '<li class="ln">ทุกร้านที่ลงทะเบียนในระบบ</li>' : '');
+      if (cols[1]) { var cu = $('ul', cols[1]); if (cu) { cu.className = 'nm'; cu.innerHTML = paperTermsList(pp).map(function (t) { return '<li>' + E(t) + '</li>'; }).join(''); } }
+      var nt = $('.pb-note', r); if (nt) nt.textContent = paperNote(pp);
+      var st = $('.stub', r); if (st) st.innerHTML = '<div class="stub-in"><div class="cd" style="font-size:11px">ก้นคูปอง</div></div>';
+    });
+  }
+
+  /* customer info page: numbered conditions from the same list */
+  (function () {
+    var prev = H['coupon/10-customer-paper-info.html'];
+    H['coupon/10-customer-paper-info.html'] = function () {
+      prev(); var pp = ppSel(), cond = $('.cond'); if (!pp || !cond) return;
+      cond.innerHTML = paperTermsList(pp).map(function (t) { return '<li>' + E(t) + '</li>'; }).join('') + '<li>ใช้ที่หน้าร้านที่ร่วมรายการเท่านั้น</li>';
+    };
+  })();
+
+  /* editor: terms list + fine print */
+  (function () {
+    var prev = H['coupon/03-admin-paper-editor.html'];
+    H['coupon/03-admin-paper-editor.html'] = function () {
+      prev();
+      var id = ppSel().id, root = $('#screen'), P = function () { return recOf('paper', id); };
+      var box = $('#termsBox', root), add = $('#termAdd', root), cnt = $('#termCnt', root), ta = $('#noteTa', root), nc = $('#noteCnt', root), rs = $('#noteReset', root);
+      function S(fn) { editRec('paper', id, fn); paperPreview(P()); chk(); }
+      function chk() {
+        var p = P(), n = (p.terms || []).length, nl = paperNote(p).length;
+        cnt.textContent = n + ' / ' + PT_MAX + ' ข้อ'; add.disabled = n >= PT_MAX;
+        nc.textContent = nl + ' / ' + NOTE_MAX; nc.classList.toggle('bad', nl > NOTE_MAX);
+        var ck = $$('.vlist > div')[2];
+        if (ck) { var okc = nl <= NOTE_MAX, b = $('.ck', ck); b.className = 'ck ' + (okc ? 'y' : 'n'); b.textContent = okc ? '✓' : '✕'; $('span:last-child', ck).innerHTML = '③ เงื่อนไขหลังบัตร ' + n + ' ข้อ · หมายเหตุท้ายบัตร ' + nl + ' / ' + NOTE_MAX + (okc ? '' : ' — เกิน ตัดออก ' + (nl - NOTE_MAX) + ' ตัว'); }
+        var pub = $$('.btn.contained', root).filter(function (b) { return /เผยแพร่/.test(b.textContent); })[0];
+        var rn = P().stores.mode === 'all' ? ppRecipients(P()).length : P().stores.ids.length; if (pub) pub.disabled = nl > NOTE_MAX || rn < 1;
+      }
+      function draw() {
+        var t = P().terms || [];
+        box.innerHTML = t.map(function (x, i) { return '<div class="row" style="gap:8px;margin-bottom:6px"><span class="muted" style="width:22px">' + (i + 1) + '.</span><input class="input" maxlength="' + PT_LEN + '" data-lt="' + i + '" value="' + E(x) + '"><button class="btn text sm grey" type="button" data-ltdel="' + i + '">✕</button></div>'; }).join('') || '<div class="help" style="margin-bottom:6px">ยังไม่มีเงื่อนไขเพิ่มเติม — ระบบพิมพ์ “ไม่ทอนเงินสด” และช่วงวันที่ให้เอง</div>';
+        chk();
+      }
+      if (!box._l) {
+        box._l = 1;
+        box.addEventListener('input', function (e) { var i = e.target.getAttribute && e.target.getAttribute('data-lt'); if (i == null) return; S(function (r) { r.terms[+i] = e.target.value.slice(0, PT_LEN); }); flashSaved(); });
+        box.addEventListener('click', function (e) { var d = e.target.closest('[data-ltdel]'); if (!d) return; var i = +d.getAttribute('data-ltdel'); editRec('paper', id, function (r) { r.terms.splice(i, 1); }); draw(); paperPreview(P()); flashSaved(); });
+        add.onclick = function () { if ((P().terms || []).length >= PT_MAX) return; editRec('paper', id, function (r) { r.terms = r.terms || []; r.terms.push(''); }); draw(); var ins = $$('input', box); if (ins.length) ins[ins.length - 1].focus(); };
+        ta.addEventListener('input', function () { S(function (r) { r.note = ta.value; }); flashSaved(); });
+        rs.onclick = function () { ta.value = PMP.PAPER_NOTE; S(function (r) { r.note = PMP.PAPER_NOTE; }); flashSaved(); };
+      }
+      window.__ppChk = chk; ta.value = paperNote(P()); draw(); paperPreview(P());
+    };
+  })();
+
+  /* ---- coupon/11 ส่งออกไฟล์สั่งพิมพ์ ---- */
+  var PRT_CSS = 'html,body{margin:0;padding:0}body{font-family:"Noto Sans Thai",Tahoma,sans-serif;color:#222;background:#cfcfcf}.pg{position:relative;background:#fff;margin:0 auto 6mm;overflow:hidden;page-break-after:always;break-after:page}.pg:last-child{margin-bottom:0}'
+    + '.art{position:absolute;overflow:hidden}.card{position:absolute;overflow:hidden}.cm{position:absolute;background:#000}'
+    + '.pm{position:absolute;left:0;top:0;bottom:0;width:78%;box-sizing:border-box}.sb{position:absolute;top:0;bottom:0;width:22%}'
+    + '.br{font-size:9pt;font-weight:800;letter-spacing:.14em;color:#B71C1C}.big{font-size:54pt;font-weight:800;line-height:1.05;color:#B71C1C;margin:1mm 0 0}.sub{font-size:14pt;font-weight:700}.chip{display:inline-block;border:.3mm solid #888;border-radius:1.5mm;padding:.3mm 2mm;font-size:8pt;font-weight:600;margin-top:3mm}.ft{position:absolute;left:10mm;right:6mm;bottom:5mm;border-top:.25mm solid #bbb;padding-top:1.5mm;font-size:8pt;color:#555}'
+    + '.si{position:absolute;left:50%;top:50%;width:80mm;transform:translate(-50%,-50%) rotate(-90deg);text-align:center}.si svg{width:66mm;height:13mm;display:block;margin:0 auto}.si .cd{font:700 11pt ui-monospace,Consolas,monospace;margin-top:1mm}.si .tr{font-size:7.5pt;color:#555;margin-top:1mm}'
+    + '.perf{position:absolute;top:0;bottom:0;border-left:.35mm dashed #777}.bh{display:flex;justify-content:space-between;font-weight:800;font-size:10pt;border-bottom:.6mm solid #222;padding-bottom:1mm;margin-bottom:2mm}.bc{display:grid;grid-template-columns:1fr 1fr;gap:6mm;font-size:8.5pt;line-height:1.35}.bc h6{font-size:9.5pt;font-weight:800;color:#B71C1C;margin:0 0 1mm}.bc ul{margin:0;padding:0;list-style:none}.bc li{position:relative;padding-left:3.5mm}.bc ul.dt li:before{content:"•";position:absolute;left:0}.bc ol{margin:0;padding:0;list-style:none;counter-reset:n}.bc ol li{counter-increment:n;padding-left:4.5mm}.bc ol li:before{content:counter(n) ".";position:absolute;left:0;font-weight:700}.bc .y{font-weight:700;color:#1B5E20;margin-top:1.5mm}.nt{position:absolute;left:8mm;right:6mm;bottom:4mm;border-top:.25mm dashed #888;padding-top:1mm;font-size:6.5pt;color:#555;line-height:1.3}';
+  function prtOpts() { var o = U.rd('pmpc.live.print.' + ppSel().id) || {}; return { bleed: o.bleed !== false, crop: o.crop !== false, perf: o.perf !== false }; }
+  function prtDoc(pp, o, autoPrint) {
+    var Bm = o.bleed ? 3 : 0, M = o.crop ? 9 : 4, TW = 210, TH = 95, AW = TW + 2 * Bm, AH = TH + 2 * Bm, W = AW + 2 * M, Hh = AH + 2 * M, X0 = M + Bm, Y0 = M + Bm, item = pp.benefit === 'item';
+    var bc = PMP.code128svg(pp.code, 40), rec = ppRecipients(pp), mm = function (n) { return n + 'mm'; }, sw = TW * 0.22, mw = TW - sw;
+    function marks() {
+      if (!o.crop) return ''; var s = '', L = 4, g = Bm + 1, xs = [X0, X0 + TW], ys = [Y0, Y0 + TH];
+      xs.forEach(function (x) { ys.forEach(function (y) {
+        var dx = x === X0 ? -1 : 1, dy = y === Y0 ? -1 : 1;
+        s += '<div class="cm" style="left:' + mm(dx < 0 ? x - g - L : x + g) + ';top:' + mm(y - .125) + ';width:' + mm(L) + ';height:.25mm"></div>';
+        s += '<div class="cm" style="top:' + mm(dy < 0 ? y - g - L : y + g) + ';left:' + mm(x - .125) + ';height:' + mm(L) + ';width:.25mm"></div>';
+      }); });
+      return s;
+    }
+    function page(inner, tint) { return '<section class="pg" style="width:' + mm(W) + ';height:' + mm(Hh) + '"><div class="art" style="left:' + mm(M) + ';top:' + mm(M) + ';width:' + mm(AW) + ';height:' + mm(AH) + ';background:' + tint + '"></div><div class="card" style="left:' + mm(X0) + ';top:' + mm(Y0) + ';width:' + mm(TW) + ';height:' + mm(TH) + '">' + inner + '</div>' + marks() + '</section>'; }
+    var front = '<div class="pm" style="padding:9mm 6mm 4mm 10mm"><div class="br">PHARMAPLEX · ' + (item ? 'คูปองของแถม' : 'คูปองส่วนลด') + '</div><div class="big">' + (item ? 'ฟรี!' : B(pp.value)) + '</div><div class="sub">' + (item ? 'แลก ' + E(pp.item || 'ของแถม') + ' ฟรี' + (pp.min ? ' เมื่อซื้อครบ ' + B(pp.min) : '') : 'ส่วนลดทันที' + (pp.min ? ' เมื่อซื้อสินค้าครบ ' + B(pp.min) : '')) + '</div><span class="chip">' + (item ? 'แลกที่ร้านพาร์ทเนอร์ (ดูด้านหลัง)' : 'ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)') + '</span><div class="ft">' + (pp.end ? 'ใช้ได้ถึง ' + E(dm(pp.end)) + ' · ' : '') + E(pp.name.replace('คูปองกระดาษ ', '')) + '</div></div>'
+      + '<div class="sb" style="right:0;background:rgba(0,0,0,.03)"><div class="si"><div>' + bc.svg + '</div><div class="cd">' + E(pp.code) + '</div><div class="tr">✂ ก้นคูปอง · ร้านฉีกเก็บไว้เบิก</div></div></div>' + (o.perf ? '<div class="perf" style="left:' + mm(mw) + '"></div>' : '');
+    var back = '<div class="sb" style="left:0;background:rgba(0,0,0,.03)"><div class="si"><div class="cd" style="margin:0">ก้นคูปอง</div></div></div>' + (o.perf ? '<div class="perf" style="left:' + mm(sw) + '"></div>' : '')
+      + '<div class="pm" style="left:' + mm(sw) + ';width:' + mm(mw) + ';padding:7mm 6mm 4mm 7mm"><div class="bh"><span>เงื่อนไขการใช้คูปอง</span><span style="font-family:ui-monospace,Consolas,monospace;font-size:9pt">ชุด ' + E(pp.code) + '</span></div><div class="bc"><div><h6>' + (item ? 'แลกได้ที่ร้านพาร์ทเนอร์' : 'ใช้ได้ที่ร้าน/สาขา') + '</h6><ul class="dt">' + rec.slice(0, 6).map(function (u) { return '<li>' + E(u.name) + (u.kind === 'ext' && u.branches ? ' — ' + E(u.branches) : '') + '</li>'; }).join('') + (pp.stores.mode === 'all' ? '<li>ทุกร้านที่ลงทะเบียนในระบบ</li>' : '') + '</ul><div class="y">✔ ใช้ที่หน้าร้านเท่านั้น</div></div><div><h6>สิทธิ์และเงื่อนไข</h6><ol>' + paperTermsList(pp).map(function (t) { return '<li>' + E(t) + '</li>'; }).join('') + '</ol></div></div><div class="nt">' + E(paperNote(pp)) + '</div></div>';
+    return '<!doctype html><html lang="th"><head><meta charset="utf-8"><title>' + E(pp.code) + ' — ไฟล์พิมพ์คูปองกระดาษ</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800&display=swap"><style>@page{size:' + mm(W) + ' ' + mm(Hh) + ';margin:0}' + PRT_CSS + '@media screen{.pg{box-shadow:0 1px 6px rgba(0,0,0,.3);margin-top:6mm}}@media print{body{background:#fff}.pg{margin:0;box-shadow:none}}</style></head><body>' + page(front, '#FFF3F3') + page(back, '#fff') + (autoPrint ? '<script>window.onload=function(){setTimeout(function(){window.print()},700)}<\/script>' : '') + '</body></html>';
+  }
+  function dl(name, text, mime) { var b = new Blob([text], { type: mime + ';charset=utf-8' }), a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); a.parentNode.removeChild(a); }, 600); }
+  H['coupon/11-admin-paper-print.html'] = function () {
+    var cfg = PMP.cfg(), pp = ppSel(), id = pp.id, root = $('#screen');
+    pickBar2($('.page-head'), 'livePick', cfg.paper.map(function (x) { return { id: x.id, label: x.code + ' · ' + x.name }; }), id, function (v) { U.wr('pmpc.live.paper', v); rerender(); }, null);
+    var h4 = $('.page-head h4 .mono-b'); if (h4) h4.textContent = pp.code;
+    var KEY = 'pmpc.live.print.' + id, LOG = 'pmpc.live.printlog';
+    function opt(fn) { var o = U.rd(KEY) || {}; fn(o); U.wr(KEY, o); flashSaved(); render(); }
+    var o0 = prtOpts();
+    $('#pQty').value = pp.issued.toLocaleString();
+    $('#pBleed').checked = o0.bleed; $('#pCrop').checked = o0.crop; $('#pPerf').checked = o0.perf;
+    [['pBleed', 'bleed', 'chk'], ['pCrop', 'crop', 'chk'], ['pPerf', 'perf', 'chk']].forEach(function (d) {
+      var el = $('#' + d[0]); el.addEventListener(d[2] ? 'change' : (el.tagName === 'SELECT' ? 'change' : 'input'), function () { opt(function (o) { o[d[1]] = d[2] ? el.checked : el.value; }); });
+    });
+    function checks() {
+      var p = recOf('paper', id), rn = ppRecipients(p).length, sent = (U.rd(LOG) || []).filter(function (x) { return x.id === id; }).reduce(function (a, x) { return a + (x.type === 'ไฟล์พิมพ์' || x.type === 'PDF' ? x.qty : 0); }, 0);
+      var L = [];
+      L.push([rn > 0, rn > 0 ? 'มีผู้รับคูปอง ' + rn + ' ราย' : 'ยังไม่มีผู้รับคูปอง — เลือกที่หน้าตั้งค่า', false]);
+      L.push([!!(p.end && p.issued > 0), p.end && p.issued > 0 ? 'จำนวนที่ออก ' + p.issued.toLocaleString() + ' ใบ · ใช้ได้ถึง ' + dm(p.end) : 'ยังไม่ระบุจำนวน/วันสิ้นสุด', false]);
+      L.push([/^[A-Z0-9]{2,12}$/.test(p.code), /^[A-Z0-9]{2,12}$/.test(p.code) ? 'รหัสชุด ' + p.code + ' เข้ารหัสเป็นบาร์โค้ด Code 128 ได้' : 'รหัสชุดต้องเป็น A–Z / 0–9', false]);
+      var tl = (p.terms || []).length; L.push([tl <= PT_MAX && paperNote(p).length <= NOTE_MAX, 'เงื่อนไข ' + tl + ' ข้อ · หมายเหตุท้ายบัตร ' + paperNote(p).length + ' / ' + NOTE_MAX, false]);
+      L.push([true, 'ใช้ได้หน้าร้านเท่านั้น (ทุกใบเหมือนกัน ไม่มีเลขรันนิ่ง)', false]);
+      if (sent > p.issued) L.push([false, 'พิมพ์สะสม ' + sent.toLocaleString() + ' ใบ เกินจำนวนที่ออก — ตรวจก่อนส่งซ้ำ', true]);
+      return L;
+    }
+    function render() {
+      var p = recOf('paper', id), o = prtOpts(), ls = checks(), blocked = ls.some(function (x) { return !x[0] && !x[2]; });
+      $('#pfl').innerHTML = ls.map(function (x) { return '<div><span class="ck ' + (x[0] ? 'y' : x[2] ? 'w' : 'n') + '">' + (x[0] ? '✓' : x[2] ? '!' : '✕') + '</span><span>' + E(x[1]) + '</span></div>'; }).join('');
+      ['xPrint', 'xHtml'].forEach(function (k) { $('#' + k).disabled = blocked; });
+      var Bm = o.bleed ? 3 : 0, M = o.crop ? 9 : 4, W = 210 + 2 * Bm + 2 * M, Hh = 95 + 2 * Bm + 2 * M;
+      $('#pSheet').textContent = 'ขนาดกระดาษไฟล์ ' + W + ' × ' + Hh + ' มม. · 2 หน้า';
+      var fr = $('#pFrame'), wrap = $('#pPrev'), pxW = Math.round(W * 3.78) + 40, pxH = Math.round(Hh * 3.78) * 2 + 80, s = Math.min(1, (wrap.clientWidth || 640) / pxW);
+      fr.style.width = pxW + 'px'; fr.style.height = pxH + 'px'; fr.style.transform = 'scale(' + s + ')'; wrap.style.height = Math.round(pxH * s) + 'px';
+      fr.srcdoc = prtDoc(p, o, false);
+      var lg = (U.rd(LOG) || []).slice(0, 8);
+      $('#pLog').innerHTML = lg.map(function (x) { return '<tr><td class="nowrap">' + E(x.at) + '</td><td class="mono">' + E(x.code) + '</td><td>' + E(x.type) + '</td><td class="num">' + x.qty.toLocaleString() + '</td></tr>'; }).join('') || '<tr><td colspan="4" class="center muted" style="padding:16px">ยังไม่เคยส่งออก</td></tr>';
+    }
+    function logIt(type) { var p = recOf('paper', id), lg = U.rd(LOG) || []; lg.unshift({ id: id, code: p.code, type: type, qty: p.issued, at: dmy(PMP.cfg().now) + ' ' + new Date().toTimeString().slice(0, 5) }); U.wr(LOG, lg.slice(0, 40)); render(); }
+    $('#xPrint').onclick = function () { var p = recOf('paper', id), w = window.open('', '_blank'); if (!w) { toast('เบราว์เซอร์บล็อกหน้าต่างพิมพ์ — อนุญาตป๊อปอัปแล้วลองใหม่', true); return; } w.document.open(); w.document.write(prtDoc(p, prtOpts(), true)); w.document.close(); logIt('PDF'); };
+    $('#xHtml').onclick = function () { var p = recOf('paper', id); dl(p.code + '-print.html', prtDoc(p, prtOpts(), false), 'text/html'); logIt('ไฟล์พิมพ์'); toast('ดาวน์โหลด ' + p.code + '-print.html แล้ว'); };
+    render();
+  };
+
+  /* ===== PAPER COUPON v5: templates (layout) + colour themes ===== */
+  function tplOf(id) { return PMP.PAPER_TPL.filter(function (t) { return t.id === id; })[0] || PMP.PAPER_TPL[0]; }
+  function tplSkel(side, s, tpl, theme) {
+    var cls = ' t-' + tpl + ' th-' + theme, att = ' data-tpl="' + tpl + '" data-theme="' + theme + '"';
+    if (side === 'front') return '<div class="pcw" style="--s:' + s + '"><div class="pcs"><div class="pface front' + cls + '"' + att + '><span class="cap">หน้า</span><div class="pf-main"><div class="pf-brand"></div><div class="big"></div><div class="pf-sub"></div><div class="pf-chips"><span></span><span></span><span></span></div><div class="pf-foot"></div></div><div class="stub"></div></div></div></div>';
+    return '<div class="pcw" style="--s:' + s + '"><div class="pcs"><div class="pface rear' + cls + '"' + att + '><span class="cap">หลัง</span><div class="pb-main"><div class="pb-h">เงื่อนไขการใช้คูปอง<span></span></div><div class="pb-cols"><div><h6></h6><ul></ul><div class="pb-chan"></div></div><div><h6>สิทธิ์และเงื่อนไข</h6><ul></ul></div></div><div class="pb-note"></div></div><div class="stub"></div></div></div></div>';
+  }
+  function tplSample(benefit, extra) {
+    var now = PMP.cfg().now;
+    return Object.assign({ code: 'SAMPLE', name: 'ตัวอย่างงานสัมมนา', benefit: benefit, value: 100, min: 500, item: 'ไอศกรีมวานิลลา 1 ถ้วย', terms: ['ใช้ได้ 1 ใบ/บิล'], note: PMP.PAPER_NOTE, stores: { mode: 'all', ids: [] }, start: now, end: PMP.addDays(now, 90) }, extra || {});
+  }
+  function swatches(host, cur, onPick) {
+    $$('.sw', host).forEach(function (x) { x.parentNode.removeChild(x); });
+    Object.keys(PMP.PAPER_THEMES).forEach(function (k) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'sw' + (k === cur ? ' on' : ''); b.title = PMP.PAPER_THEMES[k].n; b.style.background = PMP.PAPER_THEMES[k].pc;
+      b.onclick = function () { onPick(k); }; host.appendChild(b);
+    });
+  }
+
+  /* editor: template name + colour swatches */
+  (function () {
+    var prev = H['coupon/03-admin-paper-editor.html'];
+    H['coupon/03-admin-paper-editor.html'] = function () {
+      prev();
+      var id = ppSel().id, root = $('#screen'), P = function () { return recOf('paper', id); };
+      function draw() {
+        var p = P(), t = tplOf(p.tpl); $('#tplName', root).textContent = 'template: ' + t.name; $('#tplDesc', root).textContent = t.desc;
+        $('#tplChange', root).href = '12-admin-paper-template.html?for=' + id;
+        swatches($('#tplSw', root), p.theme || 'red', function (k) { editRec('paper', id, function (r) { r.theme = k; }); draw(); paperPreview(P()); flashSaved(); });
+        if (p.active && p.published) $('#tplChange', root).classList.add('disabled');
+      }
+      draw();
+    };
+  })();
+
+  /* coupon/12 เลือก template */
+  H['coupon/12-admin-paper-template.html'] = function () {
+    var cfg = PMP.cfg(), q = /[?&]for=(\w+)/.exec(location.search), cur = q ? recOf('paper', q[1]) : null, root = $('#screen');
+    var st = { tpl: cur ? (cur.tpl || 'classic') : 'classic', theme: cur ? (cur.theme || 'red') : 'red', fit: 'all' };
+    if (cur) { $('#tplTitle').textContent = 'เปลี่ยน template — ชุด ' + cur.code; $('#tplSub').textContent = 'ตัวอย่างใช้ข้อมูลจริงของชุดนี้ · เลือกแล้วกลับไปหน้าแก้ไข'; $('#tplGo').textContent = 'ใช้ template นี้ → กลับไปแก้ไข'; $('#dupCard').style.display = 'none'; }
+    function pickPP(tpl) { var t = tplOf(tpl); return cur ? Object.assign({}, cur, { tpl: tpl, theme: st.theme }) : tplSample(t.fit === 'item' ? 'item' : 'discount', { tpl: tpl, theme: st.theme }); }
+    function fits(t) { return st.fit === 'all' || t.fit === 'both' || t.fit === st.fit; }
+    function render() {
+      swatches($('#tplSw'), st.theme, function (k) { st.theme = k; render(); });
+      $$('#tplFit button').forEach(function (b) { b.classList.toggle('on', b.getAttribute('data-fit') === st.fit); });
+      $('#tplGrid').innerHTML = PMP.PAPER_TPL.map(function (t) {
+        return '<label class="tpl-card' + (st.tpl === t.id ? ' on' : '') + (fits(t) ? '' : ' dim') + '" data-t="' + t.id + '"><input type="radio" name="tpl" value="' + t.id + '"' + (st.tpl === t.id ? ' checked' : '') + '><div class="tpl-th">' + tplSkel('front', 0.4, t.id, st.theme) + '</div><div class="tpl-meta"><b>' + E(t.name) + '</b>' + (st.fit !== 'all' && fits(t) ? ' <span class="chip soft-success sq">แนะนำ</span>' : '') + '<div class="small muted">' + E(t.desc) + '</div></div></label>';
+      }).join('');
+      $$('#tplGrid .tpl-card').forEach(function (c) { paperPreview(pickPP(c.getAttribute('data-t')), c); });
+      var t = tplOf(st.tpl), pv = $('#tplPrev'); pv.innerHTML = tplSkel('front', 0.83, st.tpl, st.theme) + tplSkel('rear', 0.83, st.tpl, st.theme); paperPreview(pickPP(st.tpl), pv);
+      $('#tplPick').textContent = t.name + ' · ' + PMP.PAPER_THEMES[st.theme].n;
+      $('#tplHelp').textContent = cur ? 'ตัวอย่างใช้ข้อมูลจริงของชุด ' + cur.code : 'ตัวอย่างใช้ข้อมูลสมมติ — ใส่ข้อมูลจริงในขั้นถัดไป' + (t.fit === 'item' ? ' · template นี้ตั้งสิทธิ์เริ่มต้นเป็น “ของแถม/บริการฟรี”' : '');
+    }
+    $('#tplGrid').addEventListener('click', function (e) { var c = e.target.closest('.tpl-card'); if (!c) return; e.preventDefault(); st.tpl = c.getAttribute('data-t'); render(); });
+    $('#tplFit').addEventListener('click', function (e) { var b = e.target.closest('button'); if (!b) return; st.fit = b.getAttribute('data-fit'); render(); });
+    function base(extra) { var now = PMP.cfg().now; return Object.assign({ settle: 'pay', serial: { on: false, prefix: '', from: 1, to: 0 }, maxPerStore: 0, stores: { mode: 'all', ids: [] }, active: true, payDays: 30, terms: [], note: PMP.PAPER_NOTE, tpl: st.tpl, theme: st.theme, start: now, end: PMP.addDays(now, 60) }, extra); }
+    $('#tplGo').onclick = function () {
+      if (cur) { editRec('paper', cur.id, function (r) { r.tpl = st.tpl; r.theme = st.theme; }); U.wr('pmpc.live.paper', cur.id); location.href = '03-admin-paper-editor.html'; return; }
+      var nid = U.uid('pp'), item = tplOf(st.tpl).fit === 'item';
+      setCfg(function (c) { c.paper.push(base({ id: nid, benefit: item ? 'item' : 'discount', item: item ? 'ของแถม 1 ชิ้น' : '', cost: item ? 25 : 50, code: 'NEW' + nid.slice(2, 5).toUpperCase(), name: 'คูปองกระดาษชุดใหม่', value: 50, min: 0, issued: 500 })); });
+      U.wr('pmpc.live.paper', nid); location.href = '03-admin-paper-editor.html';
+    };
+    if (!cur) {
+      var dl = $('#dupList'); dl.innerHTML = cfg.paper.map(function (p) { return '<div class="dup-row"><div><b class="mono-b">' + E(p.code) + '</b> · ' + E(p.name) + '<div class="small muted">' + E(PMP.paperBenefitText(p)) + ' · template ' + E(tplOf(p.tpl).name) + ' · ' + E((PMP.PAPER_THEMES[p.theme || 'red'] || {}).n || '') + '</div></div><button class="btn outlined sm" type="button" data-dup="' + p.id + '">ทำซ้ำ</button></div>'; }).join('');
+      dl.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-dup]'); if (!b) return; var src = recOf('paper', b.getAttribute('data-dup')), nid = U.uid('pp');
+        setCfg(function (c) { var cp = JSON.parse(JSON.stringify(src)); cp.id = nid; cp.code = 'NEW' + nid.slice(2, 5).toUpperCase(); cp.name = src.name + ' (ทำซ้ำ)'; cp.active = true; c.paper.push(cp); });
+        U.wr('pmpc.live.paper', nid); location.href = '03-admin-paper-editor.html';
+      });
+    }
+    render();
+  };
+
+  /* ---- print file (template-aware) ---- */
+  PRT_CSS = 'html,body{margin:0;padding:0}body{font-family:"Noto Sans Thai",Tahoma,sans-serif;color:#222;background:#cfcfcf}.pg{position:relative;background:#fff;margin:0 auto 6mm;overflow:hidden;page-break-after:always;break-after:page}.pg:last-child{margin-bottom:0}'
+    + '.art{position:absolute;overflow:hidden}.card{position:absolute;overflow:hidden}.cm{position:absolute;background:#000}'
+    + '.pm{position:absolute;left:0;top:0;bottom:0;width:78%;box-sizing:border-box}.sb{position:absolute;top:0;bottom:0;width:22%}'
+    + '.br{font-size:9pt;font-weight:800;letter-spacing:.14em;color:var(--pc)}.big{font-size:54pt;font-weight:800;line-height:1.05;color:var(--pc);margin:1mm 0 0}.sub{font-size:14pt;font-weight:700}.chip{display:inline-block;border:.3mm solid #888;border-radius:1.5mm;padding:.3mm 2mm;font-size:8pt;font-weight:600;margin-top:3mm}.ft{position:absolute;left:10mm;right:6mm;bottom:5mm;border-top:.25mm solid #bbb;padding-top:1.5mm;font-size:8pt;color:#555}'
+    + '.si{position:absolute;left:50%;top:50%;width:80mm;transform:translate(-50%,-50%) rotate(-90deg);text-align:center}.si svg{width:66mm;height:13mm;display:block;margin:0 auto}.si .cd{font:700 11pt ui-monospace,Consolas,monospace;margin-top:1mm}.si .tr{font-size:7.5pt;color:#555;margin-top:1mm}'
+    + '.perf{position:absolute;top:0;bottom:0;border-left:.35mm dashed #777}.bh{display:flex;justify-content:space-between;font-weight:800;font-size:10pt;border-bottom:.6mm solid #222;padding-bottom:1mm;margin-bottom:2mm}.bc{display:grid;grid-template-columns:1fr 1fr;gap:6mm;font-size:8.5pt;line-height:1.35}.bc h6{font-size:9.5pt;font-weight:800;color:var(--pc);margin:0 0 1mm}.bc ul{margin:0;padding:0;list-style:none}.bc li{position:relative;padding-left:3.5mm}.bc ul.dt li:before{content:"•";position:absolute;left:0}.bc ol{margin:0;padding:0;list-style:none;counter-reset:n}.bc ol li{counter-increment:n;padding-left:4.5mm}.bc ol li:before{content:counter(n) ".";position:absolute;left:0;font-weight:700}.bc .y{font-weight:700;color:#1B5E20;margin-top:1.5mm}.nt{position:absolute;left:8mm;right:6mm;bottom:4mm;border-top:.25mm dashed #888;padding-top:1mm;font-size:6.5pt;color:#555;line-height:1.3}'
+    + '.t-band .bandbar{position:absolute;left:0;top:0;right:0;height:12mm;background:var(--pc)}.t-band .br{position:absolute;left:10mm;top:3.6mm;color:#fff;z-index:1}.t-band .pm{padding-top:19mm!important}'
+    + '.t-bold .pm{background:var(--pc);color:#fff}.t-bold .br,.t-bold .big,.t-bold .sub{color:#fff}.t-bold .chip{border-color:rgba(255,255,255,.8);color:#fff}.t-bold .ft{color:#fff;border-top-color:rgba(255,255,255,.5)}'
+    + '.t-gift .gi{position:absolute;right:8mm;top:7mm;font-size:34pt}.t-gift.card{box-shadow:inset 0 0 0 1.2mm var(--pc)}'
+    + '.t-minimal .pm{border-left:2.5mm solid var(--pc)}.t-minimal .big{color:#222}';
+  prtDoc = function (pp, o, autoPrint) {
+    var Bm = o.bleed ? 3 : 0, M = o.crop ? 9 : 4, TW = 210, TH = 95, AW = TW + 2 * Bm, AH = TH + 2 * Bm, W = AW + 2 * M, Hh = AH + 2 * M, X0 = M + Bm, Y0 = M + Bm, item = pp.benefit === 'item';
+    var tpl = pp.tpl || 'classic', th = PMP.PAPER_THEMES[pp.theme || 'red'] || PMP.PAPER_THEMES.red, vars = '--pc:' + th.pc + ';--pt:' + th.pt;
+    var bc = PMP.code128svg(pp.code, 40), rec = ppRecipients(pp), mm = function (n) { return n + 'mm'; }, sw = TW * 0.22, mw = TW - sw;
+    var tint = { classic: th.pt, gift: th.pt, band: 'linear-gradient(180deg,' + th.pc + ' ' + mm(Bm + 12) + ',#fff ' + mm(Bm + 12) + ')', bold: 'linear-gradient(90deg,' + th.pc + ' ' + (((Bm + mw) / AW) * 100).toFixed(2) + '%,#fff ' + (((Bm + mw) / AW) * 100).toFixed(2) + '%)', minimal: 'linear-gradient(90deg,' + th.pc + ' ' + mm(Bm + 2.5) + ',#fff ' + mm(Bm + 2.5) + ')' }[tpl] || th.pt;
+    function marks() {
+      if (!o.crop) return ''; var s = '', L = 4, g = Bm + 1, xs = [X0, X0 + TW], ys = [Y0, Y0 + TH];
+      xs.forEach(function (x) { ys.forEach(function (y) {
+        var dx = x === X0 ? -1 : 1, dy = y === Y0 ? -1 : 1;
+        s += '<div class="cm" style="left:' + mm(dx < 0 ? x - g - L : x + g) + ';top:' + mm(y - .125) + ';width:' + mm(L) + ';height:.25mm"></div>';
+        s += '<div class="cm" style="top:' + mm(dy < 0 ? y - g - L : y + g) + ';left:' + mm(x - .125) + ';height:' + mm(L) + ';width:.25mm"></div>';
+      }); });
+      return s;
+    }
+    function page(inner, bg, cls) { return '<section class="pg" style="width:' + mm(W) + ';height:' + mm(Hh) + '"><div class="art" style="left:' + mm(M) + ';top:' + mm(M) + ';width:' + mm(AW) + ';height:' + mm(AH) + ';background:' + bg + '"></div><div class="card ' + cls + '" style="' + vars + ';left:' + mm(X0) + ';top:' + mm(Y0) + ';width:' + mm(TW) + ';height:' + mm(TH) + '">' + inner + '</div>' + marks() + '</section>'; }
+    var front = (tpl === 'band' ? '<div class="bandbar"></div>' : '') + '<div class="pm" style="padding:9mm 6mm 4mm 10mm">' + (tpl === 'gift' ? '<div class="gi">🎁</div>' : '') + '<div class="br">PHARMAPLEX · ' + (item ? 'คูปองของแถม' : 'คูปองส่วนลด') + '</div><div class="big">' + (item ? 'ฟรี!' : B(pp.value)) + '</div><div class="sub">' + (item ? 'แลก ' + E(pp.item || 'ของแถม') + ' ฟรี' + (pp.min ? ' เมื่อซื้อครบ ' + B(pp.min) : '') : 'ส่วนลดทันที' + (pp.min ? ' เมื่อซื้อสินค้าครบ ' + B(pp.min) : '')) + '</div><span class="chip">' + (item ? 'แลกที่ร้านพาร์ทเนอร์ (ดูด้านหลัง)' : 'ใช้ที่ร้านที่ร่วมรายการ (ดูด้านหลัง)') + '</span><div class="ft">' + (pp.end ? 'ใช้ได้ถึง ' + E(dm(pp.end)) + ' · ' : '') + E(pp.name.replace('คูปองกระดาษ ', '')) + '</div></div>'
+      + '<div class="sb" style="right:0;background:rgba(0,0,0,.03)"><div class="si"><div>' + bc.svg + '</div><div class="cd">' + E(pp.code) + '</div><div class="tr">✂ ก้นคูปอง · ร้านฉีกเก็บไว้เบิก</div></div></div>' + (o.perf ? '<div class="perf" style="left:' + mm(mw) + '"></div>' : '');
+    var back = '<div class="sb" style="left:0;background:rgba(0,0,0,.03)"><div class="si"><div class="cd" style="margin:0">ก้นคูปอง</div></div></div>' + (o.perf ? '<div class="perf" style="left:' + mm(sw) + '"></div>' : '')
+      + '<div class="pm" style="left:' + mm(sw) + ';width:' + mm(mw) + ';padding:7mm 6mm 4mm 7mm"><div class="bh"><span>เงื่อนไขการใช้คูปอง</span><span style="font-family:ui-monospace,Consolas,monospace;font-size:9pt">ชุด ' + E(pp.code) + '</span></div><div class="bc"><div><h6>' + (item ? 'แลกได้ที่ร้านพาร์ทเนอร์' : 'ใช้ได้ที่ร้าน/สาขา') + '</h6><ul class="dt">' + rec.slice(0, 6).map(function (u) { return '<li>' + E(u.name) + (u.kind === 'ext' && u.branches ? ' — ' + E(u.branches) : '') + '</li>'; }).join('') + (pp.stores.mode === 'all' ? '<li>ทุกร้านที่ลงทะเบียนในระบบ</li>' : '') + '</ul><div class="y">✔ ใช้ที่หน้าร้านเท่านั้น</div></div><div><h6>สิทธิ์และเงื่อนไข</h6><ol>' + paperTermsList(pp).map(function (t) { return '<li>' + E(t) + '</li>'; }).join('') + '</ol></div></div><div class="nt">' + E(paperNote(pp)) + '</div></div>';
+    return '<!doctype html><html lang="th"><head><meta charset="utf-8"><title>' + E(pp.code) + ' — ไฟล์พิมพ์คูปองกระดาษ</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800&display=swap"><style>@page{size:' + mm(W) + ' ' + mm(Hh) + ';margin:0}' + PRT_CSS + '@media screen{.pg{box-shadow:0 1px 6px rgba(0,0,0,.3);margin-top:6mm}}@media print{body{background:#fff}.pg{margin:0;box-shadow:none}}</style></head><body>' + page(front, tint, 't-' + tpl) + page(back, '#fff', 't-' + tpl) + (autoPrint ? '<script>window.onload=function(){setTimeout(function(){window.print()},700)}<\/script>' : '') + '</body></html>';
+  };
+
+  /* ===== status tabs for the paper list (02) and claims queue (05) ===== */
+  function segFilter(seg, tbody, sts, keys, map, memo) {
+    if (!seg || !tbody) return;
+    var all = $$('tr', tbody), ph = all.filter(function (r) { return r.querySelector('td[colspan]'); }), rows = all.filter(function (r) { return ph.indexOf(r) < 0; }), cols = rows[0] ? rows[0].children.length : 8;
+    var empty = document.createElement('tr'); empty.className = 'seg-empty'; empty.style.display = 'none'; empty.innerHTML = '<td colspan="' + cols + '" class="center muted" style="padding:24px">ไม่มีรายการในสถานะนี้</td>'; tbody.appendChild(empty);
+    var norm = function (s) { return map && map[s] ? map[s] : s; }, cur = U.rd(memo, null) || keys[0];
+    if (keys.indexOf(cur) < 0) cur = keys[0];
+    function draw() {
+      seg.innerHTML = keys.map(function (k) { var n = k === keys[0] ? rows.length : sts.filter(function (s) { return norm(s) === k; }).length; return '<button type="button" data-k="' + k + '" class="' + (k === cur ? 'on' : '') + '">' + k + ' ' + n + '</button>'; }).join('');
+      var shown = 0; rows.forEach(function (r, i) { var ok = cur === keys[0] || norm(sts[i]) === cur; r.style.display = ok ? '' : 'none'; if (ok) shown++; }); ph.forEach(function (r) { r.style.display = cur === keys[0] ? '' : 'none'; }); empty.style.display = !shown && cur !== keys[0] ? '' : 'none';
+    }
+    seg.onclick = function (e) { var b = e.target.closest('button[data-k]'); if (!b) return; cur = b.getAttribute('data-k'); U.wr(memo, cur); draw(); };
+    draw();
+  }
+  (function () {
+    var p2 = H['coupon/02-admin-paper-list.html'];
+    H['coupon/02-admin-paper-list.html'] = function () {
+      p2(); var cfg = PMP.cfg(), now = cfg.now;
+      var sts = cfg.paper.map(function (p) { return !p.active ? 'ปิด' : (p.end && p.end < now ? 'หมดอายุ' : 'ใช้งาน'); });
+      segFilter($('.table-toolbar .seg'), $('table.table tbody'), sts, ['ทั้งหมด', 'ใช้งาน', 'ร่าง', 'หมดอายุ', 'ปิด'], null, 'pmpc.live.tab.paperlist');
+    };
+  })();
+  /* ===== coupon/05 เบิกเงินจากก้นคูปองกระดาษ — ตาราง + แท็บสถานะ + popup (รับก้น / ตรวจนับ / จ่ายเงิน) ===== */
+  H['coupon/05-admin-paper-claims.html'] = function () {
+    var KT = 'pmpc.live.tab.paperclaims', KEYS = ['ทั้งหมด', 'รอตรวจนับ', 'ตรวจนับแล้ว', 'จ่ายแล้ว', 'ปฏิเสธ'];
+    var tab = U.rd(KT, null); if (KEYS.indexOf(tab) < 0) tab = KEYS[0]; var q = '';
+    function cfg() { return PMP.cfg(); }
+    function claims() { return PMP.state().paperClaims || []; }
+    function ppOf(c) { return cfg().paper.filter(function (x) { return x.id === c.ppId; })[0]; }
+    function sponsored(pp) { return pp.benefit === 'item' && pp.settle !== 'pay'; }
+    function amt(c) { return (c.counted != null ? c.counted : c.stubs) * PMP.paperUnit(ppOf(c)); }
+    function cid(c) { var a = claims(), i = a.map(function (x) { return x.id; }).indexOf(c.id); return 'C-' + String(131 + a.length - i).padStart(4, '0'); }
+    function tabOf(c) { return c.status === 'ปิดงานแล้ว' ? 'จ่ายแล้ว' : c.status; }
+    function money(c) { return sponsored(ppOf(c)) ? 'ไม่มีการจ่าย' : B(amt(c)) + (c.counted == null ? '*' : ''); }
+    function byId(id) { return claims().filter(function (c) { return c.id === id; })[0]; }
+    function sum(a) { return a.reduce(function (t, c) { return t + (sponsored(ppOf(c)) ? 0 : amt(c)); }, 0); }
+    function chip(c) { var m = { 'รอตรวจนับ': 'info', 'ตรวจนับแล้ว': 'warning', 'จ่ายแล้ว': 'success', 'ปิดงานแล้ว': 'success', 'ปฏิเสธ': 'error' }; return '<span class="chip ' + (m[c.status] || '') + '">' + E(c.status === 'ตรวจนับแล้ว' ? 'ตรวจนับแล้ว (รอจ่าย)' : c.status) + '</span>'; }
+
+    /* ---- modal host (same .modal/.dialog classes as the rest of the system) ---- */
+    var mod = $('#p5modal'); if (!mod) { mod = document.createElement('div'); mod.id = 'p5modal'; mod.className = 'modal'; document.body.appendChild(mod); }
+    function openDlg(title, body, foot) { mod.innerHTML = '<div class="dialog md"><div class="dialog-h"><span>' + title + '</span><button class="x" type="button" data-close>✕</button></div><div class="dialog-b">' + body + '</div><div class="dialog-f">' + foot + '</div></div>'; mod.classList.add('on'); }
+    function closeDlg() { mod.classList.remove('on'); }
+    $$('.backdrop').forEach(function (b) { b.parentNode.removeChild(b); }); var note = $$('.muted.small.mb8')[0]; if (note) note.parentNode.removeChild(note);
+    function flagsHtml(c) {
+      if (!c.flags.length) return '<div class="fl ok"><span class="ck y">✓</span><span>ไม่มีธงเตือนจากระบบ — ผู้ส่งอยู่ในรายชื่อผู้รับ และก้นรวมไม่เกินจำนวนที่ออก</span></div>';
+      return c.flags.map(function (f) { var sev = /^⚠/.test(f), todo = /ไม่ได้อยู่ในรายชื่อ/.test(f) ? 'ตรวจว่าเป็นผู้รับของชุดนี้จริงไหม — ถ้าไม่ใช่ให้ปฏิเสธ' : /เกินจำนวน/.test(f) ? 'ก้นรวมเกินที่พิมพ์ — สงสัยสำเนา ตรวจก้นทุกใบก่อนจ่าย' : 'ตรวจก่อนจ่าย'; return '<div class="fl ' + (sev ? 'sev' : 'wrn') + '"><span class="ck ' + (sev ? 'n' : 'w') + '">!</span><span><b>' + E(f.replace(/^⚠\s*/, '')) + '</b><div class="small muted">ต้องทำ: ' + todo + '</div></span></div>'; }).join('');
+    }
+    function factsHtml(c) { var pp = ppOf(c), who = PMP.partner(c.storeId), sp = sponsored(pp); return '<div class="facts"><div><div class="l">ผู้ส่ง</div><div class="v" style="font-size:13.5px">' + E(who.name) + '</div></div><div><div class="l">ชุด / สิทธิ์</div><div class="v" style="font-size:13.5px">' + E(pp.code) + '<div class="small muted" style="font-weight:400">' + E(PMP.paperBenefitText(pp)) + '</div></div></div><div><div class="l">ร้านแจ้งว่าส่งมา</div><div class="v">' + c.stubs + ' ก้น</div></div><div><div class="l">ราคาต่อใบ</div><div class="v">' + (sp ? 'ไม่มีการจ่าย' : B(PMP.paperUnit(pp))) + '</div></div></div>'; }
+    function logHtml(c) { return '<div class="sep"></div><div class="label mb8">ประวัติ</div><div class="tl">' + (c.log || [{ d: c.d, t: 'รับก้น ' + c.stubs + ' ใบ' }]).map(function (l) { return '<div>' + dmy(l.d) + ' — ' + E(l.t) + '</div>'; }).join('') + '</div>'; }
+
+    /* ---- popup: รับก้นเข้าระบบ ---- */
+    function dlgAdd() {
+      var cf = cfg();
+      openDlg('รับก้นเข้าระบบ', '<div class="small muted mb8">บันทึกก้นคูปองที่ร้าน/พาร์ทเนอร์ส่งมา (ไปรษณีย์/หน้างาน) — บันทึกแล้วรายการไปรอ “ตรวจนับ”</div><div class="form-grid"><div class="field"><label>ใครส่งก้นมา *</label><select class="select" id="iWho">' + PMP.partners().map(function (u) { return '<option value="' + u.id + '">' + E(u.name) + (u.kind === 'ext' ? ' · นอกระบบ' : '') + '</option>'; }).join('') + '</select></div><div class="field"><label>ชุดคูปอง *</label><select class="select" id="iSet">' + cf.paper.map(function (p) { return '<option value="' + p.id + '">' + E(p.code + ' · ' + p.name) + '</option>'; }).join('') + '</select></div><div class="field"><label>จำนวนก้นที่แจ้ง (ใบ) *</label><input class="input" id="iN" type="number" min="1" placeholder="0"></div><div class="field"><label>วันที่รับก้น</label><input class="input" id="iD" type="date" value="' + cf.now + '"></div></div><div class="field mt16"><label>หมายเหตุ / หลักฐาน (ไม่บังคับ)</label><input class="input" id="iM" placeholder="เช่น ส่งทางไปรษณีย์ เลขพัสดุ EX123"></div><div class="soft mt16 small" id="iEst">ยอดประมาณ: ใส่จำนวนก้นเพื่อดูยอด</div>',
+        '<button class="btn text grey" type="button" data-close>ยกเลิก</button><button class="btn contained" type="button" id="iGo">บันทึกรับก้น</button>');
+      function est() { var p = cfg().paper.filter(function (x) { return x.id === $('#iSet').value; })[0], n = +$('#iN').value; $('#iEst').textContent = n > 0 ? 'ยอดประมาณ: ' + n.toLocaleString() + ' ใบ × ' + B(PMP.paperUnit(p)) + ' = ' + B(n * PMP.paperUnit(p)) + (sponsored(p) ? ' (พาร์ทเนอร์ออกเอง — ไม่มีการจ่าย)' : '') : 'ยอดประมาณ: ใส่จำนวนก้นเพื่อดูยอด'; }
+      $('#iN').oninput = est; $('#iSet').onchange = est;
+      $('#iGo').onclick = function () {
+        var r = PMP.paperClaim($('#iSet').value, $('#iWho').value, +$('#iN').value); if (r.error) { toast(r.error, true); return; }
+        var st = PMP.state(), c = st.paperClaims[0]; c.d = $('#iD').value || cfg().now; c.log[0].d = c.d; if ($('#iM').value.trim()) c.log[0].t += ' · ' + $('#iM').value.trim(); PMP.saveState(st);
+        closeDlg(); toast('รับก้น ' + r.n + ' ใบแล้ว — รอตรวจนับ' + (r.flags.length ? ' (มีธง ' + r.flags.length + ')' : '')); tab = 'รอตรวจนับ'; U.wr(KT, tab); draw();
+      };
+    }
+    /* ---- popup: ตรวจนับ ---- */
+    function dlgCount(c) {
+      var pp = ppOf(c), unit = PMP.paperUnit(pp), sp = sponsored(pp);
+      openDlg('ตรวจนับก้นคูปอง · ' + cid(c), factsHtml(c) + '<div class="label mb8">ธงเตือนจากระบบ</div>' + flagsHtml(c) + '<div class="small muted mt8">วิธีนับ: นับก้นที่ได้รับจริง (สแกนบาร์โค้ดทีละใบหรือนับมือ) แล้วกรอกจำนวน — ระบบเทียบกับที่ร้านแจ้งให้</div><div class="field mt16"><label>นับก้นได้จริง (ใบ) *</label><div class="input-adorn" style="max-width:220px"><input class="input" id="dCnt" type="number" min="0" value="' + c.stubs + '"><span class="adorn">ใบ</span></div></div><div class="cmp" id="dCmp"></div><div id="dRejBox" style="display:none" class="mt16"><div class="field"><label>เหตุผลที่ปฏิเสธ * (บังคับ)</label><textarea class="textarea input" id="dRejTxt" style="min-height:60px" placeholder="เช่น ก้นไม่ใช่ของชุดนี้ / ก้นซีดเป็นสำเนา"></textarea></div></div>' + logHtml(c),
+        '<button class="btn text grey" type="button" data-close>ยกเลิก</button><button class="btn outlined" type="button" id="dRej" style="color:var(--error-dark);border-color:var(--error)">ปฏิเสธ…</button><button class="btn contained" type="button" id="dOk">ยืนยันจำนวน</button>');
+      function cmp() { var n = +$('#dCnt').value, df = n - c.stubs; $('#dCmp').innerHTML = '<span>ร้านแจ้ง <b>' + c.stubs + '</b></span><span>→ นับได้ <b>' + (isNaN(n) ? 0 : n) + '</b></span><span style="color:' + (df ? 'var(--error-dark)' : 'var(--success-darker)') + '"><b>' + (df ? 'ผลต่าง ' + (df > 0 ? '+' : '') + df : 'ตรงกัน ✓') + '</b></span>' + (sp ? '' : '<span>→ ยอด <b>' + B((n || 0) * unit) + '</b></span>'); }
+      $('#dCnt').oninput = cmp; cmp();
+      $('#dOk').onclick = function () { var n = $('#dCnt').value === '' ? NaN : +$('#dCnt').value, r = PMP.paperAct(c.id, 'count', n); if (r.error) { toast(r.error, true); return; } closeDlg(); toast('ยืนยันจำนวน ' + n + ' ใบแล้ว — รอจ่ายเงิน'); draw(); };
+      var rejing = false;
+      $('#dRej').onclick = function () {
+        if (!rejing) { rejing = true; $('#dRejBox').style.display = 'block'; $('#dRejTxt').focus(); $('#dRej').textContent = 'ยืนยันปฏิเสธ'; $('#dRej').style.background = 'var(--error)'; $('#dRej').style.color = '#fff'; return; }
+        var t = $('#dRejTxt').value.trim(); if (!t) { toast('กรอกเหตุผลที่ปฏิเสธ', true); return; } PMP.paperAct(c.id, 'reject', null, { reason: t }); closeDlg(); toast('ปฏิเสธรายการแล้ว'); draw();
+      };
+    }
+    /* ---- popup: บันทึกจ่ายเงิน ---- */
+    function dlgPay(c) {
+      var pp = ppOf(c), sp = sponsored(pp), unit = PMP.paperUnit(pp);
+      openDlg((sp ? 'ปิดงาน · ' : 'บันทึกจ่ายเงิน · ') + cid(c), factsHtml(c) + '<div class="soft mb16"><div class="small muted">ยอดที่ต้องจ่าย</div><div style="font-size:22px;font-weight:800">' + (sp ? 'ไม่มีการจ่าย (พาร์ทเนอร์ออกเอง)' : B(c.amount)) + '</div><div class="small muted">นับได้ ' + c.counted + ' ใบ' + (c.counted !== c.stubs ? ' (ร้านแจ้ง ' + c.stubs + ' · ผลต่าง ' + (c.counted - c.stubs > 0 ? '+' : '') + (c.counted - c.stubs) + ')' : '') + (sp ? '' : ' × ' + B(unit)) + '</div></div>'
+        + (c.flags.length ? '<div class="label mb8">ธงเตือนจากระบบ</div>' + flagsHtml(c) + '<div class="field mt8"><label>เหตุผลอนุมัติพิเศษ * (บังคับ เพราะมีธงเตือน)</label><textarea class="textarea input" id="dNote" style="min-height:60px" placeholder="เช่น ตรวจก้นทุกใบแล้ว เป็นของจริง"></textarea></div>' : '')
+        + (sp ? '' : '<div class="form-grid mt16"><div class="field"><label>วันที่จ่าย</label><input class="input" id="dDate" type="date" value="' + cfg().now + '"></div><div class="field"><label>เลขอ้างอิงการโอน (ไม่บังคับ)</label><input class="input" id="dRef" placeholder="เช่น SCB ****1234"></div></div>') + logHtml(c),
+        '<button class="btn text grey" type="button" data-close>ยกเลิก</button><button class="btn outlined" type="button" id="dBack">ส่งกลับตรวจนับใหม่</button><button class="btn contained" type="button" id="dPay">' + (sp ? 'ปิดงาน' : 'บันทึกจ่ายเงิน') + '</button>');
+      $('#dBack').onclick = function () { PMP.paperAct(c.id, 'recount'); closeDlg(); toast('ส่งกลับไปตรวจนับใหม่'); draw(); };
+      $('#dPay').onclick = function () {
+        var note = $('#dNote') ? $('#dNote').value.trim() : ''; if (c.flags.length && !note) { toast('มีธงเตือน — กรอกเหตุผลอนุมัติพิเศษก่อนจ่าย', true); $('#dNote').focus(); return; }
+        var r = PMP.paperAct(c.id, 'pay', null, { ref: $('#dRef') ? $('#dRef').value.trim() : '', date: $('#dDate') ? $('#dDate').value : cfg().now, note: note }); if (r.error) { toast(r.error, true); return; }
+        closeDlg(); toast(sp ? 'ปิดงานแล้ว' : 'บันทึกจ่ายเงินแล้ว'); draw();
+      };
+    }
+    /* ---- popup: ดูรายละเอียด ---- */
+    function dlgView(c) {
+      var pp = ppOf(c), sp = sponsored(pp);
+      openDlg('รายละเอียด · ' + cid(c) + ' ' + chip(c), factsHtml(c) + '<div class="soft"><b>' + (c.status === 'ปฏิเสธ' ? 'ปฏิเสธ' : sp ? 'ปิดงานแล้ว (ไม่มีการจ่าย)' : 'จ่ายแล้ว ' + B(c.amount)) + '</b>' + (c.counted != null ? '<div class="small muted mt8">นับได้ ' + c.counted + ' ก้น (ร้านแจ้ง ' + c.stubs + ')</div>' : '') + (c.reason ? '<div class="small muted">เหตุผล: ' + E(c.reason) + '</div>' : '') + (c.payRef ? '<div class="small muted">อ้างอิง: ' + E(c.payRef) + '</div>' : '') + '<div class="small muted">แก้ตัวเลขไม่ได้ — ถ้าผิดให้บันทึกรายการปรับยอดใหม่</div></div>' + logHtml(c), '<button class="btn contained" type="button" data-close>ปิด</button>');
+    }
+
+    /* ---- table + tabs ---- */
+    function draw() {
+      var a = claims(), wait = a.filter(function (c) { return c.status === 'รอตรวจนับ'; }), pay = a.filter(function (c) { return c.status === 'ตรวจนับแล้ว'; }), done = a.filter(function (c) { return c.status === 'จ่ายแล้ว' || c.status === 'ปิดงานแล้ว'; });
+      var sv = $$('.stat-grid .stat'); function stat(i, v, l) { if (sv[i]) { $('.v', sv[i]).textContent = v; $('.l', sv[i]).textContent = l; } }
+      stat(0, wait.length, 'รอตรวจนับ (ประมาณ ' + B(sum(wait)) + ')'); stat(1, pay.length, 'ตรวจนับแล้ว รอจ่าย (' + B(sum(pay)) + ')'); stat(2, B(sum(done)), 'จ่ายแล้ว'); stat(3, a.filter(function (c) { return c.flags.length && stOpen(c); }).length, 'มีธงเตือนที่ต้องตัดสินใจ');
+      var seg = $('.table-toolbar .seg'); seg.innerHTML = KEYS.map(function (k) { var n = k === KEYS[0] ? a.length : a.filter(function (c) { return tabOf(c) === k; }).length; return '<button type="button" data-k="' + k + '" class="' + (k === tab ? 'on' : '') + '">' + k + ' ' + n + '</button>'; }).join('');
+      var rows = a.filter(function (c) { if (tab !== KEYS[0] && tabOf(c) !== tab) return false; if (!q) return true; var t = (PMP.partner(c.storeId).name + ' ' + ppOf(c).code + ' ' + cid(c)).toLowerCase(); return t.indexOf(q) > -1; });
+      $('table.table tbody').innerHTML = rows.map(function (c) {
+        var who = PMP.partner(c.storeId), pp = ppOf(c), act = c.status === 'รอตรวจนับ' ? '<a href="#" data-a="count" data-id="' + c.id + '">ตรวจนับ</a>' : c.status === 'ตรวจนับแล้ว' ? '<a href="#" data-a="pay" data-id="' + c.id + '">' + (sponsored(pp) ? 'ปิดงาน' : 'บันทึกจ่ายเงิน') + '</a>' : '<a href="#" data-a="view" data-id="' + c.id + '">ดูรายละเอียด</a>';
+        return '<tr><td class="nowrap"><b class="mono">' + cid(c) + '</b></td><td><b>' + E(who.name) + '</b> ' + kindChipP(who) + c.flags.map(function (f) { return '<div style="margin-top:4px"><span class="chip soft-error" style="height:20px;font-size:11px">⚠ ' + (/ไม่ได้อยู่ในรายชื่อ/.test(f) ? 'ไม่อยู่ในรายชื่อผู้รับ' : /เกินจำนวน/.test(f) ? 'ก้นรวมเกินจำนวนที่ออก' : 'ตรวจก่อนจ่าย') + '</span></div>'; }).join('') + '</td><td class="mono">' + E(pp.code) + '</td><td class="num">' + c.stubs.toLocaleString() + '</td><td class="num">' + (c.counted != null ? c.counted.toLocaleString() : '—') + '</td><td class="num"><b>' + money(c) + '</b></td><td class="nowrap">' + dmy(c.d) + '</td><td>' + chip(c) + '</td><td class="nowrap">' + act + '</td></tr>';
+      }).join('') || '<tr><td colspan="9" class="center muted" style="padding:28px">' + (a.length ? 'ไม่มีรายการในสถานะนี้' : 'ยังไม่มีรายการ — กด “＋ รับก้นเข้าระบบ” เพื่อบันทึกก้นที่ร้าน/พาร์ทเนอร์ส่งมา') + '</td></tr>';
+      var pg = $('.pager'); if (pg) pg.innerHTML = '<span>แถวต่อหน้า 25</span><span>' + (rows.length ? '1–' + rows.length : '0') + ' จาก ' + rows.length + '</span>';
+    }
+    function stOpen(c) { return c.status === 'รอตรวจนับ' || c.status === 'ตรวจนับแล้ว'; }
+    var root = $('#screen');
+    if (!root._p5) {
+      root._p5 = 1;
+      root.addEventListener('click', function (e) {
+        var k = e.target.closest('.table-toolbar .seg button[data-k]'); if (k) { tab = k.getAttribute('data-k'); U.wr(KT, tab); draw(); return; }
+        var a = e.target.closest('a[data-a]'); if (a) { e.preventDefault(); var c = byId(a.getAttribute('data-id')); if (c) ({ count: dlgCount, pay: dlgPay, view: dlgView })[a.getAttribute('data-a')](c); return; }
+        var add = e.target.closest('.page-head a[href="#dlgAdd"]'); if (add) { e.preventDefault(); dlgAdd(); }
+      });
+      var s = $('.table-toolbar input'); if (s) s.addEventListener('input', function () { q = s.value.trim().toLowerCase(); draw(); });
+    }
+    draw();  };
+  /* ===== campaign module: working status tabs (01 list · 05 progress) + claims queue as table + popup (04) ===== */
+  function tabFilter(seg, tbody, defs, memo, input) {
+    if (!seg || !tbody) return;
+    var all = $$('tr', tbody), ph = all.filter(function (r) { return r.querySelector('td[colspan]'); }), rows = all.filter(function (r) { return ph.indexOf(r) < 0; }), cols = rows[0] ? rows[0].children.length : 6;
+    var empty = document.createElement('tr'); empty.className = 'seg-empty'; empty.style.display = 'none'; empty.innerHTML = '<td colspan="' + cols + '" class="center muted" style="padding:24px">ไม่มีรายการในสถานะนี้</td>'; tbody.appendChild(empty);
+    var keys = defs.map(function (d) { return d.k; }), cur = U.rd(memo, null); if (keys.indexOf(cur) < 0) cur = keys[0];
+    function draw() {
+      seg.innerHTML = defs.map(function (d) { var n = rows.filter(function (r, i) { return d.f(r, i); }).length; return '<button type="button" data-k="' + d.k + '" class="' + (d.k === cur ? 'on' : '') + '">' + d.k + ' ' + n + '</button>'; }).join('');
+      var q = input ? input.value.trim().toLowerCase() : '', d0 = defs[keys.indexOf(cur)], shown = 0;
+      rows.forEach(function (r, i) { var ok = d0.f(r, i) && (!q || r.textContent.toLowerCase().indexOf(q) > -1); r.style.display = ok ? '' : 'none'; if (ok) shown++; });
+      ph.forEach(function (r) { r.style.display = rows.length ? 'none' : ''; }); empty.style.display = rows.length && !shown ? '' : 'none';
+    }
+    seg.onclick = function (e) { var b = e.target.closest('button[data-k]'); if (!b) return; cur = b.getAttribute('data-k'); U.wr(memo, cur); draw(); };
+    if (input && !input._tf) { input._tf = 1; input.addEventListener('input', draw); }
+    draw();
+  }
+  (function () {
+    var p1 = H['campaign/01-admin-list.html'];
+    H['campaign/01-admin-list.html'] = function () {
+      p1(); var cfg = PMP.cfg(), now = cfg.now, lab = cfg.ladders.map(function (L) { var s = PMP.status(L, now); return s === 'running' ? 'กำลังดำเนินการ' : s === 'expired' ? 'สิ้นสุด' : 'ร่าง'; });
+      tabFilter($('.table-toolbar .seg'), $('table.table tbody'), ['ทั้งหมด', 'กำลังดำเนินการ', 'ร่าง', 'สิ้นสุด'].map(function (k) { return { k: k, f: function (r, i) { return k === 'ทั้งหมด' || lab[i] === k; } }; }), 'pmpc.live.tab.camplist', $('.table-toolbar input'));
+      var sel = $('.table-toolbar select'); if (sel) sel.style.display = 'none'; var cnt = $('.table-toolbar > .muted.small'); if (cnt) cnt.textContent = 'แสดง ' + cfg.ladders.length + ' แคมเปญ';
+    };
+    var p5 = H['campaign/05-admin-progress.html'];
+    H['campaign/05-admin-progress.html'] = function () {
+      p5(); var cfg = PMP.cfg(), st = PMP.state(), L = cfg.ladders[0]; if (!L) return;
+      var arr = PMP.customers.map(function (c) { var lv = st.customers[c.id].ladder[L.id] || { spent: 0 }, nxt = L.tiers.filter(function (t) { return t.at > lv.spent; })[0]; return { s: lv.spent, p: nxt ? lv.spent / nxt.at * 100 : 100 }; }).sort(function (x, y) { return y.s - x.s; });
+      var left = Math.round((new Date(L.end) - new Date(cfg.now)) / 864e5), pct = function (i) { return arr[i] ? arr[i].p : 0; };
+      tabFilter($('.table-toolbar .seg'), $('table.table tbody'), [
+        { k: 'ทั้งหมด', f: function () { return true; } }, { k: '≥ 80%', f: function (r, i) { return pct(i) >= 80 && pct(i) < 100; } }, { k: '≥ 95%', f: function (r, i) { return pct(i) >= 95 && pct(i) < 100; } }, { k: 'สัญญาใกล้หมด (≤ 90 วัน)', f: function () { return left <= 90; } }
+      ], 'pmpc.live.tab.campprog', $('.table-toolbar input'));
+      document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('#screen button.btn'); if (b && /ส่งเตือน/.test(b.textContent)) { toast('ส่งเตือนแล้ว (ในเว็บ)'); b.textContent = 'ส่งเตือนแล้ว ✓'; b.disabled = true; } });
+    };
+  })();
+
+  /* ---- campaign/04 คิวคำขอรับรางวัล ---- */
+  H['campaign/04-admin-claims.html'] = function () {
+    var KT = 'pmpc.live.tab.campclaims', KEYS = ['ทั้งหมด', 'รอตรวจ', 'อนุมัติแล้ว', 'ปฏิเสธ'], tab = U.rd(KT, null); if (KEYS.indexOf(tab) < 0) tab = KEYS[0]; var q = '';
+    function claims() { return PMP.state().claims || []; }
+    function tabOf(c) { return c.status === 'รอตรวจ' ? 'รอตรวจ' : c.status === 'ปฏิเสธ' ? 'ปฏิเสธ' : 'อนุมัติแล้ว'; }
+    function cid(c) { var a = claims(), i = a.map(function (x) { return x.id; }).indexOf(c.id); return 'CL-' + String(44 + a.length - i).padStart(4, '0'); }
+    function cust(c) { return PMP.customers.filter(function (x) { return x.id === c.cid; })[0] || { name: c.cid, type: '' }; }
+    function lt(c) { var cfg = PMP.cfg(), L = cfg.ladders.filter(function (x) { return x.id === c.lid; })[0], t = L && L.tiers.filter(function (x) { return x.id === c.tid; })[0]; return { L: L, t: t }; }
+    function reward(c) { return PMP.rewardsOf('campaign', c.lid + '-' + c.tid).map(function (i) { return PMP.describe(i, PMP.cfg()); }).join(' + ') || '—'; }
+    function chip(c) { var t = tabOf(c); return '<span class="chip ' + (t === 'รอตรวจ' ? 'soft-warning' : t === 'ปฏิเสธ' ? 'error' : 'success') + '">' + t + '</span>'; }
+    var mod = $('#p4modal'); if (!mod) { mod = document.createElement('div'); mod.id = 'p4modal'; mod.className = 'modal'; document.body.appendChild(mod); }
+    function openDlg(title, body, foot) { mod.innerHTML = '<div class="dialog md"><div class="dialog-h"><span>' + title + '</span><button class="x" type="button" data-close>✕</button></div><div class="dialog-b">' + body + '</div><div class="dialog-f">' + foot + '</div></div>'; mod.classList.add('on'); }
+    function closeDlg() { mod.classList.remove('on'); }
+    $$('.backdrop').forEach(function (b) { b.parentNode.removeChild(b); }); var note = $$('.muted.small.mb8')[0]; if (note) note.parentNode.removeChild(note);
+    function detail(c, review) {
+      var x = lt(c), cu = cust(c), lv = (PMP.state().customers[c.cid].ladder[c.lid] || { spent: 0 }), snap = c.snap != null ? c.snap : lv.spent;
+      var h = '<div class="facts"><div><div class="l">ลูกค้า</div><div class="v">' + E(cu.name) + '</div></div><div><div class="l">แคมเปญ / ขั้น</div><div class="v">' + E(c.name) + '</div></div><div><div class="l">รางวัลที่ขอ</div><div class="v" style="font-size:13px">' + E(reward(c)) + '</div></div><div><div class="l">ยอดสะสม ณ วันที่ขอ</div><div class="v">' + B(snap) + (x.t ? ' <span class="chip ' + (snap >= x.t.at ? 'success' : 'error') + ' sq">' + (snap >= x.t.at ? 'ถึงเกณฑ์ ' + B(x.t.at) + ' ✓' : 'ยังไม่ถึงเกณฑ์ ' + B(x.t.at)) + '</span>' : '') + '</div></div></div>';
+      h += '<div class="sep"></div><div class="label mb8">คำตอบในฟอร์ม</div><dl class="kv">' + (c.labels.length ? c.labels.map(function (l, k) { return '<dt>' + E(l) + '</dt><dd>' + E(c.answers[k] || '-') + '</dd>'; }).join('') : '<dt>—</dt><dd>ขั้นนี้ไม่มีฟอร์ม</dd>') + '</dl>';
+      if (review) h += '<div id="rjBox" style="display:none" class="mt16"><div class="field"><label>เหตุผลที่ปฏิเสธ * (บังคับ)</label><textarea class="textarea input" id="rjTxt" style="min-height:60px" placeholder="เช่น สำเนาพาสปอร์ตไม่ชัด"></textarea></div></div>';
+      if (c.reason) h += '<div class="soft mt16 small">เหตุผลที่ปฏิเสธ: ' + E(c.reason) + '</div>';
+      h += '<div class="sep"></div><div class="label mb8">ประวัติ</div><div class="tl">' + (c.log || [{ d: c.d, t: 'ส่งคำขอโดยลูกค้า (ตัดสิทธิ์ขั้นนี้ไว้แล้ว)' }]).map(function (l) { return '<div>' + dmy(l.d) + ' — ' + E(l.t) + '</div>'; }).join('') + '</div>';
+      return h;
+    }
+    function dlgReview(c) {
+      openDlg('ตรวจคำขอ · ' + cid(c), detail(c, true), '<button class="btn text grey" type="button" data-close>ยกเลิก</button><button class="btn outlined" type="button" id="rjBtn" style="color:var(--error-dark);border-color:var(--error)">ปฏิเสธ…</button><button class="btn contained" type="button" id="okBtn">อนุมัติ</button>');
+      $('#okBtn').onclick = function () { var r = PMP.claimAct(c.id, 'approve'); if (r.error) { toast(r.error, true); return; } closeDlg(); toast('อนุมัติแล้ว — ' + r.out.join(' · ')); draw(); };
+      var rej = false; $('#rjBtn').onclick = function () { if (!rej) { rej = true; $('#rjBox').style.display = 'block'; $('#rjTxt').focus(); this.textContent = 'ยืนยันปฏิเสธ'; this.style.background = 'var(--error)'; this.style.color = '#fff'; return; } var t = $('#rjTxt').value.trim(); if (!t) { toast('กรอกเหตุผลที่ปฏิเสธ', true); return; } var r = PMP.claimAct(c.id, 'reject', t); if (r.error) { toast(r.error, true); return; } closeDlg(); toast('ปฏิเสธแล้ว — คืนสิทธิ์ให้ขั้นนี้'); draw(); };
+    }
+    function dlgView(c) { openDlg('รายละเอียด · ' + cid(c) + ' ' + chip(c), detail(c, false), '<button class="btn contained" type="button" data-close>ปิด</button>'); }
+    function draw() {
+      var a = claims(), w = a.filter(function (c) { return tabOf(c) === 'รอตรวจ'; }).length, ok = a.filter(function (c) { return tabOf(c) === 'อนุมัติแล้ว'; }).length, no = a.filter(function (c) { return tabOf(c) === 'ปฏิเสธ'; }).length;
+      var sv = $$('.stat-grid .stat'); function stat(i, v, l) { if (sv[i]) { $('.v', sv[i]).textContent = v; $('.l', sv[i]).textContent = l; } } stat(0, w, 'รอตรวจ'); stat(1, ok, 'อนุมัติแล้ว'); stat(2, no, 'ปฏิเสธ');
+      var L = PMP.cfg().ladders[0], st = PMP.state(); if (L) stat(3, PMP.customers.filter(function (c) { var lv = st.customers[c.id].ladder[L.id] || { spent: 0 }, nx = L.tiers.filter(function (t) { return t.at > lv.spent; })[0]; return nx && lv.spent / nx.at >= .8; }).length, 'ลูกค้าใกล้ถึงเกณฑ์ (≥ 80%)');
+      $('.table-toolbar .seg').innerHTML = KEYS.map(function (k) { var n = k === KEYS[0] ? a.length : k === 'รอตรวจ' ? w : k === 'อนุมัติแล้ว' ? ok : no; return '<button type="button" data-k="' + k + '" class="' + (k === tab ? 'on' : '') + '">' + k + ' ' + n + '</button>'; }).join('');
+      var rows = a.filter(function (c) { if (tab !== KEYS[0] && tabOf(c) !== tab) return false; if (!q) return true; return (cust(c).name + ' ' + c.name + ' ' + cid(c)).toLowerCase().indexOf(q) > -1; });
+      $('table.table tbody').innerHTML = rows.map(function (c) {
+        var act = c.status === 'รอตรวจ' ? '<a href="#" data-a="review" data-id="' + c.id + '">ตรวจคำขอ</a>' : '<a href="#" data-a="view" data-id="' + c.id + '">ดูรายละเอียด</a>';
+        return '<tr><td class="nowrap"><b class="mono">' + cid(c) + '</b></td><td><b>' + E(cust(c).name) + '</b><div class="small muted">' + E(cust(c).type) + '</div></td><td><span class="src">' + E(c.name) + '</span><div><b>' + E(reward(c)) + '</b></div><div class="small muted">' + c.labels.slice(0, 2).map(function (l, k) { return E(l) + ': ' + E(c.answers[k] || '-'); }).join(' · ') + '</div></td><td class="nowrap">' + dmy(c.d) + '</td><td>' + chip(c) + '</td><td class="nowrap">' + act + '</td></tr>';
+      }).join('') || '<tr><td colspan="6" class="center muted" style="padding:28px">' + (a.length ? 'ไม่มีรายการในสถานะนี้' : 'ยังไม่มีคำขอรับรางวัล') + '</td></tr>';
+      var pg = $('.pager'); if (pg) pg.innerHTML = '<span>แถวต่อหน้า 25</span><span>' + (rows.length ? '1–' + rows.length : '0') + ' จาก ' + rows.length + '</span>';
+    }
+    var root = $('#screen');
+    if (!root._p4) {
+      root._p4 = 1;
+      root.addEventListener('click', function (e) {
+        var k = e.target.closest('.table-toolbar .seg button[data-k]'); if (k) { tab = k.getAttribute('data-k'); U.wr(KT, tab); draw(); return; }
+        var a = e.target.closest('a[data-a]'); if (a) { e.preventDefault(); var c = claims().filter(function (x) { return x.id === a.getAttribute('data-id'); })[0]; if (c) (a.getAttribute('data-a') === 'review' ? dlgReview : dlgView)(c); }
+      });
+      var s = $('.table-toolbar input'); if (s) s.addEventListener('input', function () { q = s.value.trim().toLowerCase(); draw(); });
+    }
+    draw();
+  };
+  /* ================= raffle v2 — ONE mode per activity (A ลุ้นทันที | B จับตามรอบ) ================= */
+  var MODE = { A: ['ลุ้นทันที', 'a', 'ลูกค้าใช้สิทธิ์ 1 ใบ หมุนวงล้อ รู้ผลทันที'], B: ['จับตามรอบ', 'b', 'ลูกค้านำสิทธิ์ลงกอง แอดมินจับรางวัลตามวันประกาศผล'] };
+  function mchip(f) { return '<span class="mode ' + MODE[f.mode][1] + '">' + f.mode + '</span> ' + MODE[f.mode][0]; }
+  function rfQ() { var m = /[?&]f=([^&]+)/.exec(location.search); return m ? m[1] : null; }
+  function rfCur(mode, kind) { var l = PMP.cfg().raffles.filter(function (x) { return !mode || x.mode === mode; }), id = rfQ() || U.rd(selKey(kind || 'raffle'), null); return l.filter(function (x) { return x.id === id; })[0] || l[0]; }
+  function rfUsed(f) { var st = PMP.state(); return Object.keys(st.customers).some(function (k) { var c = st.customers[k]; return c.draws.some(function (d) { return d.fid === f.id; }) || (st.shared.rafflePool[f.id] || {})[k]; }) || !!(st.shared.drawResult || {})[f.id]; }
+  function rfAudLabel(a) { return { all: 'ลูกค้าทุกคน', B2B: 'เฉพาะร้านค้า (B2B)', B2C: 'เฉพาะลูกค้าทั่วไป (B2C)' }[a] || a; }
+  function rfTickets(f) { var st = PMP.state(); return Object.keys(st.customers).reduce(function (a, k) { return a + (st.customers[k].tickets[f.id] || 0); }, 0); }
+  function rfPool(f) { var p = PMP.state().shared.rafflePool[f.id] || {}; return Object.keys(p).reduce(function (a, k) { return a + p[k]; }, 0); }
+  function rfSources(f) { // where tickets can come from (other modules' reward = entitle → this activity)
+    var cfg = PMP.cfg(), out = [];
+    function chk(mod, ref, label) { if (PMP.rewardsOf(mod, ref).some(function (i) { return i.k === 'entitle' && i.activityId === f.id; })) out.push(label); }
+    cfg.promos.forEach(function (p) { chk('promotion', p.id, 'โปรโมชั่น “' + p.name + '”'); });
+    cfg.ladders.forEach(function (L) { L.tiers.forEach(function (t) { chk('campaign', L.id + '-' + t.id, 'แคมเปญ “' + L.name + '” · ' + t.name); }); });
+    cfg.catalog && cfg.catalog.forEach(function (r) { chk('points', r.id, 'แลกพอยท์: ' + r.name); });
+    return out;
+  }
+  function rfNew(mode) {
+    var nid = U.uid('f');
+    setCfg(function (c) {
+      var base = { id: nid, mode: mode, name: mode === 'A' ? 'กิจกรรมลุ้นทันทีใหม่' : 'กิจกรรมจับตามรอบใหม่', desc: MODE[mode][2], start: c.now, end: PMP.addDays(c.now, 60), active: false, aud: 'all', perBaht: 1000, ptsPer: 0, style: 'wheel', speed: 'normal' };
+      if (mode === 'A') base.prizes = [{ id: U.uid('z'), name: 'รางวัลปลอบใจ', weight: 100, stock: 999 }]; else { base.drawAt = PMP.addDays(c.now, 65); base.poolOthers = 100; base.prizes = [{ id: U.uid('z'), name: 'รางวัลใหญ่', winners: 1 }]; }
+      c.raffles.push(base); base.prizes.forEach(function (z) { PMP.saveRewards('raffle', z.id, [{ k: 'points', mode: 'fixed', pts: 100 }]); });
+    });
+    U.wr(selKey('raffle'), nid); return nid;
+  }
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-rfnew]'); if (b) { rfNew(b.getAttribute('data-rfnew')); location.href = '02-admin-editor.html'; } var s = e.target.closest && e.target.closest('[data-rfsel]'); if (s) U.wr(selKey('raffle'), s.getAttribute('data-rfsel')); });
+
+  /* ---- 01 รายการกิจกรรม ---- */
+  H['raffle/01-admin-list.html'] = function () {
+    var cfg = PMP.cfg(), st = PMP.state(), now = cfg.now, root = $('#screen'), all = cfg.raffles;
+    var run = all.filter(function (f) { return PMP.status(f, now) === 'running'; }).length, waitDraw = all.filter(function (f) { return f.mode === 'B' && !PMP.drawResult(f.id); }).length;
+    var sv = $$('.grid.g4 .stat', root);
+    function stat(i, l, v, s) { if (sv[i]) sv[i].innerHTML = '<div class="l">' + l + '</div><div class="v num">' + v + '</div><div class="small muted">' + s + '</div>'; }
+    stat(0, 'กิจกรรมที่เปิดอยู่', run + ' / ' + all.length, 'ณ วันที่จำลอง ' + dmy(now));
+    stat(1, '<span class="mode a">A</span> ลุ้นทันที', all.filter(function (f) { return f.mode === 'A'; }).length + ' กิจกรรม', 'สิทธิ์ค้างในบัญชีลูกค้า ' + all.filter(function (f) { return f.mode === 'A'; }).reduce(function (a, f) { return a + rfTickets(f); }, 0) + ' ใบ');
+    stat(2, '<span class="mode b">B</span> จับตามรอบ', all.filter(function (f) { return f.mode === 'B'; }).length + ' กิจกรรม', 'อยู่ในกองรอจับ ' + all.filter(function (f) { return f.mode === 'B'; }).reduce(function (a, f) { return a + rfPool(f); }, 0) + ' ใบ (ลูกค้าในจำลอง)');
+    stat(3, 'รอจับรางวัล', waitDraw, waitDraw ? 'ไปที่ “จับรางวัล (B)”' : 'ไม่มีกิจกรรมค้าง');
+    var rows = all.map(function (f) {
+      var s = PMP.status(f, now), used = f.prizes.reduce(function (a, z) { return a + (st.shared.prizeUsed[z.id] || 0); }, 0), res = PMP.drawResult(f.id);
+      var stat2 = f.mode === 'A' ? 'ถูกรางวัลแล้ว <b>' + used + '</b> ครั้ง · สิทธิ์ค้าง ' + rfTickets(f) + ' ใบ' : res ? 'จับแล้ว · ' + res.winners.length + ' ผู้โชคดี' : 'กองรอจับ <b>' + (rfPool(f) + (f.poolOthers || 0)) + '</b> ใบ · ประกาศผล ' + dmy(f.drawAt);
+      return '<tr><td><b>' + E(f.name) + '</b><div class="ev-id">' + f.id.toUpperCase() + ' · ' + E(rfAudLabel(f.aud)) + '</div></td><td>' + mchip(f) + (f.mode === 'A' ? '<div class="small muted">' + STY[rfStyle(f)][1] + ' ' + STY[rfStyle(f)][0] + '</div>' : '') + '</td><td class="nowrap">' + dmy(f.start) + ' – ' + dmy(f.end) + '</td><td>' + f.prizes.length + ' รายการ' + (f.mode === 'B' ? ' · ' + f.prizes.reduce(function (a, z) { return a + (z.winners || 1); }, 0) + ' ผู้โชคดี' : '') + '</td><td class="small">' + stat2 + '</td><td>' + statusChip(f, now) + '</td><td class="nowrap"><a class="btn text sm" href="02-admin-editor.html" data-rfsel="' + f.id + '">ตั้งค่า</a><a class="btn text sm" href="03-admin-prizes-budget.html" data-rfsel="' + f.id + '">รางวัล</a>' + (f.mode === 'B' ? '<a class="btn text sm" href="04-admin-draw-run.html" data-rfsel="' + f.id + '">จับรางวัล</a>' : '') + '<a class="btn text sm grey" href="#" data-rfact="tog|' + f.id + '">' + (f.active ? 'ปิด' : 'เปิด') + '</a><a class="btn text sm grey" href="#" data-rfact="dup|' + f.id + '">ทำซ้ำ</a></td></tr>';
+    }).join('');
+    $('table.table tbody', root).innerHTML = rows || '<tr><td colspan="7" class="center muted" style="padding:24px">ยังไม่มีกิจกรรม — กด “สร้างกิจกรรม” ด้านบน</td></tr>';
+    tabFilter($('.table-toolbar .seg', root), $('table.table tbody', root), [
+      { k: 'ทั้งหมด', f: function () { return true; } }, { k: 'ลุ้นทันที (A)', f: function (r, i) { return all[i].mode === 'A'; } }, { k: 'จับตามรอบ (B)', f: function (r, i) { return all[i].mode === 'B'; } }
+    ], 'pmpc.live.tab.raffle', $('.table-toolbar input', root));
+  };
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('[data-rfact]'); if (!a) return; e.preventDefault();
+    var d = a.getAttribute('data-rfact').split('|'), cfg = PMP.cfg(), f = cfg.raffles.filter(function (x) { return x.id === d[1]; })[0]; if (!f) return;
+    if (d[0] === 'tog') f.active = !f.active; else { var n = U.clone(f); n.id = U.uid('f'); n.name += ' (สำเนา)'; n.active = false; n.prizes = n.prizes.map(function (z) { var nz = U.clone(z); nz.id = U.uid('z'); PMP.saveRewards('raffle', nz.id, PMP.rewardsOf('raffle', z.id)); return nz; }); cfg.raffles.push(n); }
+    PMP.saveCfg(cfg); rerender(); toast('บันทึกแล้ว');
+  });
+  hl('raffle');
+
+  function styleBlock(f) {
+    if (f.mode !== 'A') return '';
+    var cur = rfStyle(f);
+    function card(k) { return '<label class="radio-card"><input type="radio" name="rfsty" data-rfsty="' + k + '"' + (cur === k ? ' checked' : '') + '><span class="sty-opt"><span class="si">' + STY[k][1] + '</span><span><span class="rc-t">' + STY[k][0] + '</span><span class="rc-d" style="display:block">' + STY[k][2] + '</span></span></span></label>'; }
+    return '<div class="mt16"><div class="label mb8"><b>ภาพที่ลูกค้าเห็นตอนเปิดผล</b> <span class="small muted">(เลือกได้แบบเดียวต่อกิจกรรม · ผลถูกตัดสินที่ระบบก่อนเสมอ ภาพเป็นแค่วิธีเปิดเผย)</span></div><div class="radio-cards c3">' + card('wheel') + card('box') + card('scratch') + '</div>' +
+      '<div class="form-grid mt8"><div class="field"><label>ความเร็วอนิเมชัน (วงล้อ/กล่อง)</label><select class="select" data-rf="speed"><option value="normal"' + (f.speed !== 'fast' ? ' selected' : '') + '>ปกติ (~3 วินาที)</option><option value="fast"' + (f.speed === 'fast' ? ' selected' : '') + '>เร็ว (~1.5 วินาที)</option></select><span class="help">บัตรขูดลูกค้าขูดเองจึงไม่ใช้ค่านี้ · มีปุ่ม “เปิดทั้งหมด” ให้ข้ามการขูดเสมอ</span></div></div>' +
+      '<div class="sty-prev"><span class="si">' + STY[cur][1] + '</span><div><b>ตัวอย่าง: ' + STY[cur][0] + '</b><div class="small muted">ลูกค้าเปิดผลในหน้า <a href="07-customer-instant-draw.html" data-rfsela="' + f.id + '">ลุ้นทันที (ฝั่งลูกค้า)</a> — กดดูของจริงได้ที่หน้านั้น (ถ้ากิจกรรมนี้ถูกเลือกอยู่)</div></div></div></div>';
+  }
+  /* ---- 02 ตั้งค่ากิจกรรม (ย่อให้สั้น: รูปแบบ → ข้อมูล → ทางได้สิทธิ์ → รางวัล → เปิดใช้งาน) ---- */
+  H['raffle/02-admin-editor.html'] = function () {
+    var cfg = PMP.cfg(), root = $('#screen'), f0 = rfCur(null, 'raffle'); if (!f0) return; var id = f0.id;
+    pickBar2($('.page-head'), 'livePick', cfg.raffles.map(function (f) { return { id: f.id, label: '[' + f.mode + '] ' + f.name }; }), id, function (v) { U.wr(selKey('raffle'), v); history.replaceState(null, '', location.pathname); rerender(); }, null);
+    var f = recOf('raffles', id), used = rfUsed(f), src = rfSources(f), isA = f.mode === 'A';
+    var ok1 = f.prizes.length > 0, ok2 = !!(f.perBaht || f.ptsPer || src.length), ready = ok1 && ok2;
+    function fld(l, c, h) { return '<div class="field"><label>' + l + '</label>' + c + (h ? '<span class="help">' + h + '</span>' : '') + '</div>'; }
+    function inp(k, v, t, extra) { return '<input class="input" data-rf="' + k + '" type="' + (t || 'text') + '" value="' + E(v == null ? '' : v) + '" ' + (extra || '') + '>'; }
+    function modeCard(m) { var on = f.mode === m; return '<label class="radio-card' + (used && !on ? ' disabled' : '') + '"><input type="radio" name="rfmode" data-rfmode="' + m + '"' + (on ? ' checked' : '') + (used && !on ? ' disabled' : '') + '><span><span class="rc-t"><span class="mode ' + MODE[m][1] + '">' + m + '</span> ' + MODE[m][0] + '</span><span class="rc-d" style="display:block">' + (m === 'A' ? 'ลูกค้ากดใช้สิทธิ์ 1 ใบ → วงล้อหมุน → รู้ผลทันที<br>ตั้ง “โอกาสถูก” และ “จำนวนรางวัล” ต่อรางวัล' : 'ลูกค้านำสิทธิ์ลงกองรอจับ → แอดมินจับรางวัลตามวันประกาศผล<br>ตั้ง “จำนวนผู้โชคดี” ต่อรางวัล') + '</span></span></label>'; }
+    $('#rfBody').innerHTML =
+      '<div class="card relative"><span class="pin abs">1</span><div class="card-h"><h6>① รูปแบบกิจกรรม <span class="small muted">เลือกได้อย่างเดียว</span></h6>' + (used ? '<span class="chip soft-warning">เปลี่ยนไม่ได้ — มีลูกค้าใช้สิทธิ์แล้ว</span>' : '') + '</div><div class="card-b"><div class="radio-cards c2">' + modeCard('A') + modeCard('B') + '</div><div class="help small mt8">1 กิจกรรม = 1 รูปแบบ ถ้าต้องการทั้งสองแบบให้สร้างเป็น 2 กิจกรรม — หน้าลูกค้าจะแยกแสดงคนละส่วน ไม่ปนกัน</div>' + styleBlock(f) + '</div></div>' +
+      '<div class="card relative"><span class="pin abs">2</span><div class="card-h"><h6>② ข้อมูลกิจกรรม</h6></div><div class="card-b"><div class="form-grid">' +
+      fld('ชื่อกิจกรรม (ลูกค้าเห็น) *', inp('name', f.name)) + fld('คำอธิบายสั้น (ลูกค้าเห็น)', inp('desc', f.desc)) +
+      fld('วันเริ่ม *', inp('start', f.start, 'date')) + fld('วันสิ้นสุดรับสิทธิ์/เล่น *', inp('end', f.end, 'date')) +
+      (isA ? '' : fld('วันประกาศผล (จับรางวัล) *', inp('drawAt', f.drawAt, 'date'), 'ต้องหลังวันสิ้นสุด — แอดมินกดจับรางวัลที่หน้า “จับรางวัล (B)” ในวันนี้')) +
+      fld('ใครร่วมได้', '<select class="select" data-rf="aud">' + ['all', 'B2B', 'B2C'].map(function (a) { return '<option value="' + a + '"' + (f.aud === a ? ' selected' : '') + '>' + rfAudLabel(a) + '</option>'; }).join('') + '</select>') +
+      '</div></div></div>' +
+      '<div class="card relative"><span class="pin abs">3</span><div class="card-h"><h6>③ ลูกค้าได้สิทธิ์ลุ้นอย่างไร</h6><span class="small muted">เปิดกี่ทางก็ได้ — สิทธิ์ที่ได้เป็นหน่วยเดียวกัน</span></div><div class="card-b">' +
+      '<div class="rf-src"><label class="switch"><input type="checkbox" data-rfon="perBaht"' + (f.perBaht ? ' checked' : '') + '></label><div><b>ซื้อสินค้า</b><div class="small muted">ได้ให้อัตโนมัติเมื่อชำระเงินสำเร็จ · นับหลังหักส่วนลด · ปัดเศษลง</div></div><div class="rate">ทุก ฿<input class="input num" data-rf="perBaht" type="number" min="1" value="' + (f.perBaht || '') + '"' + (f.perBaht ? '' : ' disabled') + '> = 1 สิทธิ์</div></div>' +
+      '<div class="rf-src"><label class="switch"><input type="checkbox" data-rfon="ptsPer"' + (f.ptsPer ? ' checked' : '') + '></label><div><b>แลกด้วยพอยท์</b><div class="small muted">ลูกค้ากดแลกเองที่หน้า “สิทธิ์ลุ้นของฉัน” · หักพอยท์ทันที</div></div><div class="rate"><input class="input num" data-rf="ptsPer" type="number" min="1" value="' + (f.ptsPer || '') + '"' + (f.ptsPer ? '' : ' disabled') + '> พอยท์ = 1 สิทธิ์</div></div>' +
+      '<div class="rf-src"><span class="chip soft-info sq">ตั้งที่อื่น</span><div><b>โปรโมชั่น · ขั้นแคมเปญ · แลกพอยท์</b><div class="small muted">ไปที่ผลตอบแทนของรายการนั้น เลือก “สิทธิ์ลุ้นรางวัล” แล้วเลือกกิจกรรมนี้ — ไม่ต้องตั้งซ้ำที่นี่</div></div><div class="small" style="text-align:right">' + (src.length ? 'ใช้อยู่ ' + src.length + ' แห่ง' : '<span class="muted">ยังไม่มีใช้</span>') + '</div></div>' +
+      (src.length ? '<div class="small muted mt8">' + src.map(E).join(' · ') + '</div>' : '') + '</div></div>' +
+      '<div class="card relative"><span class="pin abs">4</span><div class="card-h"><h6>④ รางวัล</h6><a class="btn outlined primary sm" href="03-admin-prizes-budget.html">ตั้งรางวัล →</a></div><div class="card-b">' +
+      (f.prizes.length ? '<ul class="rf-pl">' + f.prizes.map(function (z) { return '<li><b>' + E(z.name) + '</b><span class="muted">' + (isA ? 'โอกาส (น้ำหนัก ' + z.weight + ') · มี ' + z.stock + ' ชิ้น' : z.winners + ' ผู้โชคดี') + '</span></li>'; }).join('') + '</ul>' : '<div class="muted small">ยังไม่มีรางวัล</div>') + '</div></div>' +
+      '<div class="card primary-top relative"><span class="pin abs">5</span><div class="card-h"><h6>⑤ เปิดใช้งาน</h6><span class="chip ' + (f.active ? 'success' : ready ? 'soft-warning' : 'error') + '">' + (f.active ? 'เปิดอยู่' : ready ? 'พร้อมเปิด' : 'ยังไม่พร้อม') + '</span></div><div class="card-b">' +
+      '<div class="check-item"><span class="ci-ic ' + (ok1 ? 'ok' : 'no') + '">' + (ok1 ? '✓' : '✕') + '</span><div><b>มีรางวัลอย่างน้อย 1 รายการ</b></div></div>' +
+      '<div class="check-item"><span class="ci-ic ' + (ok2 ? 'ok' : 'no') + '">' + (ok2 ? '✓' : '✕') + '</span><div><b>มีทางได้สิทธิ์อย่างน้อย 1 ทาง</b><div class="small muted">ซื้อสินค้า · แลกพอยท์ · หรือแจกผ่านโปรโมชั่น/แคมเปญ</div></div></div>' +
+      '<div class="row between mt16"><span class="small muted">กิจกรรมแสดงให้ลูกค้าเห็นเมื่อ “เปิด” และอยู่ในช่วงวันที่</span><label class="switch"><input type="checkbox" data-rfon="active"' + (f.active ? ' checked' : '') + (ready || f.active ? '' : ' disabled') + '> เปิดกิจกรรม</label></div></div></div>';
+    if (!root._rf2) {
+      root._rf2 = 1;
+      root.addEventListener('input', function (e) { var t = e.target, k = t.getAttribute('data-rf'); if (!k || t.type === 'checkbox') return; var cid = rfCur(null, 'raffle').id; editRec('raffles', cid, function (r) { r[k] = (k === 'perBaht' || k === 'ptsPer') ? (+t.value || 0) : t.value; }); flashSaved(); });
+      root.addEventListener('change', function (e) {
+        var t = e.target, cid = rfCur(null, 'raffle').id, m = t.getAttribute('data-rfmode'), on = t.getAttribute('data-rfon');
+        var sy = t.getAttribute('data-rfsty'); if (sy) { editRec('raffles', cid, function (r) { r.style = sy; }); rerender(); toast('เปลี่ยนภาพเปิดผลเป็น ' + STY[sy][0] + ' แล้ว'); return; }
+        if (m) { editRec('raffles', cid, function (r) { if (r.mode === m) return; r.mode = m; if (m === 'B') { r.drawAt = r.drawAt || PMP.addDays(r.end, 5); r.poolOthers = r.poolOthers == null ? 100 : r.poolOthers; r.prizes.forEach(function (z) { z.winners = z.winners || 1; }); } else r.prizes.forEach(function (z) { z.weight = z.weight || 10; z.stock = z.stock || 50; }); }); rerender(); toast('เปลี่ยนรูปแบบเป็น ' + MODE[m][0] + ' แล้ว'); return; }
+        if (on) { editRec('raffles', cid, function (r) { if (on === 'active') r.active = t.checked; else r[on] = t.checked ? (on === 'perBaht' ? 1000 : 300) : 0; }); rerender(); return; }
+        var k = t.getAttribute('data-rf'); if (k === 'aud' || k === 'speed' || t.type === 'date') { editRec('raffles', cid, function (r) { r[k] = t.value; }); flashSaved(); }
+      });
+    }
+  };
+
+  /* ---- 03 รางวัล (A: โอกาส+จำนวน · B: จำนวนผู้โชคดี) ---- */
+  var PZsel = null;
+  H['raffle/03-admin-prizes-budget.html'] = function () {
+    var cfg = PMP.cfg(), root = $('#screen'), f0 = rfCur(null, 'raffle'); if (!f0) return; var id = f0.id, st = PMP.state();
+    pickBar2($('.page-head'), 'livePick', cfg.raffles.map(function (f) { return { id: f.id, label: '[' + f.mode + '] ' + f.name }; }), id, function (v) { U.wr(selKey('raffle'), v); history.replaceState(null, '', location.pathname); PZsel = null; rerender(); }, null);
+    var f = recOf('raffles', id), isA = f.mode === 'A', tw = f.prizes.reduce(function (a, z) { return a + (z.weight || 0); }, 0) || 1;
+    if (!PZsel || !f.prizes.some(function (z) { return z.id === PZsel; })) PZsel = f.prizes[0] && f.prizes[0].id;
+    $('#rfTitle').innerHTML = E(f.name) + ' ' + mchip(f);
+    $('#rfHint').textContent = isA ? 'ใส่ “น้ำหนัก” เป็นตัวเลขเปรียบเทียบ (เช่น 50 / 30 / 15 / 5) ระบบคิดโอกาสถูกเป็น % ให้ · ใส่ “จำนวนที่มี” เพื่อจำกัดชิ้นรางวัล หมดแล้วจะไม่ถูกสุ่มอีก' : 'ใส่ “จำนวนผู้โชคดี” ต่อรางวัล — วันจับรางวัลระบบสุ่มจากกองสิทธิ์ ผู้ชนะ 1 คนได้ 1 รางวัล/ครั้งที่ถูกจับ';
+    $('#rfPrizes thead').innerHTML = isA ? '<tr><th>ชื่อรางวัล</th><th>ลูกค้าจะได้รับ</th><th class="num">น้ำหนัก</th><th class="num">โอกาสถูก</th><th class="num">จำนวนที่มี</th><th class="num">ถูกไปแล้ว</th><th></th></tr>' : '<tr><th>ชื่อรางวัล</th><th>ลูกค้าจะได้รับ</th><th class="num">จำนวนผู้โชคดี</th><th></th></tr>';
+    $('#rfPrizes tbody').innerHTML = f.prizes.map(function (z, i) {
+      var items = PMP.rewardsOf('raffle', z.id), used = st.shared.prizeUsed[z.id] || 0;
+      return '<tr class="' + (z.id === PZsel ? 'sel' : '') + '" data-rfp="' + z.id + '" style="cursor:pointer"><td><input class="input" data-rfpn="' + i + '" value="' + E(z.name) + '"></td><td class="small">' + E(items.map(function (x) { return PMP.describe(x, cfg); }).join(' + ') || '— ยังไม่ตั้ง') + '</td>' +
+        (isA ? '<td class="num"><input class="input w-in num" data-rfpw="' + i + '" value="' + z.weight + '"></td><td class="num odds">' + ((z.weight || 0) / tw * 100).toFixed(1) + '%</td><td class="num"><input class="input w-in num" data-rfps="' + i + '" value="' + z.stock + '"></td><td class="num">' + used + '</td>' : '<td class="num"><input class="input w-in num" data-rfpv="' + i + '" value="' + (z.winners || 1) + '"></td>') +
+        '<td><button class="btn text sm grey" data-rfpd="' + i + '">ลบ</button></td></tr>';
+    }).join('') + '<tr><td colspan="' + (isA ? 7 : 4) + '"><button class="btn outlined primary sm" data-rfpa="1">＋ เพิ่มรางวัล</button></td></tr>';
+    var box = $('#prizeBox'); var z = f.prizes.filter(function (x) { return x.id === PZsel; })[0];
+    if (z) { box.setAttribute('data-ref', z.id); box.setAttribute('data-title', 'ลูกค้าจะได้เมื่อถูกรางวัล “' + z.name + '”'); if (PMP.Reward) PMP.Reward.render(box); box.style.display = ''; } else box.style.display = 'none';
+    if (!root._rf3) {
+      root._rf3 = 1;
+      root.addEventListener('input', function (e) { var t = e.target, a, cid = rfCur(null, 'raffle').id; function S(fn) { editRec('raffles', cid, fn); flashSaved(); }
+        if ((a = t.getAttribute('data-rfpn')) != null) S(function (r) { r.prizes[+a].name = t.value; });
+        if ((a = t.getAttribute('data-rfpw')) != null) S(function (r) { r.prizes[+a].weight = +t.value || 0; });
+        if ((a = t.getAttribute('data-rfps')) != null) S(function (r) { r.prizes[+a].stock = +t.value || 0; });
+        if ((a = t.getAttribute('data-rfpv')) != null) S(function (r) { r.prizes[+a].winners = Math.max(1, +t.value || 1); }); });
+      root.addEventListener('change', function (e) { if (/^data-rfp[wsv]$/.test((e.target.getAttributeNames().filter(function (n) { return /^data-rfp[wsv]$/.test(n); })[0]) || '')) rerender(); });
+      root.addEventListener('click', function (e) {
+        var cid = rfCur(null, 'raffle').id, d = e.target.closest('[data-rfpd]'), a = e.target.closest('[data-rfpa]'), r = e.target.closest('[data-rfp]');
+        if (d) { editRec('raffles', cid, function (x) { x.prizes.splice(+d.getAttribute('data-rfpd'), 1); }); rerender(); return; }
+        if (a) { var zid = U.uid('z'), isA2 = recOf('raffles', cid).mode === 'A'; editRec('raffles', cid, function (x) { x.prizes.push(isA2 ? { id: zid, name: 'รางวัลใหม่', weight: 10, stock: 50 } : { id: zid, name: 'รางวัลใหม่', winners: 1 }); }); PMP.saveRewards('raffle', zid, [{ k: 'points', mode: 'fixed', pts: 100 }]); PZsel = zid; rerender(); toast('เพิ่มรางวัลแล้ว — ตั้งสิ่งที่ลูกค้าจะได้ด้านล่าง'); return; }
+        if (r && !e.target.closest('input,button')) { PZsel = r.getAttribute('data-rfp'); rerender(); }
+      });
+    }
+  };
+
+  /* ---- 04 จับรางวัล (เฉพาะกิจกรรม B) ---- */
+  H['raffle/04-admin-draw-run.html'] = function () {
+    var cfg = PMP.cfg(), root = $('#screen'), bs = cfg.raffles.filter(function (f) { return f.mode === 'B'; }), body = $('#rfBody');
+    if (!bs.length) { body.innerHTML = '<div class="card"><div class="card-b center muted" style="padding:28px">ยังไม่มีกิจกรรมแบบจับตามรอบ (B) — <a href="01-admin-list.html">สร้างกิจกรรม</a></div></div>'; return; }
+    var f = rfCur('B', 'raffleB'); pickBar2($('.page-head'), 'livePick', bs.map(function (x) { return { id: x.id, label: x.name }; }), f.id, function (v) { U.wr(selKey('raffleB'), v); history.replaceState(null, '', location.pathname); rerender(); }, null);
+    var res = PMP.drawResult(f.id), st = PMP.state(), pool = st.shared.rafflePool[f.id] || {}, mine = rfPool(f), tot = PMP.poolSize(f.id), late = cfg.now < f.drawAt;
+    var people = Object.keys(pool).length + Math.round((f.poolOthers || 0) / 8);
+    function who(w) { if (w.indexOf('other-') === 0) return '<span class="muted">ผู้ร่วมกิจกรรมรายอื่น (' + E(w) + ')</span>'; var c = PMP.customers.filter(function (x) { return x.id === w; })[0]; return '<b>' + E(c ? c.name : w) + '</b>'; }
+    body.innerHTML =
+      '<div class="grid g4"><div class="stat"><div class="l">สิทธิ์ทั้งกอง</div><div class="v num">' + tot.toLocaleString() + ' ใบ</div><div class="small muted">ลูกค้าในจำลอง ' + mine + ' · รายอื่น ' + (f.poolOthers || 0) + '</div></div><div class="stat"><div class="l">ผู้ร่วมกิจกรรม</div><div class="v num">' + people + '</div><div class="small muted">ราย</div></div><div class="stat"><div class="l">ผู้โชคดีทั้งหมด</div><div class="v num">' + f.prizes.reduce(function (a, z) { return a + (z.winners || 1); }, 0) + '</div><div class="small muted">' + f.prizes.length + ' รางวัล</div></div><div class="stat"><div class="l">วันประกาศผล</div><div class="v">' + dmy(f.drawAt) + '</div><div class="small muted">' + (res ? 'จับแล้ว ' + dmy(res.d) : late ? 'ยังไม่ถึงวัน (จำลองวันที่ในแถบด้านบนได้)' : 'ถึงกำหนดแล้ว') + '</div></div></div>' +
+      '<div class="card relative"><span class="pin abs">1</span><div class="card-h"><h6>' + E(f.name) + '</h6>' + (res ? '<span class="chip success">จับรางวัลแล้ว</span>' : '<span class="chip soft-warning">รอจับรางวัล</span>') + '</div><div class="card-b">' +
+      '<div class="row between"><div><b>รหัสยืนยันกอง (commitment)</b><div class="mono small">' + PMP.fnv(tot + ':' + f.id) + PMP.fnv('a' + tot) + PMP.fnv('b' + tot) + PMP.fnv('c' + tot) + '</div><div class="small muted">ลูกค้าเห็นรหัสนี้ก่อนจับรางวัล จึงตรวจได้ว่ากองไม่ถูกแก้ทีหลัง</div></div>' +
+      (res ? '' : '<button class="btn contained" id="rfDo"' + (tot ? '' : ' disabled') + '>จับรางวัล (ยืนยันแล้วย้อนกลับไม่ได้)</button>') + '</div></div></div>' +
+      '<div class="card relative"><span class="pin abs">2</span><div class="card-h"><h6>ผลการจับรางวัล</h6>' + (res ? '<span class="small muted">seed <span class="mono">' + E(res.seed) + '</span> · กอง ' + res.total + ' ใบ</span>' : '') + '</div><div class="card-b">' +
+      (res ? '<div class="table-wrap"><table class="table"><thead><tr><th>รางวัล</th><th>ผู้โชคดี</th></tr></thead><tbody>' + f.prizes.map(function (z) { return '<tr><td><b>' + E(z.name) + '</b></td><td>' + res.winners.filter(function (w) { return w.prizeId === z.id; }).map(function (w) { return '<div>' + who(w.who) + '</div>'; }).join('') + '</td></tr>'; }).join('') + '</tbody></table></div><div class="small muted mt8">ผู้ชนะที่เป็นลูกค้าในระบบได้รับรางวัลเข้าบัญชี/คิวรับของแล้ว และเห็นผลที่หน้า “จับตามรอบ” ของตน</div>' : '<div class="muted small">ยังไม่ได้จับรางวัล — ผลจะแสดงที่นี่</div>') + '</div></div>';
+    var b = $('#rfDo'); if (b) b.onclick = function () { if (late && !confirm('ยังไม่ถึงวันประกาศผล (' + dmy(f.drawAt) + ') — จับรางวัลก่อนกำหนด?')) return; if (!confirm('จับรางวัล? ยืนยันแล้วย้อนกลับไม่ได้')) return; var r = PMP.drawB(f.id); if (r.error) { toast(r.error, true); return; } toast('จับรางวัลแล้ว — ' + r.winners.length + ' ผู้โชคดี'); rerender(); };
+  };
+
+  /* ---- 05 บันทึกการลุ้น ---- */
+  H['raffle/05-admin-audit.html'] = function () {
+    var st = PMP.state(), cfg = PMP.cfg(), root = $('#screen'), rows = [];
+    Object.keys(st.customers).forEach(function (k) { var c = PMP.customers.filter(function (x) { return x.id === k; })[0]; st.customers[k].draws.forEach(function (d) { rows.push({ c: c, d: d }); }); });
+    rows.sort(function (a, b) { return a.d.d < b.d.d ? 1 : -1; });
+    $('table.table tbody', root).innerHTML = rows.map(function (r, n) {
+      var f = cfg.raffles.filter(function (x) { return x.id === r.d.fid || x.name === r.d.f; })[0], m = r.d.mode || (f && f.mode) || 'A';
+      return '<tr data-m="' + m + '"><td class="nowrap">' + dmy(r.d.d) + '</td><td><b>' + E(r.c.name) + '</b><div class="small muted">' + r.c.id.toUpperCase() + '</div></td><td>' + E(r.d.f) + '</td><td><span class="mode ' + MODE[m][1] + '">' + m + '</span></td><td><span class="chip success">ถูก</span> ' + E(r.d.prize) + '</td><td class="small">' + E((r.d.out || []).join(', ')) + '</td><td class="mono small">' + (m === 'A' ? 'DR-' + String(4899 - n).padStart(6, '0') : 'B-' + (PMP.drawResult(r.d.fid) ? PMP.drawResult(r.d.fid).seed.slice(-8) : '')) + '</td></tr>';
+    }).join('') || '<tr><td colspan="7" class="center muted" style="padding:24px">ยังไม่มีการลุ้น — ลุ้นที่หน้า “ลุ้นทันที” หรือจับรางวัลกิจกรรม B</td></tr>';
+    tabFilter($('.table-toolbar .seg', root), $('table.table tbody', root), [{ k: 'ทั้งหมด', f: function () { return true; } }, { k: 'ลุ้นทันที (A)', f: function (r) { return r.getAttribute('data-m') === 'A'; } }, { k: 'จับตามรอบ (B)', f: function (r) { return r.getAttribute('data-m') === 'B'; } }], 'pmpc.live.tab.raffleaudit', $('.table-toolbar input', root));
+  };
+
+  /* ---- 06 สิทธิ์ลุ้นของฉัน (แยก A / B ชัดเจน) ---- */
+  function rfCard(f, c, st) {
+    var n = c.tickets[f.id] || 0, s = PMP.status(f, PMP.cfg().now), cid = custId(), mine = (st.shared.rafflePool[f.id] || {})[cid] || 0, res = PMP.drawResult(f.id), cust0 = PMP.customers.filter(function (x) { return x.id === cid; })[0];
+    var aud = f.aud === 'all' || f.aud === cust0.type, how = [];
+    if (f.perBaht) how.push('ซื้อครบทุก ' + B(f.perBaht) + ' = 1 สิทธิ์'); if (f.ptsPer) how.push('แลก ' + f.ptsPer + ' พอยท์ = 1 สิทธิ์'); if (rfSources(f).length) how.push('จากโปรโมชั่น/แคมเปญที่ร่วมรายการ');
+    var btn = f.mode === 'A' ? '<a class="btn contained' + (n < 1 || s !== 'running' || !aud ? ' disabled' : '') + '" href="07-customer-instant-draw.html?f=' + f.id + '">ลุ้นเลย</a>' : '<a class="btn contained" href="08-customer-scheduled.html?f=' + f.id + '">' + (res ? 'ดูผลการจับรางวัล' : 'ไปลงกองรางวัล') + '</a>';
+    var ex = f.ptsPer ? '<button class="btn outlined primary" data-rfx="' + f.id + '"' + (c.points < f.ptsPer || s !== 'running' ? ' disabled' : '') + '>แลก ' + f.ptsPer + ' พอยท์ = 1 สิทธิ์</button>' : '';
+    return '<div class="card"><div class="card-b ev-card"><div><div class="tk-big">' + n + '</div><div class="small muted">ใบพร้อมใช้</div></div><div><div class="row wrap"><b style="font-size:16px">' + E(f.name) + '</b>' + (s !== 'running' ? '<span class="chip">' + PMP.statusLabel[s] + '</span>' : '') + (aud ? '' : '<span class="chip soft-warning">ไม่ตรงกลุ่มของคุณ</span>') + '</div><div class="small muted mt8">' + E(f.desc || '') + '</div><div class="small muted mt8">' + dm(f.start) + ' – ' + dm(f.end) + (f.mode === 'B' ? ' · ประกาศผล ' + dm(f.drawAt) : '') + '</div><div class="src-chips mt8">' + how.map(function (h) { return '<span>' + E(h) + '</span>'; }).join('') + '</div>' + (f.mode === 'B' ? '<div class="small mt8">เข้ากองรอจับแล้ว <b>' + mine + '</b> ใบ' + (res ? ' · <span class="chip success">จับรางวัลแล้ว</span>' : '') + '</div>' : '') + '</div><div class="stack s8" style="min-width:190px">' + btn + ex + '</div></div></div>';
+  }
+  H['raffle/06-customer-tickets.html'] = function () {
+    var cfg = PMP.cfg(), c = cs(), st = PMP.state(), A = cfg.raffles.filter(function (f) { return f.mode === 'A'; }), Bs = cfg.raffles.filter(function (f) { return f.mode === 'B'; });
+    var ta = A.reduce(function (a, f) { return a + (c.tickets[f.id] || 0); }, 0), tb = Bs.reduce(function (a, f) { return a + (c.tickets[f.id] || 0); }, 0), inPool = Bs.reduce(function (a, f) { return a + (((st.shared.rafflePool[f.id] || {})[custId()]) || 0); }, 0);
+    $('#rfBody').innerHTML =
+      '<div class="grid g3"><div class="stat"><div class="l"><span class="mode a">A</span> สิทธิ์ลุ้นทันที</div><div class="v num">' + ta + ' ใบ</div><div class="small muted">ใช้แล้วรู้ผลเลย</div></div><div class="stat"><div class="l"><span class="mode b">B</span> สิทธิ์จับตามรอบ</div><div class="v num">' + tb + ' ใบ</div><div class="small muted">ลงกองแล้ว ' + inPool + ' ใบ</div></div><div class="stat"><div class="l">รางวัลที่เคยได้</div><div class="v num">' + (c.draws || []).length + ' ครั้ง</div><div class="small muted"><a href="09-customer-history.html">ดูประวัติ</a></div></div></div>' +
+      '<div class="rf-group a"><div class="rf-gh"><span class="mode a">A</span><div><b>ลุ้นทันที</b><div class="small muted">ใช้สิทธิ์ 1 ใบ หมุนวงล้อ รู้ผลทันที</div></div></div><div class="stack">' + (A.map(function (f) { return rfCard(f, c, st); }).join('') || '<div class="muted small">ตอนนี้ยังไม่มีกิจกรรมลุ้นทันที</div>') + '</div></div>' +
+      '<div class="rf-group b"><div class="rf-gh"><span class="mode b">B</span><div><b>จับรางวัลตามรอบ</b><div class="small muted">นำสิทธิ์ลงกอง รอประกาศผลตามวันที่กำหนด</div></div></div><div class="stack">' + (Bs.map(function (f) { return rfCard(f, c, st); }).join('') || '<div class="muted small">ตอนนี้ยังไม่มีกิจกรรมจับตามรอบ</div>') + '</div></div>';
+    relabelCustomer();
+  };
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-rfx]'); if (b) { var r = PMP.exchangeTickets(custId(), b.getAttribute('data-rfx'), 1); toast(r.error || 'แลกแล้ว ใช้ ' + r.need + ' พอยท์ ได้สิทธิ์ลุ้น 1 ใบ', !!r.error); rerender(); } });
+
+  /* ---- 08 จับตามรอบ (B) ---- */
+  H['raffle/08-customer-scheduled.html'] = function () {
+    var cfg = PMP.cfg(), bs = cfg.raffles.filter(function (f) { return f.mode === 'B'; }), body = $('#rfBody');
+    if (!bs.length) { body.innerHTML = '<div class="card"><div class="card-b center muted" style="padding:28px">ตอนนี้ยังไม่มีกิจกรรมจับรางวัลตามรอบ</div></div>'; return; }
+    var f = rfCur('B', 'raffleB'), st = PMP.state(), c = cs(), cid = custId(), pool = st.shared.rafflePool[f.id] || {}, mine = pool[cid] || 0, tot = PMP.poolSize(f.id), res = PMP.drawResult(f.id), n = c.tickets[f.id] || 0, s = PMP.status(f, cfg.now);
+    var days = Math.max(0, Math.round((new Date(f.drawAt) - new Date(cfg.now)) / 864e5));
+    var mw = res ? res.winners.filter(function (w) { return w.who === cid; }) : [];
+    var locked = !!res && mine > 0 && !PMP.revealed(cid, f.id);
+    body.innerHTML = (bs.length > 1 ? '<div class="small muted mb8">กิจกรรมจับตามรอบ: ' + bs.map(function (x) { return '<a href="08-customer-scheduled.html?f=' + x.id + '" data-rfsel="' + x.id + '"' + (x.id === f.id ? ' style="font-weight:800"' : '') + '>' + E(x.name) + '</a>'; }).join(' · ') + '</div>' : '') +
+      '<div class="hero"><div class="row between wrap"><div><span class="mode b">B</span> จับตามรอบ<h5 style="margin:6px 0">' + E(f.name) + '</h5><div class="small">' + E(f.desc || '') + '</div></div><div class="center"><div class="small">' + (res ? 'ประกาศผลแล้ว' : 'ประกาศผล ' + dm(f.drawAt)) + '</div><div style="font-size:26px;font-weight:800">' + (res ? '✓' : 'อีก ' + days + ' วัน') + '</div></div></div></div>' +
+      (locked ? '<div class="card"><div class="card-b center" style="padding:26px"><div style="font-size:34px">🎁</div><h5 style="margin:8px 0">ประกาศผลแล้ว!</h5><div class="small muted mb8">คุณได้ร่วมลุ้นด้วย ' + mine + ' สิทธิ์ — เปิดดูผลของคุณก่อน แล้วจึงดูรายชื่อผู้โชคดีทั้งหมด</div><button class="btn contained lg" type="button" data-rvopen="' + f.id + '">เปิดดูผลของฉัน</button></div></div>' : '') + (locked ? '' : res && mw.length ? '<div class="alert success"><div><div class="a-title">🎉 ยินดีด้วย! คุณถูกรางวัล</div>' + mw.map(function (w) { return E(w.prize); }).join(' · ') + ' — รางวัลเข้าบัญชี/คิวรับของของคุณแล้ว</div></div>' : res ? '<div class="alert info"><div>ประกาศผลแล้ว — รอบนี้คุณไม่ได้รับรางวัล ขอบคุณที่ร่วมสนุก</div></div>' : '') +
+      '<div class="grid g2"><div class="card"><div class="card-h"><h6>สิทธิ์ของฉัน</h6><span class="chip soft-info">ในกอง ' + mine + ' ใบ</span></div><div class="card-b">' +
+      '<div class="row between"><span>สิทธิ์พร้อมใช้</span><b>' + n + ' ใบ</b></div>' +
+      (res ? '<div class="small muted mt8">กิจกรรมนี้จับรางวัลแล้ว — ไม่รับสิทธิ์เพิ่ม</div>' : '<div class="row mt8" style="gap:8px"><button class="btn contained sm" data-rfpool="' + f.id + '|1"' + (n < 1 || s !== 'running' ? ' disabled' : '') + '>ลง 1 สิทธิ์เข้ากอง</button><button class="btn outlined primary sm" data-rfpool="' + f.id + '|' + n + '"' + (n < 1 || s !== 'running' ? ' disabled' : '') + '>ลงทั้งหมด (' + n + ')</button></div><div class="small muted mt8">สิทธิ์ที่ลงกองแล้วถอนคืนหรือโอนไม่ได้' + (n < 1 ? ' · ซื้อสินค้าครบทุก ' + B(f.perBaht) + ' เพื่อรับสิทธิ์' : '') + '</div>') + '</div></div>' +
+      '<div class="card"><div class="card-h"><h6>ความโปร่งใส</h6></div><div class="card-b"><div class="grid g2"><div><div class="small muted">สิทธิ์ทั้งกอง</div><div class="winners-n">' + tot.toLocaleString() + ' ใบ</div></div><div><div class="small muted">โอกาสของฉัน</div><div class="winners-n">' + (tot ? (mine / tot * 100).toFixed(2) : 0) + '%</div></div></div><div class="small muted mt8">รหัสยืนยันกองก่อนจับ</div><div class="hash">' + PMP.fnv(tot + ':' + f.id) + PMP.fnv('a' + tot) + PMP.fnv('b' + tot) + PMP.fnv('c' + tot) + '</div>' + (res ? '<div class="small muted mt8">seed ที่ใช้จับ (เปิดเผยหลังจับ)</div><div class="hash">' + E(res.seed) + '</div>' : '') + '</div></div></div>' +
+      '<div class="card mt16"><div class="card-h"><h6>รางวัลในกิจกรรมนี้</h6></div><div class="card-b"><div class="grid g3">' + f.prizes.map(function (z) { var ws = res ? res.winners.filter(function (w) { return w.prizeId === z.id; }) : []; return '<div class="prize-card"><div class="pb"><b>' + E(z.name) + '</b><div class="small muted">' + z.winners + ' ผู้โชคดี</div>' + (res && !locked ? '<div class="small mt8">ผู้โชคดี: ' + ws.map(function (w) { return w.who === cid ? '<b style="color:var(--primary-dark)">คุณ</b>' : w.who.indexOf('other-') === 0 ? 'ร้านที่ร่วมรายการ' : E((PMP.customers.filter(function (x) { return x.id === w.who; })[0] || {}).name || w.who); }).join(', ') + '</div>' : '') + '</div></div>'; }).join('') + '</div></div></div>';
+    relabelCustomer();
+  };
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-rfpool]'); if (b) { var d = b.getAttribute('data-rfpool').split('|'), r = PMP.enterPool(custId(), d[0], +d[1]); toast(r.error || 'ลงกองแล้ว ' + d[1] + ' สิทธิ์ (ถอนคืนไม่ได้)', !!r.error); rerender(); } });
+
+  /* ---- 09 ประวัติ ---- */
+  H['raffle/09-customer-history.html'] = function () {
+    var c = cs();
+    $('#rfBody').innerHTML = '<div class="card" style="overflow:hidden"><div class="card-h"><h6>ประวัติการลุ้นและผลรางวัล</h6></div><div class="table-wrap"><table class="table"><thead><tr><th>วันที่</th><th>กิจกรรม</th><th>รูปแบบ</th><th>ผล</th></tr></thead><tbody>' +
+      ((c.draws || []).map(function (d, n) { var f = PMP.cfg().raffles.filter(function (x) { return x.id === d.fid; })[0], m = d.mode || (f && f.mode) || 'A'; return '<tr><td class="nowrap">' + dmy(d.d) + '</td><td>' + E(d.f) + '</td><td><span class="mode ' + MODE[m][1] + '">' + m + '</span> ' + MODE[m][0] + '</td><td><span class="chip success">ถูก</span> <b>' + E(d.prize) + '</b><div class="small muted">' + E((d.out || []).join(', ')) + '</div></td></tr>'; }).join('') || '<tr><td colspan="4" class="center muted" style="padding:24px">ยังไม่มีประวัติ — ลุ้นที่ “สิทธิ์ลุ้นของฉัน”</td></tr>') +
+      '</tbody></table></div></div><div class="card mt16" style="overflow:hidden"><div class="card-h"><h6>ของรางวัลที่รอรับ</h6></div><div class="table-wrap"><table class="table"><thead><tr><th>รายการ</th><th>จำนวน</th><th>จาก</th><th>สถานะ</th></tr></thead><tbody>' +
+      ((c.queue || []).map(function (q) { return '<tr><td>' + E(q.text) + '</td><td>' + q.qty + '</td><td class="small">' + E(q.src) + '</td><td><span class="chip soft-warning">' + E(q.status) + '</span></td></tr>'; }).join('') || '<tr><td colspan="4" class="center muted" style="padding:24px">ไม่มีของรางวัลที่รอรับ</td></tr>') + '</tbody></table></div></div>';
+    relabelCustomer();
+  };
+
+  /* ================= แจ้งเตือนลูกค้า (ในเว็บเท่านั้น) — admin ตั้งค่า → ลูกค้าเห็นที่กระดิ่ง/ศูนย์แจ้งเตือน/หน้าแรก ================= */
+  var NF_TYPE = { points: 'พอยท์', ladder: 'แคมเปญสะสมยอด', claim: 'คำขอรับรางวัล', coupon: 'คูปอง', promo: 'โปรโมชั่น', raffle: 'สุ่มรางวัล' };
+  function nfCard(n, withBtn) { return '<div class="nf-it ' + n.level + (n.read ? ' read' : '') + '"><span class="nf-dot"></span><div class="nf-b"><div class="row between wrap"><b>' + E(n.title) + '</b><span class="chip sq ' + ({ error: 'soft-error', warn: 'soft-warning', success: 'soft-success', info: 'soft-info' }[n.level]) + '">' + NF_TYPE[n.type] + '</span></div><div class="small">' + E(n.body) + '</div></div>' + (withBtn ? '<a class="btn outlined sm" href="' + n.href + '" data-nid="' + E(n.id) + '">ดู</a>' : '') + '</div>'; }
+  function updateTop() {
+    if (!$('.cust-top')) return;
+    var cid = custId(), un = PMP.notifications(cid).filter(function (n) { return !n.read; }).length, bl = $('#custBell b'); if (bl) { bl.textContent = un; bl.hidden = !un; }
+    var cart = U.rd('pmpc.sim.cart', null) || {}, q = Object.keys(cart).reduce(function (a, k) { return a + (cart[k] || 0); }, 0), cb = $('#custCart b'); if (cb) cb.textContent = q;
+  }
+  document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('[data-nid]'); if (a) { PMP.notifRead(custId(), [a.getAttribute('data-nid')]); } });
+
+  H['home/02-admin-notifications.html'] = function () {
+    var cfg = PMP.cfg(), N = cfg.notify, root = $('#screen'), me = PMP.notifications(custId());
+    function gv(k) { return k.split('.').reduce(function (a, x) { return a[x]; }, N); }
+    function sw(k) { return '<label class="switch"><input type="checkbox" data-nf="' + k + '"' + (gv(k) ? ' checked' : '') + '></label>'; }
+    function num(k, suf) { return '<span class="rate"><input class="input num" style="width:80px" type="number" min="1" data-nf="' + k + '" value="' + gv(k) + '"> ' + suf + '</span>'; }
+    function chk(k, l) { return '<label class="check"><input type="checkbox" data-nf="' + k + '"' + (gv(k) ? ' checked' : '') + '> ' + l + '</label>'; }
+    var rows = [
+      ['points', 'พอยท์ใกล้หมดอายุ', 'เตือนเมื่อมีพอยท์ที่จะหมดอายุภายในจำนวนวันที่ตั้ง (≤ 7 วันเป็นสีแดง)', num('points.days', 'วันก่อนหมดอายุ'), '“240 พอยท์จะหมดอายุภายใน 20 วัน — ใช้เป็นส่วนลดหรือแลกของรางวัลก่อนหมด”'],
+      ['ladder', 'แคมเปญสะสมยอด', 'ความคืบหน้าไปขั้นถัดไป + ปลดล็อกรางวัล + ใกล้สิ้นสุดแคมเปญ', chk('ladder.at80', 'ถึง 80%') + chk('ladder.at95', 'ถึง 95%') + num('ladder.expiryDays', 'วันก่อนแคมเปญสิ้นสุด'), '“เกือบถึงแล้ว! อีกเพียง ฿1,600 ปลดล็อกรางวัลขั้นถัดไป”'],
+      ['claim', 'สถานะคำขอรับรางวัล', 'ได้รับคำขอ · อนุมัติ · ปฏิเสธ (พร้อมเหตุผล)', '<span class="small muted">ทุกการเปลี่ยนสถานะ</span>', '“คำขอรับรางวัลถูกปฏิเสธ — เหตุผล: ที่อยู่ไม่ครบ (สิทธิ์ถูกคืนแล้ว)”'],
+      ['coupon', 'คูปองใกล้หมดอายุ', 'เตือนเฉพาะคูปองในกระเป๋าที่ยังไม่ได้ใช้', num('coupon.days', 'วันก่อนหมดอายุ'), '“SAVE100 หมดอายุใน 2 วัน”'],
+      ['promo', 'โปรโมชั่นใกล้สิ้นสุด', 'เฉพาะโปรที่ลูกค้าอยู่ในกลุ่มเป้าหมาย', num('promo.days', 'วันก่อนสิ้นสุด'), '“โปรเข็มฉีดยา สิ้นสุดใน 3 วัน”'],
+      ['raffle', 'สุ่มรางวัล', 'มีสิทธิ์ลุ้นที่ยังไม่ได้ใช้ + ประกาศผลกิจกรรมจับตามรอบ (ถูก/ไม่ถูก)', '<span class="small muted">อัตโนมัติ</span>', '“ยินดีด้วย! คุณถูกรางวัล: iPad Air”']
+    ];
+    $('#nfBody').innerHTML =
+      '<div class="card relative"><span class="pin abs">1</span><div class="card-h"><h6>เรื่องที่แจ้งเตือน</h6><span class="chip soft-info sq">ช่องทางเดียว: แจ้งเตือนในเว็บ (กระดิ่ง + ศูนย์แจ้งเตือน)</span></div><div class="table-wrap"><table class="table"><thead><tr><th style="width:70px">เปิด</th><th>เรื่อง</th><th>ตั้งค่า <span class="pin">2</span></th><th>ข้อความที่ลูกค้าเห็น (ตัวอย่าง) <span class="pin">3</span></th></tr></thead><tbody>' +
+      rows.map(function (r) { return '<tr><td>' + sw(r[0] + '.on') + '</td><td><b>' + r[1] + '</b><div class="small muted">' + r[2] + '</div></td><td><div class="row wrap" style="gap:14px">' + r[3] + '</div></td><td class="small muted">' + r[4] + '</td></tr>'; }).join('') + '</tbody></table></div></div>' +
+      '<div class="card relative"><span class="pin abs">4</span><div class="card-h"><h6>ลูกค้าจำลองเห็นอะไรตอนนี้</h6><span class="small muted">' + E(cust().name) + ' · ณ วันที่ ' + dmy(cfg.now) + ' (เปลี่ยนลูกค้า/วันที่ได้ที่แถบ “จำลอง”)</span></div><div class="card-b"><div class="stack s8">' + (me.map(function (n) { return nfCard(n, false); }).join('') || '<div class="muted small">ไม่มีแจ้งเตือน — เปิดเรื่องด้านบนหรือเปลี่ยนลูกค้า/วันที่จำลอง</div>') + '</div><div class="mt16"><a class="btn outlined primary" href="03-customer-notifications.html">เปิดศูนย์แจ้งเตือนฝั่งลูกค้า →</a></div></div></div>';
+    if (!root._nf) {
+      root._nf = 1;
+      root.addEventListener('change', function (e) { var k = e.target.getAttribute && e.target.getAttribute('data-nf'); if (!k) return; var v = e.target.type === 'checkbox' ? e.target.checked : Math.max(1, +e.target.value || 1); setCfg(function (c) { var p = k.split('.'), l = p.pop(); p.reduce(function (a, x) { return a[x]; }, c.notify)[l] = v; }); flashSaved(); rerender(); });
+    }
+  };
+
+  H['home/03-customer-notifications.html'] = function () {
+    var cid = custId(), all = PMP.notifications(cid), tab = U.rd('pmpc.live.tab.nf', 'ทั้งหมด'), ty = U.rd('pmpc.live.nftype', ''), un = all.filter(function (n) { return !n.read; }).length;
+    var list = all.filter(function (n) { return (tab === 'ทั้งหมด' || !n.read) && (!ty || n.type === ty); });
+    $('#nfBody').innerHTML = '<div class="row between wrap mb16"><div class="seg"><button type="button" data-nft="ทั้งหมด" class="' + (tab === 'ทั้งหมด' ? 'on' : '') + '">ทั้งหมด ' + all.length + '</button><button type="button" data-nft="ยังไม่อ่าน" class="' + (tab !== 'ทั้งหมด' ? 'on' : '') + '">ยังไม่อ่าน ' + un + '</button></div><div class="row"><select class="select" id="nfType" style="width:190px"><option value="">ทุกเรื่อง</option>' + Object.keys(NF_TYPE).map(function (k) { return '<option value="' + k + '"' + (ty === k ? ' selected' : '') + '>' + NF_TYPE[k] + '</option>'; }).join('') + '</select><button class="btn outlined" type="button" id="nfAll"' + (un ? '' : ' disabled') + '>ทำเครื่องหมายอ่านแล้วทั้งหมด</button></div></div>' +
+      '<div class="stack s8">' + (list.map(function (n) { return nfCard(n, true); }).join('') || '<div class="card"><div class="card-b center muted" style="padding:28px">' + (all.length ? 'ไม่มีรายการในตัวกรองนี้' : 'ยังไม่มีการแจ้งเตือน') + '</div></div>') + '</div>';
+    relabelCustomer(); updateTop();
+    var root = $('#screen'); if (!root._nc) { root._nc = 1;
+      root.addEventListener('click', function (e) { var t = e.target.closest('[data-nft]'); if (t) { U.wr('pmpc.live.tab.nf', t.getAttribute('data-nft')); rerender(); return; } if (e.target.id === 'nfAll') { PMP.notifRead(custId()); rerender(); toast('อ่านทั้งหมดแล้ว'); } });
+      root.addEventListener('change', function (e) { if (e.target.id === 'nfType') { U.wr('pmpc.live.nftype', e.target.value); rerender(); } });
+    }
+  };
+  (function () {
+    var hh = H['home/01-customer-home.html'];
+    H['home/01-customer-home.html'] = function () {
+      hh(); var top = PMP.notifications(custId()).slice(0, 3), box = $('#nfHome'), host = $('.strip');
+      if (!box && host) { box = document.createElement('div'); box.id = 'nfHome'; host.insertAdjacentElement('beforebegin', box); }
+      if (box) box.innerHTML = top.length ? '<div class="card mb16"><div class="card-h"><h6>แจ้งเตือนสำหรับคุณ</h6><a href="03-customer-notifications.html">ดูทั้งหมด →</a></div><div class="card-b"><div class="stack s8">' + top.map(function (n) { return nfCard(n, true); }).join('') + '</div></div></div>' : '';
+    };
+  })();
+
+  /* ---- Mode B: ลูกค้าลุ้นเปิดผลของตัวเองก่อน แล้วค่อยเห็นรายชื่อผู้โชคดีทั้งหมด ---- */
+  function rvOpen(fid) {
+    var f = PMP.raffle(fid), res = PMP.drawResult(fid), cid = custId(); if (!f || !res) return;
+    var mod = $('#rfReveal'); if (!mod) { mod = document.createElement('div'); mod.id = 'rfReveal'; mod.className = 'modal'; document.body.appendChild(mod); mod.addEventListener('click', function (e) { if (e.target.closest('[data-rvx]')) { mod.classList.remove('on'); if (mod._done) rerender(); updateTop(); } }); }
+    var mine = res.winners.filter(function (w) { return w.who === cid; }), names = res.winners.map(function (w) { return w.who === cid ? 'คุณ?' : w.who.indexOf('other-') === 0 ? 'ร้านที่ร่วมรายการ' : (PMP.customers.filter(function (x) { return x.id === w.who; })[0] || { name: w.who }).name; });
+    function shell(b, foot) { mod.innerHTML = '<div class="dialog md"><div class="dialog-h"><span>ประกาศผล · ' + E(f.name) + '</span><button class="x" type="button" data-rvx>✕</button></div><div class="dialog-b"><div class="rv-box">' + b + '</div></div><div class="dialog-f">' + foot + '</div></div>'; mod.classList.add('on'); }
+    shell('<div class="rv-t">แอดมินจับรางวัลเสร็จแล้ว</div><div class="rv-big">คุณได้ร่วมลุ้นด้วย ' + (((PMP.state().shared.rafflePool[fid] || {})[cid]) || 0) + ' สิทธิ์</div><div class="rv-roll">🎁 ?</div><div class="small muted mt8">ผลของคุณจะเปิดเป็นคนแรก ก่อนเห็นรายชื่อผู้โชคดีทั้งหมด</div>', '<button class="btn text grey" type="button" data-rvx>ไว้ทีหลัง</button><button class="btn contained lg" type="button" id="rvGo">เปิดดูผลของฉัน</button>');
+    $('#rvGo').onclick = function () {
+      shell('<div class="rv-t">กำลังเปิดผล…</div><div class="rv-big" id="rvCnt">3</div><div class="rv-roll" id="rvRoll">…</div>', '');
+      var n = 0, cnt = 3, tm = setInterval(function () { n++; $('#rvRoll').textContent = names[n % names.length]; if (n % 6 === 0 && cnt > 1) { cnt--; $('#rvCnt').textContent = cnt; } if (n >= 16) { clearInterval(tm); done(); } }, 160);
+    };
+    function done() {
+      PMP.setRevealed(cid, fid); mod._done = 1;
+      var body = mine.length ? '<div class="rv-win"><div class="rv-conf">🎉🎊🎉</div><div class="rv-big" style="color:var(--success-darker)">ยินดีด้วย! คุณถูกรางวัล</div>' + mine.map(function (w) { return '<div style="font-size:18px;font-weight:700">' + E(w.prize) + '</div>'; }).join('') + '<div class="small mt8">รางวัลเข้าบัญชี/คิวรับของของคุณแล้ว</div></div>' : '<div class="rv-lose"><div class="rv-big">รอบนี้ยังไม่ใช่ของคุณ</div><div class="small muted">ขอบคุณที่ร่วมสนุก — ติดตามกิจกรรมครั้งต่อไปได้ที่หน้าสุ่มรางวัล</div></div>';
+      shell(body, '<button class="btn text grey" type="button" data-rvx>ปิด</button><a class="btn contained" href="../raffle/08-customer-scheduled.html?f=' + fid + '">ดูรายชื่อผู้โชคดีทั้งหมด</a>');
+      updateTop();
+    }
+  }
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-rvopen]'); if (b) rvOpen(b.getAttribute('data-rvopen')); });
+  function rvCheck() {
+    if (!$('.cust-top') || $('#rfReveal.on')) return; var p = PMP.revealPending(custId()); if (!p.length) return;
+    var key = 'pmpc.sim.rvshown', shown = U.rd(key, {}), tag = custId() + ':' + p[0].id + ':' + PMP.drawResult(p[0].id).seed; if (shown[tag] && sessionStorage.getItem(tag)) return;
+    shown[tag] = 1; U.wr(key, shown); try { sessionStorage.setItem(tag, 1); } catch (e) { } setTimeout(function () { rvOpen(p[0].id); }, 500);
+  }
+
   /* ---------- boot ---------- */
   function boot() {
+    try { updateTop(); } catch (e) { }
+    try { rvCheck(); } catch (e) { }
     var f = H[KEY]; if (!f) return;
-    ctl(); document.body.setAttribute('data-hydrated', '1'); f();
+    simCtl(); document.body.setAttribute('data-hydrated', '1'); f();
     var lp = $('.live-panel'); if (lp) lp.parentNode.removeChild(lp);
   }
   window.PMP_LIVE = { H: H, E: E, $: $, $$: $$, dm: dm, dmy: dmy, cust: cust, cs: cs, custId: custId, toast: toast, rerender: rerender, tk: tk, prog: prog, empty: empty, relabel: relabelCustomer, lots: lots, ladderSum: ladderSum, ST: ST };
