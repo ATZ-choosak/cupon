@@ -658,31 +658,82 @@
     var st = PMP.state(), cs = st.customers[cid], f = PMP.raffle(fid); n = n || 1;
     if (!f || f.mode !== 'B') return { error: 'กิจกรรมนี้ไม่ใช่แบบจับตามรอบ' };
     if ((st.shared.drawResult || {})[fid]) return { error: 'จับรางวัลไปแล้ว' };
+    if ((st.shared.drawLock || {})[fid]) return { error: 'กองถูกล็อกแล้ว — ปิดรับสิทธิ์เข้ากอง' };
     if ((cs.tickets[fid] || 0) < n) return { error: 'สิทธิ์ไม่พอ' };
     cs.tickets[fid] -= n; var p = st.shared.rafflePool[fid] || (st.shared.rafflePool[fid] = {}); p[cid] = (p[cid] || 0) + n;
     PMP.saveState(st); return { ok: true };
   };
-  PMP.drawB = function (fid, forceCid) {
-    var cfg = PMP.cfg(), st = PMP.state(), f = PMP.raffle(fid), mine = st.shared.rafflePool[fid] || {};
-    if (!f || f.mode !== 'B') return { error: 'กิจกรรมนี้ไม่ใช่แบบจับตามรอบ' };
-    st.shared.drawResult = st.shared.drawResult || {};
-    if (st.shared.drawResult[fid]) return { error: 'จับรางวัลไปแล้ว' };
-    var entries = []; Object.keys(mine).forEach(function (cid) { for (var i = 0; i < mine[cid]; i++) entries.push(cid); });
-    for (var j = 0; j < (f.poolOthers || 0); j++) entries.push('other-' + j);
-    if (!entries.length) return { error: 'ยังไม่มีสิทธิ์ในกอง' };
-    var seed = 'seed-' + Date.now(), commit = fnv(entries.length + ':' + seed.length), left = entries.slice(), winners = [], k = 0;
-    f.prizes.forEach(function (z) {
-      for (var w = 0; w < (z.winners || 1) && left.length; w++) {
-        var idx = parseInt(fnv(seed + ':' + (k++) + ':' + left.length), 16) % left.length;
-        if (forceCid && !winners.length && left.indexOf(forceCid) > -1) idx = left.indexOf(forceCid); /* demo only: force the simulated customer to win the first prize */
-        var who = left.splice(idx, 1)[0];
-        winners.push({ prizeId: z.id, prize: z.name, who: who });
-        if (who.indexOf('other-') !== 0) { var out = PMP.grant(st, who, PMP.rewardsOf('raffle', z.id), 'จับรางวัล: ' + z.name, cfg); st.customers[who].draws.unshift({ d: cfg.now, f: f.name, fid: f.id, mode: 'B', prize: z.name, out: out }); }
+  /* ---- Mode B fairness: lock pool (commitment = SHA-256 of the pool list) -> draw with a seed -> anyone can recompute ---- */
+  function sha256(msg) {
+    var s = unescape(encodeURIComponent(String(msg))), l = s.length, i, j;
+    if (!sha256.K) { var K0 = [], H0 = [], p = 2; while (K0.length < 64) { var pr = true; for (j = 2; j * j <= p; j++) if (p % j === 0) { pr = false; break; } if (pr) { if (H0.length < 8) H0.push(Math.floor((Math.sqrt(p) % 1) * 4294967296)); K0.push(Math.floor((Math.cbrt(p) % 1) * 4294967296)); } p++; } sha256.K = K0; sha256.H = H0; }
+    var K = sha256.K, h = sha256.H.slice(), w = [], nw = (((l + 8) >> 6) + 1) * 16;
+    for (i = 0; i < nw; i++) w[i] = 0;
+    for (i = 0; i < l; i++) w[i >> 2] |= s.charCodeAt(i) << (24 - (i % 4) * 8);
+    w[l >> 2] |= 0x80 << (24 - (l % 4) * 8); w[nw - 1] = l * 8;
+    function rr(x, n) { return (x >>> n) | (x << (32 - n)); }
+    for (var o = 0; o < nw; o += 16) {
+      var x = w.slice(o, o + 16);
+      for (i = 16; i < 64; i++) { var a15 = x[i - 15], a2 = x[i - 2]; x[i] = (x[i - 16] + (rr(a15, 7) ^ rr(a15, 18) ^ (a15 >>> 3)) + x[i - 7] + (rr(a2, 17) ^ rr(a2, 19) ^ (a2 >>> 10))) | 0; }
+      var a = h[0], b = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], hh = h[7];
+      for (i = 0; i < 64; i++) {
+        var t1 = (hh + (rr(e, 6) ^ rr(e, 11) ^ rr(e, 25)) + ((e & f) ^ (~e & g)) + K[i] + x[i]) | 0, t2 = ((rr(a, 2) ^ rr(a, 13) ^ rr(a, 22)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+        hh = g; g = f; f = e; e = (d + t1) | 0; d = c; c = b; b = a; a = (t1 + t2) | 0;
       }
-    });
-    var res = { seed: seed, total: entries.length, commit: commit, d: cfg.now, winners: winners };
-    st.shared.drawResult[fid] = res;
-    PMP.saveState(st); return res;
+      h[0] = (h[0] + a) | 0; h[1] = (h[1] + b) | 0; h[2] = (h[2] + c) | 0; h[3] = (h[3] + d) | 0; h[4] = (h[4] + e) | 0; h[5] = (h[5] + f) | 0; h[6] = (h[6] + g) | 0; h[7] = (h[7] + hh) | 0;
+    }
+    return h.map(function (v) { return ('00000000' + (v >>> 0).toString(16)).slice(-8); }).join('');
+  }
+  PMP.sha256 = sha256;
+  function poolEntries(st, f) {
+    var p = st.shared.rafflePool[f.id] || {}, a = Object.keys(p).filter(function (k) { return p[k] > 0; }).sort().map(function (k) { return { who: k, n: p[k] }; });
+    if (f.poolOthers) a.push({ who: 'other', n: f.poolOthers }); return a;
+  }
+  function canon(fid, ent) { return fid + '|' + ent.map(function (e) { return e.who + ':' + e.n; }).join(','); }
+  function expandEnt(ent) { var out = []; ent.forEach(function (e) { for (var i = 0; i < e.n; i++) out.push(e.who === 'other' ? 'other-' + i : e.who); }); return out; }
+  function runDraw(prizes, ent, commit, seed) {
+    var fin = commit + '|' + seed, left = expandEnt(ent), winners = [], k = 0;
+    prizes.forEach(function (z) { for (var w = 0; w < (z.winners || 1) && left.length; w++) { var idx = parseInt(sha256(fin + '|' + (k++)).slice(0, 12), 16) % left.length; winners.push({ prizeId: z.id, prize: z.name, who: left.splice(idx, 1)[0] }); } });
+    return winners;
+  }
+  function rndHex() { var s = ''; try { var u = new Uint8Array(8); (g.crypto || g.msCrypto).getRandomValues(u); for (var i = 0; i < u.length; i++) s += ('0' + u[i].toString(16)).slice(-2); } catch (e) { s = ''; } while (s.length < 16) s += Math.floor(Math.random() * 16).toString(16); return s; }
+  PMP.fairCommit = function (fid) { var st = PMP.state(), f = PMP.raffle(fid), ent = poolEntries(st, f), c = canon(fid, ent); return { entries: ent, canon: c, commit: sha256(c), total: ent.reduce(function (a, e) { return a + e.n; }, 0) }; };
+  PMP.fairLockOf = function (fid) { return (PMP.state().shared.drawLock || {})[fid] || null; };
+  PMP.fairLock = function (fid) {
+    var cfg = PMP.cfg(), st = PMP.state(), f = PMP.raffle(fid); if (!f || f.mode !== 'B') return { error: 'กิจกรรมนี้ไม่ใช่แบบจับตามรอบ' };
+    st.shared.drawLock = st.shared.drawLock || {}; if ((st.shared.drawResult || {})[fid]) return { error: 'จับรางวัลไปแล้ว' }; if (st.shared.drawLock[fid]) return { error: 'ล็อกกองไปแล้ว' };
+    var cm = PMP.fairCommit(fid); if (!cm.total) return { error: 'ยังไม่มีสิทธิ์ในกอง' };
+    st.shared.drawLock[fid] = { at: cfg.now, commit: cm.commit, canon: cm.canon, entries: cm.entries, total: cm.total }; PMP.saveState(st); return st.shared.drawLock[fid];
+  };
+  PMP.drawB = function (fid, forceCid, pub) {
+    var cfg = PMP.cfg(), st = PMP.state(), f = PMP.raffle(fid);
+    if (!f || f.mode !== 'B') return { error: 'กิจกรรมนี้ไม่ใช่แบบจับตามรอบ' };
+    st.shared.drawResult = st.shared.drawResult || {}; if (st.shared.drawResult[fid]) return { error: 'จับรางวัลไปแล้ว' };
+    var lock = (st.shared.drawLock || {})[fid]; if (!lock) { var r0 = PMP.fairLock(fid); if (r0.error) return r0; st = PMP.state(); lock = st.shared.drawLock[fid]; }
+    var src = f.fair && f.fair.seedSrc === 'public' ? 'public' : 'system'; pub = String(pub == null ? '' : pub).trim();
+    if (src === 'public' && !pub) return { error: 'กรอกค่าสาธารณะที่ใช้เป็น seed ก่อนจับ' };
+    var prizes = f.prizes.map(function (z) { return { id: z.id, name: z.name, winners: z.winners || 1 }; }), seed, winners, att;
+    for (att = 0; att < (forceCid ? 6000 : 1); att++) { /* demo button only: search seeds until the simulated customer wins prize #1 — the draw stays verifiable */
+      seed = src === 'public' ? 'PUB[' + pub + (att ? '#' + att : '') + ']' : 'SYS[' + rndHex() + ']';
+      winners = runDraw(prizes, lock.entries, lock.commit, seed); if (!forceCid || (winners[0] && winners[0].who === forceCid)) break;
+    }
+    winners.forEach(function (w) { if (w.who.indexOf('other-') !== 0) { var out = PMP.grant(st, w.who, PMP.rewardsOf('raffle', w.prizeId), 'จับรางวัล: ' + w.prize, cfg); st.customers[w.who].draws.unshift({ d: cfg.now, f: f.name, fid: f.id, mode: 'B', prize: w.prize, out: out }); } });
+    var res = { seed: seed, seedSrc: src, pub: src === 'public' ? pub : '', commit: lock.commit, total: lock.total, d: cfg.now, winners: winners, prizes: prizes, demo: !!forceCid };
+    st.shared.drawResult[fid] = res; PMP.saveState(st); return res;
+  };
+  PMP.verifyDraw = function (fid, cid) {
+    var st = PMP.state(), lock = (st.shared.drawLock || {})[fid], res = (st.shared.drawResult || {})[fid], steps = [], ok = true;
+    function add(good, t, d, ct, cd) { steps.push({ ok: good, t: t, d: d || '', ct: ct || t, cd: cd == null ? (d || '') : cd }); if (!good) ok = false; }
+    if (!lock) return { steps: [{ ok: false, t: 'ยังไม่ได้ล็อกกอง', d: 'ยังไม่มีรหัสให้ตรวจ' }], ok: false, pending: true };
+    add(sha256(canon(fid, lock.entries)) === lock.commit, 'รหัสกองตรงกับรายชื่อกองที่ล็อกไว้', 'คำนวณ SHA-256 ของรายชื่อกอง (' + lock.total + ' ใบ) ใหม่แล้วเทียบกับรหัสที่ประกาศ', 'รายชื่อผู้ร่วมลุ้นไม่ถูกแก้หลังปิดรับ', 'ระบบนับและตรวจรายชื่อทั้งกอง ' + lock.total + ' ใบอีกรอบ ยังตรงกับตอนที่ปิดรับ ไม่มีใครถูกเพิ่มหรือลบ');
+    if (cid) { var me = lock.entries.filter(function (e) { return e.who === cid; })[0]; if (me) add(me.n === ((st.shared.rafflePool[fid] || {})[cid] || 0), 'สิทธิ์ของลูกค้านี้อยู่ในกองครบ', me.n + ' ใบ', 'สิทธิ์ของคุณอยู่ในกองครบ ' + me.n + ' ใบ', 'ทุกใบที่คุณลงกองถูกนับรวมในการจับ ไม่มีสิทธิ์ตกหล่น'); }
+    if (!res) return { steps: steps, ok: ok, pending: true };
+    if (!res.prizes) return { steps: steps.concat([{ ok: false, t: 'ผลนี้จับก่อนมีระบบตรวจสอบ', d: 'ไม่มีข้อมูลสำหรับคำนวณซ้ำ' }]), ok: false, legacy: true };
+    add(res.commit === lock.commit, 'ผลการจับอ้างอิงรหัสกองเดียวกับที่ประกาศก่อนจับ', 'กองไม่ถูกเปลี่ยนระหว่างล็อกกับจับ', 'การจับใช้รายชื่อชุดเดียวกับที่ประกาศไว้ก่อนจับ', 'ไม่มีการเปลี่ยนรายชื่อระหว่างปิดรับกับวันจับรางวัล');
+    add(lock.at <= res.d, 'ล็อกกองก่อนวันจับรางวัล', 'ล็อก ' + lock.at + ' · จับ ' + res.d, 'ปิดรับรายชื่อก่อนวันจับรางวัล', 'ปิดรับเมื่อ ' + lock.at + ' แล้วจึงจับเมื่อ ' + res.d + ' — ไม่มีการแอบเพิ่มรายชื่อหลังรู้ผล');
+    var w2 = runDraw(res.prizes, lock.entries, lock.commit, res.seed);
+    add(w2.length === res.winners.length && w2.every(function (w, i) { return w.who === res.winners[i].who && w.prizeId === res.winners[i].prizeId; }), 'คำนวณซ้ำด้วย seed + รายชื่อกอง ได้ผู้โชคดีชุดเดียวกัน', w2.length + ' ผู้โชคดี ตรงกับที่ประกาศทุกคน', 'ผู้โชคดีทุกคนมาจากสูตร ไม่ได้มาจากการเลือก', 'ระบบจับรางวัลซ้ำอีกครั้งด้วยวิธีเดียวกัน ได้ผู้โชคดี ' + w2.length + ' คน ชุดเดียวกับที่ประกาศทุกคน — ถ้ามีใครถูกสลับ ผลจะไม่ตรงทันที');
+    return { steps: steps, ok: ok, pending: false };
   };
   /* ---------------- customer notifications: derived from admin cfg.notify + customer state · in-web only (bell + notification center) ---------------- */
   PMP.notifications = function (cid) {
