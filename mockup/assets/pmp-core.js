@@ -693,7 +693,7 @@
   function expandEnt(ent) { var out = []; ent.forEach(function (e) { for (var i = 0; i < e.n; i++) out.push(e.who === 'other' ? 'other-' + i : e.who); }); return out; }
   function runDraw(prizes, ent, commit, seed) {
     var fin = commit + '|' + seed, left = expandEnt(ent), winners = [], k = 0;
-    prizes.forEach(function (z) { for (var w = 0; w < (z.winners || 1) && left.length; w++) { var idx = parseInt(sha256(fin + '|' + (k++)).slice(0, 12), 16) % left.length; winners.push({ prizeId: z.id, prize: z.name, who: left.splice(idx, 1)[0] }); } });
+    prizes.forEach(function (z) { for (var w = 0; w < (z.winners || 1) && left.length; w++) { var idx = parseInt(sha256(fin + '|' + (k++)).slice(0, 12), 16) % left.length; var who = left[idx]; winners.push({ prizeId: z.id, prize: z.name, who: who }); left = left.filter(function (x) { return x !== who; }); /* 1 คน ถูกได้ 1 รางวัลต่อการจับ — ตัดทุกใบของผู้ชนะออก */ } });
     return winners;
   }
   function rndHex() { var s = ''; try { var u = new Uint8Array(8); (g.crypto || g.msCrypto).getRandomValues(u); for (var i = 0; i < u.length; i++) s += ('0' + u[i].toString(16)).slice(-2); } catch (e) { s = ''; } while (s.length < 16) s += Math.floor(Math.random() * 16).toString(16); return s; }
