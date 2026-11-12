@@ -61,7 +61,6 @@ window.MOCKUP = {
         { file: '06-admin-online.html', title: 'คูปองออนไลน์: โค้ดส่วนลด + ประวัติการใช้', role: 'admin' },
         { file: '07-admin-collectible.html', title: 'คูปองออนไลน์: เก็บเอง / แจกรายเดือน', role: 'admin' },
         { file: '08-customer-center.html', title: 'ศูนย์คูปอง + กระเป๋าคูปอง', role: 'customer' },
-        { file: '09-customer-cart-coupon.html', title: 'ใช้คูปองในตะกร้า/เช็คเอาต์', role: 'customer' },
         { file: '10-customer-paper-info.html', title: 'ตรวจสอบคูปองกระดาษ (สาขาที่ใช้ได้)', role: 'customer' },
         { file: '11-admin-paper-print.html', title: 'ส่งออกไฟล์สั่งพิมพ์คูปองกระดาษ (โรงพิมพ์)', role: 'admin' },
         { file: '12-admin-paper-template.html', title: 'เลือก template คูปองกระดาษ (ก่อนสร้างชุด)', role: 'admin' }

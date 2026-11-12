@@ -133,7 +133,7 @@
     'promotion/04-admin-flash.html': ['config', 'flash', 'Flash Sale จริง'], 'promotion/06-customer-list.html': ['cart', '', 'โปรที่ลูกค้าเลือกได้'],
     'promotion/07-customer-product.html': ['cart', '', 'หยิบสินค้า + ดูโปร'], 'promotion/08-customer-detail.html': ['cart', '', 'เลือกสินค้า + โปร'], 'promotion/09-customer-cart.html': ['cart', '', 'ตะกร้า/ชำระเงินจริง'],
     'coupon/01-admin-hub.html': ['config', 'coupons', 'คูปองออนไลน์ทั้งหมด'], 'coupon/06-admin-online.html': ['config', 'coupons', 'แก้โค้ดส่วนลดจริง'], 'coupon/07-admin-collectible.html': ['config', 'coupons', 'แก้คูปองเก็บเอง/รายเดือนจริง'],
-    'coupon/08-customer-center.html': ['state', 'wallet', 'ศูนย์คูปองจริง'], 'coupon/09-customer-cart-coupon.html': ['cart', '', 'ใช้คูปองในตะกร้าจริง'],
+    'coupon/08-customer-center.html': ['state', 'wallet', 'ศูนย์คูปองจริง'],
     'points/01-admin-rules.html': ['config', 'points', 'ตัวคูณพอยท์จริง'], 'points/02-admin-catalog.html': ['config', 'points', 'แคตตาล็อกแลกจริง'], 'points/03-admin-ledger.html': ['state', 'points', 'สมุดพอยท์ลูกค้าจริง'],
     'points/04-customer-dashboard.html': ['state', 'points', 'พอยท์ของฉันจริง'], 'points/05-customer-redeem.html': ['state', 'points', 'แลกพอยท์จริง'], 'points/06-customer-earn-preview.html': ['cart', '', 'พอยท์ที่จะได้จริง'],
     'campaign/01-admin-list.html': ['config', 'camp', 'แคมเปญทั้งหมด'], 'campaign/03-admin-ladder-editor.html': ['config', 'camp', 'แคมเปญขั้นบันไดจริง'],

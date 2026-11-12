@@ -75,7 +75,7 @@
       var k = cfg.coupons.filter(function (x) { return x.id === w.couponId; })[0], ship = k.dtype === 'ship' ? 'ship' : '', s = PMP.status(k, now);
       if (w.used) used.push(tk('used ' + ship, k.name, 'ใช้แล้ว · ' + E(w.src), '', kindVal(k), '<span class="chip">ใช้แล้ว</span>'));
       else if (s === 'expired') exp.push(tk('used ' + ship, k.name, 'หมดอายุ ' + dmy(k.end) + ' · ไม่ได้ใช้', '', kindVal(k), '<span class="chip error">หมดอายุ</span>'));
-      else ready.push(tk(ship, k.name, E(w.src) + ' · ใช้ได้ถึง ' + dmy(k.end) + (k.stackPromo ? ' · ใช้ร่วมโปรได้' : ' · ใช้ร่วมโปรไม่ได้'), '', kindVal(k), '<a class="btn contained sm" href="09-customer-cart-coupon.html">ใช้</a>'));
+      else ready.push(tk(ship, k.name, E(w.src) + ' · ใช้ได้ถึง ' + dmy(k.end) + (k.stackPromo ? ' · ใช้ร่วมโปรได้' : ' · ใช้ร่วมโปรไม่ได้'), '', kindVal(k), '<a class="btn contained sm" href="../promotion/09-customer-cart.html">ใช้</a>'));
     });
     monthly.forEach(function (k) { if (PMP.status(k, now) === 'running' && !c.wallet.some(function (w) { return w.couponId === k.id; })) ready.push(tk('wait ' + (k.dtype === 'ship' ? 'ship' : ''), k.name, 'แจกอัตโนมัติรายเดือน · ยังไม่ออกในเดือนนี้', '', 'รอวันที่ 1', '<button class="btn outlined sm" data-lmonthly="1">จำลองแจก</button>')); });
     wsec('w-ready', ready, 'ยังไม่มีคูปองในกระเป๋า — ไปที่ "ศูนย์คูปอง" เพื่อเก็บคูปอง');
@@ -1050,32 +1050,6 @@
     var cnt = $('.cust-top .cart b'); relabelCustomer();
   };
   document.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('[data-lhredeem]'); if (!a) return; var it = PMP.cfg().catalog.filter(function (x) { return x.id === a.getAttribute('data-lhredeem'); })[0]; if (!confirm('ยืนยันแลก “' + it.name + '” ใช้ ' + it.pts + ' พอยท์ ? (ยกเลิกไม่ได้)')) return; var r = PMP.redeem(custId(), it.id); toast(r.error || 'แลกสำเร็จ: ' + r.out.join(' · '), !!r.error); rerender(); });
-
-  /* ================= coupon/09 ใช้คูปองในตะกร้า/เช็คเอาต์ ================= */
-  H['coupon/09-customer-cart-coupon.html'] = function () {
-    if (U.rd('pmpc.sim.cart', null) === null) U.wr('pmpc.sim.cart', { 'BM-VC500': 3, 'DX-MP1': 1, 'SY-3ML': 4, 'PAR-500': 10 });
-    var cfg = PMP.cfg(), R = PMP.price(cartArr(), cartOpts()), cs0 = cs();
-    var lc = $('.cart-grid .card .card-b'); lc.innerHTML = R.lines.map(function (l) { var ex = R.coupon && R.coupon.excluded.indexOf(l.p.name) > -1; return '<div class="cart-line"><span class="thumb"></span><div><b>' + E(l.p.name) + '</b>' + (ex ? ' <span class="chip soft-warning">ไม่เข้าร่วมคูปอง</span>' : '') + '<div class="small muted">' + B(l.base) + ' × ' + l.qty + '</div></div><b>' + B(l.amount) + '</b></div>'; }).join('') + (R.coupon && R.coupon.excluded.length ? '<div class="legal mt16">' + E(R.coupon.excluded.join(', ')) + ' อยู่ในรายการยกเว้นของคูปอง — ไม่นับเป็นยอดคิดส่วนลด</div>' : '') + '<div class="row mt16" style="gap:8px"><select class="select" id="lcAddSel2" style="width:300px">' + PMP.products.map(function (p) { return '<option value="' + p.sku + '">' + E(p.name) + '</option>'; }).join('') + '</select><button class="btn outlined sm" id="lcAdd2">＋ เพิ่มสินค้า</button></div>';
-    var sc = $$('.cart-grid .card .card-b')[1];
-    var applied = R.coupon ? '<div class="applied"><div><b>' + E(R.coupon.name) + '</b><div class="small muted">' + E(R.coupon.code) + ' · ' + (R.coupon.ship ? 'ฟรีค่าจัดส่ง' : 'ลด ' + B(R.coupon.discount)) + '</div></div><button class="rm" id="lcRm">✕ เอาออก</button></div>' : '<div class="small muted mb8">ยังไม่ได้ใช้คูปอง</div>';
-    sc.innerHTML = '<h6 class="mb8">สรุปคำสั่งซื้อ</h6><div class="sum-row"><span>ยอดสินค้า</span><span>' + B(R.subtotal) + '</span></div><div class="sum-row"><span>ส่วนลดโปรโมชั่น</span><span>' + (R.promoDisc ? '−' + B(R.promoDisc) : '—') + '</span></div><div class="sep" style="margin:8px 0"></div><div class="row between mb8"><b>คูปอง</b><span class="small muted">ใช้แล้ว ' + (R.coupon ? 1 : 0) + ' / 1 ใบ</span></div>' + applied + '<a class="btn outlined primary block mt8" href="#addcoupon" id="lcOpenDlg">＋ เพิ่มคูปอง</a><div class="sep"></div>' + (R.coupon && !R.coupon.ship ? '<div class="sum-row disc"><span>คูปอง ' + E(R.coupon.code) + '</span><span>−' + B(R.coupon.discount) + '</span></div>' : '') + '<div class="sum-row"><span>ค่าจัดส่ง</span><span>' + (R.shipping ? B(R.shipping) : 'ฟรี') + '</span></div>' + (R.coupon && R.coupon.ship ? '<div class="sum-row disc"><span>คูปอง ส่งฟรี</span><span>−' + B(cfg.shipping.fee) + '</span></div>' : '') + '<div class="sum-row total"><span>ยอดสุทธิ</span><span>' + B(R.total) + '</span></div><div class="legal mt8">ยอดที่ชำระจริงคำนวณที่ระบบตอนยืนยันคำสั่งซื้อ · ราคารวม VAT แล้ว</div><button class="btn contained lg block mt16" id="lcPay2">ไปชำระเงิน</button><a class="btn text block mt8" href="08-customer-center.html">ดูกระเป๋าคูปอง</a>';
-    // dialog
-    var d = $('.dialog.md'); if (d) {
-      var ci = $('.dialog-b input.mono', d), st = $$('.st-ex', d); ci.value = (selGet().couponRef && selGet().couponRef.type === 'code') ? selGet().couponRef.value : ''; ci.classList.remove('good'); ci.id = 'lcCode'; var ub = ci.nextElementSibling; ub.id = 'lcUse';
-      st.forEach(function (x) { x.style.display = 'none'; });
-      var fb = $('#lcFeedback'); if (!fb) { ci.parentNode.insertAdjacentHTML('afterend', '<div id="lcFeedback" class="mb16"></div>'); fb = $('#lcFeedback'); } fb.innerHTML = R.couponErr ? '<div class="msg err" style="padding:8px 12px;background:var(--error-lighter);color:var(--error-dark);border-radius:8px">✕ ' + E(R.couponErr) + '</div>' : R.coupon ? '<div class="msg ok" style="padding:8px 12px;background:var(--success-lighter);color:var(--success-darker);border-radius:8px">✔ ใช้โค้ดได้ — ' + (R.coupon.ship ? 'ฟรีค่าจัดส่ง' : 'ลด ' + B(R.coupon.discount)) + '</div>' : '';
-      var wl = $$('.wl', d); var host = wl[0] && wl[0].parentNode; var html = cs0.wallet.filter(function (w) { return !w.used; }).map(function (w) { var k = cfg.coupons.filter(function (x) { return x.id === w.couponId; })[0], on = R.coupon && R.coupon.walletId === w.id; return '<div class="wl"><div><b>' + E(k.name) + '</b><div class="rs" style="color:var(--success-darker)">' + (on ? '✔ ใช้อยู่ในบิลนี้' : E(w.src) + ' · ใช้ได้ถึง ' + dmy(k.end)) + '</div></div><button class="btn ' + (on ? 'outlined' : 'contained') + ' sm" data-lcw="' + (on ? '' : w.id) + '">' + (on ? 'เอาออก' : 'ใช้') + '</button></div>'; }).join(''); if (host) { wl.forEach(function (x) { x.parentNode.removeChild(x); }); var lab = $$('.label', d).filter(function (x) { return /กระเป๋า/.test(x.textContent); })[0]; if (lab) lab.insertAdjacentHTML('afterend', html || '<div class="muted small">ไม่มีคูปองในกระเป๋า — <a href="08-customer-center.html">ไปเก็บคูปอง</a></div>'); }
-    }
-    relabelCustomer();
-  };
-  document.addEventListener('click', function (e) {
-    if (KEY !== 'coupon/09-customer-cart-coupon.html') return; var sel = selGet(), cart = U.rd('pmpc.sim.cart', {});
-    if (e.target.id === 'lcAdd2') { var s = $('#lcAddSel2').value; cart[s] = (cart[s] || 0) + 1; U.wr('pmpc.sim.cart', cart); rerender(); return; }
-    if (e.target.id === 'lcRm') { sel.couponRef = null; U.wr('pmpc.sim.sel', sel); rerender(); return; }
-    if (e.target.id === 'lcUse') { var v = $('#lcCode').value.trim(); sel.couponRef = v ? { type: 'code', value: v } : null; U.wr('pmpc.sim.sel', sel); rerender(); return; }
-    var w = e.target.closest('[data-lcw]'); if (w) { var id = w.getAttribute('data-lcw'); sel.couponRef = id ? { type: 'wallet', value: id } : null; U.wr('pmpc.sim.sel', sel); rerender(); return; }
-    if (e.target.id === 'lcPay2') { var r = PMP.checkout(cartArr(), cartOpts()); if (r.error) { toast(r.error, true); return; } U.wr('pmpc.sim.cart', {}); U.wr('pmpc.sim.sel', { promos: [], couponRef: null, usePoints: 0, useCredit: false }); toast('ชำระเงินสำเร็จ ' + r.order.no); rerender(); }
-  });
 
   /* ================= points/06 พอยท์ที่จะได้รับ ================= */
   var P6qty = 5;
