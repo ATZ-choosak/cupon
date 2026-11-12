@@ -44,6 +44,24 @@
   .pcard.dim .pc-w{color:var(--error-dark);font-weight:700}
   .tick{width:20px;height:20px;border-radius:50%;border:2px solid var(--g400);flex:none;margin-top:1px}
   .pcard.sel .tick{background:var(--primary);border-color:var(--primary);box-shadow:inset 0 0 0 3px #fff}
+  .pay-opt{border:1.5px solid var(--g300);border-radius:12px;padding:12px 14px;background:#fff;margin:8px 0}
+  .pay-opt.on{border-color:var(--primary);background:#FFFBFB}
+  .po-h{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center}
+  .po-ic{width:36px;height:36px;border-radius:10px;background:var(--g100);display:flex;align-items:center;justify-content:center;font-size:18px}
+  .pay-opt.on .po-ic{background:var(--primary-lighter)}
+  .po-h b{display:block;font-size:13.5px}.po-h small{color:var(--text2);font-size:11.5px}
+  .po-amt{font-weight:800;font-size:14px;text-align:right}.po-amt.zero{color:var(--g500);font-weight:600}
+  .po-body{margin-top:10px;padding-top:10px;border-top:1px dashed var(--g300)}
+  .po-body input[type=range]{width:100%;accent-color:var(--primary)}
+  .qks{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  .qk{border:1.5px solid var(--g300);background:#fff;border-radius:999px;padding:3px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+  .qk.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .cp-box{border:1.5px dashed var(--g400);border-radius:12px;padding:12px;background:#FFFCF8;margin:6px 0 10px}
+  .cp-box .hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:700}
+  .cp-chip{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;background:var(--success-lighter);border:1.5px solid var(--success);border-radius:10px;padding:8px 10px;margin-bottom:8px;font-size:12.5px}
+  .cp-chip .x{border:0;background:#fff;border-radius:999px;width:26px;height:26px;cursor:pointer;color:var(--g700);font-weight:700}
+  .cp-in{display:flex;gap:8px}.cp-in .input{flex:1;min-width:0;text-transform:uppercase}
+  .cp-tabs{display:flex;gap:6px;margin:4px 0 10px}.cp-tabs span{padding:4px 12px;border-radius:999px;border:1.5px solid var(--g300);font-size:12px;font-weight:600}.cp-tabs span.on{background:var(--primary);border-color:var(--primary);color:#fff}
   .cp-ok{color:var(--success-darker)}.cp-err{color:var(--error-dark)}.cp-amb{color:#8a5300}
   .cp-app{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border:1.5px solid var(--success);background:var(--success-lighter);border-radius:10px;padding:10px 12px;margin-bottom:8px}
   .cp-st{border:1px solid var(--g200);border-radius:10px;padding:12px;background:#fff}
@@ -125,13 +143,36 @@
       <div class="sum-row"><span>ของแถมโปรโมชั่น<small>เจลแอลกอฮอล์ 1 ขวด</small></span><span>฿0</span></div>
 
       <div class="sum-sep">คูปองและพอยท์ (แยกจากโปรโมชั่น)</div>
-      <div class="sum-row"><span>ส่วนลดคูปอง<small><a href="#coupon-modal">เลือก/ใส่คูปอง</a> · ยังไม่ได้ใช้ <span class="pin" style="margin:0 0 0 4px">9</span></small></span><span>−฿0</span></div>
-      <div class="sum-row"><span>ใช้พอยท์ชำระ<small>มี 1,250 พอยท์ · ยังไม่ได้ใช้</small></span><span>−฿0</span></div>
+      <div class="pay-opt on relative"><span class="pin abs">9</span>
+        <div class="po-h"><span class="po-ic">🎟</span><div><b>คูปองส่วนลด</b><small>มีคูปองที่ใช้ได้ 2 ใบ</small></div><span class="po-amt">−฿100</span></div>
+        <div class="po-body">
+          <div class="cp-chip"><div><b>ลด ฿100</b> · เมื่อซื้อครบ ฿1,500<div class="small cp-ok">✔ ใช้อยู่ในบิลนี้</div></div><button class="x" title="เอาคูปองออก">✕</button></div>
+          <div class="cp-in"><input class="input mono" placeholder="ใส่โค้ดคูปอง เช่น SAVE100"><button class="btn outlined primary">ใช้โค้ด</button></div>
+          <a class="small" href="#coupon-modal" style="font-weight:600;display:inline-block;margin-top:8px">เลือกจากคูปองของฉัน →</a>
+        </div>
+      </div>
+
+      <div class="pay-opt on relative"><span class="pin abs">13</span>
+        <div class="po-h"><span class="po-ic">💎</span><div><b>ใช้พอยท์ชำระ</b><small>มี 1,250 พอยท์ · 1 พอยท์ = ฿1</small></div>
+          <label class="switch" title="เปิด/ปิดการใช้พอยท์"><input type="checkbox" checked></label></div>
+        <div class="po-body">
+          <div class="row between small"><span>ใช้ <b>300 พอยท์</b></span><span class="po-amt">−฿300</span></div>
+          <input type="range" min="0" max="630" value="300">
+          <div class="qks"><button class="qk">ไม่ใช้</button><button class="qk">100</button><button class="qk on">300</button><button class="qk">ใช้สูงสุด 630</button></div>
+          <div class="small muted mt8">ใช้ได้ไม่เกิน 630 พอยท์ในบิลนี้ (30% ของยอดสินค้า) · พอยท์ที่เหลือ 950</div>
+        </div>
+      </div>
+
+      <div class="pay-opt relative"><span class="pin abs">14</span>
+        <div class="po-h"><span class="po-ic">💰</span><div><b>เครดิตเงินคืน</b><small>มียอดเครดิต ฿80</small></div>
+          <label class="switch" title="เปิด/ปิดการใช้เครดิต"><input type="checkbox"></label></div>
+        <div class="small muted mt8">เปิดสวิตช์เพื่อหักเครดิตจากยอดชำระ (หักได้ไม่เกินยอดที่ต้องชำระ)</div>
+      </div>
 
       <div class="sum-sep">การจัดส่ง</div>
       <div class="sum-row"><span>ค่าจัดส่ง<small>ซื้อเวชภัณฑ์ครบ ฿2,000 ส่งฟรี — ตอนนี้ ฿0</small></span><span>฿150</span></div>
 
-      <div class="sum-row total"><span>ยอดสุทธิ</span><span>฿8,482</span></div>
+      <div class="sum-row total"><span>ยอดสุทธิ</span><span>฿8,082</span></div>
       <div class="save relative"><span class="pin abs" style="top:-10px;left:auto;right:-8px">8</span>คุณประหยัดจากโปรโมชั่นและ Flash Sale ไปแล้ว ฿708</div>
 
       <a class="btn contained lg block mt16" href="#">ดำเนินการชำระเงิน</a>
@@ -140,36 +181,28 @@
     </div></div>
   </div>
 
-  <h6 class="mt24 mb8" id="coupon-modal">หน้าต่าง "เลือก/ใส่คูปอง" (เปิดจากแถว "เลือก/ใส่คูปอง" ในสรุปคำสั่งซื้อ — แสดงเปิดอยู่เพื่อดูทั้งหมดในภาพเดียว)</h6>
+  <h6 class="mt24 mb8" id="coupon-modal">หน้าต่าง "เลือกคูปองของฉัน" (เปิดจากลิงก์ในกล่องคูปอง — แสดงเปิดอยู่เพื่อดูในภาพเดียว)</h6>
   <div class="backdrop mb24">
     <div class="dialog md">
-      <div class="dialog-h">เลือก/ใส่คูปอง <button class="x">✕</button></div>
+      <div class="dialog-h">เลือกคูปอง <button class="x">✕</button></div>
       <div class="dialog-b">
-        <div class="label mb8">คูปองที่ใช้อยู่ในบิลนี้ (1 / 2 ใบ) <span class="pin">9</span></div>
-        <div class="cp-app"><div><b>ลด ฿100 เมื่อซื้อครบ ฿1,500</b><div class="small muted">เก็บเอง · คิดจากยอด ฿3,632 (ไม่นับนมผงสูตร 3)</div></div><button class="btn outlined sm">✕ เอาออก</button></div>
+        <div class="cp-in relative"><span class="pin" style="position:absolute;top:-12px;left:-8px">10</span><input class="input mono" value="BIG5K"><button class="btn contained">ใช้โค้ด</button></div>
+        <div class="small cp-amb" style="margin:6px 0 14px">! โค้ดนี้ใช้ได้เมื่อยอดที่เข้าเงื่อนไขครบ ฿5,000 — ตอนนี้ ฿3,632 ซื้อเพิ่มอีก ฿1,368</div>
 
-        <div class="label mb8 mt16">มีโค้ดคูปอง? <span class="pin">10</span></div>
-        <div class="row mb8"><input class="input mono" placeholder="กรอกโค้ด" style="max-width:260px"><button class="btn contained">ใช้โค้ด</button></div>
-        <div class="grid g3 mb16">
-          <div class="cp-st"><div class="ctx">ผ่าน</div><input class="input good mono" value="SAVE100"><div class="mm cp-ok">✔ ใช้โค้ดได้ — ลด ฿100 (คิดจากยอด ฿3,632)</div></div>
-          <div class="cp-st"><div class="ctx">ผิดเงื่อนไข</div><input class="input bad mono" value="SAVE100"><div class="mm cp-err">✕ โค้ดนี้ใช้ครบโควตาต่อคนแล้ว</div></div>
-          <div class="cp-st"><div class="ctx">ยังไม่ถึงขั้นต่ำ</div><input class="input amber mono" value="BIG5K"><div class="mm cp-amb">! ยอดที่ใช้คูปองนี้ได้ ฿3,632 ยังไม่ถึง ฿5,000 อีก ฿1,368</div></div>
-        </div>
+        <div class="cp-tabs relative"><span class="pin" style="position:absolute;top:-12px;left:-8px">11</span><span class="on">ใช้ได้ (2)</span><span>ใช้ไม่ได้ (3)</span></div>
+        <div class="cp-wl" style="border-color:var(--success);background:var(--success-lighter)"><div><b>ลด ฿100 เมื่อซื้อครบ ฿1,500</b><div class="rs cp-ok">✔ ใช้อยู่ในบิลนี้ · ลด ฿100</div></div><button class="btn outlined sm">เอาออก</button></div>
+        <div class="cp-wl"><div><b>ส่งฟรีประจำเดือน ต.ค.</b><div class="rs">ซื้อครบ ฿1,000 · ฟรีค่าจัดส่ง ฿150</div></div><button class="btn contained sm">ใช้</button></div>
 
-        <div class="label mb8">คูปองในกระเป๋าของฉัน <span class="pin">11</span> <a class="small" href="../coupon/08-customer-center.html" style="font-weight:400">ดูศูนย์คูปอง →</a></div>
-        <div class="cp-wl"><div><b>ลด ฿100 เมื่อซื้อครบ ฿1,500</b><div class="rs cp-ok">✔ ใช้อยู่ในบิลนี้ · คิดจากยอด ฿3,632</div></div><button class="btn outlined sm">เอาออก</button></div>
-        <div class="cp-wl"><div><b>ส่งฟรีประจำเดือน ต.ค.</b><div class="rs">ซื้อครบ ฿1,000 · ฟรีค่าจัดส่ง ฿150 — เลือกใช้ได้</div></div><button class="btn contained sm">ใช้</button></div>
-        <div class="cp-wl off"><div><b>ลด 10% สูงสุด ฿150 เมื่อซื้อครบ ฿5,000</b><div class="rs cp-amb">! ใช้ไม่ได้: ยอดที่ใช้คูปองนี้ได้ ฿3,632 ยังไม่ถึง ฿5,000 (อีก ฿1,368) — ไม่นับนมผงสูตร 3</div></div><button class="btn outlined sm" disabled>ใช้</button></div>
-        <div class="cp-wl off"><div><b>ลดเพิ่ม ฿30 (ใช้ใบเดียวต่อบิล)</b><div class="rs cp-err">✕ ใช้ร่วมกับคูปองอื่นไม่ได้ — เอาคูปองที่ใช้อยู่ออกก่อน</div></div><button class="btn outlined sm" disabled>ใช้</button></div>
-        <div class="cp-wl off"><div><b>ลด ฿50 เมื่อซื้อครบ ฿500</b><div class="rs">ใช้แล้วเมื่อ 3 ต.ค. 69 (ออเดอร์ #A-1488)</div></div><span class="chip">ใช้แล้ว</span></div>
+        <div class="label mt16 mb8" style="color:var(--text2)">ใช้ไม่ได้ในบิลนี้ (บอกเหตุผลทุกใบ)</div>
+        <div class="cp-wl off"><div><b>ลด 10% สูงสุด ฿150</b><div class="rs cp-amb">ซื้อเพิ่มอีก ฿1,368 (ครบ ฿5,000) จึงใช้ได้</div></div><button class="btn outlined sm" disabled>ใช้</button></div>
+        <div class="cp-wl off"><div><b>ลดเพิ่ม ฿30</b><div class="rs cp-err">ใช้ร่วมกับคูปอง ฿100 ไม่ได้ — เอาใบที่ใช้อยู่ออกก่อน</div></div><button class="btn outlined sm" disabled>ใช้</button></div>
+        <div class="cp-wl off"><div><b>ลด ฿50 เมื่อซื้อครบ ฿500</b><div class="rs">ใช้แล้วเมื่อ 3 ต.ค. 69</div></div><span class="chip">ใช้แล้ว</span></div>
 
-        <div class="alert info mt16 relative"><span class="pin">12</span><div><div class="a-title">ใช้ได้สูงสุด 2 ใบ/บิล: ส่วนลด 1 + ส่งฟรี 1</div>
-          ส่วนลดที่เป็นเงิน/% ใช้ได้ 1 ใบ และส่งฟรีอีก 1 ใบ · คูปองบางใบตั้งว่า "ใช้ร่วมกับคูปองอื่นไม่ได้" หรือ "ใช้ร่วมโปรไม่ได้" ระบบจะบอกเหตุผลที่ข้างใบคูปอง</div></div>
+        <div class="small muted mt16 relative"><span class="pin" style="margin:0 6px 0 0">12</span>ใช้ได้สูงสุด 2 ใบต่อบิล: ส่วนลด 1 ใบ + ส่งฟรี 1 ใบ</div>
       </div>
-      <div class="dialog-f"><button class="btn text grey">ปิด</button><button class="btn contained">เสร็จสิ้น (ยอดสุทธิใหม่ ฿8,382)</button></div>
+      <div class="dialog-f"><a class="btn text grey" href="../coupon/08-customer-center.html">ไปศูนย์คูปอง</a><button class="btn contained">เสร็จสิ้น — ส่วนลดคูปอง ฿100</button></div>
     </div>
   </div>
-
 </main>
 
 <section class="ux-notes">
@@ -183,10 +216,12 @@
     <li><span class="pin">6</span><span><b>ของแถมหมดสต็อก</b> ค่าเริ่มต้นที่เสนอ: โปรถูกปิดชั่วคราวตามกติกา → บรรทัดของแถมขึ้นเทา ขีดฆ่า ป้าย "หมดชั่วคราว" และข้อความอธิบาย · ไม่แปลงเป็นส่วนลดอัตโนมัติ · ไม่บล็อกการชำระเงิน</span></li>
     <li><span class="pin">7</span><span><b>สรุปยอดแยกกลุ่ม</b> ส่วนลดโปรโมชั่น (และ Flash) อยู่แยกจากส่วนลดคูปองและการใช้พอยท์ เพื่อให้ตรวจสอบง่ายและสอดคล้องลำดับการคิดเงิน: Flash → โปรโมชั่น → คูปอง → ส่ง → พอยท์ · แต่ละบรรทัดมีคำอธิบายย่อยบอกที่มา</span></li>
     <li><span class="pin">8</span><span><b>ยอดที่ประหยัด</b> รวม Flash + โปรโมชั่น (ไม่รวมมูลค่าของแถม และคูปองที่ยังไม่ใช้) · ปุ่มชำระเงินพาไปหน้าเช็คเอาต์เดิม ซึ่งคำนวณโปรซ้ำอีกครั้งที่เซิร์ฟเวอร์</span></li>
-    <li><span class="pin">9</span><span><b>แถวคูปองในสรุปยอด</b> "เลือก/ใส่คูปอง" เปิดหน้าต่างเดียว — เป็นจุดเดียวในระบบที่ลูกค้าเลือกและกรอกคูปอง (ศูนย์คูปองมีปุ่ม "ไปใช้ที่ตะกร้า" พามาที่หน้านี้) · ด้านบนหน้าต่างสรุปคูปองที่ใช้อยู่พื้นเขียวพร้อมปุ่มเอาออก ยอดสุทธิคำนวณใหม่ทันที</span></li>
-    <li><span class="pin">10</span><span><b>ช่องกรอกโค้ด 3 สถานะ</b> ผ่าน (เขียว) / ผิดเงื่อนไข (แดง บอกเหตุผล เช่น ใช้ครบโควตาต่อคน) / ยังไม่ถึงขั้นต่ำ (เหลือง บอกว่าขาดอีกเท่าไร)</span></li>
-    <li><span class="pin">11</span><span><b>กระเป๋าคูปอง</b> ทุกใบมี "เหตุผลที่ใช้ไม่ได้" ใต้ชื่อ (ขั้นต่ำ ยกเว้นสินค้า ใช้ร่วมไม่ได้ ใช้แล้ว) — ปุ่ม "ใช้" ถูกปิดเมื่อใช้ไม่ได้</span></li>
-    <li><span class="pin">12</span><span><b>คำอธิบายกติกาซ้อนใบ</b> ส่วนลด 1 + ส่งฟรี 1 ต่อบิล (ตามค่ากลางในหน้าแอดมิน) แสดงในหน้าต่างเสมอ</span></li>
+    <li><span class="pin">9</span><span>กล่องคูปองในสรุปยอด จุดเดียวที่ลูกค้าจัดการคูปอง: แสดงใบที่ใช้อยู่เป็นแถบเขียว กด ✕ เอาออกได้ทันที · มีช่องใส่โค้ดอยู่ในกล่องเลย ไม่ต้องเปิดหน้าต่าง · ลิงก์ "เลือกจากคูปองของฉัน" บอกจำนวนใบที่ใช้ได้ · ยอดสุทธิคำนวณใหม่ทันที (ศูนย์คูปองมีปุ่ม "ไปใช้ที่ตะกร้า" พามาที่หน้านี้)</span></li>
+    <li><span class="pin">10</span><span>ช่องใส่โค้ด บอกผลใต้ช่องบรรทัดเดียว: ผ่าน (เขียว ลดเท่าไร) / ใช้ไม่ได้ (แดง เหตุผล เช่น ใช้ครบโควตาต่อคนแล้ว) / ยังไม่ถึงขั้นต่ำ (เหลือง บอกว่าขาดอีกเท่าไร)</span></li>
+    <li><span class="pin">11</span><span>คูปองของฉัน แยกแท็บ "ใช้ได้" กับ "ใช้ไม่ได้" — ใบที่ใช้ได้มีปุ่ม "ใช้" / ใบที่ใช้อยู่มีปุ่ม "เอาออก" · ใบที่ใช้ไม่ได้บอกเหตุผลสั้นๆ ใต้ชื่อ (ขั้นต่ำ ยกเว้นสินค้า ใช้ร่วมไม่ได้ ใช้แล้ว) และกดไม่ได้</span></li>
+    <li><span class="pin">12</span><span>กติกาซ้อนใบ 1 บรรทัด: ส่วนลด 1 ใบ + ส่งฟรี 1 ใบต่อบิล (ตามค่ากลางในหน้าแอดมิน) · ปุ่มล่าง "เสร็จสิ้น" บอกส่วนลดคูปองที่ได้</span></li>
+    <li><span class="pin">13</span><span><b>ใช้พอยท์ชำระ</b> สวิตช์เปิด/ปิด แล้วเลือกจำนวนด้วยแถบเลื่อนหรือปุ่มลัด (ไม่ใช้ / 100 / 300 / ใช้สูงสุด) — แสดงยอดที่หักทันที พร้อมเพดานที่ใช้ได้ในบิลนี้และพอยท์ที่เหลือ · ถ้าโปรหรือคูปองที่เลือกไม่ให้ใช้ร่วมกับพอยท์ การ์ดจะเป็นสีเทาและบอกเหตุผลแทนสวิตช์</span></li>
+    <li><span class="pin">14</span><span><b>เครดิตเงินคืน</b> สวิตช์เดียว เปิดแล้วหักเต็มยอดเครดิตเท่าที่หักได้ (ไม่เกินยอดที่ต้องชำระ) · ถ้าเครดิตเป็น ฿0 สวิตช์ถูกปิดและบอกว่า "ยังไม่มีเครดิต"</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
     <li>คำนวณใหม่ทุกครั้งที่จำนวนเปลี่ยน · สถานะโหลด: แสดงบรรทัดสรุปเป็น skeleton ไม่แสดงตัวเลขเก่า</li>

@@ -26,8 +26,9 @@
   /* floating control: simulated customer + date (shared across pages) */
   function simCtl() {
     if ($('#liveCtl')) return;
+    if (!/raffle\/0[6-9]-customer/.test(location.pathname.replace(/\\/g, '/'))) return;
     var cfg = PMP.cfg(), d = document.createElement('div'); d.id = 'liveCtl'; d.className = 'live-ctl';
-    d.innerHTML = '<b>จำลอง</b><select class="select" id="lcCust">' + PMP.customers.map(function (c) { return '<option value="' + c.id + '"' + (c.id === custId() ? ' selected' : '') + '>' + c.name + ' (' + c.type + ')</option>'; }).join('') + '</select><input class="input" id="lcNow" type="date" value="' + cfg.now + '"><button class="btn text sm grey" id="lcReset" type="button" title="รีเซ็ตข้อมูลจำลองทั้งหมด">รีเซ็ต</button>' + (PMP.cfg().raffles.some(function (f) { return f.mode === 'B'; }) ? '<button class="btn outlined sm" id="lcAnn" type="button" title="เดโม: จับรางวัลโหมด B ให้ลูกค้าที่เลือกอยู่ถูกรางวัลแรก แล้วเด้งหน้าต่างลุ้นผล">ประกาศผล (ถูก)</button><button class="btn text sm grey" id="lcRv" type="button" title="เดโม: ให้ลูกค้าที่เลือกอยู่เปิดผลโหมด B ซ้ำได้">ลุ้นผลอีกครั้ง</button>' : '');
+    d.innerHTML = '<b>จำลอง</b><select class="select" id="lcCust">' + PMP.customers.map(function (c) { return '<option value="' + c.id + '"' + (c.id === custId() ? ' selected' : '') + '>' + c.name + ' (' + c.type + ')</option>'; }).join('') + '</select><input class="input" id="lcNow" type="date" value="' + cfg.now + '"><button class="btn text sm grey" id="lcReset" type="button" title="รีเซ็ตข้อมูลจำลองทั้งหมด">รีเซ็ต</button>' + (/raffle\/0[6-9]-customer/.test(location.pathname.replace(/\\/g, '/')) && PMP.cfg().raffles.some(function (f) { return f.mode === 'B'; }) ? '<button class="btn outlined sm" id="lcAnn" type="button" title="เดโม: จับรางวัลโหมด B ให้ลูกค้าที่เลือกอยู่ถูกรางวัลแรก แล้วเด้งหน้าต่างลุ้นผล">ประกาศผล (ถูก)</button><button class="btn text sm grey" id="lcRv" type="button" title="เดโม: ให้ลูกค้าที่เลือกอยู่เปิดผลโหมด B ซ้ำได้">ลุ้นผลอีกครั้ง</button>' : '');
     document.body.appendChild(d);
     var ann = $('#lcAnn'); if (ann) ann.onclick = function () {
       var fs = PMP.cfg().raffles.filter(function (f) { return f.mode === 'B'; }), cid = custId(), st = PMP.state(), f = fs.filter(function (x) { return !(st.shared.drawResult || {})[x.id]; })[0];
@@ -835,9 +836,24 @@
     if (fl) rows += '<div class="sum-row disc"><span>ส่วนลด Flash Sale</span><span>−' + B(fl) + '</span></div>'; if (qd) rows += '<div class="sum-row disc"><span>ส่วนลดแคมเปญราคาพิเศษ</span><span>−' + B(qd) + '</span></div>';
     R.promoApplied.forEach(function (p) { rows += '<div class="sum-row disc"><span><b>ส่วนลดโปรโมชั่น</b><small>' + E(p.name) + '</small></span><span>' + (p.discount ? '−' + B(p.discount) : '—') + '</span></div>'; });
     R.gifts.forEach(function (g) { rows += '<div class="sum-row"><span>ของแถมโปรโมชั่น<small>' + E(PMP.product(g.sku).name) + ' × ' + g.qty + '</small></span><span>฿0</span></div>'; });
-    rows += '<div class="sum-sep">คูปองและพอยท์ (แยกจากโปรโมชั่น)</div><div class="sum-row"><span>ส่วนลดคูปอง<small><a href="#" id="lcCoupon">เลือก/ใส่คูปอง</a> · ' + (R.coupon ? E(R.coupon.code) + ' ใช้แล้ว' : R.couponErr ? '<span style="color:var(--error-dark)">' + E(R.couponErr) + '</span>' : 'ยังไม่ได้ใช้') + '</small></span><span>' + (R.coupon ? (R.coupon.ship ? 'ส่งฟรี' : '−' + B(R.coupon.discount)) : '−฿0') + '</span></div>';
-    rows += '<div class="sum-row"><span>ใช้พอยท์ชำระ<small>มี ' + cs0.points.toLocaleString() + ' พอยท์ · <a href="#" id="lcPts">ตั้งจำนวน</a>' + (R.pointsBlocked ? ' · ใช้ไม่ได้ (' + E(R.pointsBlocked) + ')' : ' · ใช้ได้สูงสุด ' + R.pointsMax) + '</small></span><span>−' + B(R.pointsDisc) + '</span></div>';
-    rows += '<div class="sum-row"><span>เครดิตเงินคืน<small>มี ' + B(cs0.credit) + ' · <a href="#" id="lcCredit">' + (selGet().useCredit ? 'ยกเลิกการใช้เครดิต' : 'ใช้เครดิต') + '</a></small></span><span>−' + B(R.creditUsed || 0) + '</span></div>';
+    var wn = cs0.wallet.filter(function (x) { return !x.used; }).length;
+    var csel = selGet(), upts = R.pointsDisc ? (csel.usePoints || 0) : 0, pmax = R.pointsMax || 0;
+    rows += '<div class="sum-sep">ส่วนลดเพิ่มเติม (ใช้ชำระ)</div>';
+    rows += '<div class="pay-opt ' + (R.coupon ? 'on' : '') + ' relative"><span class="pin abs">9</span><div class="po-h"><span class="po-ic">🎟</span><div><b>คูปองส่วนลด</b><small>มีคูปองในกระเป๋า ' + wn + ' ใบ</small></div><span class="po-amt ' + (R.coupon ? '' : 'zero') + '">' + (R.coupon ? (R.coupon.ship ? 'ส่งฟรี' : '−' + B(R.coupon.discount)) : 'ยังไม่ใช้') + '</span></div><div class="po-body">' +
+      (R.coupon ? '<div class="cp-chip"><div><b>' + E(R.coupon.code) + '</b> · ' + (R.coupon.ship ? 'ส่งฟรี' : 'ลด ' + B(R.coupon.discount)) + '<div class="small cp-ok">✔ ใช้อยู่ในบิลนี้</div></div><button class="x" type="button" id="lcCpRm" title="เอาคูปองออก">✕</button></div>' : '') +
+      '<div class="cp-in"><input class="input mono" id="lcQCode" placeholder="ใส่โค้ดคูปอง เช่น SAVE100"><button class="btn outlined primary" type="button" id="lcQOk">ใช้โค้ด</button></div>' +
+      (R.couponErr ? '<div class="small cp-err" style="margin-top:6px">' + E(R.couponErr) + '</div>' : '') +
+      '<a class="small" href="#" id="lcCoupon" style="font-weight:600;display:inline-block;margin-top:8px">เลือกจากคูปองของฉัน (' + wn + ' ใบ) →</a></div></div>';
+    rows += '<div class="pay-opt ' + (upts > 0 ? 'on' : '') + ' relative"><span class="pin abs">13</span><div class="po-h"><span class="po-ic">💎</span><div><b>ใช้พอยท์ชำระ</b><small>มี ' + cs0.points.toLocaleString() + ' พอยท์ · 1 พอยท์ = ' + B(cfg.pay.ptBaht) + '</small></div>' +
+      (R.pointsOff ? '<span class="po-amt zero">ปิดใช้งาน</span>' : R.pointsBlocked ? '<span class="po-amt zero">ใช้ไม่ได้</span>' : '<label class="switch"><input type="checkbox" id="lcPtSw" data-pmax="' + pmax + '"' + (upts > 0 ? ' checked' : '') + (pmax <= 0 ? ' disabled' : '') + '></label>') + '</div>' +
+      (R.pointsOff ? '<div class="small muted" style="margin-top:8px">ขณะนี้ร้านปิดการชำระเงินด้วยพอยท์ — พอยท์ยังสะสมและแลกของรางวัลได้ตามปกติ</div>' : R.pointsBlocked ? '<div class="small cp-err" style="margin-top:8px">“' + E(R.pointsBlocked) + '” ไม่อนุญาตให้ใช้ร่วมกับพอยท์</div>' :
+        '<div class="po-body"><div class="row between small"><span>ใช้ <b>' + upts.toLocaleString() + ' พอยท์</b></span><span class="po-amt ' + (upts ? '' : 'zero') + '">−' + B(R.pointsDisc) + '</span></div>' +
+        '<input type="range" id="lcPtRange" min="0" max="' + pmax + '" value="' + Math.min(upts, pmax) + '"><div class="qks">' +
+        [0, 100, 300].filter(function (v) { return v < pmax; }).map(function (v) { return '<button type="button" class="qk' + (upts === v ? ' on' : '') + '" data-lpt="' + v + '">' + (v ? v.toLocaleString() : 'ไม่ใช้') + '</button>'; }).join('') +
+        '<button type="button" class="qk' + (upts === pmax && pmax > 0 ? ' on' : '') + '" data-lpt="' + pmax + '">ใช้สูงสุด ' + pmax.toLocaleString() + '</button></div>' +
+        '<div class="small muted mt8">ใช้ได้ไม่เกิน ' + pmax.toLocaleString() + ' พอยท์ในบิลนี้ (' + cfg.pay.maxPct + '% ของยอดสินค้า) · เหลือพอยท์ ' + (cs0.points - upts).toLocaleString() + '</div></div>') + '</div>';
+    rows += '<div class="pay-opt ' + (csel.useCredit && R.creditUsed ? 'on' : '') + ' relative"><span class="pin abs">14</span><div class="po-h"><span class="po-ic">💰</span><div><b>เครดิตเงินคืน</b><small>' + (cs0.credit > 0 ? 'มียอดเครดิต ' + B(cs0.credit) : 'ยังไม่มีเครดิต') + '</small></div><label class="switch"><input type="checkbox" id="lcCrSw"' + (csel.useCredit ? ' checked' : '') + (cs0.credit > 0 ? '' : ' disabled') + '></label></div>' +
+      (csel.useCredit && R.creditUsed ? '<div class="row between small mt8"><span>หักเครดิต</span><span class="po-amt">−' + B(R.creditUsed) + '</span></div>' : '') + '</div>';
     rows += '<div class="sum-sep">การจัดส่ง</div><div class="sum-row"><span>ค่าจัดส่ง<small>' + (R.shipFree ? 'ฟรีจากโปร/คูปอง' : 'ฟรีเมื่อยอดสินค้า ≥ ' + B(cfg.shipping.freeOver)) + '</small></span><span>' + (R.shipping ? B(R.shipping) : 'ฟรี') + '</span></div>';
     rows += '<div class="sum-row total"><span>ยอดสุทธิ</span><span>' + B(R.total) + '</span></div><div class="save relative">คุณประหยัดจากโปรโมชั่น Flash และคูปองไปแล้ว ' + B(fl + qd + R.promoDisc + R.couponDisc) + '</div>';
     var earn = []; if (R.earnBase) earn.push('พอยท์ +' + R.earnBase); R.grants.forEach(function (g) { earn.push(PMP.describe(g.it, cfg)); }); Object.keys(R.ticketsBuy).forEach(function (f) { earn.push('สิทธิ์ลุ้น +' + R.ticketsBuy[f]); });
@@ -866,6 +882,7 @@
     $$('[data-lcw]', mod).forEach(function (b) { b.onclick = function () { var id = b.getAttribute('data-lcw'); save(function (s2) { s2.couponRef = (s2.couponRef && s2.couponRef.value === id) ? null : { type: 'wallet', value: id }; }); mod.classList.remove('on'); rerender(); }; });
     var rg = $('#lcRange'), nm = $('#lcNum'); if (rg) { rg.oninput = function () { nm.value = rg.value; }; nm.oninput = function () { rg.value = nm.value; }; $('#lcMax').onclick = function () { nm.value = rg.value = rg.max; }; $('#lcZero').onclick = function () { nm.value = rg.value = 0; }; $('#lcPtsOk').onclick = function () { var v = Math.max(0, Math.min(+nm.value || 0, +rg.max)); save(function (s2) { s2.usePoints = v; }); mod.classList.remove('on'); rerender(); }; }
   }
+  document.addEventListener('change', function (e) { if (e.target.id === 'lcPtRange') { var s3 = selGet(); s3.usePoints = +e.target.value || 0; U.wr('pmpc.sim.sel', s3); rerender(); } });
   document.addEventListener('click', function (e) {
     if (KEY !== 'promotion/09-customer-cart.html') return;
     var q = e.target.closest('[data-lq]'), pc = e.target.closest('[data-lpc]'), cart = U.rd('pmpc.sim.cart', {}), sel = selGet();
@@ -873,6 +890,11 @@
     if (e.target.id === 'lcAdd') { var sku = $('#lcAddSel').value; cart[sku] = (cart[sku] || 0) + 1; U.wr('pmpc.sim.cart', cart); rerender(); return; }
     if (pc) { if (pc.classList.contains('dim')) { toast($('.pc-w', pc).textContent, true); return; } var id = pc.getAttribute('data-lpc'), i = sel.promos.indexOf(id); if (i > -1) sel.promos.splice(i, 1); else sel.promos.push(id); U.wr('pmpc.sim.sel', sel); rerender(); return; }
     if (e.target.id === 'lcCoupon') { e.preventDefault(); cartDlg('coupon'); return; }
+    if (e.target.id === 'lcCpRm') { sel.couponRef = null; U.wr('pmpc.sim.sel', sel); rerender(); return; }
+    if (e.target.id === 'lcPtSw') { sel.usePoints = e.target.checked ? (+e.target.getAttribute('data-pmax') || 0) : 0; U.wr('pmpc.sim.sel', sel); rerender(); return; }
+    if (e.target.id === 'lcCrSw') { sel.useCredit = e.target.checked; U.wr('pmpc.sim.sel', sel); rerender(); return; }
+    var qkb = e.target.closest && e.target.closest('[data-lpt]'); if (qkb) { sel.usePoints = +qkb.getAttribute('data-lpt') || 0; U.wr('pmpc.sim.sel', sel); rerender(); return; }
+    if (e.target.id === 'lcQOk') { var qv = ($('#lcQCode').value || '').trim().toUpperCase(); if (!qv) { toast('ใส่โค้ดคูปองก่อน', true); return; } sel.couponRef = { type: 'code', value: qv }; U.wr('pmpc.sim.sel', sel); rerender(); return; }
     if (e.target.id === 'lcPts') { e.preventDefault(); cartDlg('points'); return; }
     if (e.target.id === 'lcCredit') { e.preventDefault(); sel.useCredit = !sel.useCredit; U.wr('pmpc.sim.sel', sel); rerender(); return; }
     if (e.target.id === 'lcPay') { var r = PMP.checkout(cartArr(), cartOpts()); if (r.error) { toast(r.error, true); return; } U.wr('pmpc.sim.cart', {}); U.wr('pmpc.sim.sel', { promos: [], couponRef: null, usePoints: 0, useCredit: false }); toast('ชำระเงินสำเร็จ ' + r.order.no + ': ' + r.order.effects.slice(0, 4).join(' · ')); rerender(); }
@@ -889,7 +911,9 @@
         return '<tr class="' + (v ? '' : 'zero') + '"><td><b>' + E(p.name) + '</b><span class="sub mono">' + p.sku + '</span></td><td>' + E(p.brand) + '</td><td>' + E(p.cat) + '</td><td>' + p.unit + ' · ' + B(p.price) + '</td><td class="num"><input class="input pts" data-lpts="' + p.sku + '" value="' + v + '"></td><td>' + (own ? '<span class="chip soft-primary">ตั้งเอง</span>' : v ? '<span class="chip soft-info">ตามที่ตั้งไว้เดิม</span>' : '<span class="chip">ยังไม่ตั้ง</span>') + (v ? '' : ' <span class="chip soft-error">ได้ 0 พอยท์</span>') + '</td></tr>';
       }).join('');
     }
+    var sw = $('[data-lpay]'); if (sw) sw.checked = cfg.pay.enabled !== false;
     var root = $('#screen'); if (!root._lp) { root._lp = 1;
+      root.addEventListener('change', function (e) { var t = e.target; if (t.hasAttribute && t.hasAttribute('data-lpay')) { setCfg(function (c) { c.pay.enabled = t.checked; }); flashSaved(); } });
       root.addEventListener('input', function (e) { var t = e.target, a; if ((a = t.getAttribute('data-lpts'))) { setCfg(function (c) { c.pts = c.pts || {}; c.pts[a] = +t.value || 0; }); flashSaved(); } });
       root.addEventListener('change', function (e) { if (e.target.getAttribute('data-lpts') != null) rerender(); });
     }

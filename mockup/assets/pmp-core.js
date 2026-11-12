@@ -57,7 +57,7 @@
         { id: 'kt1', name: 'ชุดร้านยาเปิดใหม่ S', disc: 5, aud: 'B2B', items: [{ sku: 'PAR-500', qty: 50, min: 20, req: true }, { sku: 'SY-3ML', qty: 10, min: 5, req: true }, { sku: 'BM-VC500', qty: 6, min: 0, req: false }, { sku: 'PP-DM', qty: 4, min: 0, req: false }] },
         { id: 'kt2', name: 'ชุดร้านยาเปิดใหม่ L', disc: 8, aud: 'B2B', items: [{ sku: 'PAR-500', qty: 100, min: 50, req: true }, { sku: 'SY-3ML', qty: 30, min: 10, req: true }, { sku: 'BM-VC500B', qty: 2, min: 0, req: false }, { sku: 'DX-MP1', qty: 6, min: 0, req: false }] }],
       shipping: { fee: 80, freeOver: 1500 },
-      pay: { ptBaht: 1, maxPct: 20 },
+      pay: { ptBaht: 1, maxPct: 20, enabled: true },
       psets: [
         { id: 'ps1', name: 'Blackmores (ยกเว้น Pregnancy Gold)', brands: ['Blackmores'], cats: [], skus: [], exclude: ['BM-PG'] },
         { id: 'ps2', name: 'นมผงทุกตรา', brands: [], cats: ['นมผง'], skus: [], exclude: [] },
@@ -128,6 +128,7 @@
     c.promos.forEach(function (p) { if (p.kind === 'special') { p.kind = 'cond'; if (p.id === 'p10') p.name = 'วันพิเศษ 10.27 ซื้อเท่าไรก็ได้ ลด 10% (สูงสุด ฿500) + พอยท์ ×2'; ch = true; } });
     if (c.points && c.points.mults) { delete c.points.mults; ch = true; }
     if (!c.promos.some(function (p) { return p.id === 'p13'; }) && !c._p13) { c.promos.push(d.promos.filter(function (p) { return p.id === 'p13'; })[0]); c._p13 = 1; ch = true; }
+    if (c.pay && c.pay.enabled === undefined) { c.pay.enabled = true; ch = true; }
     ['csets', 'flash', 'paper', 'kits', 'stock', 'partners'].forEach(function (k) { if (!c[k]) { c[k] = d[k] || []; ch = true; } });
     c.paper.forEach(function (p) { if (p.serial && p.serial.on) { p.serial.on = false; ch = true; } if (!p.benefit) { p.benefit = 'discount'; p.item = ''; p.settle = 'pay'; p.cost = 0; p.serial = { on: false, prefix: '', from: 1, to: 0 }; ch = true; } });
     c.paper.forEach(function (p) { if (!Array.isArray(p.terms)) { p.terms = String(p.back || '').split(/\s*·\s*|\n/).map(function (x) { return x.trim(); }).filter(Boolean); ch = true; } if (p.note == null) { p.note = PMP.PAPER_NOTE; ch = true; } if (!p.tpl) { p.tpl = p.benefit === 'item' ? 'gift' : 'classic'; ch = true; } if (!p.theme) { p.theme = 'red'; ch = true; } });
@@ -369,8 +370,9 @@
 
     /* 6 — pay with points / credit */
     var payable = goods + R.shipping;
-    var okPts = chosen.every(function (c) { return c.p.stackPoints; }) && (!R.coupon || R.coupon.stackPoints);
-    R.pointsBlocked = !okPts ? (chosen.filter(function (c) { return !c.p.stackPoints; })[0] || { p: { name: 'คูปองที่เลือก' } }).p.name : null;
+    R.pointsOff = cfg.pay.enabled === false;
+    var okPts = !R.pointsOff && chosen.every(function (c) { return c.p.stackPoints; }) && (!R.coupon || R.coupon.stackPoints);
+    R.pointsBlocked = (!okPts && !R.pointsOff) ? (chosen.filter(function (c) { return !c.p.stackPoints; })[0] || { p: { name: 'คูปองที่เลือก' } }).p.name : null;
     var maxByPct = Math.floor(goods * cfg.pay.maxPct / 100 / cfg.pay.ptBaht);
     R.pointsMax = okPts ? Math.max(0, Math.min(cs.points, maxByPct)) : 0;
     R.pointsUsed = okPts ? Math.max(0, Math.min(opts.usePoints || 0, R.pointsMax)) : 0;

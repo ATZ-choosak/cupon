@@ -416,15 +416,15 @@ a.cart{color:inherit;text-decoration:none}.cust-top .cart b[hidden]{display:none
 /* raffle A reveal styles: gift box + scratch card (admin picks one per activity) */
 .sty-chip{display:inline-flex;align-items:center;gap:6px;background:var(--g100);border-radius:999px;padding:4px 14px;font-size:12.5px;font-weight:700;color:var(--g800)}
 .gift-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:100%;max-width:420px;padding:6px 0}
-.gift{position:relative;aspect-ratio:1;border-radius:16px;background:linear-gradient(160deg,#FFEBEE,#FFF8E1);border:2px solid #F5C6C8;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .4s,transform .3s}
-.gift .g-ic{font-size:54px;line-height:1;transition:transform .5s cubic-bezier(.3,1.6,.5,1),opacity .4s;display:block}
-.gift .g-pz{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-weight:800;font-size:13px;text-align:center;padding:6px;opacity:0;transform:scale(.3)}
-.gift .g-pz b{font-size:28px}
-.gift.shake{animation:gshake .45s ease-in-out infinite}
-.gift.open{background:linear-gradient(160deg,#E8F5E9,#FFFDE7);border-color:#81C784;transform:scale(1.07);z-index:2;box-shadow:0 0 0 4px rgba(76,175,80,.25),0 8px 22px rgba(0,0,0,.18)}
-.gift.open .g-ic{transform:translateY(-70px) rotate(-25deg) scale(1.3);opacity:0}
-.gift.open .g-pz{opacity:1;transform:scale(1);transition:all .5s .15s cubic-bezier(.3,1.6,.5,1)}
-.gift.dim{opacity:.35;filter:grayscale(.7)}
+.gift-grid .gift{position:relative;aspect-ratio:1;border-radius:16px;background:linear-gradient(160deg,#FFEBEE,#FFF8E1);border:2px solid #F5C6C8;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .4s,transform .3s}
+.gift-grid .gift .g-ic{font-size:54px;line-height:1;transition:transform .5s cubic-bezier(.3,1.6,.5,1),opacity .4s;display:block}
+.gift-grid .gift .g-pz{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-weight:800;font-size:13px;text-align:center;padding:6px;opacity:0;transform:scale(.3)}
+.gift-grid .gift .g-pz b{font-size:28px}
+.gift-grid .gift.shake{animation:gshake .45s ease-in-out infinite}
+.gift-grid .gift.open{background:linear-gradient(160deg,#E8F5E9,#FFFDE7);border-color:#81C784;transform:scale(1.07);z-index:2;box-shadow:0 0 0 4px rgba(76,175,80,.25),0 8px 22px rgba(0,0,0,.18)}
+.gift-grid .gift.open .g-ic{transform:translateY(-70px) rotate(-25deg) scale(1.3);opacity:0}
+.gift-grid .gift.open .g-pz{opacity:1;transform:scale(1);transition:all .5s .15s cubic-bezier(.3,1.6,.5,1)}
+.gift-grid .gift.dim{opacity:.35;filter:grayscale(.7)}
 @keyframes gshake{0%,100%{transform:rotate(0)}25%{transform:rotate(-7deg) translateY(-3px)}75%{transform:rotate(7deg) translateY(-3px)}}
 .scr-card{position:relative;width:340px;max-width:100%;height:170px;border-radius:16px;border:3px solid var(--primary);background:linear-gradient(135deg,#FFF8E1,#FFEBEE);overflow:hidden;box-shadow:var(--z4,0 4px 14px rgba(0,0,0,.18))}
 .scr-card .scr-prize{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;padding:10px}
@@ -437,10 +437,14 @@ a.cart{color:inherit;text-decoration:none}.cust-top .cart b[hidden]{display:none
 .sty-opt{display:flex;gap:12px;align-items:flex-start}.sty-opt .si{font-size:34px;line-height:1}
 .sty-prev{display:flex;gap:16px;align-items:center;margin-top:12px;padding:12px 14px;background:var(--g50);border:1px dashed var(--g300);border-radius:10px;font-size:13px}
 .sty-prev .si{font-size:42px}
-.gift[data-gi]{cursor:pointer}.gift[data-gi]:hover{transform:translateY(-4px) scale(1.04);border-color:var(--primary)}
-.gift.shake,.gift.open,.gift.dim{pointer-events:none}
+.gift-grid .gift[data-gi]{cursor:pointer}.gift-grid .gift[data-gi]:hover{transform:translateY(-4px) scale(1.04);border-color:var(--primary)}
+.gift-grid .gift.shake,.gift-grid .gift.open,.gift-grid .gift.dim{pointer-events:none}
 .hash{word-break:break-all}.hash.draft{opacity:.55;border-style:dashed}
 .fair-ex{display:grid;gap:10px}.fx-step{display:flex;gap:12px;align-items:flex-start;font-size:13.5px}
 .fx-n,.fx-st{flex:0 0 26px;height:26px;border-radius:50%;background:var(--g200);color:var(--g800);font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center}
 .fx-st.ok{background:var(--success);color:#fff}
 .fair-tl{display:grid;gap:12px}.fx-row{display:flex;gap:12px;align-items:flex-start;font-size:13.5px}.fx-row>div{min-width:0;flex:1}
+/* tags must never stretch inside flex/grid cards */
+.promo-tag{align-self:flex-start;flex:none;width:auto;height:auto;max-width:100%}
+.pu .b>div{flex:none}
+.pu.free{align-self:start}
