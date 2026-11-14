@@ -409,12 +409,24 @@
   });
 
   /* ---- starterkit/01 รายการเซตร้านยา ---- */
+  var KT = { tab: 'all', q: '' };
   H['starterkit/01-admin-list.html'] = function () {
     var cfg = PMP.cfg(), st = PMP.state();
-    tbody('table.table tbody', cfg.kits.map(function (k) {
+    function kstat(k) { if (k.active === false) return 'off'; var r0 = PMP.kitCalc(k, null); return r0.lines.some(function (l) { var s0 = cfg.stock[l.it.sku]; return l.it.req && s0 != null && Math.floor(s0 / Math.max(1, l.q)) < 1; }) ? 'short' : 'sale'; }
+    var cnt = { all: cfg.kits.length, sale: 0, short: 0, off: 0 }; cfg.kits.forEach(function (k) { cnt[kstat(k)]++; });
+    var LB = { all: 'ทั้งหมด', sale: 'ขาย', short: 'สต็อกไม่พอ', off: 'ปิดการขาย' };
+    $$('[data-tabs] [data-tab]').forEach(function (b) { var k = b.getAttribute('data-tab'); if (LB[k]) { b.textContent = LB[k] + ' (' + cnt[k] + ')'; b.classList.toggle('on', k === KT.tab); } });
+    var shown = cfg.kits.filter(function (k) { return (KT.tab === 'all' || kstat(k) === KT.tab) && (!KT.q || k.name.toLowerCase().indexOf(KT.q.toLowerCase()) > -1); });
+    var sm = $('.table-toolbar .muted.small'); if (sm) sm.textContent = shown.length ? 'แสดง 1–' + shown.length + ' จาก ' + cfg.kits.length : 'ไม่พบรายการ';
+    if (!document._kt1) {
+      document._kt1 = 1;
+      document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('[data-tabs] [data-tab]'); if (t && $('table.kt') && LB[t.getAttribute('data-tab')]) { KT.tab = t.getAttribute('data-tab'); rerender(); } });
+      document.addEventListener('input', function (e) { if ($('table.kt') && e.target.closest && e.target.closest('.table-toolbar') && e.target.matches('input.input')) { KT.q = e.target.value; var pos = e.target.selectionStart; rerender(); var ni = $('.table-toolbar input.input'); if (ni) { ni.focus(); try { ni.setSelectionRange(pos, pos); } catch (x) { } } } });
+    }
+    tbody('table.table tbody', shown.map(function (k) {
       var r = PMP.kitCalc(k, null), req = k.items.filter(function (x) { return x.req; }).length, opt = k.items.length - req, orders = (st.kitOrders || []).filter(function (o) { return o.kit === k.name; }).length;
       var low = r.lines.map(function (l) { var s = cfg.stock[l.it.sku]; return s == null ? null : { n: l.p.name, can: Math.floor(s / Math.max(1, l.q)), req: l.it.req }; }).filter(Boolean).sort(function (a, b) { return a.can - b.can; })[0];
-      return '<tr><td class="nm"><b>' + E(k.name) + '</b><span class="small muted">ส่วนลดเซต ' + k.disc + '%</span></td><td><span class="chip soft-info">' + (k.aud === 'B2B' ? 'เฉพาะ B2B' : 'ทุกคน') + '</span></td><td class="cnt"><span class="chip soft-primary">บังคับ ' + req + '</span> <span class="chip outline">ทางเลือก ' + opt + '</span></td><td class="num nowrap">' + B(r.total) + '<div class="small muted">ราคาตั้งต้น ' + B(r.sub) + '</div></td><td class="num">−' + B(r.disc) + '</td><td><div class="health"><span class="chip ' + (low && low.can < 1 ? 'soft-error' : 'soft-success') + '" style="width:fit-content">' + (low ? 'พอขาย ' + low.can + ' เซต' : 'สต็อกไม่จำกัด') + '</span>' + (low ? '<span class="line">จุดคอขวด: ' + E(low.n) + '</span>' : '') + '</div></td><td><span class="chip success">ขาย</span></td><td class="num"><b>' + orders + '</b></td><td><div class="acts"><a class="btn text sm" href="02-admin-editor.html" data-lsel-kit="' + k.id + '">แก้ไข</a><a class="btn text sm" href="03-admin-order-behalf.html">สั่งแทนลูกค้า</a></div></td></tr>';
+      return '<tr><td class="nm"><b>' + E(k.name) + '</b><span class="small muted">ส่วนลดเซต ' + k.disc + '%</span></td><td><span class="chip soft-info">' + (k.aud === 'B2B' ? 'เฉพาะ B2B' : 'ทุกคน') + '</span></td><td class="cnt"><span class="chip soft-primary">บังคับ ' + req + '</span> <span class="chip outline">ทางเลือก ' + opt + '</span></td><td class="num nowrap">' + B(r.total) + '<div class="small muted">ราคาตั้งต้น ' + B(r.sub) + '</div></td><td class="num">−' + B(r.disc) + '</td><td><div class="health"><span class="chip ' + (low && low.can < 1 ? 'soft-error' : 'soft-success') + '" style="width:fit-content">' + (low ? 'พอขาย ' + low.can + ' เซต' : 'สต็อกไม่จำกัด') + '</span>' + (low ? '<span class="line">จุดคอขวด: ' + E(low.n) + '</span>' : '') + '</div></td><td>' + ({ sale: '<span class="chip success">ขาย</span>', short: '<span class="chip error">สต็อกไม่พอ</span>', off: '<span class="chip">ปิดการขาย</span>' })[kstat(k)] + '</td><td class="num"><b>' + orders + '</b></td><td><div class="acts"><a class="btn text sm" href="02-admin-editor.html" data-lsel-kit="' + k.id + '">แก้ไข</a><a class="btn text sm" href="03-admin-order-behalf.html">สั่งแทนลูกค้า</a></div></td></tr>';
     }).join(''), 9);
   };
 
