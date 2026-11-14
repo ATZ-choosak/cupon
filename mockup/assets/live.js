@@ -418,6 +418,8 @@
     $$('[data-tabs] [data-tab]').forEach(function (b) { var k = b.getAttribute('data-tab'); if (LB[k]) { b.textContent = LB[k] + ' (' + cnt[k] + ')'; b.classList.toggle('on', k === KT.tab); } });
     var shown = cfg.kits.filter(function (k) { return (KT.tab === 'all' || kstat(k) === KT.tab) && (!KT.q || k.name.toLowerCase().indexOf(KT.q.toLowerCase()) > -1); });
     var sm = $('.table-toolbar .muted.small'); if (sm) sm.textContent = shown.length ? 'แสดง 1–' + shown.length + ' จาก ' + cfg.kits.length : 'ไม่พบรายการ';
+    var sv = $$('.stat .v'); if (sv[0]) sv[0].textContent = cnt.sale; if (sv[1]) sv[1].textContent = cnt.short;
+    var pg = $('.pager span:last-child'); if (pg) pg.textContent = shown.length ? '1–' + shown.length + ' จาก ' + cfg.kits.length : '0 จาก ' + cfg.kits.length;
     if (!document._kt1) {
       document._kt1 = 1;
       document.addEventListener('click', function (e) { var t = e.target.closest && e.target.closest('[data-tabs] [data-tab]'); if (t && $('table.kt') && LB[t.getAttribute('data-tab')]) { KT.tab = t.getAttribute('data-tab'); rerender(); } });
@@ -2076,6 +2078,7 @@
       '<details class="mt8"><summary class="small"><b>ระบบนี้ทำงานยังไง / ทำไมเชื่อได้</b></summary><div class="mt8">' + fairExplainC() + '</div></details></div></div></div>' +
       '<div class="card mt16"><div class="card-h"><h6>รางวัลในกิจกรรมนี้</h6></div><div class="card-b"><div class="grid g3">' + f.prizes.map(function (z) { var ws = res ? res.winners.filter(function (w) { return w.prizeId === z.id; }) : []; return '<div class="prize-card" data-pzd="' + f.id + '|' + z.id + '" style="cursor:pointer">' + (z.img ? '<div style="aspect-ratio:1/1;max-height:160px;width:100%;background:var(--g100) center/cover no-repeat url(' + z.img + ');border-radius:8px 8px 0 0"></div>' : '') + '<div class="pb"><b>' + E(z.name) + '</b><div class="small muted">' + z.winners + ' ผู้โชคดี</div>' + (z.desc ? '<div class="small mt8" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">' + E(z.desc) + '</div>' : '') + '<div class="small mt8" style="color:var(--primary-dark)">ดูรายละเอียดและวิธีลุ้น ›</div>' + (res && !locked ? '<div class="small mt8">ผู้โชคดี: ' + ws.map(function (w) { return w.who === cid ? '<b style="color:var(--primary-dark)">คุณ</b>' : w.who.indexOf('other-') === 0 ? 'ร้านที่ร่วมรายการ' : E((PMP.customers.filter(function (x) { return x.id === w.who; })[0] || {}).name || w.who); }).join(', ') + '</div>' : '') + '</div></div>'; }).join('') + '</div></div></div>';
     relabelCustomer();
+    var pzq = /[?&]pz=([^&]+)/.exec(location.search); if (pzq) prizeDetail(f.id, pzq[1]);
   };
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-rfpool]'); if (b) { var d = b.getAttribute('data-rfpool').split('|'), r = PMP.enterPool(custId(), d[0], +d[1]); toast(r.error || 'ลงกองแล้ว ' + d[1] + ' สิทธิ์ (ถอนคืนไม่ได้)', !!r.error); rerender(); } });
 

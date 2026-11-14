@@ -137,7 +137,7 @@
     c.ladders.forEach(function (L, i) { L.tiers.forEach(function (t, j) { if (t.formText == null) { t.formText = 'ที่อยู่จัดส่ง*'; ch = true; } }); });
     c.raffles.forEach(function (f) { if (f.mode !== 'A' && f.mode !== 'B') { f.mode = 'A'; ch = true; } if (f.ptsPer == null) { f.ptsPer = 0; ch = true; } if (!f.aud) { f.aud = 'all'; ch = true; } if (f.mode === 'B' && !f.drawAt) { f.drawAt = f.end; ch = true; } if (f.mode === 'B') f.prizes.forEach(function (z) { if (z.winners == null) { z.winners = 1; ch = true; } }); if (f.mode === 'A' && /ลุ้นโชคปลายปี/.test(f.name) && !/ลุ้นทันที/.test(f.name)) { f.name += ' (ลุ้นทันที)'; ch = true; } });
     if (!c._f2 && !c.raffles.some(function (f) { return f.id === 'f2'; })) { c.raffles.push(d.raffles.filter(function (f) { return f.id === 'f2'; })[0]); c._f2 = 1; ch = true; }
-    if (!c._pimg) { c._pimg = 1; ch = true; c.raffles.forEach(function (f) { f.prizes.forEach(function (z) { if (!z.img) z.img = PMP.mockPrizeImg(z.name); }); }); }
+    if (!c._pimg2) { c._pimg2 = 1; ch = true; c.raffles.forEach(function (f) { f.prizes.forEach(function (z) { if (!z.img || /^data:image\/svg/.test(z.img)) z.img = PMP.mockPrizeImg(z.name); }); }); }
     if (!c._pdesc) { c._pdesc = 1; ch = true; c.raffles.forEach(function (f) { f.prizes.forEach(function (z) { if (!z.desc) z.desc = PMP.mockPrizeDesc(z.name); }); }); }
     if (!c.notify) { c.notify = d.notify; ch = true; }
     if (ch) wr('pmpc.sim.cfg', c);
@@ -147,7 +147,7 @@
   PMP.mockPrizeImg = function (name) {
     var n = String(name || ''), m = [[/ทริป|ท่องเที่ยว|ญี่ปุ่น/, '✈️', '#dbeafe', '#bfdbfe'], [/ipad|แท็บเล็ต|โน้ตบุ๊ก|มือถือ/i, '📱', '#ede9fe', '#ddd6fe'], [/คูปอง/, '🎟️', '#fef3c7', '#fde68a'], [/พอยท์|แต้ม/, '⭐', '#fef9c3', '#fde047'], [/พรีเมียม|ของขวัญ|ชุด/, '🎁', '#fee2e2', '#fecaca'], [/./, '🎉', '#dcfce7', '#bbf7d0']].filter(function (x) { return x[0].test(n); })[0];
     var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="' + m[2] + '"/><stop offset="1" stop-color="' + m[3] + '"/></linearGradient></defs><rect width="320" height="320" fill="url(#g)"/><text x="160" y="200" font-size="130" text-anchor="middle">' + m[1] + '</text></svg>';
-    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg).replace(/\(/g, '%28').replace(/\)/g, '%29');
   };
   PMP.mockPrizeDesc = function (name) {
     var n = String(name || '');

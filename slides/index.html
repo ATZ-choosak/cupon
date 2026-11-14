@@ -7,167 +7,418 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
 <style>
-:root{--p:#B32026;--pd:#8A2622;--pl:#F5E8E8;--g1:#F5F5F5;--g2:#EEEEEE;--g3:#E0E0E0;--g5:#9E9E9E;--g6:#757575;--g8:#424242;--g9:#212121;--ok:#388E3C;--okl:#E8F5E8;--info:#1976D2;--infol:#E8F4FD;--warn:#F57C00;--warnl:#FFF8E1}
+:root{--p:#B32026;--pd:#8A2622;--pl:#F5E8E8;--g1:#F5F5F5;--g2:#EEEEEE;--g3:#E0E0E0;--g5:#9E9E9E;--g6:#757575;--g8:#424242;--g9:#212121;--ok:#388E3C;--okl:#E8F5E8;--info:#1976D2;--infol:#E8F4FD;--warn:#F57C00;--warnl:#FFF8E1;--adm:#3949AB;--adml:#EEF0FF}
 *{box-sizing:border-box}html,body{margin:0;height:100%;overflow:hidden}
 body{font-family:"Noto Sans Thai",system-ui,sans-serif;color:var(--g8);background:#1b1b1b}
 a{color:inherit}
 #deck{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
 .stage{position:relative;width:min(100vw,177.78vh);height:min(100vh,56.25vw);background:#fff;overflow:hidden;font-size:clamp(11px,1.45vw,28px);line-height:1.5}
-.slide{position:absolute;inset:0;padding:5.2% 6% 6.5%;display:none;flex-direction:column;animation:in .28s ease}
+.slide{position:absolute;inset:0;padding:4.6% 5.5% 6%;display:none;flex-direction:column;animation:in .28s ease}
 .slide.on{display:flex}
 @keyframes in{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:none}}
 .bar{position:absolute;left:0;top:0;height:.45%;background:var(--p);transition:width .25s;z-index:5}
-.foot{position:absolute;left:6%;right:6%;bottom:2.2%;display:flex;justify-content:space-between;font-size:.62em;color:var(--g5);z-index:4}
-.tag{display:inline-block;font-weight:700;font-size:.6em;letter-spacing:.06em;color:var(--p);background:var(--pl);padding:.2em .9em;border-radius:999px;margin-bottom:.7em;align-self:flex-start}
-h1{font-size:2.7em;line-height:1.2;margin:0 0 .3em;font-weight:800;color:var(--g9)}
-h2{font-size:1.85em;line-height:1.25;margin:0 0 .5em;font-weight:800;color:var(--g9)}
-h3{font-size:1.05em;margin:0 0 .35em;font-weight:700;color:var(--g9)}
+.foot{position:absolute;left:5.5%;right:5.5%;bottom:2.2%;display:flex;justify-content:space-between;font-size:.62em;color:var(--g5);z-index:4}
+.tag{display:inline-block;font-weight:700;font-size:.6em;letter-spacing:.04em;color:var(--p);background:var(--pl);padding:.2em .9em;border-radius:999px;margin-bottom:.6em;align-self:flex-start}
+.tag.a{color:var(--adm);background:var(--adml)}
+h1{font-size:2.6em;line-height:1.2;margin:0 0 .3em;font-weight:800;color:var(--g9)}
+h2{font-size:1.7em;line-height:1.25;margin:0 0 .4em;font-weight:800;color:var(--g9)}
+h3{font-size:1em;margin:0 0 .25em;font-weight:700;color:var(--g9)}
 p{margin:0 0 .6em}
-.lead{font-size:1.15em;color:var(--g6)}
-.cols{display:grid;gap:1.4em;flex:1;min-height:0}.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}
-.card{background:#fff;border:1.5px solid var(--g3);border-radius:.9em;padding:.9em 1.1em}
-.card.red{background:var(--pl);border-color:#D4A5A5}.card.blue{background:var(--infol);border-color:#90CAF9}.card.green{background:var(--okl);border-color:#A5D6A7}.card.amber{background:var(--warnl);border-color:#FFD180}
-ul{margin:.2em 0 0;padding-left:1.15em}li{margin:.28em 0}
+.lead{font-size:1.05em;color:var(--g6)}
+.cols{display:grid;gap:1.1em;min-height:0}.c2{grid-template-columns:1fr 1fr}.c3{grid-template-columns:repeat(3,1fr)}.c4{grid-template-columns:repeat(4,1fr)}
+.card{background:#fff;border:1.5px solid var(--g3);border-radius:.9em;padding:.8em 1em}
+.card.red{background:var(--pl);border-color:#D4A5A5}.card.blue{background:var(--infol);border-color:#90CAF9}.card.green{background:var(--okl);border-color:#A5D6A7}.card.amber{background:var(--warnl);border-color:#FFD180}.card.adm{background:var(--adml);border-color:#C5CAE9}
+ul{margin:.2em 0 0;padding-left:1.15em}li{margin:.25em 0}
 li b,p b{color:var(--g9)}
-.big{font-size:3em;font-weight:800;color:var(--p);line-height:1}
-.chip{display:inline-flex;align-items:center;gap:.35em;border:1.5px solid var(--g3);background:#fff;border-radius:999px;padding:.12em .8em;font-size:.82em;font-weight:600;text-decoration:none;cursor:pointer;margin:.15em .25em .15em 0;color:var(--g8)}
+.chip{display:inline-flex;align-items:center;gap:.35em;border:1.5px solid var(--g3);background:#fff;border-radius:999px;padding:.12em .8em;font-size:.8em;font-weight:600;text-decoration:none;cursor:pointer;margin:.15em .25em .15em 0;color:var(--g8)}
 .chip:hover{border-color:var(--p);color:var(--p)}
 .chip.go{background:var(--p);color:#fff;border-color:var(--p)}.chip.go:hover{background:var(--pd);color:#fff}
-.chip.adm{background:#EEF0FF;border-color:#C5CAE9;color:#3949AB}.chip.cus{background:var(--pl);border-color:#D4A5A5;color:var(--pd)}
-.flow{display:flex;align-items:stretch;gap:.5em;flex-wrap:wrap}
-.flow .n{flex:1;min-width:8em;border-radius:.8em;padding:.6em .8em;font-size:.92em;background:#fff;border:1.5px solid var(--g3);position:relative}
+.flow{display:flex;align-items:stretch;gap:.45em;flex-wrap:wrap}
+.flow .n{flex:1;min-width:7em;border-radius:.8em;padding:.55em .75em;font-size:.88em;background:#fff;border:1.5px solid var(--g3);position:relative;text-decoration:none;cursor:pointer}
 .flow .n b{display:block;color:var(--g9)}.flow .n.r{background:var(--pl);border-color:#D4A5A5}.flow .n.b{background:var(--infol);border-color:#90CAF9}.flow .n.g{background:var(--okl);border-color:#A5D6A7}
+.flow .n:hover{border-color:var(--p)}
 .flow .ar{align-self:center;color:var(--g5);font-weight:700}
-.topics{display:grid;grid-template-columns:repeat(4,1fr);gap:.9em;flex:1;align-content:start}
-.topic{border:1.5px solid var(--g3);border-radius:.9em;padding:.8em 1em;cursor:pointer;background:#fff;transition:.15s;text-decoration:none;display:block}
-.topic:hover{border-color:var(--p);background:var(--pl);transform:translateY(-2px)}
-.topic .no{font-size:.75em;font-weight:800;color:var(--p)}.topic b{display:block;font-size:1.05em;color:var(--g9)}.topic span{font-size:.78em;color:var(--g6)}
-.map{position:relative;flex:1}
-.mapgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55em;height:100%;align-content:start}
-.mn{border-radius:.9em;border:1.5px solid var(--g3);padding:.7em .9em;font-size:.86em;display:flex;flex-direction:column;justify-content:center;cursor:pointer;text-decoration:none}
-.mn b{font-size:1.1em;color:var(--g9)}.mn:hover{border-color:var(--p)}
+.parts{display:grid;grid-template-columns:1fr 1fr;gap:1.2em;flex:1;align-content:center}
+.part{border-radius:1em;padding:1em 1.2em;cursor:pointer;border:2px solid var(--g3);text-decoration:none;display:block}
+.part:hover{transform:translateY(-2px);transition:.15s}
+.part.a{background:var(--adml);border-color:#C5CAE9}.part.c{background:var(--pl);border-color:#D4A5A5}
+.part .no{font-size:.72em;font-weight:800;letter-spacing:.05em}.part.a .no{color:var(--adm)}.part.c .no{color:var(--p)}
+.part b{display:block;font-size:1.25em;color:var(--g9);margin:.1em 0 .3em}
+.part .sub{font-size:.82em;color:var(--g6)}
+.mini{display:flex;flex-wrap:wrap;gap:.3em;margin-top:.6em}.mini a{font-size:.72em;padding:.1em .7em;border-radius:999px;background:#fff;border:1px solid var(--g3);text-decoration:none;cursor:pointer}.mini a:hover{border-color:var(--p);color:var(--p)}
+.mapgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5em;align-content:start;flex:1}
+.mn{border-radius:.9em;border:1.5px solid var(--g3);padding:.6em .9em;font-size:.84em;display:flex;flex-direction:column;justify-content:center;cursor:pointer;text-decoration:none}
+.mn b{font-size:1.08em;color:var(--g9)}.mn:hover{border-color:var(--p)}
 .mn.base{background:var(--infol);border-color:#90CAF9;grid-column:span 3;flex-direction:row;gap:1em;align-items:center}
 .mn.core{background:var(--p);color:#fff;border-color:var(--p);grid-column:span 3;text-align:center}.mn.core b{color:#fff}
-.mn.after{background:var(--okl);border-color:#A5D6A7;grid-column:span 3;flex-direction:row;gap:1em;align-items:center;justify-content:center}
-.dn{text-align:center;color:var(--g5);font-weight:700;grid-column:span 3;line-height:1}
+.mn.after{background:var(--okl);border-color:#A5D6A7;flex-direction:row;gap:.6em;align-items:center;justify-content:center}
+.dn{text-align:center;color:var(--g5);font-weight:700;grid-column:span 3;line-height:1;font-size:.85em}
+/* part 1: capability cards */
+.caps{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1fr;gap:.85em;flex:1;align-content:stretch;min-height:0;max-height:78%}
+.cap{border:1.5px solid #C5CAE9;background:#fff;border-radius:.85em;padding:.65em .9em;display:flex;flex-direction:column}
+.cap h3{color:var(--adm);font-size:.95em}
+.cap p{margin:0;font-size:.88em;color:var(--g8)}
+.cap .eg{margin-top:auto;padding-top:.4em;font-size:.72em;color:var(--g6)}
+.cap .eg b{color:var(--g8)}
+.intro{display:grid;grid-template-columns:1.1fr 1fr;gap:1.2em;flex:1;min-height:0;align-items:start}
+.intro .rc{display:flex;flex-direction:column;gap:.8em;min-height:0;height:100%}
+.intro .frame{flex:1;cursor:pointer}.intro .frame:hover{border-color:var(--p)}
+.example{background:var(--warnl);border:1.5px solid #FFD180;border-radius:.9em;padding:.8em 1em}
+.example h3{color:#8a5300}
+/* part 2: screen slides */
+.scr{display:grid;grid-template-columns:1.75fr 1fr;gap:1.2em;flex:1;min-height:0}
+.frame{border-radius:.7em;border:1.5px solid var(--g3);box-shadow:0 .4em 1.4em rgba(0,0,0,.12);overflow:hidden;display:flex;flex-direction:column;min-height:0;background:#f4f4f4}
+.frame .tb{display:flex;align-items:center;gap:.3em;padding:.3em .6em;background:var(--g2);font-size:.55em;color:var(--g6)}
+.frame .tb i{width:.75em;height:.75em;border-radius:50%;background:#ccc;display:inline-block}
+.frame .tb i:nth-child(1){background:#ef5350}.frame .tb i:nth-child(2){background:#ffca28}.frame .tb i:nth-child(3){background:#66bb6a}
+.frame .tb span{margin-left:.6em;background:#fff;border-radius:.4em;padding:.05em .7em;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.frame img{width:100%;flex:1;min-height:0;object-fit:cover;object-position:top left;display:block}
+.side{display:flex;flex-direction:column;min-height:0}
+.side ol{margin:0;padding-left:1.2em;font-size:.88em}.side li{margin:.35em 0}
+.side .why{margin-top:auto;font-size:.78em;background:var(--pl);border-radius:.7em;padding:.55em .8em;color:var(--pd)}
+.step{display:flex;gap:.35em;flex-wrap:wrap;margin-bottom:.5em}
+.step span{font-size:.62em;padding:.1em .65em;border-radius:999px;background:var(--g1);color:var(--g6);border:1px solid var(--g2)}
+.step span.on{background:var(--p);color:#fff;border-color:var(--p)}
+.divider{justify-content:center}
+/* part 1: illustrated examples — set → works → shows */
+.demo{display:grid;grid-template-columns:1fr auto 1fr auto 1.15fr;gap:.7em;flex:1;min-height:0;align-items:stretch}
+.demo .arw{align-self:center;font-size:1.6em;color:var(--g5);font-weight:800}
+.dcol{border-radius:.9em;padding:.75em .9em;display:flex;flex-direction:column;min-height:0;gap:.45em}
+.dcol>.hd{font-size:.68em;font-weight:800;letter-spacing:.05em;display:flex;align-items:center;gap:.4em}
+.dcol>.hd i{font-style:normal;width:1.6em;height:1.6em;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:.95em}
+.dcol.set{background:var(--adml);border:1.5px solid #C5CAE9}.dcol.set>.hd{color:var(--adm)}.dcol.set>.hd i{background:var(--adm)}
+.dcol.how{background:var(--warnl);border:1.5px solid #FFD180}.dcol.how>.hd{color:#8a5300}.dcol.how>.hd i{background:var(--warn)}
+.dcol.see{background:var(--pl);border:1.5px solid #D4A5A5;justify-content:center}.dcol.see>.hd{position:absolute;top:.75em}.dcol.see{position:relative;padding-top:2.4em}.dcol.see>.hd{color:var(--pd)}.dcol.see>.hd i{background:var(--p)}
+.cfg{background:#fff;border-radius:.7em;padding:.5em .7em;box-shadow:0 .15em .5em rgba(57,73,171,.12)}
+.cfg .t{font-weight:800;color:var(--g9);font-size:1em;margin-bottom:.35em}
+.cfg .r{display:flex;justify-content:space-between;gap:.5em;align-items:center;font-size:.86em;padding:.42em 0;border-top:1px dashed var(--g2)}
+.cfg .r span{color:var(--g6);white-space:nowrap}
+.cfg .r b{background:var(--adml);color:var(--adm);border-radius:.4em;padding:.05em .5em;font-weight:700;text-align:right}
+.how ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:.55em;counter-reset:h}
+.how li{background:#fff;border-radius:.6em;padding:.55em .7em .55em 2.1em;font-size:.86em;position:relative;margin:0;counter-increment:h}
+.how li:before{content:counter(h);position:absolute;left:.55em;top:.45em;width:1.2em;height:1.2em;border-radius:50%;background:var(--warn);color:#fff;font-size:.85em;font-weight:800;display:flex;align-items:center;justify-content:center}
+.where{display:flex;flex-wrap:wrap;gap:.3em;margin-top:auto;align-items:center}.where em{font-style:normal;font-size:.7em;font-weight:800;color:#8a5300;width:100%}
+.where span{font-size:.72em;font-weight:700;background:#fff;border:1px solid #D4A5A5;color:var(--pd);border-radius:999px;padding:.1em .6em}
+.where.w2 span{border-color:#FFD180;color:#8a5300}
+/* mini customer-side illustrations (drawn, not screenshots) */
+.mk{background:#fff;border-radius:.7em;padding:.6em .8em;box-shadow:0 .15em .6em rgba(0,0,0,.08);font-size:.84em}
+.mk .lbl{font-size:.82em;color:var(--g5);margin-bottom:.3em}
+.pc{display:flex;gap:.6em;align-items:center}
+.pc .im{width:3.2em;height:3.2em;border-radius:.5em;background:var(--g1);display:flex;align-items:center;justify-content:center;font-size:1.5em;flex:none}
+.pc b{display:block;color:var(--g9)}
+.tg{display:inline-block;font-size:.8em;font-weight:700;border-radius:.35em;padding:.05em .45em;color:#fff;margin:.15em .2em 0 0}
+.tg.r{background:var(--p)}.tg.g{background:var(--ok)}.tg.b{background:var(--info)}.tg.o{background:var(--warn)}.tg.gr{background:var(--g5)}.tg.pu{background:#7B1FA2}
+.ln{display:flex;justify-content:space-between;padding:.25em 0;border-top:1px solid var(--g2)}
+.ln.free{color:var(--ok);font-weight:700}.ln.disc{color:var(--p);font-weight:700}.ln.tot{font-weight:800;color:var(--g9);border-top:2px solid var(--g3)}
+.nudge{background:var(--warnl);border-radius:.4em;padding:.25em .5em;margin-top:.35em;color:#8a5300;font-weight:600}
+.tk{display:flex;border:1.5px dashed #D4A5A5;border-radius:.6em;overflow:hidden;background:#fff}
+.tk .l{flex:1;padding:.45em .6em}.tk .l b{color:var(--g9);display:block}
+.tk .r{width:4.4em;background:var(--pl);display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;color:var(--p);border-left:1.5px dashed #D4A5A5}
+.tk .r .bt{margin-top:.2em;background:var(--p);color:#fff;border-radius:.35em;padding:.05em .55em;font-size:.8em}
+.pb{height:.45em;background:var(--g2);border-radius:999px;overflow:hidden;margin:.3em 0}.pb i{display:block;height:100%;background:var(--p)}
+.lad{position:relative;height:4em;margin:.5em 1em 0}
+.lad .rail{position:absolute;left:0;right:0;top:1.4em;height:.45em;background:var(--g2);border-radius:999px}
+.lad .fill{position:absolute;left:0;top:1.4em;height:.45em;background:var(--ok);border-radius:999px}
+.lad .st{position:absolute;top:.95em;transform:translateX(-50%);text-align:center;font-size:.78em;white-space:nowrap}
+.lad .st i{display:block;margin:0 auto .2em;width:1.3em;height:1.3em;border-radius:50%;background:#fff;border:2px solid var(--g3);font-style:normal;line-height:1.05em;font-size:.85em}
+.lad .st.ok i{background:var(--ok);border-color:var(--ok);color:#fff}.lad .st.now i{background:var(--p);border-color:var(--p);color:#fff}
+.lad .you{position:absolute;top:-.2em;transform:translateX(-50%);font-size:.75em;font-weight:800;color:var(--p);white-space:nowrap}
+.kit .ln span:first-child:before{margin-right:.3em}
+.kit .lock:before{content:"🔒"}.kit .on:before{content:"✅"}.kit .off:before{content:"⬜"}.kit .off{color:var(--g5)}
+.grp{display:flex;flex-wrap:wrap;gap:.25em;margin-top:.3em}.grp span{background:var(--infol);color:var(--info);border-radius:999px;padding:.05em .55em;font-size:.85em;font-weight:600}
+.cnt{display:inline-flex;gap:.2em}.cnt b{background:var(--g9);color:#fff;border-radius:.3em;padding:0 .35em}
+.paper{display:grid;grid-template-columns:1fr 1fr;gap:.4em}.paper div{border:1.5px solid var(--g3);border-radius:.5em;padding:.4em .5em;font-size:.9em;background:#fff}
+.paper .fr{background:linear-gradient(135deg,#B32026,#8A2622);color:#fff;border-color:transparent}.paper .fr b{font-size:1.6em;display:block;line-height:1.1}
+.divider h1{font-size:2.4em}
 .nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);display:flex;gap:6px;z-index:20;opacity:.0;transition:.2s}
 body:hover .nav{opacity:1}
 .nav button{border:0;background:rgba(0,0,0,.72);color:#fff;border-radius:999px;padding:6px 14px;cursor:pointer;font-family:inherit;font-size:13px}
 .nav button:hover{background:var(--p)}
 .menu{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:30;display:none;align-items:center;justify-content:center}.menu.on{display:flex}
-.menu .box{background:#fff;border-radius:16px;padding:18px 22px;width:min(760px,92vw);max-height:86vh;overflow:auto;font-size:14px}
-.menu h4{margin:0 0 10px;font-size:18px}.menu a{display:block;padding:7px 10px;border-radius:8px;text-decoration:none}.menu a:hover{background:var(--pl)}.menu a b{color:var(--p);margin-right:8px}
-.kbd{font-size:.7em;color:var(--g5)}
+.menu .box{background:#fff;border-radius:16px;padding:18px 22px;width:min(820px,92vw);max-height:86vh;overflow:auto;font-size:14px}
+.menu h4{margin:12px 0 6px;font-size:15px}.menu h4:first-child{margin-top:0}.menu a{display:block;padding:6px 10px;border-radius:8px;text-decoration:none;cursor:pointer}.menu a:hover{background:var(--pl)}.menu a b{color:var(--p);margin-right:8px}
+.kbd{font-size:.68em;color:var(--g5)}
 @media print{body{overflow:visible}.slide{display:flex!important;position:relative;page-break-after:always;height:100vh}.nav,.menu{display:none}}
 </style>
 </head>
 <body>
 <div id="deck"><div class="stage" id="stage"><div class="bar" id="bar"></div><div id="slides"></div><div class="foot"><span id="ft">Pharmaplex · ระบบโปรโมชั่นและสิทธิพิเศษ</span><span id="pg"></span></div></div></div>
 <div class="nav"><button onclick="go(-1)">◀ ก่อนหน้า</button><button onclick="toggleMenu()">☰ สารบัญ (M)</button><button onclick="go(1)">ถัดไป ▶</button><button onclick="fs()">เต็มจอ (F)</button></div>
-<div class="menu" id="menu" onclick="if(event.target===this)toggleMenu()"><div class="box"><h4>สารบัญ — กดเพื่อข้ามไปหัวข้อ</h4><div id="menuList"></div></div></div>
+<div class="menu" id="menu" onclick="if(event.target===this)toggleMenu()"><div class="box" id="menuList"></div></div>
 
 <script>
 var MK = '../mockup/';
-/* link helper: [label, path, role] role: a=admin c=customer f=flow */
-function L(label, path, role){ return {label:label, href:MK+path, role:role}; }
-
-/* ---------- topic data ---------- */
+/* ======================================================================
+   PART 1 — what the shop's team can set up (plain language, no admin UI)
+   ====================================================================== */
 var T = [
- { id:'foundation', no:'1', name:'กลุ่มและชุดที่ใช้ซ้ำ', short:'ตั้งครั้งเดียว ใช้ได้ทุกเรื่อง',
-   what:['<b>กลุ่มลูกค้า</b> — รวมรายชื่อลูกค้า/ร้าน/สาขา เลือกเองหรือนำเข้าไฟล์ CSV/XLSX (คอลัมน์ “รหัสลูกค้า” + “ชื่อร้าน” ไม่บังคับ)','<b>กลุ่มสินค้า</b> — รวมแบรนด์ / หมวด / SKU แบบรวมหรือยกเว้น','<b>ตัวเลือก “ใครใช้สิทธิ์นี้ได้: ทุกคน / บางคน”</b> หน้าตาเดียวกันทุกหน้าตั้งค่า','<b>ผลตอบแทนตั้งด้วย component เดียว</b> ฝังอยู่ในแต่ละโมดูล (ไม่มีหน้า “ชุดของรางวัล” กลาง)'],
-   whenUse:'ตั้งกลุ่มลูกค้า/สินค้าไว้ครั้งเดียว แล้วเลือกใช้ซ้ำในโปรโมชั่น คูปอง พอยท์ แคมเปญ สุ่มรางวัล และเซตร้านยา — ไม่ต้องคีย์ซ้ำทุกเรื่อง',
-   settings:[['กลุ่มลูกค้า','สร้าง เพิ่ม/ลบสมาชิก นำเข้าไฟล์'],['กลุ่มสินค้า','แบรนด์ หมวด SKU รวม-ยกเว้น'],['กลุ่มเป้าหมาย','ทุกคน หรือเลือกบางกลุ่ม (ใช้ทุกหน้า)'],['ผลตอบแทน (component)','ของแถม SKU · ส่วนลด (บาท/%) · พอยท์ · คูปอง · เครดิตเงินคืน · สิทธิ์ลุ้น · ของรางวัลนอก POS · ฟรีค่าจัดส่ง (เฉพาะโปรโมชั่น)']],
-   links:[ 'promotion:ใช้เลือกกลุ่มลูกค้า/สินค้าที่ร่วมโปร','coupon:ใช้กำหนดผู้ที่เก็บ/ใช้คูปองได้','points:ใช้กำหนดสินค้าที่ได้พอยท์ และผู้แลกรางวัล','campaign:ใช้กำหนดสินค้าที่นับยอดสะสม','raffle:ใช้กำหนดผู้ร่วมกิจกรรม','starterkit:ใช้กำหนดสินค้าในเซต'],
-   screens:[L('ภาพรวม Flow','foundation/00-flow.html','f'),L('กลุ่มลูกค้า: รายการ','foundation/01-admin-customer-sets.html','a'),L('กลุ่มลูกค้า: สมาชิก + นำเข้า','foundation/02-admin-customer-set-editor.html','a'),L('กลุ่มสินค้า','foundation/04-admin-product-sets.html','a'),L('ตัวเลือกทุกคน/บางคน','foundation/05-admin-audience-picker.html','a')] },
- { id:'promotion', no:'2', name:'โปรโมชั่น', short:'สิทธิ์ที่เกิดตอนซื้อ ไม่ต้องใส่โค้ด',
-   what:['<b>เกิดขึ้นเองเมื่อตะกร้าเข้าเงื่อนไข</b> ลูกค้าไม่ต้องกรอกโค้ด','ตั้งค่าหน้าเดียวกับ “เซตของแถม” เดิม — ขยายผลตอบแทนเป็น <b>ของแถม / ส่วนลด / ฟรีค่าจัดส่ง</b> (ผสมได้)','หลายโปรตรงพร้อมกัน → <b>ลูกค้าเลือกเอง</b>เป็นการ์ดในตะกร้า','ผลตอบแทนให้ <b>1 ครั้งต่อบิล</b> คิดเฉพาะรายการที่เข้าเงื่อนไข'],
-   whenUse:'กระตุ้นการซื้อสินค้ากลุ่มใดกลุ่มหนึ่ง เช่น ซื้อครบแล้วรับของแถม ซื้อแบรนด์ครบยอดลดท้ายบิล หรือลดราคาตามวันพิเศษ (Flash Sale) รวมถึงสิทธิ์ต้อนรับลูกค้าใหม่',
-   settings:[['เงื่อนไข','ตามจำนวนชิ้น หรือตามยอดเงินรวม'],['ขอบเขตสินค้า','เลือกตัวเลือกสินค้า (OR) · ทั้งแบรนด์ · ทั้งหมวด + ยกเว้นรายสินค้า'],['ผลตอบแทน','ของแถม · ส่วนลด (บาท/%+เพดาน) · ฟรีค่าจัดส่ง'],['ช่วงเวลา / โควตา','วันเริ่ม-สิ้นสุด · โควตารวม + โควตาต่อคน'],['ใช้ร่วมกับ','โปรอื่น คูปอง ใช้พอยท์ชำระ (ตั้งเป็นรายโปร)'],['Flash Sale','ลดกลุ่มสินค้าตามวัน ตัวนับเวลา ราคากลับปกติอัตโนมัติ']],
-   links:['foundation:เลือกกลุ่มลูกค้า/สินค้าที่ร่วมโปร','coupon:คูปองคิดต่อจากยอดหลังหักโปร (ตั้ง “ใช้ร่วมโปรไม่ได้” ได้)','points:โปรให้ตัวคูณพอยท์/พอยท์ฟรีได้','campaign:ยอดซื้อจากโปรนับเข้ายอดสะสมแคมเปญ','raffle:โปรให้สิทธิ์ลุ้นเป็นผลตอบแทนได้','starterkit:ส่วนลดชุดเซตใช้ร่วมกับโปรรายสินค้าได้'],
-   screens:[L('ภาพรวม Flow','promotion/00-flow.html','f'),L('รายการโปรโมชั่น','promotion/01-admin-list.html','a'),L('สร้าง/แก้ไขโปร','promotion/02-admin-editor.html','a'),L('Flash Sale','promotion/04-admin-flash.html','a'),L('หน้ารวมโปรโมชั่น','promotion/06-customer-list.html','c'),L('การ์ดสินค้า + หน้าสินค้า','promotion/07-customer-product.html','c'),L('รายละเอียดโปร','promotion/08-customer-detail.html','c'),L('ตะกร้า (เลือกโปร/คูปอง/พอยท์)','promotion/09-customer-cart.html','c')] },
- { id:'coupon', no:'3', name:'คูปอง', short:'สิทธิ์ที่ต้อง “ได้รับ” ก่อนใช้',
-   what:['<b>กลุ่ม 1 คูปองกระดาษ</b> — โค้ดเดียวทั้งชุด ออกแบบ <b>หน้า-หลัง</b> (ร้านที่ใช้ได้ / ช่องทาง / เงื่อนไข) ระบบไม่สั่งพิมพ์เอง แต่ส่งออกไฟล์ให้โรงพิมพ์','<b>กลุ่ม 2 คูปองออนไลน์</b> — โค้ดส่วนลด · เก็บเอง (แบบ Shopee) · แจกรายเดือน','ร้านที่เบิกเงินคูปองกระดาษต้องมาจาก <b>รายชื่อที่ลงทะเบียน</b>เท่านั้น','คูปองออนไลน์ตรวจ <b>ประวัติของบัญชี</b>ทุกครั้ง บล็อกพร้อมบอกเหตุผล'],
-   whenUse:'แจกหน้างาน/บูท (กระดาษ) ส่งเสริมการขายผ่านเว็บ (โค้ด) ให้ลูกค้าเก็บเองในศูนย์คูปอง หรือแจกประจำเดือน',
-   settings:[['คูปองกระดาษ','รหัสชุด จำนวน มูลค่า ขั้นต่ำ วันใช้ · ร้าน/สาขาที่ร่วม · ช่องทาง · สิทธิ์ต่อบิล · template · ไฟล์ส่งโรงพิมพ์'],['เบิกเงินจากก้นคูปอง','รับก้น → ตรวจนับ → จ่ายเงิน (ก้น × มูลค่า) พร้อมตรวจความผิดปกติ'],['คูปองออนไลน์: โค้ด','ส่วนลด ขั้นต่ำ โควตารวม/ต่อคน ช่วงเวลา ยกเว้นสินค้า + ประวัติการใช้'],['คูปองออนไลน์: เก็บเอง / รายเดือน','โควตา วันเก็บ วันหมดอายุ วันที่ออกสิทธิ์']],
-   links:['foundation:กำหนดกลุ่มผู้ที่เก็บ/ใช้ได้','promotion:คูปองคิดจากยอดหลังหักโปร · ลูกค้าใหม่ย้ายไปเป็นโปรโมชั่น','points:แลกพอยท์ได้เป็นคูปองเข้ากระเป๋า','campaign:รางวัลบางขั้นออกเป็นคูปอง','raffle:รางวัลลุ้นออกเป็นคูปองได้','starterkit:ใช้ร่วมกับส่วนลดชุดเซตได้ตามขั้นต่ำ'],
-   screens:[L('ภาพรวม Flow','coupon/00-flow.html','f'),L('ภาพรวมคูปอง','coupon/01-admin-hub.html','a'),L('คูปองกระดาษ: รายการชุด','coupon/02-admin-paper-list.html','a'),L('เลือก template','coupon/12-admin-paper-template.html','a'),L('สร้างชุด (หน้า/หลัง/สาขา/สิทธิ์)','coupon/03-admin-paper-editor.html','a'),L('ตัวอย่างหน้า-หลัง','coupon/04-admin-paper-preview.html','a'),L('ส่งออกไฟล์โรงพิมพ์','coupon/11-admin-paper-print.html','a'),L('เบิกเงินจากก้นคูปอง','coupon/05-admin-paper-claims.html','a'),L('คูปองออนไลน์: โค้ด','coupon/06-admin-online.html','a'),L('คูปองออนไลน์: เก็บเอง/รายเดือน','coupon/07-admin-collectible.html','a'),L('ศูนย์คูปอง + กระเป๋า','coupon/08-customer-center.html','c'),L('ตรวจสอบคูปองกระดาษ','coupon/10-customer-paper-info.html','c')] },
- { id:'points', no:'4', name:'พอยท์', short:'สะสมรายสินค้า แลกของรางวัล',
-   what:['<b>พอยท์คิดรายสินค้า</b> ไม่ใช่จากยอดบิล: จำนวน × พอยท์ต่อหน่วย × ตัวคูณจากโปรโมชั่น (สินค้าที่ไม่ตั้ง = 0)','เข้าบัญชี <b>ทันทีที่ชำระเงินสำเร็จ</b> เป็นล็อต แต่ละล็อตมีวันหมดอายุของตัวเอง','แลกแล้ว <b>หักทันที ใช้สิทธิ์ได้ทันที</b> (คูปอง ของพรีเมียม เครดิตเงินคืน สิทธิ์ลุ้น)','ยกเลิกออเดอร์ → หักพอยท์ที่ให้ไปคืนอัตโนมัติ'],
-   whenUse:'ให้ลูกค้าประจำสะสมและแลกของ โดยกันสินค้าที่ไม่ควรให้พอยท์ เช่น ยาน้ำ นมผง สินค้าควบคุมราคา ด้วยการตั้งเป็น 0',
-   settings:[['อัตราพอยท์รายสินค้า','ตั้งทีละรายการ หรือตามแบรนด์/หมวด'],['กติกาทั่วไป','ปัดเศษ · วันหมดอายุตามรอบ/แคมเปญ · หักคืนเมื่อยกเลิก'],['แคตตาล็อกแลกของรางวัล','ประเภท พอยท์ที่ใช้ โควตา ผู้แลกได้'],['ปรับพอยท์โดยแอดมิน','ต้องระบุเหตุผล มีบันทึกผู้ทำ']],
-   links:['foundation:กำหนดสินค้า/ผู้แลก','promotion:ตัวคูณพอยท์มาจากโปรโมชั่นเท่านั้น (ซ้อนกันคือบวก)','coupon:แลกพอยท์เป็นคูปอง · พอยท์คิดจากยอดหลังหักคูปอง','campaign:ยอดสะสมแคมเปญแยกบัญชีจากพอยท์','raffle:แลกพอยท์เป็นสิทธิ์ลุ้นได้'],
-   screens:[L('ภาพรวม Flow','points/00-flow.html','f'),L('กติกา + อัตรารายสินค้า','points/01-admin-rules.html','a'),L('แคตตาล็อกแลกของรางวัล','points/02-admin-catalog.html','a'),L('สมุดพอยท์ + ปรับพอยท์','points/03-admin-ledger.html','a'),L('พอยท์ของฉัน','points/04-customer-dashboard.html','c'),L('แลกของรางวัล','points/05-customer-redeem.html','c'),L('พอยท์ที่จะได้','points/06-customer-earn-preview.html','c')] },
- { id:'campaign', no:'5', name:'แคมเปญ', short:'สะสมยอดรายปี ปลดล็อกรางวัลขั้นบันได',
-   what:['<b>ยอดสะสมแยกจากพอยท์</b> เป็นคนละบัญชี ไม่ถูกหักเมื่อแลกพอยท์ แปลงเป็นพอยท์/ส่วนลดไม่ได้','ทุกขั้นคือ “ขั้นบันได” เหมือนกัน: <b>คนแรกที่ถึง</b> = ตั้งสิทธิ์น้อย · <b>สุ่มจับรางวัลนอกระบบ</b> = เว้นสิทธิ์ว่าง','ถึงเกณฑ์แล้ว <b>กดขอรับได้ทุกเมื่อ</b> จนแคมเปญสิ้นสุด · แอดมินออกแบบ <b>ฟอร์มขอข้อมูล</b> 1 ฟอร์มต่อขั้น','<b>รีเซ็ตเป็น ฿0 ทุกปีสัญญา</b> ไม่ยกยอดข้ามปี'],
-   whenUse:'ร้านขายส่งที่ทำสัญญาสะสมยอดซื้อรายปี — ปลดล็อกรางวัลระหว่างทาง เช่น กระเป๋า เครื่องฟอกอากาศ ตั๋วทัวร์ (รางวัลนอก POS ได้)',
-   settings:[['ปีสัญญา','วันเริ่ม-สิ้นสุด · ขอบเขตสินค้าที่นับยอด'],['ขั้นรางวัล','ยอดเกณฑ์ ชื่อรางวัล ผลตอบแทน จำนวนสิทธิ์ (ว่าง = ไม่จำกัด)'],['ฟอร์มขอข้อมูล','ตัวสร้างฟอร์ม: ข้อความ เบอร์ ตัวเลือก แนบไฟล์'],['แจ้งเตือน','เมื่อถึง 80% / 95% ของขั้นถัดไป และก่อนสัญญาหมด'],['คิวคำขอรับรางวัล','ตรวจ อนุมัติ จัดส่ง ปิดงาน / ปฏิเสธพร้อมเหตุผล']],
-   links:['foundation:กำหนดสินค้าที่นับยอด','promotion:ยอดซื้อจากโปรนับเข้ายอดสะสม','coupon:รางวัลบางขั้นออกเป็นคูปอง','points:แยกบัญชี · ของพรีเมียมที่แลกพอยท์เข้าคิวคำขอเดียวกัน','raffle:รางวัลขั้นใหญ่ให้สิทธิ์ลุ้นได้'],
-   screens:[L('ภาพรวม Flow','campaign/00-flow.html','f'),L('รายการแคมเปญ','campaign/01-admin-list.html','a'),L('ตั้งแคมเปญสะสมยอด (ขั้นบันได)','campaign/03-admin-ladder-editor.html','a'),L('คิวคำขอรับรางวัล','campaign/04-admin-claims.html','a'),L('ความคืบหน้า + แจ้งเตือน','campaign/05-admin-progress.html','a'),L('ขั้นบันไดของฉัน','campaign/06-customer-ladder.html','c'),L('ฟอร์มรับสิทธิ์ + ประวัติ','campaign/07-customer-claim-form.html','c')] },
- { id:'raffle', no:'6', name:'สุ่มรางวัล', short:'สิทธิ์ลุ้นหน่วยกลาง โปร่งใสตรวจสอบได้',
-   what:['<b>สิทธิ์ลุ้น (Ticket) หน่วยกลางหน่วยเดียว</b> ได้จากแลกพอยท์ ยอดซื้อ สินค้าร่วมรายการ ขั้นแคมเปญ โค้ดในกล่อง','<b>1 กิจกรรม = 1 รูปแบบ</b>: A ลุ้นทันที (หมุนวงล้อรู้ผลเลย) หรือ B จับตามรอบ (ลงกองรอประกาศ)','ผลถูกตัดสินที่ <b>เซิร์ฟเวอร์</b> ก่อนแสดงผล — วงล้อเป็นแค่ภาพ','โหมด B ประกาศกองสิทธิ์พร้อม <b>รหัสยืนยัน</b> ก่อนจับ ตรวจสอบย้อนหลังได้ทุกใบ'],
-   whenUse:'กิจกรรมส่งเสริมการขายที่มีของรางวัลหลากหลาย — รางวัลเล็กใช้ A ส่วนรางวัลใหญ่ (ทริป ทอง) ใช้ B เพื่อแจกตามจำนวนที่ประกาศไว้',
-   settings:[['กิจกรรม','ชื่อ ช่วงเวลา รูปแบบ A หรือ B · ทางเข้าสิทธิ์และอัตรา'],['รางวัล','โอกาส/จำนวนผู้โชคดี มูลค่า งบประมาณ'],['จับรางวัล (B)','ประกาศกองสิทธิ์ → จับ → ประกาศผล'],['ตรวจสอบย้อนหลัง','บันทึกทุกใบที่ถูกใช้ ความผิดปกติ ส่งออก']],
-   links:['foundation:กำหนดผู้ร่วมกิจกรรม','promotion:โปรให้สิทธิ์ลุ้นเป็นผลตอบแทน','coupon:รางวัลเข้ากระเป๋าคูปอง','points:แลกพอยท์เป็นสิทธิ์ลุ้น · รางวัลเข้ายอดพอยท์','campaign:ขั้นแคมเปญให้สิทธิ์ลุ้นได้ · รางวัลของจริงเข้าคิวคำขอ'],
+ { id:'foundation', no:'1', name:'กลุ่มลูกค้า · กลุ่มสินค้า', short:'ตั้งครั้งเดียว ใช้ได้ทุกเรื่อง',
+   lead:'ข้อมูลกลางที่ตั้งไว้ครั้งเดียว แล้วหยิบไปใช้ได้กับทุกเรื่อง — ไม่ต้องคีย์รายชื่อร้านหรือรายการสินค้าซ้ำทุกครั้งที่ทำโปรใหม่',
+   idea:['<b>กลุ่มลูกค้า</b> รวมร้าน/สาขาที่ต้องการให้สิทธิ์พิเศษไว้เป็นชุด','<b>กลุ่มสินค้า</b> รวมแบรนด์ หมวด หรือรายสินค้าไว้เป็นชุด','ทุกเรื่องเลือกได้ว่าให้ <b>ทุกคน</b> หรือ <b>เฉพาะบางกลุ่ม</b> — หน้าตาเหมือนกันทุกที่','ของรางวัลทุกเรื่องเลือกจาก <b>รายการเดียวกัน</b> เรียนครั้งเดียวใช้ได้หมด'],
+   example:'สร้างกลุ่ม “ร้านยาภาคเหนือ” ไว้ครั้งเดียว แล้วใช้ได้ทั้งคูปองเฉพาะกลุ่ม โปรโมชั่น และกิจกรรมสุ่มรางวัล',
+   caps:[
+    ['กลุ่มลูกค้า','เลือกร้านเองทีละราย หรือนำเข้าจากไฟล์ Excel / CSV เพิ่ม-ลบสมาชิกได้ตลอด','ตัวอย่าง: <b>ร้านคู่ค้า VIP 120 ร้าน</b>'],
+    ['กลุ่มสินค้า','เลือกทั้งแบรนด์ ทั้งหมวด หรือรายสินค้า และยกเว้นบางรายการได้','ตัวอย่าง: <b>Blackmores ทั้งแบรนด์ ยกเว้นสูตรคนท้อง</b>'],
+    ['ใครได้สิทธิ์','ทุกเรื่องตั้งได้ว่าให้ทุกคน หรือเฉพาะกลุ่มลูกค้าที่เลือก','ตัวอย่าง: <b>โปรนี้เฉพาะร้าน B2B</b>'],
+    ['ของรางวัลที่ให้ได้','ของแถม · ส่วนลด · พอยท์ · คูปอง · เครดิตเงินคืน · สิทธิ์ลุ้น · ของรางวัลนอกระบบ (เช่น ทริป) · ส่งฟรี','ผสมหลายอย่างในรางวัลเดียวได้']] },
+ { id:'promotion', no:'2', name:'โปรโมชั่น', short:'ส่วนลด/ของแถมที่เกิดเอง ไม่ต้องใส่โค้ด',
+   lead:'สิทธิ์ที่เกิดขึ้นเองเมื่อตะกร้าเข้าเงื่อนไข — ลูกค้าไม่ต้องกรอกโค้ด เหมาะกับการกระตุ้นยอดสินค้ากลุ่มใดกลุ่มหนึ่ง',
+   idea:['<b>ซื้อครบแล้วได้</b> — ของแถม ส่วนลด หรือส่งฟรี (ผสมกันได้)','หลายโปรเข้าเงื่อนไขพร้อมกัน <b>ลูกค้าเลือกเอง</b> ในตะกร้า','ได้สิทธิ์ <b>1 ครั้งต่อบิล</b> คิดเฉพาะสินค้าที่เข้าเงื่อนไข','<b>Flash Sale</b> ลดราคาตามวันพิเศษ และ <b>โปรลูกค้าใหม่</b> อยู่ในเรื่องนี้ด้วย'],
+   example:'ซื้อ Blackmores ครบ ฿1,000 ลด 5% · ซื้อนมผง Dumex 2 กระป๋อง แถมขวดนม + ส่งฟรี + 50 พอยท์',
+   caps:[
+    ['เงื่อนไข','ซื้อครบกี่ชิ้น หรือครบกี่บาท','ตัวอย่าง: <b>ครบ 3 ขวด</b> / <b>ครบ ฿1,500</b>'],
+    ['สินค้าที่ร่วมรายการ','รายสินค้า ทั้งแบรนด์ หรือทั้งหมวด และยกเว้นบางรายการได้','ตัวอย่าง: <b>ทั้งหมวดวิตามิน ยกเว้นยาน้ำ</b>'],
+    ['สิ่งที่ลูกค้าได้','ของแถม · ลดเป็นบาทหรือ % (ตั้งเพดานได้) · ส่งฟรี · พอยท์ · สิทธิ์ลุ้น','ตัวอย่าง: <b>ลด 10% สูงสุด ฿150</b>'],
+    ['ช่วงเวลาและจำนวนสิทธิ์','วันเริ่ม-จบ · จำนวนสิทธิ์ทั้งหมด และต่อร้าน','ตัวอย่าง: <b>500 สิทธิ์ ร้านละ 2 ครั้ง</b>'],
+    ['ใช้ร่วมกับอะไรได้','ตั้งแยกทีละโปรว่าใช้ร่วมกับโปรอื่น คูปอง หรือพอยท์ได้หรือไม่','ระบบบอกเหตุผลให้ลูกค้าเห็นเมื่อใช้ร่วมไม่ได้'],
+    ['Flash Sale · ลูกค้าใหม่','ลดราคาตามวัน/เวลา มีตัวนับถอยหลัง · โปรเฉพาะร้านที่ยังไม่เคยสั่งซื้อ','ตัวอย่าง: <b>10.10 ลด 15% ทั้งวัน</b>']] },
+ { id:'coupon', no:'3', name:'คูปอง', short:'สิทธิ์ที่ลูกค้าต้อง “ได้รับ” ก่อนใช้',
+   lead:'สิทธิ์ส่วนลดที่ต้องแจกให้ลูกค้าก่อน — แจกเป็นกระดาษที่หน้าบูท หรือแจกออนไลน์ให้กรอกโค้ด / กดเก็บ / ได้ทุกเดือน',
+   idea:['<b>คูปองกระดาษ</b> — ออกแบบหน้า-หลังได้ ส่งไฟล์ให้โรงพิมพ์ ใช้ที่ร้านที่ร่วมรายการ','<b>โค้ดส่วนลด</b> — ลูกค้ากรอกโค้ดตอนชำระเงิน','<b>เก็บเอง</b> — ลูกค้ากดเก็บในศูนย์คูปอง (แบบ Shopee)','<b>แจกรายเดือน</b> — ระบบแจกให้อัตโนมัติทุกเดือน'],
+   example:'แจกคูปองกระดาษ ฿100 ในงานสัมมนา · ให้ร้าน VIP กดเก็บคูปองลด 8% · ทุกร้านได้คูปองส่งฟรีทุกวันที่ 1',
+   caps:[
+    ['คูปองกระดาษ','ออกแบบหน้า-หลังจากแม่แบบ กำหนดมูลค่า ขั้นต่ำ วันใช้ และร้าน/สาขาที่รับ แล้วส่งไฟล์ให้โรงพิมพ์','ลูกค้าตรวจได้ว่าคูปองใช้ที่ร้านไหนได้'],
+    ['เบิกเงินคูปองกระดาษ','รับก้นคูปองจากร้าน ตรวจนับ แล้วจ่ายเงินคืน ระบบเตือนเมื่อตัวเลขผิดปกติ','รับเฉพาะร้านที่ลงทะเบียนไว้'],
+    ['โค้ดส่วนลด','ส่วนลด ขั้นต่ำ จำนวนสิทธิ์รวม/ต่อร้าน ช่วงเวลา และสินค้ายกเว้น','ตัวอย่าง: <b>SAVE100 ลด ฿100 เมื่อครบ ฿1,500</b>'],
+    ['คูปองเก็บเอง','จำกัดจำนวน ลูกค้าเห็น “เหลือ n สิทธิ์” และกดเก็บเข้ากระเป๋า','ตัวอย่าง: <b>300 ใบ ใช้ภายใน 7 วันหลังเก็บ</b>'],
+    ['แจกรายเดือน','เลือกวันที่ออกสิทธิ์ ระบบแจกให้เอง ไม่ใช้ภายในเดือน = หมดสิทธิ์','ตัวอย่าง: <b>ส่งฟรีทุกวันที่ 1</b>'],
+    ['ใช้ร่วมได้หรือไม่','ตั้งทีละใบว่าใช้ร่วมกับโปรโมชั่นหรือคูปองอื่นได้ไหม','ลูกค้าใช้ได้หลายใบในบิลเดียวถ้าตั้งให้ใช้ร่วมได้']] },
+ { id:'points', no:'4', name:'พอยท์', short:'สะสมจากสินค้า แลกของรางวัล',
+   lead:'ให้ลูกค้าประจำสะสมพอยท์จากสินค้าที่ซื้อ แล้วนำมาแลกของรางวัลหรือใช้แทนเงิน — กันสินค้าที่ไม่ควรให้พอยท์ได้',
+   idea:['พอยท์คิด <b>ตามสินค้า</b> ไม่ใช่ตามยอดบิล — สินค้าที่ไม่ตั้ง = ไม่ได้พอยท์','เข้าบัญชี <b>ทันทีที่ชำระเงินสำเร็จ</b> แต่ละล็อตมีวันหมดอายุของตัวเอง','แลกแล้ว <b>ได้สิทธิ์ทันที</b> — คูปอง ของพรีเมียม เครดิต สิทธิ์ลุ้น','ยกเลิกออเดอร์ → หักพอยท์ที่ให้ไปคืนอัตโนมัติ'],
+   example:'วิตามินได้ 10 พอยท์/ขวด · นมผงไม่ได้พอยท์ · ช่วงโปรได้ ×2 · 1,000 พอยท์แลกคูปองลด ฿100',
+   caps:[
+    ['พอยท์ต่อสินค้า','ตั้งทีละรายการ หรือทั้งแบรนด์/หมวด สินค้าที่ไม่ให้พอยท์ตั้งเป็น 0','ตัวอย่าง: <b>Blackmores 15 พอยท์/ขวด</b>'],
+    ['ตัวคูณช่วงโปร','ให้พอยท์พิเศษผ่านโปรโมชั่น เช่น ×2 ทั้งแบรนด์','ลูกค้าเห็นตัวคูณบนการ์ดสินค้า'],
+    ['วันหมดอายุ','กำหนดอายุพอยท์ ระบบเตือนลูกค้าก่อนหมดอายุ','ตัวอย่าง: <b>หมดอายุใน 365 วัน</b>'],
+    ['ของรางวัลให้แลก','คูปอง ของพรีเมียม เครดิตเงินคืน สิทธิ์ลุ้น — กำหนดพอยท์ที่ใช้ จำนวน และผู้แลกได้','ตัวอย่าง: <b>กระเป๋าผ้า 2,000 พอยท์ 50 ใบ</b>'],
+    ['ใช้พอยท์แทนเงิน','กำหนดอัตรา และเพดานต่อบิล','ตัวอย่าง: <b>1 พอยท์ = ฿1 ไม่เกิน 20% ของบิล</b>'],
+    ['ปรับพอยท์ให้ลูกค้า','เพิ่ม/หักพอยท์ได้พร้อมเหตุผล มีบันทึกย้อนหลังทุกครั้ง','ใช้ชดเชยหรือแก้ไขกรณีพิเศษ']] },
+ { id:'campaign', no:'5', name:'แคมเปญสะสมยอด', short:'สะสมยอดรายปี ปลดล็อกรางวัลขั้นบันได',
+   lead:'สำหรับร้านที่ทำสัญญาสะสมยอดซื้อรายปี — ยอดถึงแต่ละขั้นก็ปลดล็อกรางวัลระหว่างทาง เช่น กระเป๋า เครื่องฟอกอากาศ ทริปต่างประเทศ',
+   idea:['<b>ยอดสะสมแยกจากพอยท์</b> — แลกพอยท์แล้วยอดสะสมไม่ลด','ถึงเกณฑ์แล้ว <b>กดขอรับได้ทุกเมื่อ</b> จนจบแคมเปญ','รางวัลขั้นไหนจำกัดสิทธิ์ = <b>ใครถึงก่อนได้ก่อน</b>','<b>เริ่มนับใหม่ทุกปีสัญญา</b> ไม่ยกยอดข้ามปี'],
+   example:'ยอดครบ ฿100,000 รับกระเป๋าเดินทาง (50 สิทธิ์) · ครบ ฿500,000 รับเครื่องฟอกอากาศ · ครบ ฿1,000,000 ทริปญี่ปุ่น',
+   caps:[
+    ['ปีสัญญาและสินค้าที่นับยอด','วันเริ่ม-สิ้นสุด และเลือกว่าสินค้าไหนนับเข้ายอดสะสม','ตัวอย่าง: <b>1 ม.ค. – 31 ธ.ค. ทุกสินค้า</b>'],
+    ['ขั้นรางวัล','ยอดถึงเท่าไรได้อะไร และจำกัดจำนวนสิทธิ์ต่อขั้นได้','ตัวอย่าง: <b>10 ร้านแรกที่ถึง ฿300,000</b>'],
+    ['ฟอร์มขอรับรางวัล','กำหนดเองว่าต้องกรอกอะไร เช่น ที่อยู่จัดส่ง ไซซ์เสื้อ แนบไฟล์','1 ฟอร์มต่อ 1 ขั้นรางวัล'],
+    ['แจ้งเตือนลูกค้า','เตือนเมื่อใกล้ถึงขั้นถัดไป และก่อนสัญญาหมด','ตัวอย่าง: <b>ถึง 80% ของขั้นถัดไป</b>'],
+    ['จัดการคำขอรับรางวัล','ตรวจ อนุมัติ จัดส่ง ปิดงาน หรือปฏิเสธพร้อมเหตุผล','ลูกค้าเห็นสถานะคำขอของตัวเอง']] },
+ { id:'raffle', no:'6', name:'สุ่มรางวัล', short:'สิทธิ์ลุ้นรางวัล โปร่งใสตรวจสอบได้',
+   lead:'กิจกรรมลุ้นรางวัลจากการซื้อสินค้า — รางวัลเล็กแจกบ่อยแบบลุ้นทันที หรือรางวัลใหญ่จับตามวันประกาศผล',
+   idea:['<b>A ลุ้นทันที</b> — ใช้ 1 สิทธิ์ หมุนวงล้อ / เปิดกล่อง / ขูดบัตร รู้ผลเลย','<b>B จับตามรอบ</b> — ลงสิทธิ์เข้ากอง รอวันประกาศผล','ผลตัดสินที่ระบบก่อนแสดงภาพ — <b>ภาพเป็นแค่การเปิดผล</b>','แบบ B <b>ลูกค้าตรวจสอบผลเองได้</b> ว่าไม่มีใครแก้รายชื่อ'],
+   example:'ซื้อครบทุก ฿5,000 ได้ 1 สิทธิ์ · จับรางวัลวันที่ 31 ธ.ค.: ทริปญี่ปุ่น 1 รางวัล · iPad 2 รางวัล · คูปอง ฿500 5 รางวัล',
    note:'การจัดกิจกรรมชิงโชคมีข้อกำหนดทางกฎหมายและภาษี — ตรวจกับฝ่ายกฎหมาย/บัญชีก่อนเปิดใช้งานจริง',
-   screens:[L('ภาพรวม Flow','raffle/00-flow.html','f'),L('รายการกิจกรรม','raffle/01-admin-list.html','a'),L('ตั้งค่ากิจกรรม','raffle/02-admin-editor.html','a'),L('รางวัลของกิจกรรม','raffle/03-admin-prizes-budget.html','a'),L('จับรางวัล (B)','raffle/04-admin-draw-run.html','a'),L('ตรวจสอบย้อนหลัง','raffle/05-admin-audit.html','a'),L('สิทธิ์ลุ้นของฉัน','raffle/06-customer-tickets.html','c'),L('ลุ้นทันที (A)','raffle/07-customer-instant-draw.html','c'),L('จับตามรอบ + ประกาศผล (B)','raffle/08-customer-scheduled.html','c'),L('ประวัติ + รางวัลของฉัน','raffle/09-customer-history.html','c')] },
- { id:'starterkit', no:'7', name:'เซตร้านยาเปิดใหม่', short:'ชุดสินค้าเริ่มต้น ปรับรายการได้',
-   what:['<b>เฉพาะบัญชีร้านค้า (B2B)</b> สั่งได้ — บัญชีทั่วไปเห็นแต่สั่งไม่ได้','<b>สินค้าบังคับ</b> ถอดไม่ได้ (ล็อก) · <b>สินค้าทางเลือก</b> เปิด-ปิดได้ตามต้องการ','<b>ราคาคำนวณสด</b> = บังคับ + ทางเลือกที่เลือก − ส่วนลดชุด (เช่น 25,000 + 3,500 − 2,000 = ฿26,500)','บังคับหมดสต็อก → บล็อกทั้งเซต · ทางเลือกหมด → ปิดอัตโนมัติ'],
-   whenUse:'ผู้ที่กำลังเปิดร้านยาใหม่ ต้องการชุดสินค้าตั้งต้นครบตามที่ต้องมี — ลูกค้าสั่งเอง หรือเซลล์/แอดมินสั่งแทนในราคาเดียวกัน',
-   settings:[['ข้อมูลเซต','ชื่อ คำอธิบาย ขนาด เปิด/ปิดขาย'],['สินค้าบังคับ','เลือกสินค้า/หน่วย และจำนวนขั้นต่ำ'],['สินค้าทางเลือก','จำนวนแนะนำ เปิด/ปิดเริ่มต้น'],['ส่วนลดชุดเซต','บาท หรือ %'],['สั่งแทนลูกค้า','เลือกบัญชี B2B · บันทึกผู้สั่ง']],
-   links:['foundation:กำหนดสินค้าในเซต','promotion:ส่วนลดชุดเซตใช้ร่วมกับโปรรายสินค้าได้','coupon:ใช้ร่วมกับคูปองออนไลน์ตามขั้นต่ำ','points:ใช้พอยท์ชำระร่วมกับส่วนลดชุดได้'],
-   screens:[L('ภาพรวม Flow','starterkit/00-flow.html','f'),L('รายการเซต','starterkit/01-admin-list.html','a'),L('สร้าง/แก้ไขเซต','starterkit/02-admin-editor.html','a'),L('สั่งแทนลูกค้า','starterkit/03-admin-order-behalf.html','a'),L('เลือกเซต','starterkit/04-customer-catalog.html','c'),L('ปรับเซต + ราคาสด','starterkit/05-customer-builder.html','c'),L('สถานะบังคับหมด/ไม่มีสิทธิ์','starterkit/06-customer-blocked.html','c')] }
+   caps:[
+    ['รูปแบบกิจกรรม','A ลุ้นทันที (เลือกภาพ: วงล้อ / กล่องของขวัญ / บัตรขูด) หรือ B จับตามวันประกาศผล','1 กิจกรรม = 1 รูปแบบ'],
+    ['ทางได้สิทธิ์ลุ้น','ซื้อครบทุก ฿X · แลกด้วยพอยท์ · ได้จากโปรโมชั่นหรือแคมเปญ','ตัวอย่าง: <b>ทุก ฿1,000 = 1 สิทธิ์</b>'],
+    ['รางวัล','ภาพ ชื่อ คำอธิบาย และสิ่งที่ลูกค้าได้ · A: โอกาสถูก + จำนวนชิ้น · B: จำนวนผู้โชคดี','ลูกค้ากดดูรายละเอียดรางวัลและวิธีลุ้นได้'],
+    ['จับรางวัลอย่างโปร่งใส','ปิดรับรายชื่อก่อนจับ ประกาศรหัสอ้างอิง ใช้สูตรตายตัวจับผู้ชนะ','ไม่มีใครเลือกผู้ชนะด้วยมือ'],
+    ['ตรวจสอบย้อนหลัง','บันทึกทุกการลุ้น ใครได้อะไร เมื่อไร ส่งออกเป็นไฟล์ได้','ใช้ตอบคำถามลูกค้าและตรวจบัญชี']] },
+ { id:'starterkit', no:'7', name:'เซตร้านยาเปิดใหม่', short:'ชุดสินค้าตั้งต้น ปรับรายการได้',
+   lead:'ชุดสินค้าเริ่มต้นสำหรับผู้ที่กำลังเปิดร้านยา — มีรายการที่ต้องมีครบ ลูกค้าปรับเพิ่ม-ลดรายการเสริมเองได้ ราคาคำนวณให้ทันที',
+   idea:['สั่งได้ <b>เฉพาะบัญชีร้านค้า (B2B)</b>','<b>สินค้าบังคับ</b> ถอดไม่ได้ · <b>สินค้าทางเลือก</b> เปิด-ปิดได้','ราคา = บังคับ + ทางเลือกที่เลือก − ส่วนลดชุด','สินค้าบังคับหมด → เซตปิดขายเองชั่วคราว'],
+   example:'เซตขนาด M: ยาสามัญประจำบ้าน + เวชภัณฑ์พื้นฐาน ฿25,000 + ทางเลือก ฿3,500 − ส่วนลดชุด ฿2,000 = ฿26,500',
+   caps:[
+    ['ข้อมูลเซต','ชื่อ คำอธิบาย ขนาด (S / M / L) และเปิด/ปิดการขาย','ตัวอย่าง: <b>เซตร้านยาเปิดใหม่ ขนาด M</b>'],
+    ['สินค้าบังคับ','เลือกสินค้า หน่วย และจำนวนขั้นต่ำที่ต้องมีในเซต','ลูกค้าเพิ่มจำนวนได้ แต่ลดต่ำกว่าขั้นต่ำไม่ได้'],
+    ['สินค้าทางเลือก','จำนวนแนะนำ และเปิดไว้ให้ตั้งแต่แรกหรือไม่','ลูกค้าเลือกเพิ่ม-ลดเองได้'],
+    ['ส่วนลดชุด','ลดเป็นบาท หรือ %','ตัวอย่าง: <b>ลด 8% เมื่อซื้อเป็นเซต</b>'],
+    ['ดูสต็อกอัตโนมัติ','ระบบบอกว่าขายได้อีกกี่เซต และปิดเซตเองเมื่อสินค้าบังคับหมด','ลูกค้ากดรับแจ้งเตือนเมื่อพร้อมขายได้'],
+    ['สั่งแทนลูกค้า','เซลล์สั่งเซตให้ร้านได้ในราคาเดียวกับหน้าเว็บ','มีบันทึกว่าใครเป็นผู้สั่ง']] }
 ];
 
+/* ======================================================================
+   PART 2 — what the customer sees (journey, screenshots of the mockup)
+   ====================================================================== */
+var J = [
+ { key:'home', stage:'เข้าเว็บ', title:'หน้าแรก — เห็นสิทธิ์ของตัวเองทันที', img:'home-01-customer-home', page:'home/01-customer-home.html', topic:'',
+   pts:['แถบ <b>สถานะของฉัน</b>: พอยท์ · คูปอง · ยอดสะสม · สิทธิ์ลุ้น กดไปดูต่อได้','<b>Flash Sale</b> พร้อมตัวนับเวลา (เมื่อมีโปรที่ลูกค้าได้สิทธิ์)','<b>โปรโมชั่นแนะนำ</b> และ <b>คูปองที่กดเก็บได้</b> บนหน้าแรก'],
+   why:'ลูกค้าประจำเห็นสิ่งที่ตัวเองมีอยู่ก่อนเริ่มซื้อ' },
+ { key:'promo-list', stage:'เลือกซื้อ', title:'หน้ารวมโปรโมชั่น', img:'promotion-06-customer-list', page:'promotion/06-customer-list.html', topic:'promotion',
+   pts:['กรองตามประเภท: ของแถม / ส่วนลด / ส่งฟรี','เห็นสิทธิ์ที่เหลือของตัวเอง — <b>ใช้แล้ว / เหลือ</b>','แบนเนอร์ Flash Sale นับถอยหลังถึงเวลาสิ้นสุด'],
+   why:'ลูกค้าเห็นเฉพาะโปรที่ตัวเองใช้ได้จริง' },
+ { key:'promo-product', stage:'เลือกซื้อ', title:'หน้าสินค้า — บอกโปรและความคืบหน้า', img:'promotion-07-customer-product', page:'promotion/07-customer-product.html', topic:'promotion',
+   pts:['ป้ายบนการ์ดสินค้า: ซื้อครบรับฟรี · ของแถม · ส่งฟรี · ลด % · Flash','หน้าสินค้าแสดงทุกโปรที่สินค้านี้ร่วม','<b>“เพิ่มอีก 1 ลัง รับขั้น 2”</b> คำนวณจากตะกร้าจริง กดเพิ่มให้ได้ทันที'],
+   why:'กระตุ้นให้ซื้อเพิ่มจนถึงเงื่อนไข' },
+ { key:'promo-detail', stage:'เลือกซื้อ', title:'รายละเอียดโปร — เลือกสินค้าให้ครบเงื่อนไข', img:'promotion-08-customer-detail', page:'promotion/08-customer-detail.html', topic:'promotion',
+   pts:['อธิบายเงื่อนไขและสิ่งที่ได้ด้วยตัวเลขจริงของโปร','เลือกสินค้าตัวไหนก็ได้ในรายการ รวมให้ครบจำนวน','ปุ่มเดียว <b>เพิ่มสินค้าที่ต้องมีทั้งหมดเข้าตะกร้า</b>'],
+   why:'ลูกค้าไม่ต้องเดาว่าต้องซื้ออะไรถึงจะได้' },
+ { key:'coupon-center', stage:'เก็บคูปอง', title:'ศูนย์คูปอง + กระเป๋าคูปอง', img:'coupon-08-customer-center', page:'coupon/08-customer-center.html', topic:'coupon',
+   pts:['กดเก็บคูปองได้เอง เห็น <b>“เหลือ n / ทั้งหมด”</b>','กระเป๋าแยก พร้อมใช้ / ใช้แล้ว / หมดอายุ — ใบใกล้หมดอายุขึ้นก่อน','คูปองรายเดือนที่ระบบแจกให้ เห็นใบเดือนนี้และเดือนหน้า'],
+   why:'คูปองทุกใบอยู่ที่เดียว ใช้ต่อในตะกร้าได้ทันที' },
+ { key:'coupon-paper', stage:'เก็บคูปอง', title:'ตรวจสอบคูปองกระดาษ', img:'coupon-10-customer-paper-info', page:'coupon/10-customer-paper-info.html', topic:'coupon',
+   pts:['กรอกรหัสบนคูปองเพื่อดูว่า <b>ยังใช้ได้ไหม</b> (ไม่ต้องล็อกอิน)','ดูคูปองทั้งหน้าและหลังเหมือนใบที่พิมพ์จริง','ค้นหา <b>ร้าน/สาขาที่รับคูปอง</b> กรองตามจังหวัดได้'],
+   why:'ลดคำถามว่าคูปองใช้ที่ไหนได้' },
+ { key:'cart', stage:'ตะกร้า', title:'ตะกร้า — เลือกโปร คูปอง และใช้พอยท์เอง', img:'promotion-09-customer-cart', page:'promotion/09-customer-cart.html', topic:'promotion',
+   pts:['ทุกโปรที่เข้าเงื่อนไขขึ้นเป็นการ์ด <b>ลูกค้าเลือกเอง</b> ใช้ร่วมไม่ได้จะบอกเหตุผล','ของแถมขึ้นเป็นบรรทัด “ฟรี” · ส่วนลดแยกบรรทัดชัดเจน','ใส่โค้ด / เลือกคูปองจากกระเป๋า · <b>ใช้พอยท์แทนเงิน</b> · เครดิตเงินคืน'],
+   why:'ลูกค้าเห็นยอดสุทธิก่อนจ่าย ไม่มีส่วนลดที่ซ่อนอยู่' },
+ { key:'earn', stage:'ตะกร้า', title:'รู้ก่อนจ่ายว่าจะได้พอยท์เท่าไร', img:'points-06-customer-earn-preview', page:'points/06-customer-earn-preview.html', topic:'points',
+   pts:['ป้าย <b>“ได้ N พอยท์/หน่วย”</b> บนการ์ดสินค้า พร้อมตัวคูณช่วงโปร','สินค้าที่ไม่ได้พอยท์ขึ้นป้ายเทา ไม่ทำให้เข้าใจผิด','ตะกร้าสรุป “พอยท์ที่จะได้รับ” แยกรายบรรทัดได้'],
+   why:'พอยท์เป็นเหตุผลให้เลือกซื้อสินค้าที่ร้านต้องการผลักดัน' },
+ { key:'points', stage:'หลังชำระ', title:'พอยท์ของฉัน', img:'points-04-customer-dashboard', page:'points/04-customer-dashboard.html', topic:'points',
+   pts:['พอยท์ที่ใช้ได้ตอนนี้ แจกแจงตามวันหมดอายุ','<b>เตือนพอยท์ใกล้หมดอายุ</b> (แดงเมื่อเหลือไม่ถึง 7 วัน)','ประวัติ: ที่ได้รับ / ที่ใช้ พร้อมลิงก์ไปสิทธิ์ที่แลกไว้'],
+   why:'เตือนให้กลับมาใช้ก่อนพอยท์หมดอายุ' },
+ { key:'redeem', stage:'หลังชำระ', title:'แลกของรางวัลด้วยพอยท์', img:'points-05-customer-redeem', page:'points/05-customer-redeem.html', topic:'points',
+   pts:['บอกพอยท์ที่ใช้ และสิทธิ์ที่เหลือของตัวเอง','พอยท์ไม่พอ: บอกส่วนที่ขาดพร้อมแถบความคืบหน้า','ยืนยันก่อนแลก แลกแล้ว <b>ได้สิทธิ์ทันที</b> พร้อมปุ่มพาไปใช้'],
+   why:'ของรางวัลไหลเข้ากระเป๋าคูปอง / เครดิต / สิทธิ์ลุ้นที่มีอยู่แล้ว' },
+ { key:'ladder', stage:'หลังชำระ', title:'แคมเปญ: ขั้นบันไดรางวัลของฉัน', img:'campaign-06-customer-ladder', page:'campaign/06-customer-ladder.html', topic:'campaign',
+   pts:['ยอดสะสมปีนี้ · ปลดล็อกแล้วกี่ขั้น · <b>อีกเท่าไรถึงขั้นถัดไป</b>','เส้นทางขั้นรางวัลพร้อมป้าย “คุณอยู่ที่นี่”','ขั้นที่ปลดล็อกกด <b>ขอรับรางวัล</b> ได้ทันที เห็นสิทธิ์ที่เหลือ'],
+   why:'ร้านเห็นเป้าหมายถัดไปชัด กระตุ้นยอดตลอดปี' },
+ { key:'claim', stage:'หลังชำระ', title:'แคมเปญ: กรอกฟอร์มขอรับรางวัล', img:'campaign-07-customer-claim-form', page:'campaign/07-customer-claim-form.html', topic:'campaign',
+   pts:['ฟอร์มตามที่ร้านออกแบบไว้สำหรับขั้นนั้น','แนบไฟล์ได้ ตรวจข้อมูลก่อนส่ง','ติดตามสถานะคำขอ: รอตรวจ → อนุมัติ → จัดส่ง'],
+   why:'ข้อมูลจัดส่งครบตั้งแต่แรก ไม่ต้องโทรตาม' },
+ { key:'tickets', stage:'ลุ้นรางวัล', title:'สิทธิ์ลุ้นของฉัน', img:'raffle-06-customer-tickets', page:'raffle/06-customer-tickets.html', topic:'raffle',
+   pts:['แยกชัด: <b>ลุ้นทันที</b> กับ <b>จับตามรอบ</b>','ทุกกิจกรรมบอกวิธีได้สิทธิ์เพิ่ม','แลกพอยท์เป็นสิทธิ์ลุ้นได้ (ถ้ากิจกรรมเปิดให้แลก)'],
+   why:'' },
+ { key:'instant', stage:'ลุ้นรางวัล', title:'ลุ้นทันที — รู้ผลเลย', img:'raffle-07-customer-instant-draw', page:'raffle/07-customer-instant-draw.html', topic:'raffle',
+   pts:['ใช้ 1 สิทธิ์ เปิดผลด้วยวงล้อ / กล่องของขวัญ / บัตรขูด','ได้รางวัลแล้วบอกทันทีว่าไปอยู่ไหน เช่น “คูปองอยู่ในกระเป๋าแล้ว”','ตารางโอกาสถูก กดดูรายละเอียดรางวัลแต่ละชิ้นได้'],
+   why:'ผลตัดสินที่ระบบก่อน ภาพเป็นแค่การเปิดผล' },
+ { key:'scheduled', stage:'ลุ้นรางวัล', title:'จับตามรอบ — ลงสิทธิ์รอประกาศผล', img:'raffle-08-customer-scheduled', page:'raffle/08-customer-scheduled.html?f=f2', topic:'raffle',
+   pts:['นับถอยหลังวันประกาศผล · ลงสิทธิ์เข้ากอง · เห็นโอกาสของตัวเอง','รางวัลแสดงพร้อมภาพและคำอธิบาย','การ์ด <b>“ความโปร่งใส — ตรวจเองได้”</b> 3 ขั้น'],
+   why:'รางวัลใหญ่แจกตามจำนวนที่ประกาศ ตรวจสอบได้' },
+ { key:'prize', stage:'ลุ้นรางวัล', title:'รายละเอียดรางวัล + วิธีลุ้น', img:'raffle-08-prize-detail', page:'raffle/08-customer-scheduled.html?f=f2&pz=z5', topic:'raffle',
+   pts:['กดการ์ดรางวัลเพื่อดูภาพ คำอธิบาย และ <b>สิ่งที่จะได้รับ</b>','<b>วิธีลุ้นรับรางวัลนี้</b> สร้างจากกติกากิจกรรมให้อัตโนมัติ','ประกาศผลแล้ว ลูกค้าเปิดดูผลของตัวเองก่อนเห็นรายชื่อทั้งหมด'],
+   why:'ลูกค้ารู้ชัดว่าต้องทำอะไรถึงจะมีสิทธิ์' },
+ { key:'history', stage:'ลุ้นรางวัล', title:'ประวัติการลุ้น + รางวัลของฉัน', img:'raffle-09-customer-history', page:'raffle/09-customer-history.html', topic:'raffle',
+   pts:['ทุกการลุ้น: วันที่ · กิจกรรม · รูปแบบ · รางวัลที่ได้','ของรางวัลที่รอทีมงานส่งมอบ'],
+   why:'' },
+ { key:'kit-catalog', stage:'เซตร้านยา', title:'เลือกเซตร้านยาเปิดใหม่', img:'starterkit-04-customer-catalog', page:'starterkit/04-customer-catalog.html', topic:'starterkit',
+   pts:['บอกทันทีว่าบัญชีนี้สั่งได้ (B2B) หรือไม่','ราคาเริ่มต้นและส่วนลดสูงสุดของแต่ละเซต','จำนวนรายการ บังคับ / ทางเลือก'],
+   why:'' },
+ { key:'kit-builder', stage:'เซตร้านยา', title:'ปรับเซต — ราคาเปลี่ยนสดทุกครั้ง', img:'starterkit-05-customer-builder', page:'starterkit/05-customer-builder.html', topic:'starterkit',
+   pts:['สินค้าบังคับล็อกไว้ (ไอคอนกุญแจ) ปรับเพิ่มจำนวนได้','สินค้าทางเลือกเปิด-ปิดเองได้','แผงราคาด้านขวา: <b>บังคับ + ทางเลือก − ส่วนลดชุด = ราคาสุทธิ</b>'],
+   why:'ลูกค้าเห็นว่าแต่ละรายการมีผลกับราคาเท่าไร' },
+ { key:'kit-blocked', stage:'เซตร้านยา', title:'เมื่อสั่งไม่ได้ — บอกเหตุผลชัดเจน', img:'starterkit-06-customer-blocked', page:'starterkit/06-customer-blocked.html', topic:'starterkit',
+   pts:['สินค้าบังคับหมด: บอกชื่อสินค้า จำนวนที่ขาด และวันที่คาดว่ามีของ','กด <b>แจ้งเตือนเมื่อพร้อม</b> หรือติดต่อเซลล์','บัญชีทั่วไป: ปุ่มขออัปเกรดเป็นบัญชีร้านค้า'],
+   why:'' },
+ { key:'notify', stage:'แจ้งเตือน', title:'ศูนย์แจ้งเตือน', img:'home-03-customer-notifications', page:'home/03-customer-notifications.html', topic:'',
+   pts:['กระดิ่งบนทุกหน้า บอกจำนวนที่ยังไม่อ่าน','เรียงตามความเร่งด่วน: พอยท์ใกล้หมดอายุ · ประกาศผลรางวัล · คูปองใหม่','กด “ดู” ไปหน้าที่เกี่ยวข้องทันที'],
+   why:'แจ้งเตือนบนเว็บเท่านั้น' }
+];
+var STAGES = ['เข้าเว็บ','เลือกซื้อ','เก็บคูปอง','ตะกร้า','หลังชำระ','ลุ้นรางวัล','เซตร้านยา','แจ้งเตือน'];
+
 /* ---------- slide builders ---------- */
-var S = [];            // {html, title, topic}
-var topicStart = {};   // topic id -> slide index
-function add(title, topic, html){ if(topic && topicStart[topic]===undefined) topicStart[topic]=S.length; S.push({title:title, topic:topic, html:html}); }
-function chips(arr){ return arr.map(function(l){ return '<a class="chip '+(l.role==='a'?'adm':l.role==='c'?'cus':'')+'" href="'+l.href+'" target="_blank" rel="noopener">'+(l.role==='a'?'แอดมิน':l.role==='c'?'ลูกค้า':'Flow')+' · '+l.label+' ↗</a>'; }).join(''); }
-function jump(id, label){ return '<a class="chip" onclick="goTopic(\''+id+'\')">'+label+'</a>'; }
-function tname(id){ for(var i=0;i<T.length;i++) if(T[i].id===id) return T[i].no+'. '+T[i].name; return id; }
+var S = [], mark = {};
+function add(title, key, html){ if(key && mark[key]===undefined) mark[key]=S.length; S.push({title:title, html:html}); }
+function tById(id){ for(var i=0;i<T.length;i++) if(T[i].id===id) return T[i]; return null; }
+function previewOf(t){
+  var j = J.filter(function(x){ return x.topic===t.id; })[0];
+  if(!j) return '';
+  return '<div class="frame" onclick="goKey(\'j-'+j.key+'\')" title="ดูว่าลูกค้าเห็นอะไร"><div class="tb"><i></i><i></i><i></i><span>ลูกค้าเห็น: '+j.title+' — กดเพื่อดูในส่วนที่ 2 →</span></div><img src="shots/'+j.img+'.png" alt="" loading="lazy"></div>';
+}
+function live(path){ return MK + path + (path.indexOf('?')>-1?'&':'?') + 'clean=1'; }
 
-/* 1 title */
-add('เริ่มต้น','', '<span class="tag">นำเสนอลูกค้า</span><h1>ระบบโปรโมชั่น · คูปอง · พอยท์<br>แคมเปญ · สุ่มรางวัล · เซตร้านยาเปิดใหม่</h1><p class="lead">การตั้งค่าแต่ละเรื่อง เชื่อมโยงกันอย่างไร — พร้อมกดดูหน้าจอจริงของแต่ละเรื่องได้ทันที</p><div style="margin-top:auto"><a class="chip go" href="../mockup/index.html" target="_blank" rel="noopener">เปิดหน้าจอทั้งหมด (Mockup) ↗</a><a class="chip go" href="../mockup/simulator/00-flow.html" target="_blank" rel="noopener">ลองระบบจำลองครบวงจร ↗</a><span class="kbd"> ใช้ปุ่ม ← → เลื่อนสไลด์ · M เปิดสารบัญ · F เต็มจอ</span></div>');
+/* 1 · title */
+add('เริ่มต้น','start','<span class="tag">นำเสนอลูกค้า</span><h1>ระบบโปรโมชั่น · คูปอง · พอยท์<br>แคมเปญ · สุ่มรางวัล · เซตร้านยาเปิดใหม่</h1><p class="lead">แบ่งเป็น 2 ส่วน — <b>ทีมงานตั้งค่าอะไรได้บ้าง</b> และ <b>ลูกค้าของคุณจะเห็นอะไร</b> ตามเส้นทางการซื้อจริง</p><div style="margin-top:auto"><span class="kbd">ใช้ปุ่ม ← → เลื่อนสไลด์ · M เปิดสารบัญ · F เต็มจอ</span></div>');
 
-/* 2 agenda */
-add('วันนี้เราจะคุยเรื่องอะไรบ้าง','', '<span class="tag">วาระ</span><h2>วันนี้เราจะคุยเรื่องอะไรบ้าง</h2><p class="lead">เริ่มจากภาพรวมว่าทุกเรื่องเชื่อมกันอย่างไร แล้วไปทีละเรื่อง แต่ละเรื่องมี 4 ช่วง: คืออะไร → ตั้งค่าอะไรได้ → เชื่อมกับเรื่องอื่นอย่างไร → ดูหน้าจอ</p><div class="topics"><a class="topic" onclick="goIdx(2)"><span class="no">ภาพรวม</span><b>แผนที่ความเชื่อมโยง</b><span>ทุกเรื่องมาบรรจบที่ตะกร้าเดียว</span></a>'+T.map(function(t){return '<a class="topic" onclick="goTopic(\''+t.id+'\')"><span class="no">เรื่องที่ '+t.no+'</span><b>'+t.name+'</b><span>'+t.short+'</span></a>';}).join('')+'<a class="topic" onclick="goTopic(\'end\')"><span class="no">ปิดท้าย</span><b>สรุปและข้อที่ต้องตัดสินใจ</b><span>สิ่งที่อยากให้ลูกค้าช่วยยืนยัน</span></a></div>');
+/* 2 · agenda */
+add('วาระ','agenda','<span class="tag">วาระ</span><h2>วันนี้เราจะคุยเรื่องอะไรบ้าง</h2><div class="parts">'+
+ '<div class="part a" onclick="goKey(\'p1\')"><span class="no">ส่วนที่ 1</span><b>ทีมงานตั้งค่าอะไรได้บ้าง</b><span class="sub">แต่ละเรื่องทำอะไรได้ ตั้งเงื่อนไขอะไรได้ พร้อมตัวอย่างการใช้งาน — เล่าเป็นภาษาธุรกิจ ไม่ต้องดูหน้าจอหลังบ้าน</span><div class="mini">'+T.map(function(t){return '<a onclick="event.stopPropagation();goKey(\'t-'+t.id+'\')">'+t.no+' · '+t.name+'</a>';}).join('')+'</div></div>'+
+ '<div class="part c" onclick="goKey(\'p2\')"><span class="no">ส่วนที่ 2</span><b>ลูกค้าของคุณจะเห็นอะไร</b><span class="sub">เดินตามเส้นทางของลูกค้า ตั้งแต่เข้าเว็บ เลือกซื้อ เก็บคูปอง จ่ายเงิน จนได้พอยท์ ยอดสะสม และสิทธิ์ลุ้น — ดูจากหน้าจอจริง</span><div class="mini">'+STAGES.map(function(s){return '<a onclick="event.stopPropagation();goKey(\'s-'+s+'\')">'+s+'</a>';}).join('')+'</div></div>'+
+ '</div><div class="flow" style="margin-top:1em"><a class="n b" onclick="goKey(\'overview\')"><b>เริ่มที่ภาพรวม</b>ทุกเรื่องเชื่อมกันอย่างไร</a><span class="ar">→</span><a class="n" onclick="goKey(\'p1\')"><b>ส่วนที่ 1</b>ตั้งค่าอะไรได้</a><span class="ar">→</span><a class="n r" onclick="goKey(\'p2\')"><b>ส่วนที่ 2</b>ลูกค้าเห็นอะไร</a><span class="ar">→</span><a class="n g" onclick="goKey(\'end\')"><b>สรุป</b>ข้อที่อยากให้ช่วยยืนยัน</a></div>');
 
-/* 3 map */
-add('แผนที่ความเชื่อมโยง','overview','<span class="tag">ภาพรวม</span><h2>ทุกเรื่องเชื่อมกันอย่างไร</h2><div class="map"><div class="mapgrid">'+
- '<a class="mn base" onclick="goTopic(\'foundation\')"><b>1 · กลุ่มและชุดที่ใช้ซ้ำ</b><span>กลุ่มลูกค้า · กลุ่มสินค้า · ทุกคน/บางคน · ผลตอบแทนแบบ component → ใช้ได้ทุกเรื่องด้านล่าง</span></a>'+
- '<div class="dn">▼</div>'+
- '<a class="mn" onclick="goTopic(\'promotion\')"><b>2 · โปรโมชั่น</b><span>ของแถม ส่วนลด ฟรีค่าส่ง · Flash Sale</span></a><a class="mn" onclick="goTopic(\'coupon\')"><b>3 · คูปอง</b><span>กระดาษ · โค้ด · เก็บเอง · รายเดือน</span></a><a class="mn" onclick="goTopic(\'starterkit\')"><b>7 · เซตร้านยาเปิดใหม่</b><span>ส่วนลดชุดเซต</span></a>'+
- '<div class="dn">▼</div>'+
- '<a class="mn core" onclick="goIdx(3)"><b>ตะกร้า &amp; เช็คเอาต์</b> — ลูกค้าเลือกโปร → คูปอง → ใช้พอยท์ → ยอดสุทธิ (คำนวณที่เซิร์ฟเวอร์)</a>'+
- '<div class="dn">▼ หลังชำระเงินสำเร็จ</div>'+
- '<a class="mn after" onclick="goTopic(\'points\')"><b>4 · พอยท์</b> เข้าบัญชีทันที</a><a class="mn after" onclick="goTopic(\'campaign\')"><b>5 · แคมเปญ</b> ยอดสะสมเพิ่ม · ปลดล็อกขั้น</a><a class="mn after" onclick="goTopic(\'raffle\')"><b>6 · สุ่มรางวัล</b> ได้สิทธิ์ลุ้น (Tickets)</a>'+
- '</div></div>');
+/* 3 · map */
+add('ภาพรวม: ทุกเรื่องเชื่อมกันอย่างไร','overview','<span class="tag">ภาพรวม</span><h2>ทุกเรื่องเชื่อมกันอย่างไร</h2><div class="mapgrid">'+
+ '<a class="mn base" onclick="goKey(\'t-foundation\')"><b>1 · กลุ่มลูกค้า · กลุ่มสินค้า</b><span>ตั้งครั้งเดียว ใช้ได้ทุกเรื่องด้านล่าง</span></a><div class="dn">▼</div>'+
+ '<a class="mn" onclick="goKey(\'t-promotion\')"><b>2 · โปรโมชั่น</b><span>ของแถม ส่วนลด ส่งฟรี · Flash Sale</span></a><a class="mn" onclick="goKey(\'t-coupon\')"><b>3 · คูปอง</b><span>กระดาษ · โค้ด · เก็บเอง · รายเดือน</span></a><a class="mn" onclick="goKey(\'t-starterkit\')"><b>7 · เซตร้านยาเปิดใหม่</b><span>ส่วนลดชุดเซต</span></a><div class="dn">▼</div>'+
+ '<a class="mn core" onclick="goKey(\'cartorder\')"><b>ตะกร้า &amp; ชำระเงิน</b> — ลูกค้าเลือกโปร → คูปอง → ใช้พอยท์ → ยอดสุทธิ</a><div class="dn">▼ หลังชำระเงินสำเร็จ</div>'+
+ '<a class="mn after" onclick="goKey(\'t-points\')"><b>4 · พอยท์</b> เข้าบัญชีทันที</a><a class="mn after" onclick="goKey(\'t-campaign\')"><b>5 · แคมเปญ</b> ยอดสะสมเพิ่ม</a><a class="mn after" onclick="goKey(\'t-raffle\')"><b>6 · สุ่มรางวัล</b> ได้สิทธิ์ลุ้น</a></div>');
 
-/* 4 cart order */
-add('ลำดับการคิดเงินในตะกร้า','overview','<span class="tag">ภาพรวม</span><h2>ในตะกร้าเดียว คิดเงินตามลำดับนี้</h2><div class="flow"><div class="n r"><b>1 · Flash Sale</b>ลดราคาสินค้า</div><span class="ar">→</span><div class="n r"><b>2 · โปรโมชั่น</b>ลูกค้าเลือกเป็นการ์ด</div><span class="ar">→</span><div class="n r"><b>3 · คูปอง</b>คิดจากยอดหลังหักโปร</div><span class="ar">→</span><div class="n r"><b>4 · ค่าจัดส่ง</b></div><span class="ar">→</span><div class="n r"><b>5 · ใช้พอยท์ชำระ</b></div><span class="ar">→</span><div class="n g"><b>ยอดสุทธิ</b>ชำระเงิน</div></div><div class="cols c2" style="margin-top:1.2em"><div class="card"><h3>หลักการร่วมทั้งระบบ</h3><ul><li><b>โปรโมชั่นไม่ต้องใส่โค้ด</b> ส่วนลดเกิดเองเมื่อเข้าเงื่อนไข</li><li><b>คำนวณที่เซิร์ฟเวอร์เสมอ</b> หน้าจอเป็นแค่ตัวอย่าง</li><li><b>ปรับได้จากหน้าแอดมิน</b> ไม่ต้องพัฒนาใหม่</li><li><b>ตรวจย้อนหลังได้</b> ทุกการใช้คูปอง สิทธิ์ลุ้น การแลกพอยท์</li></ul></div><div class="card"><h3>นโยบายร่วม</h3><ul><li>แต่ละโมดูล <b>เปิด/ปิดได้</b> และกำหนดได้ว่าใช้ร่วมกันได้หรือไม่</li><li>ยกเลิก/คืนสินค้า <b>ไม่เรียกคืน</b>คูปอง พอยท์ ของแถมที่ใช้ไปแล้ว</li><li><b>แจ้งเตือนบนเว็บเท่านั้น</b> (ไม่มีอีเมล/SMS/LINE)</li><li>ราคาทั้งหมด <b>รวม VAT</b> แล้ว</li></ul></div></div><div style="margin-top:auto"><a class="chip go" href="../mockup/promotion/09-customer-cart.html" target="_blank" rel="noopener">ดูตะกร้าลูกค้า ↗</a><a class="chip go" href="../mockup/simulator/00-flow.html" target="_blank" rel="noopener">ลองระบบจำลองครบวงจร ↗</a><a class="chip go" href="../mockup/home/01-customer-home.html" target="_blank" rel="noopener">ดูหน้าแรกลูกค้า ↗</a><a class="chip" href="../mockup/home/02-admin-notifications.html" target="_blank" rel="noopener">ตั้งค่าแจ้งเตือน ↗</a></div>');
+/* 4 · cart order */
+add('ภาพรวม: ลำดับการคิดเงิน','cartorder','<span class="tag">ภาพรวม</span><h2>ในตะกร้าเดียว คิดเงินตามลำดับนี้</h2><div class="flow"><div class="n r"><b>1 · Flash Sale</b>ลดราคาสินค้า</div><span class="ar">→</span><div class="n r"><b>2 · โปรโมชั่น</b>ลูกค้าเลือกเป็นการ์ด</div><span class="ar">→</span><div class="n r"><b>3 · คูปอง</b>คิดจากยอดหลังหักโปร</div><span class="ar">→</span><div class="n r"><b>4 · ค่าจัดส่ง</b></div><span class="ar">→</span><div class="n r"><b>5 · ใช้พอยท์ชำระ</b></div><span class="ar">→</span><div class="n g"><b>ยอดสุทธิ</b>ชำระเงิน</div></div><div class="cols c2" style="margin-top:1.1em"><div class="card"><h3>หลักการร่วมทั้งระบบ</h3><ul><li><b>โปรโมชั่นไม่ต้องใส่โค้ด</b> ส่วนลดเกิดเองเมื่อเข้าเงื่อนไข</li><li><b>คำนวณที่ระบบเสมอ</b> ราคาที่ลูกค้าเห็นตรงกับที่จ่ายจริง</li><li><b>ทีมงานปรับเองได้</b> ไม่ต้องรอพัฒนาใหม่</li><li><b>ตรวจย้อนหลังได้</b> ทุกการใช้คูปอง พอยท์ สิทธิ์ลุ้น</li></ul></div><div class="card"><h3>นโยบายร่วม</h3><ul><li>แต่ละเรื่อง <b>เปิด/ปิดได้</b> และตั้งได้ว่าใช้ร่วมกันหรือไม่</li><li>ยกเลิก/คืนสินค้า <b>ไม่คืน</b>คูปอง พอยท์ ของแถมที่ใช้ไปแล้ว</li><li><b>แจ้งเตือนบนเว็บเท่านั้น</b> (ไม่มีอีเมล/SMS/LINE)</li><li>ราคาทั้งหมด <b>รวม VAT</b> แล้ว</li></ul></div></div>');
 
-/* per-topic slides */
+/* ===== PART 1 ===== */
+add('ส่วนที่ 1 · ทีมงานตั้งค่าอะไรได้บ้าง','p1','<div class="divider" style="display:flex;flex-direction:column;flex:1;justify-content:center"><span class="tag a">ส่วนที่ 1</span><h1>ทีมงานตั้งค่าอะไรได้บ้าง</h1><p class="lead" style="max-width:34em">ทุกอย่างในส่วนนี้ ทีมการตลาดตั้งเองได้จากหลังบ้าน — ไม่ต้องรอพัฒนาใหม่ เราจะเล่าแต่ละเรื่องว่า <b>ใช้ทำอะไร</b> และ <b>ตั้งอะไรได้บ้าง</b> พร้อมตัวอย่าง</p><div class="flow" style="margin-top:.8em">'+T.map(function(t){return '<a class="n" onclick="goKey(\'t-'+t.id+'\')"><b>'+t.no+' · '+t.name+'</b><span style="font-size:.85em;color:var(--g6)">'+t.short+'</span></a>';}).join('')+'</div></div>');
+
+/* ---- illustrated examples: "ตั้งแบบนี้ → ระบบทำงานแบบนี้ → ลูกค้าเห็นตรงนี้" (drawn in HTML, not screenshots) ---- */
+var DEMO = {
+ foundation:[{ title:'สร้างกลุ่ม “ร้านยาภาคเหนือ” ครั้งเดียว ใช้ได้หลายเรื่อง',
+   set:{t:'กลุ่มลูกค้า: ร้านยาภาคเหนือ', rows:[['วิธีเพิ่มสมาชิก','นำเข้าไฟล์ Excel'],['จำนวน','120 ร้าน'],['จังหวัด','เชียงใหม่ · ลำปาง · เชียงราย'],['ผู้ดูแล','ทีมเซลล์ภาคเหนือ']]},
+   how:['ตอนสร้างคูปอง/โปร/กิจกรรม เลือก “ใครได้สิทธิ์” = <b>เฉพาะกลุ่ม</b> → ร้านยาภาคเหนือ','ระบบเช็กทุกครั้งที่ลูกค้าเปิดหน้า/ชำระเงิน ว่าอยู่ในกลุ่มไหม','เพิ่ม-ลบร้านในกลุ่ม → มีผลกับทุกเรื่องที่ใช้กลุ่มนี้ทันที'],
+   where:['คูปองเฉพาะกลุ่ม','โปรโมชั่น','สุ่มรางวัล','แคมเปญ'],
+   see:'<div class="mk"><div class="lbl">ร้านในกลุ่ม เห็นในศูนย์คูปอง</div><div class="tk"><div class="l"><b>ลด ฿200 ภาคเหนือ</b>ซื้อครบ ฿3,000<div><span class="tg b">เฉพาะกลุ่มของคุณ</span></div></div><div class="r">฿200<span class="bt">เก็บ</span></div></div></div><div class="mk" style="margin-top:.5em"><div class="lbl">ร้านนอกกลุ่ม</div><div style="color:var(--g5)">ไม่เห็นคูปองนี้ในศูนย์คูปอง และใช้โค้ดนี้ไม่ได้</div></div>' }],
+ promotion:[{ title:'ซื้อครบรับของแถม + ส่งฟรี — ลูกค้าไม่ต้องกรอกโค้ด',
+   set:{t:'โปร: นมผง Dumex ครบ 2 กระป๋อง', rows:[['เงื่อนไข','ครบ 2 กระป๋อง'],['สินค้าที่ร่วม','Dumex ทุกสูตร'],['ผลตอบแทน','ขวดนม ×1 + ส่งฟรี'],['ช่วงเวลา','1 – 30 พ.ย.'],['สิทธิ์','ร้านละ 2 ครั้ง']]},
+   how:['ลูกค้าหยิบสินค้าที่ร่วมรายการ ระบบนับจำนวนในตะกร้าสด','ยังไม่ครบ → บอก “เพิ่มอีก 1 กระป๋อง รับของแถม”','ครบแล้ว → ขึ้นเป็นการ์ดโปรให้ลูกค้ากดเลือก ของแถมเข้าตะกร้าเป็นบรรทัด “ฟรี”'],
+   where:['ป้ายบนการ์ดสินค้า','หน้ารวมโปร','ตะกร้า'],
+   see:'<div class="mk"><div class="pc"><div class="im">🍼</div><div><b>Dumex Mamil Gold 800g</b>฿650<div><span class="tg r">ซื้อครบรับฟรี</span><span class="tg b">ส่งฟรี</span></div></div></div><div class="nudge">เพิ่มอีก 1 กระป๋อง รับขวดนมฟรี</div></div><div class="mk" style="margin-top:.5em"><div class="lbl">ตะกร้า</div><div class="ln"><span>Dumex ×2</span><span>฿1,300</span></div><div class="ln free"><span>🎁 ขวดนม PP 240ml ×1</span><span>ฟรี</span></div><div class="ln free"><span>🚚 ค่าจัดส่ง</span><span>ฟรี</span></div><div class="ln tot"><span>ยอดสุทธิ</span><span>฿1,300</span></div></div>' },
+  { title:'Flash Sale ตามวันพิเศษ — ราคาลดเองแล้วกลับปกติเอง',
+   set:{t:'Flash Sale 11.11', rows:[['วันเวลา','11 พ.ย. 00:00–23:59'],['สินค้า','Blackmores ทั้งแบรนด์'],['ส่วนลด','20%'],['จำนวน','500 ชิ้นแรก'],['ใครได้สิทธิ์','ทุกคน']]},
+   how:['ถึงเวลาเริ่ม ราคาสินค้าที่ร่วมเปลี่ยนเป็นราคา Flash ทันที','หน้าแรก/หน้าโปรขึ้นแบนเนอร์พร้อมตัวนับถอยหลัง','หมดเวลาหรือครบ 500 ชิ้น → ราคากลับปกติอัตโนมัติ'],
+   where:['หน้าแรก','การ์ดสินค้า','ตะกร้า'],
+   see:'<div class="mk" style="background:linear-gradient(135deg,#F57C00,#B32026);color:#fff"><b style="font-size:1.2em">Flash Sale 11.11 — ลด 20%</b><div style="display:flex;justify-content:space-between;align-items:center;margin-top:.3em"><span>เหลือเวลา</span><span class="cnt"><b>08</b>:<b>42</b>:<b>17</b></span></div></div><div class="mk" style="margin-top:.5em"><div class="pc"><div class="im">💊</div><div><b>Blackmores Vitamin C 500</b><s style="color:var(--g5)">฿420</s> <b style="display:inline;color:var(--p)">฿336</b><div><span class="tg o">Flash −20%</span></div></div></div><div class="lbl" style="margin-top:.4em">เหลือ 38 / 500 ชิ้น</div><div class="pb"><i style="width:92%"></i></div></div>' }],
+ coupon:[{ title:'คูปองเก็บเอง — ลูกค้ากดเก็บก่อน แล้วใช้ตอนจ่ายเงิน',
+   set:{t:'คูปอง: ลด ฿100 ครบ ฿1,500', rows:[['รูปแบบ','เก็บเอง'],['จำนวน','300 ใบ'],['ใช้ได้ถึง','7 วันหลังเก็บ'],['ยกเว้น','นมผง · ยาควบคุม'],['ใช้ร่วมโปร','ได้']]},
+   how:['คูปองขึ้นในศูนย์คูปอง บอก “เหลือ n / 300”','ลูกค้ากด “เก็บ” → เข้ากระเป๋าคูปองของร้านนั้น (1 ร้าน 1 ใบ)','ตอนชำระเงิน เลือกจากกระเป๋า ระบบเช็กยอดขั้นต่ำและสินค้ายกเว้นให้'],
+   where:['หน้าแรก','ศูนย์คูปอง','กระเป๋าคูปอง','ตะกร้า'],
+   see:'<div class="mk"><div class="lbl">ศูนย์คูปอง</div><div class="tk"><div class="l"><b>ลด ฿100</b>ซื้อครบ ฿1,500 · มีสินค้ายกเว้น<div class="pb"><i style="width:73%"></i></div>เหลือ 220 / 300</div><div class="r">฿100<span class="bt">เก็บ</span></div></div></div><div class="mk" style="margin-top:.5em"><div class="lbl">ตะกร้า</div><div class="ln"><span>ยอดสินค้า</span><span>฿1,820</span></div><div class="ln disc"><span>🎟️ คูปองลด ฿100</span><span>−฿100</span></div><div class="ln tot"><span>ยอดสุทธิ</span><span>฿1,720</span></div></div>' },
+  { title:'คูปองกระดาษ — แจกหน้างาน ใช้ที่ร้านที่ร่วมรายการ',
+   set:{t:'ชุด: สัมมนาเภสัช 2569', rows:[['รหัสชุด','SEM2569'],['จำนวนพิมพ์','2,000 ใบ'],['มูลค่า','฿100 ครบ ฿1,000'],['ร้านที่รับ','85 สาขาที่ลงทะเบียน'],['แม่แบบ','สีแดง หน้า-หลัง']]},
+   how:['ระบบสร้างไฟล์หน้า-หลังส่งโรงพิมพ์ แจกในงาน','ลูกค้าใช้ที่หน้าร้าน/POS ของสาขาที่ร่วมรายการ','ร้านส่งก้นคูปองมาเบิกเงิน → ทีมงานตรวจนับและจ่ายเงินคืน'],
+   where:['ไฟล์ส่งโรงพิมพ์','หน้าตรวจสอบคูปอง','เบิกเงินคืนร้าน'],
+   see:'<div class="mk"><div class="lbl">ใบคูปองที่พิมพ์ (หน้า / หลัง)</div><div class="paper"><div class="fr">ส่วนลด<b>฿100</b>ซื้อครบ ฿1,000<br>รหัส SEM2569</div><div>✔ ใช้ที่หน้าร้านที่ร่วมรายการ<br>✔ 1 ใบ / บิล<br>หมดอายุ 31 ธ.ค. 2569</div></div></div><div class="mk" style="margin-top:.5em"><div class="lbl">ลูกค้ากรอกรหัสเพื่อตรวจสอบ</div><span class="tg g">ใช้ได้</span> 85 ร้าน · ค้นหาตามจังหวัดได้</div>' }],
+ points:[{ title:'พอยท์ต่อสินค้า + ตัวคูณช่วงโปร → แลกของรางวัล',
+   set:{t:'อัตราพอยท์', rows:[['Blackmores','15 พอยท์/ขวด'],['นมผง','0 (ไม่ให้พอยท์)'],['ตัวคูณช่วงโปร','×2 ถึง 30 พ.ย.'],['อายุพอยท์','365 วัน'],['ใช้แทนเงิน','1 พอยท์ = ฿1 ≤ 20%']]},
+   how:['การ์ดสินค้าและตะกร้าบอกล่วงหน้าว่าจะได้กี่พอยท์','ชำระเงินสำเร็จ → พอยท์เข้าบัญชีทันที เป็นล็อตมีวันหมดอายุ','นำไปแลกของรางวัล หรือใช้แทนเงินในบิลถัดไป'],
+   where:['การ์ดสินค้า','ตะกร้า','พอยท์ของฉัน','แลกของรางวัล'],
+   see:'<div class="mk"><div class="pc"><div class="im">💊</div><div><b>Blackmores Vitamin C</b><span class="tg o">ได้ 15 พอยท์/ขวด</span><span class="tg pu">×2</span></div></div></div><div class="mk" style="margin-top:.5em"><div class="lbl">ตะกร้า</div><div class="ln"><span>Blackmores ×3 · 15 × 3 × 2</span><span>+90</span></div><div class="ln" style="color:var(--g5)"><span>นมผง ×2 · ไม่ได้พอยท์</span><span>0</span></div><div class="ln tot"><span>พอยท์ที่จะได้รับ</span><span style="color:var(--warn)">+90</span></div></div><div class="mk" style="margin-top:.5em;display:flex;justify-content:space-between;align-items:center"><span>🎁 คูปองลด ฿100<br><b style="color:var(--warn)">1,000 พอยท์</b></span><span class="tg r" style="font-size:1em">แลกเลย</span></div>' }],
+ campaign:[{ title:'ยอดสะสมทั้งปี ถึงขั้นไหน ปลดล็อกรางวัลขั้นนั้น',
+   set:{t:'แคมเปญสัญญาปี 2569', rows:[['ปีสัญญา','1 ม.ค. – 31 ธ.ค.'],['ขั้น 1','฿100,000 → กระเป๋า (50 สิทธิ์)'],['ขั้น 2','฿300,000 → เครื่องฟอกอากาศ'],['ขั้น 3','฿1,000,000 → ทริปญี่ปุ่น'],['ฟอร์ม','ที่อยู่จัดส่ง · เบอร์โทร']]},
+   how:['ทุกออเดอร์ที่ชำระแล้ว บวกเข้ายอดสะสม (แยกจากพอยท์)','ถึงเกณฑ์ → ขั้นนั้นปลดล็อก ร้านกด “ขอรับ” แล้วกรอกฟอร์ม','ทีมงานอนุมัติ จัดส่ง ปิดงาน · สิ้นปีสัญญานับใหม่'],
+   where:['หน้าแรก (แถบสถานะ)','ขั้นบันไดของฉัน','ฟอร์มขอรับรางวัล'],
+   see:'<div class="mk"><div class="lbl">ขั้นบันไดของฉัน · ยอดสะสม ฿342,500</div><div class="lad"><div class="rail"></div><div class="fill" style="width:34%"></div><div class="you" style="left:34%">▼ คุณอยู่ที่นี่</div><div class="st ok" style="left:10%"><i>✓</i>฿100K</div><div class="st now" style="left:30%"><i>2</i>฿300K</div><div class="st" style="left:96%"><i>3</i>฿1M</div></div></div><div class="mk" style="margin-top:.5em;display:flex;justify-content:space-between;align-items:center"><span><b>ขั้น 2 · เครื่องฟอกอากาศ</b><br>ปลดล็อกแล้ว · เหลือ 12/20 สิทธิ์</span><span class="tg r" style="font-size:1em">ขอรับรางวัล</span></div><div class="mk" style="margin-top:.5em">อีก <b style="color:var(--p)">฿657,500</b> ถึงขั้น 3 · ทริปญี่ปุ่น</div>' }],
+ raffle:[{ title:'ซื้อครบได้สิทธิ์ลุ้น → จับรางวัลตามวันประกาศผล',
+   set:{t:'กิจกรรม: จับรางวัลส่งท้ายปี', rows:[['รูปแบบ','B · จับตามรอบ'],['ได้สิทธิ์','ทุก ฿5,000 = 1 สิทธิ์'],['รางวัล','ทริป 1 · iPad 2 · คูปอง 5'],['ประกาศผล','31 ธ.ค. 2569'],['ภาพรางวัล + คำอธิบาย','มี']]},
+   how:['ชำระเงินแล้วได้สิทธิ์อัตโนมัติ ลูกค้านำสิทธิ์ลงกอง','ก่อนจับ ระบบปิดรับรายชื่อและประกาศรหัสอ้างอิง','วันประกาศผล จับด้วยสูตรตายตัว ลูกค้าเปิดดูผลของตัวเองและตรวจสอบได้'],
+   where:['สิทธิ์ลุ้นของฉัน','จับตามรอบ','แจ้งเตือน'],
+   see:'<div class="mk" style="display:flex;justify-content:space-between;align-items:center"><span><b>จับรางวัลส่งท้ายปี</b><br>ในกองของคุณ 4 ใบ · โอกาส 1.6%</span><span style="text-align:center;font-weight:800;color:var(--p)">อีก<br><span style="font-size:1.6em">47</span><br>วัน</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.35em;margin-top:.5em"><div class="mk" style="text-align:center;padding:.4em"><div style="font-size:2em">✈️</div><b>ทริปญี่ปุ่น</b><div class="lbl">1 ผู้โชคดี</div></div><div class="mk" style="text-align:center;padding:.4em"><div style="font-size:2em">📱</div><b>iPad Air</b><div class="lbl">2 ผู้โชคดี</div></div><div class="mk" style="text-align:center;padding:.4em"><div style="font-size:2em">🎟️</div><b>คูปอง ฿500</b><div class="lbl">5 ผู้โชคดี</div></div></div><div class="mk" style="margin-top:.5em">✔ ปิดรับรายชื่อแล้ว · รหัสอ้างอิง <b>3F9A-21C7</b></div>' }],
+ starterkit:[{ title:'เซตบังคับ + ทางเลือก — ราคาคำนวณสดเมื่อลูกค้าปรับ',
+   set:{t:'เซตร้านยาเปิดใหม่ ขนาด M', rows:[['สินค้าบังคับ','8 รายการ · ฿25,000'],['สินค้าทางเลือก','6 รายการ'],['ส่วนลดชุด','฿2,000'],['ผู้สั่งได้','บัญชีร้านค้า (B2B)'],['สต็อก','บังคับหมด = ปิดขายเอง']]},
+   how:['ลูกค้าเปิดเซต สินค้าบังคับล็อกไว้ ปรับเพิ่มจำนวนได้','เปิด-ปิดสินค้าทางเลือกเอง ราคารวมเปลี่ยนทันที','ใส่ตะกร้าเป็นเซตเดียว ระบบเช็กสต็อกซ้ำตอนชำระเงิน'],
+   where:['เลือกเซต','ปรับเซต','ตะกร้า','เซลล์สั่งแทน'],
+   see:'<div class="mk kit"><div class="lbl">ปรับเซต ขนาด M</div><div class="ln"><span class="lock">ยาสามัญประจำบ้าน (บังคับ)</span><span>฿18,000</span></div><div class="ln"><span class="lock">เวชภัณฑ์พื้นฐาน (บังคับ)</span><span>฿7,000</span></div><div class="ln"><span class="on">วิตามินขายดี</span><span>฿3,500</span></div><div class="ln"><span class="off">เครื่องวัดความดัน</span><span>—</span></div></div><div class="mk" style="margin-top:.5em"><div class="ln" style="border:0"><span>บังคับ + ทางเลือก</span><span>฿28,500</span></div><div class="ln disc"><span>ส่วนลดชุด</span><span>−฿2,000</span></div><div class="ln tot"><span>ราคาสุทธิ</span><span style="color:var(--p)">฿26,500</span></div></div>' }]
+};
+function demoSlide(t, d, i, n){
+  return '<span class="tag a">ส่วนที่ 1 · เรื่องที่ '+t.no+' · ตัวอย่าง'+(n>1?' '+(i+1)+'/'+n:'')+'</span><h2 style="font-size:1.4em">'+d.title+'</h2>'+
+   '<div class="demo">'+
+   '<div class="dcol set"><div class="hd"><i>1</i>ทีมงานตั้งค่าแบบนี้</div><div class="cfg"><div class="t">'+d.set.t+'</div>'+d.set.rows.map(function(r){return '<div class="r"><span>'+r[0]+'</span><b>'+r[1]+'</b></div>';}).join('')+'</div></div>'+
+   '<div class="arw">→</div>'+
+   '<div class="dcol how"><div class="hd"><i>2</i>ระบบทำงานแบบนี้</div><ol>'+d.how.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ol><div class="where w2"><em>แสดงผลที่หน้าลูกค้า:</em>'+d.where.map(function(w){return '<span>'+w+'</span>';}).join('')+'</div></div>'+
+   '<div class="arw">→</div>'+
+   '<div class="dcol see"><div class="hd"><i>3</i>ลูกค้าเห็นแบบนี้</div>'+d.see+'</div>'+
+   '</div><p class="kbd" style="margin:.5em 0 0">ภาพประกอบเพื่ออธิบาย ไม่ใช่หน้าจอจริง — ตัวเลขเป็นตัวอย่าง</p>';
+}
+
 T.forEach(function(t){
-  // divider + what
-  add(t.name+' — คืออะไร', t.id,
-   '<span class="tag">เรื่องที่ '+t.no+'</span><h2>'+t.name+'</h2><p class="lead">'+t.whenUse+'</p><div class="card red" style="flex:1"><h3>หลักการสำคัญ</h3><ul>'+t.what.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>'+(t.note?'<p class="kbd" style="margin-top:.6em;color:#8A2622">⚠ '+t.note+'</p>':'')+'</div>');
-  // settings
-  add(t.name+' — ตั้งค่าอะไรได้บ้าง', t.id,
-   '<span class="tag">เรื่องที่ '+t.no+' · ตั้งค่า</span><h2>'+t.name+': แอดมินตั้งค่าอะไรได้บ้าง</h2><div class="cols c2" style="align-content:start">'+t.settings.map(function(s){return '<div class="card"><h3>'+s[0]+'</h3><p style="margin:0;color:var(--g6)">'+s[1]+'</p></div>';}).join('')+'</div><div style="margin-top:auto"><span class="kbd">ดูหน้าตั้งค่าจริงในสไลด์ถัดไป →</span></div>');
-  // connections
-  add(t.name+' — เชื่อมกับเรื่องอื่น', t.id,
-   '<span class="tag">เรื่องที่ '+t.no+' · ความเชื่อมโยง</span><h2>'+t.name+' เชื่อมกับเรื่องอื่นอย่างไร</h2><div class="cols c2" style="align-content:start">'+t.links.map(function(x){var p=x.split(':');return '<div class="card blue"><h3>'+tname(p[0])+'</h3><p style="margin:0">'+p.slice(1).join(':')+'</p><div style="margin-top:.4em">'+jump(p[0],'ไปดูเรื่องนี้ →')+'</div></div>';}).join('')+'</div>');
-  // screens
-  add(t.name+' — ดูหน้าจอ', t.id,
-   '<span class="tag">เรื่องที่ '+t.no+' · หน้าจอ</span><h2>'+t.name+': กดดูหน้าจอแต่ละหน้า</h2><p class="lead">เริ่มที่ <b>Flow</b> เพื่อดูภาพรวมขั้นตอน แล้วไล่ฝั่งแอดมิน (ตั้งค่า) และฝั่งลูกค้า (สิ่งที่ลูกค้าเห็น) — ทุกหน้ามีเลขกำกับพร้อมคำอธิบาย</p><div class="card" style="flex:1;overflow:auto">'+chips(t.screens)+'</div><p class="kbd" style="margin-top:.5em">เปิดในแท็บใหม่ · ใช้ปุ่ม “ก่อนหน้า/ถัดไป” ที่แถบดำด้านบนของหน้าจอเพื่อไล่ต่อทั้งโมดูล</p>');
+  add(t.no+'. '+t.name+' — ใช้ทำอะไร','t-'+t.id,
+   '<span class="tag a">ส่วนที่ 1 · เรื่องที่ '+t.no+'</span><h2>'+t.name+'</h2><p class="lead">'+t.lead+'</p><div class="intro"><div class="card adm"><h3>หลักการ</h3><ul>'+t.idea.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul>'+(t.note?'<p class="kbd" style="margin-top:.6em;color:#8A2622">⚠ '+t.note+'</p>':'')+'</div><div class="rc"><div class="example"><h3>ตัวอย่างการใช้งาน</h3><p style="margin:0">'+t.example+'</p></div>'+previewOf(t)+'</div></div>');
+  add(t.no+'. '+t.name+' — ตั้งค่าอะไรได้บ้าง','',
+   '<span class="tag a">ส่วนที่ 1 · เรื่องที่ '+t.no+' · ตั้งค่าได้</span><h2>'+t.name+': ตั้งอะไรได้บ้าง</h2><div class="caps">'+t.caps.map(function(c){return '<div class="cap"><h3>'+c[0]+'</h3><p>'+c[1]+'</p><div class="eg">'+c[2]+'</div></div>';}).join('')+'</div>'+
+   (J.some(function(j){return j.topic===t.id;})?'<div style="margin-top:.6em"><a class="chip" onclick="goKey(\'j-'+J.filter(function(j){return j.topic===t.id;})[0].key+'\')">ลูกค้าเห็นอะไร → ไปที่ส่วนที่ 2</a></div>':''));
+  (DEMO[t.id]||[]).forEach(function(d,i,arr){ add(t.no+'. '+t.name+' — ตัวอย่าง: '+d.title, i===0?'d-'+t.id:'', demoSlide(t,d,i,arr.length)); });
 });
 
-/* closing */
-add('สรุป','end','<span class="tag">ปิดท้าย</span><h2>สรุปภาพรวม</h2><div class="cols c3" style="align-content:start">'+
+/* ===== PART 2 ===== */
+add('ส่วนที่ 2 · ลูกค้าของคุณจะเห็นอะไร','p2','<div style="display:flex;flex-direction:column;flex:1;justify-content:center"><span class="tag">ส่วนที่ 2</span><h1>ลูกค้าของคุณจะเห็นอะไร</h1><p class="lead" style="max-width:36em">เดินตามเส้นทางของร้านยาหนึ่งร้าน ตั้งแต่เข้าเว็บจนได้รับรางวัล — ทุกหน้าคือหน้าจอตัวอย่างที่กดลองใช้ได้จริง</p><div class="flow" style="margin-top:.8em">'+STAGES.map(function(s,i){return (i?'<span class="ar">→</span>':'')+'<a class="n r" onclick="goKey(\'s-'+s+'\')"><b>'+(i+1)+' · '+s+'</b></a>';}).join('')+'</div></div>');
+
+J.forEach(function(j){
+  var t = tById(j.topic);
+  var steps = '<div class="step">'+STAGES.map(function(s){return '<span class="'+(s===j.stage?'on':'')+'">'+s+'</span>';}).join('')+'</div>';
+  add(j.title, 'j-'+j.key,
+   steps+'<h2 style="font-size:1.45em;margin-bottom:.35em">'+j.title+'</h2><div class="scr"><div class="frame"><div class="tb"><i></i><i></i><i></i><span>pharmaplex.co.th</span></div><img src="shots/'+j.img+'.png" alt="'+j.title+'" loading="lazy"></div><div class="side"><h3>ลูกค้าเห็น / ทำอะไรได้</h3><ol>'+j.pts.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ol>'+
+   (t?'<p class="kbd" style="margin:.4em 0 0">ตั้งค่าที่: <a class="chip" style="font-size:1em" onclick="goKey(\'t-'+t.id+'\')">'+t.no+' · '+t.name+'</a></p>':'')+
+   (j.why?'<div class="why">'+j.why+'</div>':'<div style="margin-top:auto"></div>')+
+   '<div style="margin-top:.6em"><a class="chip go" href="'+live(j.page)+'" target="_blank" rel="noopener">ลองกดหน้าจริง ↗</a></div></div></div>');
+  if(mark['s-'+j.stage]===undefined) mark['s-'+j.stage]=S.length-1;
+});
+
+/* ===== closing ===== */
+add('สรุป','end','<span class="tag">ปิดท้าย</span><h2>สรุปภาพรวม</h2><div class="cols c3">'+
  '<div class="card red"><h3>ตั้งครั้งเดียว ใช้ทั่วระบบ</h3><p style="margin:0">กลุ่มลูกค้า/สินค้า และตัวเลือก “ทุกคน/บางคน” ใช้ร่วมกันทุกเรื่อง ไม่ต้องคีย์ซ้ำ</p></div>'+
- '<div class="card red"><h3>ตะกร้าเดียวเป็นจุดรวม</h3><p style="margin:0">โปรโมชั่น → คูปอง → พอยท์ คิดตามลำดับ ลูกค้าเห็นและเลือกเองในตะกร้า คำนวณที่เซิร์ฟเวอร์</p></div>'+
- '<div class="card red"><h3>รางวัลใช้ช่องทางเดิม</h3><p style="margin:0">รางวัลทุกเรื่องไหลเข้ากระเป๋าคูปอง ยอดพอยท์ หรือคิวคำขอรับของ ที่มีอยู่แล้ว</p></div></div>'+
- '<div class="card amber" style="margin-top:1.2em;flex:1"><h3>สิ่งที่อยากให้ลูกค้าช่วยยืนยัน</h3><ul><li>กลุ่มลูกค้า/สินค้า — ใครเป็นผู้ดูแล และข้อมูลตั้งต้นที่จะนำเข้า</li><li>คูปองกระดาษ — เปิดให้ใช้ออนไลน์ได้หรือไม่ · รายชื่อร้าน/สาขาที่ร่วมรายการ · กำหนดส่งก้นเบิกเงิน</li><li>พอยท์ — อัตรารายสินค้าเริ่มต้น และสินค้าที่ตั้งเป็น 0</li><li>แคมเปญ — ยอดสะสมนับก่อน/หลังส่วนลด และปีสัญญา (ปีปฏิทินหรือวันเซ็นแต่ละร้าน)</li><li>สุ่มรางวัล — ผู้ยืนยันกฎหมาย/ภาษี และงบประมาณ</li><li>เซตร้านยา — จำนวนเซตต่อออเดอร์ และราคาในเซต (ตามราคาปัจจุบันหรือล็อกไว้)</li></ul><p class="kbd" style="margin-top:.5em">รายละเอียดข้อที่ต้องตัดสินใจของแต่ละเรื่อง อยู่ใน “หมายเหตุ UX” ใต้แต่ละหน้าจอ และในเอกสารสเปก</p></div><div style="margin-top:.6em"><a class="chip go" href="../mockup/index.html" target="_blank" rel="noopener">เปิดหน้าจอทั้งหมด ↗</a><a class="chip" href="../requirements.html" target="_blank" rel="noopener">เอกสารความต้องการ ↗</a><a class="chip" href="../dev-architecture.html" target="_blank" rel="noopener">สถาปัตยกรรมสำหรับ dev ↗</a></div>');
+ '<div class="card red"><h3>ลูกค้าเลือกเองในตะกร้า</h3><p style="margin:0">โปรโมชั่น → คูปอง → พอยท์ คิดตามลำดับ ลูกค้าเห็นยอดสุทธิก่อนจ่ายเสมอ</p></div>'+
+ '<div class="card red"><h3>รางวัลไปที่เดิม</h3><p style="margin:0">รางวัลทุกเรื่องเข้ากระเป๋าคูปอง ยอดพอยท์ เครดิต หรือคิวรับของ ที่ลูกค้าคุ้นอยู่แล้ว</p></div></div>'+
+ '<div class="card amber" style="margin-top:1em;flex:1"><h3>สิ่งที่อยากให้ช่วยยืนยัน</h3><ul><li>กลุ่มลูกค้า/สินค้า — ใครเป็นผู้ดูแล และข้อมูลตั้งต้นที่จะนำเข้า</li><li>คูปองกระดาษ — รายชื่อร้าน/สาขาที่ร่วมรายการ · กำหนดส่งก้นคูปองเพื่อเบิกเงิน</li><li>พอยท์ — อัตราพอยท์ของแต่ละสินค้า และสินค้าที่ไม่ให้พอยท์</li><li>แคมเปญ — ยอดสะสมนับก่อนหรือหลังส่วนลด และปีสัญญา (ปีปฏิทิน หรือนับจากวันเซ็นของแต่ละร้าน)</li><li>สุ่มรางวัล — ผู้ตรวจสอบข้อกฎหมาย/ภาษี และงบประมาณรางวัล</li><li>เซตร้านยา — สั่งได้กี่เซตต่อออเดอร์ และราคาในเซตตามราคาปัจจุบันหรือล็อกไว้</li></ul></div>');
 
 /* ---------- engine ---------- */
 var cur = 0, host = document.getElementById('slides');
@@ -181,12 +432,15 @@ function show(i){
   history.replaceState(null,'','#'+(cur+1));
 }
 function go(d){ show(cur+d); }
-function goIdx(i){ show(i); closeMenu(); }
-function goTopic(id){ show(topicStart[id] !== undefined ? topicStart[id] : 0); closeMenu(); }
+function goKey(k){ show(mark[k]!==undefined?mark[k]:0); closeMenu(); }
 function toggleMenu(){ document.getElementById('menu').classList.toggle('on'); }
 function closeMenu(){ document.getElementById('menu').classList.remove('on'); }
 function fs(){ var e=document.documentElement; if(!document.fullscreenElement) e.requestFullscreen&&e.requestFullscreen(); else document.exitFullscreen(); }
-document.getElementById('menuList').innerHTML = '<a onclick="goIdx(0)"><b>0</b>เริ่มต้น / วาระ</a><a onclick="goTopic(\'overview\')"><b>•</b>ภาพรวม: แผนที่ความเชื่อมโยง + ลำดับคิดเงิน</a>'+T.map(function(t){return '<a onclick="goTopic(\''+t.id+'\')"><b>'+t.no+'</b>'+t.name+' <span class="kbd">— '+t.short+'</span></a>';}).join('')+'<a onclick="goTopic(\'end\')"><b>✓</b>สรุปและข้อที่ต้องตัดสินใจ</a>';
+document.getElementById('menuList').innerHTML =
+ '<h4>เริ่มต้น</h4><a onclick="goKey(\'start\')"><b>•</b>หน้าแรก / วาระ</a><a onclick="goKey(\'overview\')"><b>•</b>ภาพรวม: ความเชื่อมโยง + ลำดับคิดเงิน</a>'+
+ '<h4>ส่วนที่ 1 · ทีมงานตั้งค่าอะไรได้บ้าง</h4>'+T.map(function(t){return '<a onclick="goKey(\'t-'+t.id+'\')"><b>'+t.no+'</b>'+t.name+' <span class="kbd">— '+t.short+'</span></a>';}).join('')+
+ '<h4>ส่วนที่ 2 · ลูกค้าของคุณจะเห็นอะไร</h4>'+J.map(function(j){return '<a onclick="goKey(\'j-'+j.key+'\')"><b>'+j.stage+'</b>'+j.title+'</a>';}).join('')+
+ '<h4>ปิดท้าย</h4><a onclick="goKey(\'end\')"><b>✓</b>สรุปและข้อที่อยากให้ช่วยยืนยัน</a>';
 document.addEventListener('keydown', function(e){
   if(e.key==='ArrowRight'||e.key==='PageDown'||e.key===' ') { e.preventDefault(); go(1); }
   else if(e.key==='ArrowLeft'||e.key==='PageUp') { e.preventDefault(); go(-1); }
