@@ -273,6 +273,26 @@
     var cont = $$('.dialog-f .btn.contained', bd)[0]; cont.textContent = 'ลุ้นต่อ (' + (cs().tickets[f.id] || 0) + ' ใบ)'; cont.setAttribute('data-lcont', 1);
     $('#rfArt')._busy = 0; rerender();
   }
+
+  /* ---- รายละเอียดรางวัล + วิธีลุ้น (ฝั่งลูกค้า) ---- */
+  function prizeDetail(fid, zid) {
+    var cfg = PMP.cfg(), f = PMP.raffle(fid), z = f && f.prizes.filter(function (x) { return x.id === zid; })[0]; if (!z) return;
+    var st = PMP.state(), isA = f.mode === 'A', items = PMP.rewardsOf('raffle', z.id).map(function (x) { return PMP.describe(x, cfg); }), mod = $('#pzMod');
+    if (!mod) { mod = document.createElement('div'); mod.id = 'pzMod'; mod.className = 'modal'; document.body.appendChild(mod); mod.addEventListener('click', function (e) { if (e.target === mod || e.target.closest('[data-pzx]')) mod.classList.remove('on'); }); }
+    var tw = f.prizes.reduce(function (a, x) { return a + (x.weight || 0); }, 0) || 1, left = isA ? Math.max(0, (z.stock || 0) - (st.shared.prizeUsed[z.id] || 0)) : 0;
+    var steps = ['ซื้อสินค้าครบทุก ' + B(f.perBaht) + ' รับ 1 สิทธิ์ลุ้น (ช่วง ' + dm(f.start) + ' – ' + dm(f.end) + ')'].concat(isA
+      ? ['กด “ใช้ 1 สิทธิ์ ลุ้นเลย” ที่หน้าลุ้นทันที — รู้ผลทันทีว่าได้รางวัลอะไร', 'โอกาสถูกรางวัลนี้ประมาณ ' + (z.weight / tw * 100).toFixed(1) + '% ต่อการลุ้น 1 ครั้ง · เหลือ ' + left + ' ชิ้น (หมดแล้วจะไม่ถูกสุ่มอีก)', 'รางวัลเข้าบัญชี/คิวรับของให้อัตโนมัติหลังรู้ผล']
+      : ['นำสิทธิ์ลงกองก่อนวันที่ ' + dm(f.end) + ' (ลงกี่ใบก็ได้ ใบที่มากขึ้นช่วยเพิ่มโอกาส แต่ถูกได้ไม่เกิน 1 รางวัลต่อการจับ)', 'ประกาศผลวันที่ ' + dm(f.drawAt) + ' — ระบบจับรางวัลด้วยสูตรตายตัว ไม่มีใครเลือกผู้ชนะด้วยมือ · รางวัลนี้มี ' + (z.winners || 1) + ' ผู้โชคดี', 'ผู้ชนะได้รางวัลเข้าบัญชี/คิวรับของ และตรวจสอบผลย้อนหลังได้เอง']);
+    mod.innerHTML = '<div class="dialog md"><div class="dialog-h"><span>รายละเอียดรางวัล</span><button class="x" type="button" data-pzx>✕</button></div><div class="dialog-b">' +
+      (z.img ? '<div style="aspect-ratio:16/10;width:100%;border-radius:10px;background:var(--g100) center/cover no-repeat url(' + z.img + ');margin-bottom:12px"></div>' : '') +
+      '<h5 style="margin:0 0 4px">' + E(z.name) + '</h5><div class="small muted mb8">' + E(f.name) + '</div>' +
+      (z.desc ? '<div style="white-space:pre-line;margin-bottom:12px">' + E(z.desc) + '</div>' : '') +
+      (items.length ? '<div class="small muted">สิ่งที่คุณจะได้รับ</div><div style="margin-bottom:12px"><b>' + E(items.join(' + ')) + '</b></div>' : '') +
+      '<div class="small muted mb8">วิธีลุ้นรับรางวัลนี้</div><ol style="margin:0;padding-left:20px;display:grid;gap:6px">' + steps.map(function (x) { return '<li>' + E(x) + '</li>'; }).join('') + '</ol>' +
+      '</div><div class="dialog-f"><button class="btn contained" type="button" data-pzx>ปิด</button></div></div>';
+    mod.classList.add('on');
+  }
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-pzd]'); if (b && !e.target.closest('button[data-fv],[data-rvopen]')) { var d = b.getAttribute('data-pzd').split('|'); prizeDetail(d[0], d[1]); } });
   H['raffle/07-customer-instant-draw.html'] = function () {
     var cfg = PMP.cfg(), c = cs(), f = rfCur('A', 'raffleA'), st = PMP.state(); if (!f) { $('.stage').innerHTML = '<div class="muted center" style="padding:30px">ตอนนี้ยังไม่มีกิจกรรมลุ้นทันที</div>'; return; }
     var as = cfg.raffles.filter(function (x) { return x.mode === 'A'; }); if (as.length > 1) pickBar2($('.page-head') || $('h4').parentNode, 'livePick', as.map(function (x) { return { id: x.id, label: x.name }; }), f.id, function (v) { U.wr(selKey('raffleA'), v); history.replaceState(null, '', location.pathname); rerender(); }, null);
@@ -287,7 +307,7 @@
     $('.stage > .small.muted').textContent = n ? 'เหลือ ' + n + ' ใบ → หลังกด เหลือ ' + (n - 1) + ' ใบ' : 'สิทธิ์หมด';
     var tw = f.prizes.reduce(function (a, z) { return a + z.weight; }, 0);
     var card = $$('.odds-row').filter(function (r) { return !r.classList.contains('small'); }); card.forEach(function (r) { r.parentNode.removeChild(r); });
-    var hd = $('.odds-row.small'); hd.insertAdjacentHTML('afterend', f.prizes.map(function (z) { var left = z.stock - (st.shared.prizeUsed[z.id] || 0); return '<div class="odds-row"><span><b>' + E(z.name) + '</b></span><span class="o">' + (z.weight / tw * 100).toFixed(1) + '%</span><span class="muted" style="text-align:right">' + left + '</span></div>'; }).join(''));
+    var hd = $('.odds-row.small'); hd.insertAdjacentHTML('afterend', f.prizes.map(function (z) { var left = z.stock - (st.shared.prizeUsed[z.id] || 0); return '<div class="odds-row" data-pzd="' + f.id + '|' + z.id + '" style="cursor:pointer" title="ดูรายละเอียดรางวัล"><span><b>' + E(z.name) + '</b> <span class="small" style="color:var(--primary-dark)">รายละเอียด ›</span></span><span class="o">' + (z.weight / tw * 100).toFixed(1) + '%</span><span class="muted" style="text-align:right">' + left + '</span></div>'; }).join(''));
     var bd = $('.backdrop.relative'); if (bd && !bd._shown) bd.style.display = 'none';
   };
   document.addEventListener('click', function (e) {
@@ -1901,28 +1921,35 @@
     if (!PZsel || !f.prizes.some(function (z) { return z.id === PZsel; })) PZsel = f.prizes[0] && f.prizes[0].id;
     $('#rfTitle').innerHTML = E(f.name) + ' ' + mchip(f);
     $('#rfHint').textContent = isA ? 'ใส่ “น้ำหนัก” เป็นตัวเลขเปรียบเทียบ (เช่น 50 / 30 / 15 / 5) ระบบคิดโอกาสถูกเป็น % ให้ · ใส่ “จำนวนที่มี” เพื่อจำกัดชิ้นรางวัล หมดแล้วจะไม่ถูกสุ่มอีก' : 'ใส่ “จำนวนผู้โชคดี” (1 คนถูกได้ 1 รางวัลต่อการจับ) ต่อรางวัล — วันจับรางวัลระบบสุ่มจากกองสิทธิ์ ผู้ชนะ 1 คนได้ 1 รางวัล/ครั้งที่ถูกจับ';
-    $('#rfPrizes thead').innerHTML = isA ? '<tr><th>ชื่อรางวัล</th><th>ลูกค้าจะได้รับ</th><th class="num">น้ำหนัก</th><th class="num">โอกาสถูก</th><th class="num">จำนวนที่มี</th><th class="num">ถูกไปแล้ว</th><th></th></tr>' : '<tr><th>ชื่อรางวัล</th><th>ลูกค้าจะได้รับ</th><th class="num">จำนวนผู้โชคดี</th><th></th></tr>';
+    $('#rfPrizes thead').innerHTML = isA ? '<tr><th>ภาพรางวัล</th><th>ชื่อรางวัล</th><th>ลูกค้าจะได้รับ</th><th class="num">น้ำหนัก</th><th class="num">โอกาสถูก</th><th class="num">จำนวนที่มี</th><th class="num">ถูกไปแล้ว</th><th></th></tr>' : '<tr><th>ภาพรางวัล</th><th>ชื่อรางวัล</th><th>ลูกค้าจะได้รับ</th><th class="num">จำนวนผู้โชคดี</th><th></th></tr>';
     $('#rfPrizes tbody').innerHTML = f.prizes.map(function (z, i) {
       var items = PMP.rewardsOf('raffle', z.id), used = st.shared.prizeUsed[z.id] || 0;
-      return '<tr class="' + (z.id === PZsel ? 'sel' : '') + '" data-rfp="' + z.id + '" style="cursor:pointer"><td><input class="input" data-rfpn="' + i + '" value="' + E(z.name) + '"></td><td class="small">' + E(items.map(function (x) { return PMP.describe(x, cfg); }).join(' + ') || '— ยังไม่ตั้ง') + '</td>' +
+      return '<tr class="' + (z.id === PZsel ? 'sel' : '') + '" data-rfp="' + z.id + '" style="cursor:pointer"><td style="width:132px"><div class="row" style="gap:8px;flex-wrap:nowrap"><span style="width:48px;height:48px;border-radius:8px;border:1px dashed var(--g400);background:var(--g100) center/cover no-repeat' + (z.img ? ';border-style:solid;background-image:url(' + z.img + ')' : '') + ';display:inline-flex;align-items:center;justify-content:center;color:var(--g500);font-size:11px;flex:none">' + (z.img ? '' : 'ไม่มีภาพ') + '</span><span class="stack" style="gap:2px"><button class="btn text sm primary" data-rfpimg="' + i + '">' + (z.img ? 'เปลี่ยนภาพ' : '＋ เพิ่มภาพ') + '</button>' + (z.img ? '<button class="btn text sm grey" data-rfpimgx="' + i + '">ลบภาพ</button>' : '') + '</span><input type="file" accept="image/*" hidden data-rfpimgf="' + i + '"></div></td><td style="min-width:240px"><input class="input" data-rfpn="' + i + '" value="' + E(z.name) + '"><textarea class="input mt8" rows="2" data-rfpx="' + i + '" placeholder="คำอธิบายรางวัล (ลูกค้าเห็นตอนกดดูรายละเอียด) เช่น สเปก เงื่อนไขการรับของ" style="width:100%;min-height:52px;resize:vertical">' + E(z.desc || '') + '</textarea></td><td class="small">' + E(items.map(function (x) { return PMP.describe(x, cfg); }).join(' + ') || '— ยังไม่ตั้ง') + '</td>' +
         (isA ? '<td class="num"><input class="input w-in num" data-rfpw="' + i + '" value="' + z.weight + '"></td><td class="num odds">' + ((z.weight || 0) / tw * 100).toFixed(1) + '%</td><td class="num"><input class="input w-in num" data-rfps="' + i + '" value="' + z.stock + '"></td><td class="num">' + used + '</td>' : '<td class="num"><input class="input w-in num" data-rfpv="' + i + '" value="' + (z.winners || 1) + '"></td>') +
         '<td><button class="btn text sm grey" data-rfpd="' + i + '">ลบ</button></td></tr>';
-    }).join('') + '<tr><td colspan="' + (isA ? 7 : 4) + '"><button class="btn outlined primary sm" data-rfpa="1">＋ เพิ่มรางวัล</button></td></tr>';
+    }).join('') + '<tr><td colspan="' + (isA ? 8 : 5) + '"><button class="btn outlined primary sm" data-rfpa="1">＋ เพิ่มรางวัล</button></td></tr>';
     var box = $('#prizeBox'); var z = f.prizes.filter(function (x) { return x.id === PZsel; })[0];
     if (z) { box.setAttribute('data-ref', z.id); box.setAttribute('data-title', 'ลูกค้าจะได้เมื่อถูกรางวัล “' + z.name + '”'); if (PMP.Reward) PMP.Reward.render(box); box.style.display = ''; } else box.style.display = 'none';
     if (!root._rf3) {
       root._rf3 = 1;
       root.addEventListener('input', function (e) { var t = e.target, a, cid = rfCur(null, 'raffle').id; function S(fn) { editRec('raffles', cid, fn); flashSaved(); }
         if ((a = t.getAttribute('data-rfpn')) != null) S(function (r) { r.prizes[+a].name = t.value; });
+        if ((a = t.getAttribute('data-rfpx')) != null) S(function (r) { r.prizes[+a].desc = t.value; });
         if ((a = t.getAttribute('data-rfpw')) != null) S(function (r) { r.prizes[+a].weight = +t.value || 0; });
         if ((a = t.getAttribute('data-rfps')) != null) S(function (r) { r.prizes[+a].stock = +t.value || 0; });
         if ((a = t.getAttribute('data-rfpv')) != null) S(function (r) { r.prizes[+a].winners = Math.max(1, +t.value || 1); }); });
-      root.addEventListener('change', function (e) { if (/^data-rfp[wsv]$/.test((e.target.getAttributeNames().filter(function (n) { return /^data-rfp[wsv]$/.test(n); })[0]) || '')) rerender(); });
+      root.addEventListener('change', function (e) {
+        var fi = e.target.getAttribute && e.target.getAttribute('data-rfpimgf'), file = fi != null && e.target.files && e.target.files[0];
+        if (file) { var cid2 = rfCur(null, 'raffle').id, rd = new FileReader(); rd.onload = function () { var im = new Image(); im.onload = function () { var m = 320, k = Math.min(1, m / Math.max(im.width, im.height)), cv = document.createElement('canvas'); cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k); cv.getContext('2d').drawImage(im, 0, 0, cv.width, cv.height); var url = cv.toDataURL('image/jpeg', 0.8); editRec('raffles', cid2, function (r) { r.prizes[+fi].img = url; }); flashSaved(); rerender(); toast('เพิ่มภาพรางวัลแล้ว'); }; im.src = rd.result; }; rd.readAsDataURL(file); return; }
+        if (/^data-rfp[wsv]$/.test((e.target.getAttributeNames().filter(function (n) { return /^data-rfp[wsv]$/.test(n); })[0]) || '')) rerender(); });
       root.addEventListener('click', function (e) {
         var cid = rfCur(null, 'raffle').id, d = e.target.closest('[data-rfpd]'), a = e.target.closest('[data-rfpa]'), r = e.target.closest('[data-rfp]');
+        var ib = e.target.closest('[data-rfpimg]'), ix = e.target.closest('[data-rfpimgx]');
+        if (ib) { ib.closest('td').querySelector('input[type=file]').click(); return; }
+        if (ix) { editRec('raffles', cid, function (x) { delete x.prizes[+ix.getAttribute('data-rfpimgx')].img; }); flashSaved(); rerender(); return; }
         if (d) { editRec('raffles', cid, function (x) { x.prizes.splice(+d.getAttribute('data-rfpd'), 1); }); rerender(); return; }
         if (a) { var zid = U.uid('z'), isA2 = recOf('raffles', cid).mode === 'A'; editRec('raffles', cid, function (x) { x.prizes.push(isA2 ? { id: zid, name: 'รางวัลใหม่', weight: 10, stock: 50 } : { id: zid, name: 'รางวัลใหม่', winners: 1 }); }); PMP.saveRewards('raffle', zid, [{ k: 'points', mode: 'fixed', pts: 100 }]); PZsel = zid; rerender(); toast('เพิ่มรางวัลแล้ว — ตั้งสิ่งที่ลูกค้าจะได้ด้านล่าง'); return; }
-        if (r && !e.target.closest('input,button')) { PZsel = r.getAttribute('data-rfp'); rerender(); }
+        if (r && !e.target.closest('input,button,textarea')) { PZsel = r.getAttribute('data-rfp'); rerender(); }
       });
     }
   };
@@ -2035,7 +2062,7 @@
       '<div class="fx-row"><span class="fx-st ' + (res ? 'ok' : '') + '">' + (res ? '✓' : '2') + '</span><div><b>จับรางวัล</b> <span class="small muted">— ผู้ชนะมาจากสูตรคำนวณ ไม่มีใครเลือกด้วยมือ · ตัวตั้งต้นสุ่ม: ' + (fairSrc(f) === 'public' ? 'ใช้ค่าสาธารณะที่ทุกคนตรวจได้' + (f.fair && f.fair.pubLabel ? ' (' + E(f.fair.pubLabel) + ')' : '') : 'ระบบสุ่มให้') + '</span></div></div>' +
       '<div class="fx-row"><span class="fx-st ' + (res && !locked ? 'ok' : '') + '">3</span><div><b>ตรวจสอบเอง</b> <span class="small muted">' + (res ? (locked ? '— เปิดดูผลของคุณก่อน แล้วจึงตรวจสอบได้' : '— กดแล้วระบบจะจับรางวัลซ้ำให้ดู เพื่อยืนยันว่าผลไม่ถูกแก้') : '— ตรวจได้หลังจับรางวัล') + '</span>' + (res && !locked ? '<div class="mt8"><button class="btn outlined primary sm" data-fv="' + f.id + '">ตรวจสอบว่าผลไม่ถูกแก้</button></div>' : '') + '</div></div></div>' +
       '<details class="mt8"><summary class="small"><b>ระบบนี้ทำงานยังไง / ทำไมเชื่อได้</b></summary><div class="mt8">' + fairExplainC() + '</div></details></div></div></div>' +
-      '<div class="card mt16"><div class="card-h"><h6>รางวัลในกิจกรรมนี้</h6></div><div class="card-b"><div class="grid g3">' + f.prizes.map(function (z) { var ws = res ? res.winners.filter(function (w) { return w.prizeId === z.id; }) : []; return '<div class="prize-card"><div class="pb"><b>' + E(z.name) + '</b><div class="small muted">' + z.winners + ' ผู้โชคดี</div>' + (res && !locked ? '<div class="small mt8">ผู้โชคดี: ' + ws.map(function (w) { return w.who === cid ? '<b style="color:var(--primary-dark)">คุณ</b>' : w.who.indexOf('other-') === 0 ? 'ร้านที่ร่วมรายการ' : E((PMP.customers.filter(function (x) { return x.id === w.who; })[0] || {}).name || w.who); }).join(', ') + '</div>' : '') + '</div></div>'; }).join('') + '</div></div></div>';
+      '<div class="card mt16"><div class="card-h"><h6>รางวัลในกิจกรรมนี้</h6></div><div class="card-b"><div class="grid g3">' + f.prizes.map(function (z) { var ws = res ? res.winners.filter(function (w) { return w.prizeId === z.id; }) : []; return '<div class="prize-card" data-pzd="' + f.id + '|' + z.id + '" style="cursor:pointer">' + (z.img ? '<div style="aspect-ratio:1/1;max-height:160px;width:100%;background:var(--g100) center/cover no-repeat url(' + z.img + ');border-radius:8px 8px 0 0"></div>' : '') + '<div class="pb"><b>' + E(z.name) + '</b><div class="small muted">' + z.winners + ' ผู้โชคดี</div>' + (z.desc ? '<div class="small mt8" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">' + E(z.desc) + '</div>' : '') + '<div class="small mt8" style="color:var(--primary-dark)">ดูรายละเอียดและวิธีลุ้น ›</div>' + (res && !locked ? '<div class="small mt8">ผู้โชคดี: ' + ws.map(function (w) { return w.who === cid ? '<b style="color:var(--primary-dark)">คุณ</b>' : w.who.indexOf('other-') === 0 ? 'ร้านที่ร่วมรายการ' : E((PMP.customers.filter(function (x) { return x.id === w.who; })[0] || {}).name || w.who); }).join(', ') + '</div>' : '') + '</div></div>'; }).join('') + '</div></div></div>';
     relabelCustomer();
   };
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('[data-rfpool]'); if (b) { var d = b.getAttribute('data-rfpool').split('|'), r = PMP.enterPool(custId(), d[0], +d[1]); toast(r.error || 'ลงกองแล้ว ' + d[1] + ' สิทธิ์ (ถอนคืนไม่ได้)', !!r.error); rerender(); } });
