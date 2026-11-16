@@ -8,7 +8,7 @@
 <div class="sim-wrap">
   <div class="page-head" style="margin-bottom:16px">
     <div><h4>ตะกร้า / ชำระเงิน — ฝั่งลูกค้า</h4>
-      <p class="muted">คำนวณจริงจากค่าที่ตั้งใน <a href="01-config.html">① ตั้งค่า</a>: ราคาแคมเปญโควตา → โปรโมชั่นที่ลูกค้าเลือก → คูปอง → ค่าส่ง → พอยท์/เครดิต แล้วกด “ชำระเงิน” เพื่อให้ผลเกิดจริง (ตัดโควตา ให้พอยท์ คูปอง สิทธิ์ลุ้น ยอดสะสมแคมเปญ) ไปดูต่อที่ <a href="03-state.html">③ สิทธิ์ & ผลลัพธ์</a></p></div>
+      <p class="muted">คำนวณจริงจากค่าที่ตั้งใน <a href="01-config.html">① ตั้งค่า</a>: ราคาแคมเปญโควตา → โปรโมชั่นที่ลูกค้าเลือก → คูปอง → ค่าส่ง → พอยท์ แล้วกด “ชำระเงิน” เพื่อให้ผลเกิดจริง (ตัดโควตา ให้พอยท์ คูปอง สิทธิ์ลุ้น ยอดสะสมแคมเปญ) ไปดูต่อที่ <a href="03-state.html">③ สิทธิ์ & ผลลัพธ์</a></p></div>
   </div>
   <div class="sim-grid">
     <div>
@@ -20,7 +20,7 @@
       <div class="sim-card"><h6>4 · คูปอง</h6><p class="sub">กรอกโค้ด (ลองใส่ SAVE100 / FREESHIP) หรือเลือกจากกระเป๋าคูปอง</p>
         <div class="sim-cp"><input class="input" id="code" placeholder="เช่น SAVE100" style="max-width:220px;text-transform:uppercase"><button class="btn contained sm" id="applyCode" type="button">ใช้โค้ด</button><button class="btn text sm grey" id="clearCode" type="button">ล้างคูปอง</button></div>
         <div id="couponMsg"></div><div class="sim-wal" id="wallet"></div></div>
-      <div class="sim-card"><h6>5 · พอยท์ / เครดิตเงินคืน</h6><div id="payBox"></div></div>
+      <div class="sim-card"><h6>5 · ใช้พอยท์ชำระ</h6><div id="payBox"></div></div>
     </div>
     <div class="sim-sticky">
       <div class="sim-card sim-sum"><h6>สรุปคำสั่งซื้อ</h6><div id="sum"></div>
@@ -33,7 +33,7 @@
 <section class="ux-notes">
   <h6>หมายเหตุ UX / ลอจิก</h6>
   <ol>
-    <li><span class="pin">1</span><span><b>ลำดับคิดเงินเดียวกับระบบจริง</b> ราคา/Flash → โปรโมชั่น (ลูกค้าเลือก) → คูปอง → ค่าจัดส่ง → ชำระด้วยพอยท์/เครดิต · แต่ละขั้นคิดต่อจากยอดที่เหลือ และแสดงลำดับการตัดสิน (trace) ให้ตรวจ</span></li>
+    <li><span class="pin">1</span><span><b>ลำดับคิดเงินเดียวกับระบบจริง</b> ราคา/Flash → โปรโมชั่น (ลูกค้าเลือก) → คูปอง → ค่าจัดส่ง → ชำระด้วยพอยท์ · แต่ละขั้นคิดต่อจากยอดที่เหลือ และแสดงลำดับการตัดสิน (trace) ให้ตรวจ</span></li>
     <li><span class="pin">2</span><span><b>ไม่มี priority</b> ทุกโปรที่เข้าเงื่อนไขเป็นการ์ด ลูกค้าเลือกเอง · “ใช้ร่วมกับโปรอื่นได้/ไม่ได้” ตั้งที่ตัวโปร · เลือกแล้วโปรที่ชนเป็นสีเทา กดยกเลิกแล้วกลับมาเลือกได้</span></li>
     <li><span class="pin">3</span><span><b>โควต้า 2 ชั้น</b> โควต้าทั้งหมด (ทุกคนรวม) และโควต้าต่อคน — ตัดตอนชำระสำเร็จ · เต็มแล้วโปรเป็นสีเทา “โควต้าเต็ม”</span></li>
     <li><span class="pin">4</span><span><b>ผลตอบแทนหลายอย่าง</b> ส่วนลด/ของแถม/ฟรีค่าส่งเกิดในบิลทันที · พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ของนอก POS ได้หลังชำระสำเร็จ (ดูกล่อง “หลังชำระ คุณจะได้”)</span></li>
@@ -106,8 +106,7 @@
     document.getElementById('payBox').innerHTML =
       '<div class="row between"><span>พอยท์คงเหลือ <b>' + cs.points.toLocaleString() + '</b> (1 พอยท์ = ' + B(cfg.pay.ptBaht) + ' · ใช้ได้ไม่เกิน ' + cfg.pay.maxPct + '% ของยอดสินค้า)</span></div>' +
       (R.pointsBlocked ? '<div class="sim-err">ใช้พอยท์ชำระไม่ได้ — “' + E(R.pointsBlocked) + '” ไม่อนุญาตให้ใช้ร่วมกับการชำระด้วยพอยท์</div>' :
-        '<div class="row mt8"><input type="range" id="ptRange" min="0" max="' + maxP + '" value="' + R.pointsUsed + '" style="flex:1"><input class="input" id="ptNum" type="number" min="0" max="' + maxP + '" value="' + R.pointsUsed + '" style="width:100px"><span class="small muted">สูงสุด ' + maxP + '</span></div>') +
-      '<div class="row between mt16"><span>เครดิตเงินคืนคงเหลือ <b>' + B(cs.credit) + '</b></span><label class="switch"><input type="checkbox" id="useCredit"' + (sel.useCredit ? ' checked' : '') + (cs.credit ? '' : ' disabled') + '> ใช้เครดิต</label></div>';
+        '<div class="row mt8"><input type="range" id="ptRange" min="0" max="' + maxP + '" value="' + R.pointsUsed + '" style="flex:1"><input class="input" id="ptNum" type="number" min="0" max="' + maxP + '" value="' + R.pointsUsed + '" style="width:100px"><span class="small muted">สูงสุด ' + maxP + '</span></div>');
 
     // summary
     var s = '<div class="r"><span>ยอดสินค้า<small>' + R.lines.reduce(function (a, l) { return a + l.qty; }, 0) + ' ชิ้น</small></span><span>' + B(R.lines.reduce(function (a, l) { return a + l.qty * l.base; }, 0)) + '</span></div>';
