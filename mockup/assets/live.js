@@ -513,7 +513,7 @@
     $$('.pill').forEach(function (p, i) { p.classList.toggle('on', ['all', 'gift', 'disc', 'ship'][i] === PF); });
     relabelCustomer();
   };
-  document.addEventListener('click', function (e) { var p = e.target.closest && e.target.closest('.pill'); if (p && KEY === 'promotion/06-customer-list.html') { PF = ['all', 'gift', 'disc', 'ship'][[].indexOf.call(p.parentNode.children, p) - ($$('.pill')[0] ? 0 : 0)] || 'all'; rerender(); } });
+  document.addEventListener('click', function (e) { var p = e.target.closest && e.target.closest('.pill'); if (p && KEY === 'promotion/06-customer-list.html') { PF = ['all', 'gift', 'disc', 'ship'][[].indexOf.call($$('.pill'), p)] || 'all'; rerender(); } });
   document.addEventListener('change', function (e) { if (KEY === 'promotion/06-customer-list.html' && e.target.closest && e.target.closest('.filters')) rerender(); });
 
   /* ---- coupon/10 ตรวจสอบคูปองกระดาษ ---- */
