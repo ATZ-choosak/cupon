@@ -4,8 +4,15 @@
        <main id="screen"> ...page content only... </main>
        <section class="ux-notes"> ...numbered notes + rules... </section>   (optional, stays outside the shell)
    Interactions:  data-tabs / [data-tab] / [data-panel] · [data-open="#modal"] / [data-close] ·
-                  [data-reveal="name=value"] (shows when radio/select `name` has value) · .flip (click to flip) · .seg buttons */
+                  [data-reveal="name=value"] (shows when radio/select `name` has value) · .flip (click to flip) · .seg buttons
+   ?clean=1  presentation mode: hides the demo bar, numbered pins, UX notes and simulator controls (used for slides) */
 (function () {
+  if (/[?&]clean=1/.test(location.search)) {
+    document.documentElement.classList.add('mk-clean');
+    var cs = document.createElement('style');
+    cs.textContent = '.mk-clean .demo-bar,.mk-clean .pin,.mk-clean .ux-notes,.mk-clean .live-ctl,.mk-clean .live-panel{display:none!important}';
+    document.head.appendChild(cs);
+  }
   var REG = window.MOCKUP || { modules: [] };
   var parts = location.pathname.replace(/\\/g, '/').split('/');
   var file = parts[parts.length - 1] || '';

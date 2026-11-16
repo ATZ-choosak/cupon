@@ -59,7 +59,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
   <div data-panel="manual" class="on">
     <div class="pn">
       <div class="stack">
-        <div class="field"><label>รูปแบบการแจก <span class="pin">2</span></label><div class="seg"><button class="on">เปิดให้กดรับเอง</button><button>แจกอัตโนมัติทุกเดือน</button></div><span class="help">กดรับแล้วตัดโควตารวมทันที และรหัสผูกกับบัญชีนั้นคนเดียว ใช้ได้ 1 ครั้ง</span></div>
+        <div class="alert info"><div>กดรับแล้วตัดโควตารวมทันที และรหัสผูกกับบัญชีนั้นคนเดียว ใช้ได้ 1 ครั้ง</div></div>
         <div class="form-grid">
           <div class="field span2"><label>ชื่อคูปอง/สิทธิ์ *</label><input class="input" value="ลด ฿100 เมื่อซื้อครบ ฿1,500"></div>
           <div class="field"><label>ประเภทส่วนลด</label><div class="seg"><button>ส่งฟรี</button><button class="on">ลดราคาคงที่</button><button>ลดเปอร์เซ็นต์</button></div></div>
@@ -105,7 +105,6 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
   <div data-panel="monthly">
     <div class="pn">
       <div class="stack">
-        <div class="field"><label>รูปแบบการแจก</label><div class="seg"><button>เปิดให้กดรับเอง</button><button class="on">แจกอัตโนมัติทุกเดือน</button></div></div>
         <div class="form-grid">
           <div class="field span2"><label>ชื่อสิทธิ์ *</label><input class="input" value="ส่งฟรีประจำเดือน เมื่อซื้อครบ ฿1,000"></div>
           <div class="field"><label>ประเภทส่วนลด</label><div class="seg"><button class="on">ส่งฟรี</button><button>ลดราคาคงที่</button><button>ลดเปอร์เซ็นต์</button></div></div>
@@ -145,7 +144,7 @@ details.faq>div{padding:0 16px 14px;font-size:13px;color:var(--g700)}
   <h6>หมายเหตุ UX</h6>
   <ol>
     <li><span class="pin">1</span><span>สองแท็บ = สองวิธีให้สิทธิ์ ใช้ชุดฟิลด์ส่วนลดเดียวกัน ต่างกันที่ "วิธีรับ" · ใบหนึ่งอยู่ได้แท็บเดียว</span></li>
-    <li><span class="pin">2</span><span>รูปแบบการแจกเลือกต่อใบ (กดรับเอง / แจกอัตโนมัติรายเดือน) — สร้างได้หลายใบพร้อมกัน เช่น ใบเก็บเอง + ใบรายเดือน</span></li>
+    <li><span class="pin">2</span><span>รูปแบบการแจกกำหนดจากแท็บที่สร้าง (ไม่มีตัวเลือกซ้ำในฟอร์ม) — สร้างได้หลายใบพร้อมกัน เช่น ใบเก็บเอง + ใบรายเดือน</span></li>
     <li><span class="pin">3</span><span>จำนวนสิทธิ์ทั้งหมด = โควตารวม ตัดทันทีเมื่อลูกค้ากดเก็บ (แสดง "เหลือ n / ทั้งหมด" ให้ลูกค้าเห็น) · ว่าง = ไม่จำกัด</span></li>
     <li><span class="pin">4</span><span>การหมดอายุของสิทธิ์ที่เก็บแล้ว: วันที่คงที่ / N วันหลังเก็บ / สิ้นเดือนที่เก็บ — ช่องกรอกเปลี่ยนตามตัวเลือก</span></li>
     <li><span class="pin">5</span><span>ตัวอย่างฝั่งลูกค้าอัปเดตสดตามค่าที่ตั้ง ทั้งในศูนย์คูปอง (ก่อนเก็บ) และกระเป๋า (หลังเก็บ)</span></li>
