@@ -68,7 +68,7 @@
           aud: 'all', ctype: 'amt', min: 1000, scope: { mode: 'pset', ref: 'ps1' }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true },
         { id: 'p5', name: 'ซื้อ Vitamin C ครบ 3 ขวด ลด 10%', kind: 'cond', start: '2026-10-01', end: '2026-12-31', active: true, quotaTotal: 50, used: 27, perCust: 2,
           aud: 'all', ctype: 'qty', min: 3, scope: { mode: 'skus', ref: ['BM-VC500', 'BM-VC500B'] }, strict: false, stackPromo: false, stackCoupon: true, stackPoints: false },
-        { id: 'p7', name: 'ซื้อนมผง Dumex ครบ 2 กระป๋อง แถมขวดนม + ส่งฟรี + 50 พอยท์', kind: 'cond', start: '2026-10-15', end: '2026-11-30', active: true, quotaTotal: 80, used: 12, perCust: 3,
+        { id: 'p7', name: 'ซื้อนมผง Dumex ครบ 2 กระป๋อง แถมขวดนม + ส่งฟรี + 50 พอยท์', priority: 20, kind: 'cond', start: '2026-10-15', end: '2026-11-30', active: true, quotaTotal: 80, used: 12, perCust: 3,
           aud: 'all', ctype: 'qty', min: 2, scope: { mode: 'skus', ref: ['DX-MP1'] }, strict: true, stackPromo: true, stackCoupon: true, stackPoints: true },
         { id: 'p9', name: 'ลูกค้าใหม่ ซื้อครบ ฿5,000 ลด ฿300 + ลุ้นโชค 1 สิทธิ์', kind: 'cond', start: '2026-10-01', end: '2026-12-31', active: true, quotaTotal: 200, used: 31, perCust: 1,
           aud: 'new', ctype: 'amt', min: 5000, scope: { mode: 'all', ref: null }, strict: false, stackPromo: true, stackCoupon: false, stackPoints: true },
@@ -78,6 +78,10 @@
           aud: 'all', ctype: 'qty', min: 2, scope: { mode: 'skus', ref: ['PP-DM'] }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true },
         { id: 'p12', name: 'ซื้อเข็มฉีดยาครบ 5 กล่อง แถม 1 กล่อง (ยังไม่เริ่ม)', kind: 'cond', start: '2026-12-01', end: '2026-12-31', active: true, quotaTotal: 100, used: 0, perCust: 2,
           aud: 'all', ctype: 'qty', min: 5, scope: { mode: 'skus', ref: ['SY-3ML'] }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true },
+        { id: 'p14', name: 'ซื้อ Pampers ครบ 2 แพ็ก แถมพาราเซตามอล 2 แผง', kind: 'cond', start: '2026-10-01', end: '2026-12-31', active: true, quotaTotal: 60, used: 9, perCust: 3, priority: 15,
+          aud: 'all', ctype: 'qty', min: 2, scope: { mode: 'skus', ref: ['PP-DM'] }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true },
+        { id: 'p15', name: 'ซื้อนมผง Dumex ครบ 2 กระป๋อง แถมเข็มฉีดยา 1 กล่อง', kind: 'cond', start: '2026-10-15', end: '2026-12-31', active: true, quotaTotal: 40, used: 4, perCust: 3, priority: 10,
+          aud: 'all', ctype: 'qty', min: 2, scope: { mode: 'skus', ref: ['DX-MP1'] }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true },
         { id: 'p13', name: 'ซื้อสินค้ากลุ่มนมผง รับพอยท์ ×1.5', kind: 'cond', start: '2026-10-01', end: '2026-11-30', active: true, quotaTotal: 0, used: 0, perCust: 0,
           aud: 'all', ctype: 'qty', min: 1, scope: { mode: 'pset', ref: 'ps2' }, strict: false, stackPromo: true, stackCoupon: true, stackPoints: true }
       ],
@@ -129,6 +133,8 @@
     if (c.points && c.points.mults) { delete c.points.mults; ch = true; }
     if (!c.promos.some(function (p) { return p.id === 'p13'; }) && !c._p13) { c.promos.push(d.promos.filter(function (p) { return p.id === 'p13'; })[0]); c._p13 = 1; ch = true; }
     if (c.pay && c.pay.enabled === undefined) { c.pay.enabled = true; ch = true; }
+    if (!c._gp2) { ['p14', 'p15'].forEach(function (id) { if (!c.promos.some(function (p) { return p.id === id; })) c.promos.push(d.promos.filter(function (p) { return p.id === id; })[0]); }); c._gp2 = 1; ch = true; }
+    c.promos.forEach(function (p) { if (p.priority == null) { p.priority = { p7: 20, p14: 15, p15: 10, p12: 5 }[p.id] || 0; ch = true; } });
     ['csets', 'flash', 'paper', 'kits', 'stock', 'partners'].forEach(function (k) { if (!c[k]) { c[k] = d[k] || []; ch = true; } });
     c.paper.forEach(function (p) { if (p.serial && p.serial.on) { p.serial.on = false; ch = true; } if (!p.benefit) { p.benefit = 'discount'; p.item = ''; p.settle = 'pay'; p.cost = 0; p.serial = { on: false, prefix: '', from: 1, to: 0 }; ch = true; } });
     c.paper.forEach(function (p) { if (!Array.isArray(p.terms)) { p.terms = String(p.back || '').split(/\s*·\s*|\n/).map(function (x) { return x.trim(); }).filter(Boolean); ch = true; } if (p.note == null) { p.note = PMP.PAPER_NOTE; ch = true; } if (!p.tpl) { p.tpl = p.benefit === 'item' ? 'gift' : 'classic'; ch = true; } if (!p.theme) { p.theme = 'red'; ch = true; } });
@@ -171,6 +177,8 @@
     'promotion.p13': [{ k: 'points', mode: 'mult', value: 1.5 }],
     'promotion.p11': [{ k: 'disc', mode: 'baht', value: 60, cap: 0 }],
     'promotion.p12': [{ k: 'gift', sku: 'SY-3ML', qty: 1 }],
+    'promotion.p14': [{ k: 'gift', sku: 'PAR-500', qty: 2 }],
+    'promotion.p15': [{ k: 'gift', sku: 'SY-3ML', qty: 1 }],
     'points.r1': [{ k: 'coupon', couponId: 'k1', qty: 1 }],
     'points.r2': [{ k: 'credit', amount: 200, expiryDays: 90 }],
     'points.r3': [{ k: 'offpos', text: 'กระเป๋าผ้า Pharmaplex (รับที่คลัง)', qty: 1 }, { k: 'entitle', activityId: 'f1', tickets: 1 }],
@@ -223,9 +231,10 @@
     if (!aud || aud === 'all') return true;
     if (String(aud).indexOf('set:') === 0) { var S = PMP.cfg().csets.filter(function (x) { return x.id === aud.slice(4); })[0]; return !!S && S.members.indexOf(cust.id) > -1; }
     if (aud === 'B2B' || aud === 'B2C') return cust.type === aud;
-    if (aud === 'new') return cs.orders === 0;
+    if (aud === 'new') return !!cs && cs.orders === 0;
     return true;
   }
+  PMP.audOk = audOk; /* shared audience check: all | B2B | B2C | set:<id> | new */
   PMP.status = function (o, now) {
     if (!o.active) return 'inactive';
     if (o.start && now < o.start) return 'upcoming';
@@ -444,6 +453,26 @@
     return { ok: true, times: 1, lines: scoped, amt: amt };
   }
 
+  /* Auto gift pick — priority applies ONLY to promotions that give a gift (same rule as pmpc "Bundle" on prod):
+     sort priority DESC → each pick consumes the units it needs → next promo is matched on what is left. */
+  PMP.hasGift = function (id) { return PMP.rewardsOf('promotion', id).some(function (i) { return i.k === 'gift'; }); };
+  PMP.autoGifts = function (cart, opts) {
+    var R0 = PMP.price(cart, { customerId: opts.customerId, promoIds: [], couponRef: null, usePoints: 0, useCredit: false }), cfg = PMP.cfg();
+    var rem = R0.lines.map(function (l) { return { sku: l.sku, p: l.p, qty: l.qty, base: l.base, amount: l.amount, promoDisc: 0, couponDisc: 0 }; });
+    var cands = R0.eligible.filter(function (c) { return c.ok && PMP.hasGift(c.p.id); }).map(function (c) { return c.p; });
+    cands.sort(function (a, b) { return (b.priority || 0) - (a.priority || 0); });
+    var picked = [], skipped = [];
+    cands.forEach(function (p) {
+      var bad = picked.filter(function (o) { return !o.stackPromo || !p.stackPromo; })[0];
+      if (bad) { skipped.push({ id: p.id, why: 'ใช้ร่วมกับ “' + bad.name + '” ไม่ได้' }); return; }
+      var m = matchPromo(cfg, p, rem);
+      if (!m.ok) { skipped.push({ id: p.id, why: 'สินค้าที่ต้องมีถูกใช้ในโปรที่ priority สูงกว่าไปแล้ว' }); return; }
+      picked.push(p);
+      if (p.ctype === 'qty') { var need = p.min; m.lines.forEach(function (l) { if (need <= 0) return; var f = p.strict ? 1 : l.p.factor, use = Math.min(l.qty, Math.ceil(need / f)); l.amount -= l.amount * use / l.qty; l.qty -= use; need -= use * f; }); }
+    });
+    return { ids: picked.map(function (p) { return p.id; }), skipped: skipped };
+  };
+
   /* promo ↔ promo compatibility map for the UI cards */
   PMP.compat = function (a, b) { return a.stackPromo && b.stackPromo; };
 
@@ -614,7 +643,7 @@
   PMP.kitOrder = function (cid, kitId, qtys, by) {
     var cfg = PMP.cfg(), st = PMP.state(), kit = cfg.kits.filter(function (k) { return k.id === kitId; })[0], c = PMP.customers.filter(function (x) { return x.id === cid; })[0];
     if (!kit) return { error: 'ไม่พบเซต' };
-    if (kit.aud === 'B2B' && c.type !== 'B2B') return { error: 'เซตนี้สั่งได้เฉพาะลูกค้า B2B' };
+    if (!audOk(kit.aud, c, st.customers[c.id])) return { error: 'เซตนี้ไม่เปิดให้บัญชีของคุณสั่ง (' + (kit.aud === 'B2B' ? 'เฉพาะลูกค้า B2B' : kit.aud === 'B2C' ? 'เฉพาะลูกค้า B2C' : 'เฉพาะกลุ่มลูกค้าที่กำหนด') + ')' };
     var r = PMP.kitCalc(kit, qtys);
     if (r.errs.length) return { error: r.errs.join(' · ') };
     if (r.blocked.length) return { error: 'สต็อกไม่พอ: ' + r.blocked.join(' · ') };
@@ -792,7 +821,7 @@
       if (dl >= 0 && dl <= N.promo.days) add('pm:' + p.id, 'promo', 'info', 'โปรโมชั่นใกล้สิ้นสุด', p.name + ' — ' + (dl === 0 ? 'สิ้นสุดวันนี้' : 'สิ้นสุดใน ' + dl + ' วัน') + ' (' + p.end + ')', '../promotion/06-customer-list.html');
     });
     if (N.raffle && N.raffle.on) cfg.raffles.forEach(function (f) {
-      if (!(f.active && (f.aud === 'all' || f.aud === cust.type))) return; var n = cs.tickets[f.id] || 0, res = (st.shared.drawResult || {})[f.id];
+      if (!(f.active && audOk(f.aud, cust, cs))) return; var n = cs.tickets[f.id] || 0, res = (st.shared.drawResult || {})[f.id];
       if (res && ((st.shared.rafflePool[f.id] || {})[cid] || 0) > 0 && !PMP.revealed(cid, f.id)) { add('rf:' + f.id + ':rv', 'raffle', 'warn', 'ประกาศผลแล้ว — เปิดดูว่าคุณได้รางวัลไหม', f.name + ' · แตะเพื่อเปิดผลของคุณ', '../raffle/08-customer-scheduled.html?f=' + f.id + '&reveal=1'); }
       else if (res) { var mw = res.winners.filter(function (w) { return w.who === cid; }); add('rf:' + f.id + ':res', 'raffle', mw.length ? 'success' : 'info', mw.length ? 'ยินดีด้วย! คุณถูกรางวัล' : 'ประกาศผลแล้ว: ' + f.name, mw.length ? mw.map(function (w) { return w.prize; }).join(' · ') + ' — รางวัลเข้าบัญชี/คิวรับของแล้ว' : 'รอบนี้คุณไม่ได้รับรางวัล ขอบคุณที่ร่วมสนุก', '../raffle/08-customer-scheduled.html?f=' + f.id); }
       else if (n > 0 && PMP.status(f, now) === 'running') add('rf:' + f.id + ':tk:' + n, 'raffle', 'info', 'คุณมีสิทธิ์ลุ้น ' + n + ' ใบ', f.name + (f.mode === 'A' ? ' — ใช้ลุ้นได้ทันที' : ' — นำลงกองก่อนประกาศผล ' + f.drawAt), f.mode === 'A' ? '../raffle/07-customer-instant-draw.html?f=' + f.id : '../raffle/08-customer-scheduled.html?f=' + f.id);

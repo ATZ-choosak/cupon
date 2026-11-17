@@ -51,9 +51,9 @@
           <ul>
             <li><span class="node"><span class="cn abs">CartBenefit</span><span class="note">ประเมินตอนตะกร้า/เช็คเอาต์ · มี <code>rewardSetId</code> + <code>conditions[]</code></span></span>
               <ul>
-                <li><span class="node"><span class="cn abs">Promotion</span><span class="note">อัตโนมัติ ไม่ต้องใส่โค้ด · ลูกค้าเลือกเองในตะกร้า (ไม่มี priority) · ผลตอบแทนผสมได้หลายชนิด · <code>newCustomerOnly</code> แทนคูปองลูกค้าใหม่</span></span>
+                <li><span class="node"><span class="cn abs">Promotion</span><span class="note">อัตโนมัติ ไม่ต้องใส่โค้ด · โปรของแถมระบบเลือกให้ก่อนตาม <code>giftPriority</code> (กติกาเดียวกับ Bundle เดิม) ส่วนโปรอื่นลูกค้าเลือกเองในตะกร้า · ผลตอบแทนผสมได้หลายชนิด (combo) · <code>newCustomerOnly</code> แทนคูปองลูกค้าใหม่</span></span>
                   <ul>
-                    <li><span class="node"><span class="cn concrete">ItemBundlePromotion</span><span class="note">ซื้อคู่/ของแถม · <code>tiers[]</code> = GiftSetGroup (ซื้อ 1/5/10 ลัง) · ต่อยอด Bundle เดิม</span></span></li>
+                    <li><span class="node"><span class="cn concrete">ItemBundlePromotion</span><span class="note">ซื้อคู่/ของแถม · <code>tiers[]</code> = GiftSetGroup (ซื้อ 1/5/10 ลัง) · ต่อยอด Bundle เดิม · migrate Bundle เดิมมาเป็นชนิดนี้ (ดูหัวข้อ 09)</span></span></li>
                     <li><span class="node"><span class="cn concrete">GroupThresholdPromotion</span><span class="note">แบรนด์/หมวด (ProductSet) + ยอดขั้นต่ำ → ส่วนลดท้ายบิลเฉพาะยอดกลุ่มนั้น</span></span></li>
                     <li><span class="node"><span class="cn concrete">FlashSalePromotion</span><span class="note">ลดตามวัน/ช่วงเวลา · ปรับราคาที่การ์ดสินค้า</span></span></li>
                   </ul></li>
@@ -88,7 +88,8 @@
         <tr><td><code>globalLimit</code> (โควต้าทั้งหมด) + <code>perCustomerLimit</code></td><td>int null</td><td>ใช้คู่กันได้ เช่น 100 สิทธิ์ คนละไม่เกิน 2 · เต็ม globalLimit → สถานะแสดง “หมดโควต้า” (derived ไม่ใช่ status ใหม่)</td></tr>
         <tr><td><code>newCustomerOnly</code></td><td>bool</td><td>Promotion · ผ่านเมื่อบัญชีไม่มีออเดอร์มาก่อน (<code>FirstOrderCondition</code>) · แทน WelcomeCoupon</td></tr>
         <tr><td><code>strictUnit</code></td><td>bool</td><td>Promotion · ตรวจหน่วยสินค้าเข้มงวด — อยู่ในกลุ่ม Condition เดียวกับขอบเขตและสินค้าที่ต้องมี</td></tr>
-        <tr><td><code>audienceMode</code></td><td>ALL | SELECTED</td><td>ALL = ไม่มีแถวใน <code>benefit_audience</code></td></tr>
+        <tr><td><code>audienceMode</code></td><td>ALL | B2B | B2C | SELECTED</td><td>component ตัวเดียวทุกโมดูล · ALL/B2B/B2C = ไม่มีแถวใน <code>benefit_audience</code> (B2B/B2C ตัดสินจากประเภทบัญชี) · SELECTED = เลือกกลุ่มลูกค้า รวม/ยกเว้น</td></tr>
+        <tr><td><code>giftPriority</code></td><td>int default 0</td><td>Promotion · <b>มีผลเฉพาะโปรที่มีผลตอบแทน GIFT</b> · ใช้เลือกโปรของแถมให้ลูกค้าก่อน (มาก → น้อย) · ย้ายมาจาก <code>bundle.priority</code></td></tr>
         <tr><td><code>combinableWithPromotion</code>, <code>combinableWithCoupon</code></td><td>bool</td><td>ต่อใบ ตามต้นแบบจำลอง; ใบที่ร่วมโปรไม่ได้คิดเฉพาะรายการที่ยังไม่จับคู่โปร</td></tr>
         <tr><td><code>perCustomerLimit</code>, <code>globalLimit</code></td><td>int null</td><td>null = ไม่จำกัด · นับจาก <code>benefit_redemption</code> (COMMITTED + RESERVED)</td></tr>
         <tr><td><code>createdBy/At</code>, <code>updatedBy/At</code></td><td>—</td><td>มาจาก <code>StampableEntity</code></td></tr>
@@ -118,9 +119,10 @@
         <ul>
           <li><code>(ownerType, ownerId, customerSetId, effect)</code> · effect = INCLUDE | EXCLUDE · <code>ownerType</code> = BENEFIT | REDEEM_ITEM (รายการแลกพอยท์ไม่ใช่ Benefit แต่ต้องมี “ใครแลกได้” ตามหน้าแคตตาล็อก — D-9)</li>
           <li>ผ่านเมื่อ: <code>ALL</code> หรือ (อยู่ใน INCLUDE ≥ 1 เซต <b>และไม่อยู่</b> ใน EXCLUDE ใดเลย) — EXCLUDE ชนะเสมอ</li>
+          <li>ผ่านเมื่อ <code>B2B</code>/<code>B2C</code>: ประเภทบัญชีตรงกัน (pmpc ยังไม่มีฟิลด์ตรง ๆ — ข้อเสนอ: B2B = <code>customer.specialMemberType</code> ไม่ว่าง · B2C = ว่าง · ต้องยืนยัน)</li>
           <li><code>audienceMode = SELECTED</code> แต่ไม่มี INCLUDE เลย → ไม่ให้เผยแพร่ (validate ตอน ACTIVE)</li>
           <li>ผูกได้กับ benefit ทุกชนิด รวมถึง RaffleEvent, StarterKitOffer, PointsRule (กลุ่มที่สะสมพอยท์ได้) และ FlashSalePromotion (แทนรายชื่อลูกค้ารายคนเดิม)</li>
-          <li><b>ข้อยกเว้น</b>: <code>PaperCoupon</code> ไม่มี audience “ใครใช้ได้” (แจกหน้างาน คุมคนถือไม่ได้) — ควบคุมที่ <code>stores</code> เท่านั้น · <code>StarterKitOffer</code> มีเงื่อนไข B2B ตายตัว (ตรวจ <code>customerType</code>) แล้วเลือก audience จำกัดเพิ่มได้ (ไม่ใช้ DYNAMIC เพื่อรอบแรก)</li>
+          <li><b>ข้อยกเว้น</b>: <code>PaperCoupon</code> ไม่มี audience “ใครใช้ได้” (แจกหน้างาน คุมคนถือไม่ได้) — ควบคุมที่ <code>stores</code> เท่านั้น · <code>StarterKitOffer</code> ใช้ component เดียวกัน ค่าเริ่มต้น <code>audienceMode = B2B</code> (ตรวจ <code>customerType</code>) แล้วเลือก audience จำกัดเพิ่มได้ (ไม่ใช้ DYNAMIC เพื่อรอบแรก)</li>
         </ul>
       </div>
       <div class="card">
@@ -194,10 +196,10 @@
     <p class="lead">ทุก <code>CartBenefit</code> ผ่านด่านเดียวกันตามลำดับ ราคาถูก → แพง ตัดทิ้งเร็วสุด ผลตัดสินที่เซิร์ฟเวอร์เท่านั้น (หน้าเว็บแสดงผลที่ API ส่งมา)</p>
     <div class="pipe">
       <div class="step"><b>1 · Window</b><div class="sub">status = ACTIVE และอยู่ใน startAt–endAt (ตัวจำลองสถานะมีสวิตช์ข้ามวันเวลา)</div></div>
-      <div class="step fast"><b>2 · AudienceGuard</b><div class="sub">ALL → ผ่านทันที ไม่ query · SELECTED → ตรวจสมาชิกเซต (cache) · EXCLUDE ชนะ</div></div>
+      <div class="step fast"><b>2 · AudienceGuard</b><div class="sub">ALL → ผ่านทันที ไม่ query · B2B/B2C → เทียบประเภทบัญชี (ไม่ query เซต) · SELECTED → ตรวจสมาชิกเซต (cache) · EXCLUDE ชนะ</div></div>
       <div class="step"><b>3 · Conditions</b><div class="sub">ทุก Condition ต้องผ่าน (AND) · เก็บ progress ของใบที่ยังไม่ผ่านไว้แสดงผล</div></div>
       <div class="step"><b>4 · Limits</b><div class="sub">perCustomer / global จาก redemption</div></div>
-      <div class="step"><b>5 · Resolve</b><div class="sub">ไม่มี priority: ระบบคืนรายการโปรที่เข้าเงื่อนไขเป็น “การ์ดตัวเลือก” + ตาราง compat (ชนกับใคร เพราะ combinableWithPromotion) — <b>ลูกค้าเลือกเอง</b> ส่ง <code>selectedPromotionIds</code> กลับมา เซิร์ฟเวอร์ตรวจ compat ซ้ำ · Coupon เช็ค combinable ทั้งคู่</div></div>
+      <div class="step"><b>5 · Resolve</b><div class="sub"><b>Priority เฉพาะโปรของแถม:</b> โปรของแถมที่เข้าเงื่อนไข ระบบเลือกให้เป็นรายการแนะนำ ไล่ <code>giftPriority</code> มาก → น้อย หักหน่วยสินค้าที่ใช้แล้วก่อนพิจารณาโปรถัดไป (ตรรกะเดียวกับ <code>BundleService.findMatchingBundle</code>) · โปรอื่นไม่มี priority: ระบบคืนรายการที่เข้าเงื่อนไขเป็น “การ์ดตัวเลือก” + ตาราง compat (ชนกับใคร เพราะ combinableWithPromotion) — <b>ลูกค้าเลือกเอง</b> ส่ง <code>selectedPromotionIds</code> กลับมา เซิร์ฟเวอร์ตรวจ compat ซ้ำ · Coupon เช็ค combinable ทั้งคู่</div></div>
       <div class="step"><b>6 · Apply</b><div class="sub">RewardItem AT_CART (DISCOUNT/FREE_SHIPPING/GIFT_SKU) กระจายลง line ไม่หักเกินมูลค่าสินค้า · ผลตอบแทนผสมหลาย item ในโปรเดียวได้ · ค่าส่งเหมา/ยกเว้นตามอัลกอริทึม §4.1</div></div>
       <div class="step"><b>7 · Commit</b><div class="sub">ตอนออเดอร์ชำระ: redemption + ตัดโควตา + AT_GRANT · idempotent ด้วย <code>(benefitId, orderId)</code></div></div>
     </div>
@@ -277,7 +279,7 @@
   <!-- 08 -->
   <section>
     <div class="s-head"><span class="s-tag">08</span><h2>หน้าที่ต้องทำ (แอดมิน + ลูกค้า)</h2></div>
-    <p class="lead">ลิงก์ในคอลัมน์ Mockup เปิดไฟล์ที่ทำไว้แล้ว (โมดูลใหม่ <a href="mockup/foundation/00-flow.html">กลุ่มและชุดที่ใช้ซ้ำ</a> เพิ่มมาจากโครงสร้างนี้) · route เป็นข้อเสนอ</p>
+    <p class="lead">ลิงก์ในคอลัมน์ Mockup เปิดไฟล์ที่ทำไว้แล้ว (โมดูลใหม่ <a href="mockup/foundation/00-flow.html">กลุ่มลูกค้าและกลุ่มสินค้า</a> เพิ่มมาจากโครงสร้างนี้) · route เป็นข้อเสนอ</p>
     <div class="filters" id="pgFilter"></div>
     <div class="tbl-wrap"><table class="t" id="pageTable">
       <thead><tr><th>หน้า</th><th>ผู้ใช้</th><th>Route (เสนอ)</th><th>Class / Service</th><th>Mockup</th><th>Rel.</th></tr></thead>
@@ -325,10 +327,15 @@
         </ul>
       </div>
       <div class="card">
-        <h3>ของเดิมที่ต้องอยู่ร่วม (D-3)</h3>
+        <h3>Migration: Bundle เดิม → Promotion (D-3)</h3>
         <ul>
-          <li><code>Bundle</code>, <code>BundleItem</code>, <code>BundleFreeItem</code>, <code>BundleApplication</code>, <code>CustomerQuotaUsage</code> ใช้งานจริงอยู่ — <b>ไม่ migrate ในรอบนี้</b>: เขียน <code>BundleAdapter implements Evaluable</code> ให้ pipeline เรียกโปรเดิมเป็นหนึ่งใน Promotion</li>
-          <li>ตาราง DDL ใน spec §7.2 (<code>gift_set_*</code>, <code>campaign_sku_quotas</code>, <code>annual_contracts</code>, <code>starter_kits</code> ฯลฯ) ถูกแทนด้วยโครงในหน้านี้ — ต้องปรับ spec หลังตกลง</li>
+          <li><b>การแมป:</b> <code>Bundle</code> → <code>Promotion(ItemBundle)</code> (priority → <code>giftPriority</code>, conditionType → QuantityCondition | AmountCondition, strictUnit, quotaPerCustomer → <code>perCustomerLimit</code>) · <code>BundleItem + BundleItemChoice</code> (+ <code>matchAnyUnit</code>) → ขอบเขตสินค้ารายหน่วย / ทุกสินค้า · <code>BundleFreeItem</code> → <code>RewardItem(GIFT)</code> ใน RewardGroup ของโปร · <code>BundleApplication</code> → <code>benefit_redemption</code> (COMMITTED) · <code>PurchaseOrder.bundleApplicationIds</code> → <code>redemptionIds</code></li>
+          <li><b>ค่าเริ่มต้นที่คงพฤติกรรมเดิม:</b> audience = ALL · combinableWithPromotion = true · globalLimit = null</li>
+          <li><b>ขั้นตอน:</b> (1) สร้างตารางใหม่ + ตาราง map id เดิม→ใหม่ (2) สคริปต์ copy แบบ idempotent (3) PromotionService แทน <code>BundleService</code> (priority/หักหน่วยเฉพาะโปรของแถม) · รองรับ <code>matchingBundle</code> คู่กับ <code>selectedPromotionIds</code> 1 release (4) เปิดหน้าแอดมิน/ลูกค้าใหม่ (5) ปิด /bundle เมื่อไม่มีผู้ใช้ · เก็บตาราง Bundle อ่านอย่างเดียวไว้ย้อนกลับ</li>
+          <li><b>จุดที่ต้องแก้ใน pmpc:</b> <code>bundle.controller</code> (รวม bulk priority), <code>bundle.service</code> (+ spec), <code>purchase-order.controller</code> (จับคู่ + ใส่ของแถม + ลบ application ตอนยกเลิก), <code>expired-purchase-order.processor</code>, <code>pos-sync.service</code> (<code>deleteBundleRelatedByProductUnitIds</code> ต้องชี้ตารางใหม่และปิดโปรที่ถูกกระทบ), cln: <code>AdminBundlePage</code>, <code>BundlesPage</code>, <code>BundleDetailPage</code>, <code>BundleOfferPanel</code>, <code>BundleRecipe</code>, <code>ProductDrawerBottom</code>, Checkout (<code>CartReviewStep</code>, <code>FreeItemCard</code>), AddPurchaseOrderDialog Step3–5, i18n th/en</li>
+          <li><b>Casbin:</b> resource <code>bundle</code> (CREATE/UPDATE/DELETE ของ marketing/product/staff) → <code>promotion</code> — CasbinRule ใหม่ต้องลงตารางสิทธิ์ในเอกสาร + SQL INSERT แบบ idempotent สำหรับ prod</li>
+          <li><b>ผลลัพธ์:</b> Bundle เดิมทำงานเท่าเดิม และแอดมินเพิ่มผลตอบแทนอย่างอื่นให้โปรเดียวกันได้ (combo reward) เช่น แถมขวดนม + ส่งฟรี + 50 พอยท์</li>
+          <li>ตาราง DDL ใน spec §7.2 (<code>gift_set_*</code>, <code>campaign_sku_quotas</code>, <code>annual_contracts</code>, <code>starter_kits</code> ฯลฯ) ถูกแทนด้วยโครงใหม่ · <code>CustomerQuotaUsage</code> ใช้ต่อ</li>
           <li>ค่าเงินใช้ <code>BahtColumn</code>; ค่าส่งใช้ <code>shipping-cost</code> เดิมตามอัลกอริทึมสินค้าคละ</li>
         </ul>
       </div>
@@ -358,7 +365,7 @@
     ['product_set / product_set_rule', 'WHAT', 'setId, scopeType, scopeValue, effect', 'ใหม่'],
     ['reward_group', 'REWARD', 'id, sourceModule (PROMOTION|COUPON|POINTS_CATALOG|CAMPAIGN_TIER|RAFFLE_PRIZE|STARTER_KIT), ownerType, ownerId, updatedBy/At', 'unique(sourceModule, ownerType, ownerId) · flag ว่าชุดผลตอบแทนมาจากโมดูลไหน'],
     ['reward_item', 'REWARD', 'groupId, kind (GIFT_SKU|DISCOUNT|FREE_SHIPPING|POINTS|COUPON|CREDIT|ENTITLEMENT|OFF_POS), qty, sku / discountMode+value+maxCap / pointsMode (FIXED|MULTIPLIER; MULTIPLIER ใช้ได้เฉพาะ sourceModule = PROMOTION) + points | multiplier / couponId / creditAmount+expiryDays / activityId+tickets / text, valueEstimate', 'STI ตาม kind'],
-    ['benefit', 'CORE', 'ฟิลด์ร่วมตามหัวข้อ 02 + kind + globalLimit/perCustomerLimit + newCustomerOnly/strictUnit (Promotion) + คอลัมน์เฉพาะชนิด (nullable เช่น scopeMode, productSetId, priceRule, badgeText) — ไม่มี priority', 'STI root'],
+    ['benefit', 'CORE', 'ฟิลด์ร่วมตามหัวข้อ 02 + kind + globalLimit/perCustomerLimit + newCustomerOnly/strictUnit (Promotion) + คอลัมน์เฉพาะชนิด (nullable เช่น scopeMode, productSetId, priceRule, badgeText) + audienceMode (ALL|B2B|B2C|SELECTED) + giftPriority (เฉพาะโปรที่มี GIFT)', 'STI root'],
     ['benefit_audience', 'WHO', 'ownerType (BENEFIT|REDEEM_ITEM), ownerId, customerSetId, effect', 'ไม่มีแถว = ทุกคน · PaperCoupon ไม่ใช้'],
     ['benefit_condition', 'WHEN', 'benefitId, kind, productSetId, minQty, minAmount, window...', 'STI Condition'],
     ['benefit_tier', 'WHEN', 'benefitId, seq, threshold, (reward ที่ reward_group), quotaTotal, quotaLeft, formSchema (ว่าง = ไม่มีฟอร์ม → claim_request อนุมัติอัตโนมัติ autoApproved=true)', 'GiftSetGroup + Ladder'],
@@ -394,8 +401,8 @@
     ['กลุ่มสินค้า (แบรนด์/หมวด/SKU รวม-ยกเว้น)', 'admin', '/admin/product-sets', 'ProductSet', MOCK('foundation/04-admin-product-sets.html','04-admin-product-sets'), 'R1', 'foundation'],
     ['หน้าแรกลูกค้า: ภาพรวมการจัดวาง + หน้าแรกจำลอง (Hero, สถานะของฉัน, Flash, หมวด, โปรโมชั่น, คูปอง, แคมเปญ, เซตร้านยา, ลุ้นรางวัล, แลกพอยท์, ข่าว, แบรนด์)', 'customer', '/ (cln-pmpc/app/pages/home.tsx)', 'ต่อยอด home.tsx เดิม + HomeModule', MOCK('home/00-flow.html','00-flow') + ' · ' + MOCK('home/01-customer-home.html','01-customer-home'), 'R2', 'home'],
     ['ตัวเลือกกลุ่มเป้าหมาย “ทุกคน/บางคน” (component ในทุกหน้าตั้งค่า)', 'admin', '(ฝังในทุกหน้า)', 'BenefitAudience', MOCK('foundation/05-admin-audience-picker.html','05-admin-audience-picker'), 'R1', 'foundation'],
-    ['รายการโปรโมชั่น (6 แท็บสถานะ · โควต้าทั้งหมด · ไม่มี priority)', 'admin', '/admin/promotions', 'Promotion', MOCK('promotion/01-admin-list.html', '01-admin-list'), 'R1', 'promotion'],
-    ['สร้าง/แก้ไขโปรโมชั่น (เงื่อนไข A–E · ผลตอบแทนผสม · โควต้าทั้งหมด · เฉพาะลูกค้าใหม่)', 'admin', '/admin/promotions/:id', 'ItemBundle / GroupThreshold + RewardGroup', MOCK('promotion/02-admin-editor.html', '02-admin-editor'), 'R1', 'promotion'],
+    ['รายการโปรโมชั่น (6 แท็บสถานะ · โควต้าทั้งหมด · ป้าย priority เฉพาะโปรของแถม)', 'admin', '/admin/promotions', 'Promotion', MOCK('promotion/01-admin-list.html', '01-admin-list'), 'R1', 'promotion'],
+    ['สร้าง/แก้ไขโปรโมชั่น (เงื่อนไข A–E · ผลตอบแทนผสม · โควต้าทั้งหมด · กลุ่มเป้าหมาย · priority เฉพาะของแถม)', 'admin', '/admin/promotions/:id', 'ItemBundle / GroupThreshold + RewardGroup', MOCK('promotion/02-admin-editor.html', '02-admin-editor'), 'R1', 'promotion'],
     ['ลดตามวันพิเศษ (Flash)', 'admin', '/admin/promotions/flash', 'FlashSalePromotion', MOCK('promotion/04-admin-flash.html', '04-admin-flash'), 'R2', 'promotion'],
     ['จำลองระบบครบวงจร: ตั้งค่า / ตะกร้า-ชำระ / สิทธิ์&ผลลัพธ์ (โมดูลแยก)', 'admin', '/admin/simulator', 'EvaluationPipeline + services ทั้งหมด', MOCK('simulator/00-flow.html', '00-flow') + ' · ' + MOCK('simulator/01-config.html', '01') + ' · ' + MOCK('simulator/02-cart.html', '02') + ' · ' + MOCK('simulator/03-state.html', '03'), 'R2', 'simulator'],
     ['หน้ารวมโปร / การ์ดสินค้า / รายละเอียด / ตะกร้า', 'customer', '/promotions, /cart', '/cart/evaluate', MOCK('promotion/06-customer-list.html', '06') + ' · ' + MOCK('promotion/07-customer-product.html', '07') + ' · ' + MOCK('promotion/08-customer-detail.html', '08') + ' · ' + MOCK('promotion/09-customer-cart.html', '09'), 'R1', 'promotion'],
@@ -443,7 +450,7 @@
   var D = [
     ['D-1', 'Map ลำดับชั้นเป็น STI ตารางเดียว + ตารางลูกสำหรับรายการ', 'ทางเลือก: jsonb config ต่อชนิด', 'dev lead'],
     ['D-2', 'RewardGroup แก้ตรงได้ ไม่มีเวอร์ชันของชุด — กันผลย้อนหลังด้วย snapshot ใน RewardGrant (เปลี่ยนจากเวอร์ชันเดิมหลังยกเลิกชุดกลาง)', 'ทางเลือก: คงเวอร์ชันต่อ RewardGroup (immutable เมื่อ ACTIVE) ถ้าลูกค้าต้องการล็อกผลของแคมเปญที่รันอยู่', 'dev lead + ลูกค้า (ผลต่อ campaign ที่รันอยู่)'],
-    ['D-3', 'Bundle เดิมอยู่ร่วมผ่าน BundleAdapter ไม่ migrate รอบนี้', 'ทางเลือก: migrate เป็น ItemBundlePromotion (เสี่ยงกับ prod)', 'dev lead'],
+    ['D-3', 'migrate Bundle เดิมเป็น ItemBundlePromotion (ผลตอบแทนผสมได้ · ใช้ combo reward ได้มากกว่าของแถมอย่างเดียว) — ดูแผน migration หัวข้อ 09', 'ทางเลือก: อยู่ร่วมผ่าน BundleAdapter (เสี่ยงสองระบบคู่กันนาน)', 'ตัดสินใจแล้ว (รอบนี้) · dev lead ยืนยันลำดับปล่อย'],
     ['D-4', 'Ledger เป็น append-only ยอดคงเหลือคำนวณ + cache', 'ทางเลือก: เก็บยอดในแถวลูกค้าแล้ว update', 'dev lead'],
     ['D-5', 'ผลการคำนวณ/ลุ้นรางวัลตัดสินที่เซิร์ฟเวอร์เท่านั้น + idempotency-key ต่อออเดอร์/การลุ้น', 'ไม่มีทางเลือก (ข้อกำหนดจาก flow ลุ้นโชค)', '—'],
     ['D-6', 'Cache สมาชิกเซตลูกค้า (Redis มีใน repo อยู่แล้ว) ตามเวอร์ชันของเซต', 'ทางเลือก: query สดทุกครั้ง (พอสำหรับจำนวนลูกค้าหลักพัน)', 'dev lead (ต้องรู้จำนวนลูกค้าจริง)'],
@@ -453,7 +460,8 @@
     ['D-10', 'เครดิตเงินคืน (CreditReward): ใช้ระบบเครดิตโน้ตเดิมหรือสร้าง credit ledger ใหม่ + อายุเครดิต', 'ทางเลือก: ตัดชนิดเครดิตออกจากรอบแรก', 'dev lead + ฝ่ายบัญชี'],
     ['D-11', 'หน้าแรก: แต่ละส่วนมี endpoint แยก โหลดขนาน + cache สั้นต่อลูกค้า', 'ทางเลือก: endpoint รวม /home เดียว (ง่ายกว่าแต่ส่วนช้าบล็อกทั้งหน้า)', 'dev lead'],
     ['D-12', 'ยกเลิกตารางชุดของรางวัลกลาง ใช้ RewardGroup ต่อเจ้าของ + flag sourceModule (RewardEditor component เดียว)', 'ทางเลือก: คงชุดกลางแล้วให้ทุกโมดูลชี้ (แก้ที่เดียว แต่ต้องมีหน้าจัดการ + เวอร์ชัน)', 'ลูกค้ายืนยันแล้ว (รอบนี้) · dev lead'],
-    ['D-13', 'ยกเลิก priority ของโปรโมชั่น: ลูกค้าเลือกเอง (API คืนการ์ด + compat) เซิร์ฟเวอร์ตรวจ compat ซ้ำ', 'ทางเลือก: ระบบเลือกชุดที่ประหยัดสุดให้อัตโนมัติ (ติ๊กไว้ก่อน ลูกค้าเปลี่ยนได้)', 'ลูกค้ายืนยันแล้ว (รอบนี้) · ต้องยืนยัน default ติ๊กให้หรือไม่'],
+    ['D-13', 'Priority คงไว้เฉพาะโปรของแถม (ระบบเลือกให้ลูกค้าก่อน ลูกค้าเปลี่ยนได้) · โปรอื่นไม่มี priority: API คืนการ์ด + compat เซิร์ฟเวอร์ตรวจ compat ซ้ำ', 'ทางเลือก: ไม่มี priority เลย / เลือกชุดที่ประหยัดสุดให้อัตโนมัติ', 'ตัดสินใจแล้ว (รอบนี้) · ต้องยืนยัน tie-break เมื่อ priority เท่ากัน'],
+    ['D-14', 'นิยาม B2B / B2C: pmpc ไม่มีฟิลด์ประเภทลูกค้าตรง ๆ — ข้อเสนอ B2B = มี specialMemberType (อนุมัติแล้ว) · B2C = อื่น ๆ', 'ทางเลือก: เพิ่มคอลัมน์ customer.accountType แยก', 'ต้องยืนยันกับลูกค้า · dev lead'],
     ['D-14', 'คูปองลูกค้าใหม่ → โปรโมชั่น newCustomerOnly (ลบ WelcomeCoupon) · คูปองเหลือ PaperCoupon + OnlineCoupon (CODE | COLLECTIBLE | MONTHLY)', 'ทางเลือก: คง WelcomeCoupon แยก', 'ลูกค้ายืนยันแล้ว (รอบนี้)'],
     ['D-16', 'คูปองกระดาษรองรับของแถม/บริการฟรี + พาร์ทเนอร์นอกระบบ (Partner.kind = EXTERNAL) + การเบิกจ่าย 2 แบบ (PAY_RECIPIENT | SPONSORED) · ไม่ใช้เลขรันนิ่ง (ทุกใบเหมือนกัน นับก้นด้วยบาร์โค้ดรหัสชุด)', 'ทางเลือก: แยกเป็นโมดูล “Voucher พาร์ทเนอร์” ต่างหาก (แต่ flow นับก้น/เบิกจ่ายซ้ำกับคูปองกระดาษ)', 'ลูกค้ายืนยันแนวทาง · ฝ่ายบัญชี (ใบกำกับ/ภาษีของการจ่ายพาร์ทเนอร์)'],
     ['D-17', 'แคมเปญมีแบบเดียว = สะสมยอดรายปี (ลบ QuotaCampaign: ช่วงเวลา+โควตา+ราคาพิเศษ → ทำที่โปรโมชั่น) · พอยท์เพิ่มได้ผ่านโปรโมชั่นเท่านั้น (MULTIPLIER หรือ FIXED) · ยกเลิกออเดอร์หักพอยท์+ยอดสะสมคืนเสมอ โดยเก็บฟิลด์ที่ order_item', 'ทางเลือก: คำนวณพอยท์/ยอดสะสมย้อนหลังจากกติกา ณ ตอนนั้น (เสี่ยงผิดถ้ากติกาเปลี่ยน)', 'ลูกค้ายืนยันว่าไม่ต้องมี setting หักคืน และโควตา/ราคาพิเศษใช้โปรโมชั่นแทน'],

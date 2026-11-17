@@ -34,7 +34,7 @@
   <h6>หมายเหตุ UX / ลอจิก</h6>
   <ol>
     <li><span class="pin">1</span><span><b>ลำดับคิดเงินเดียวกับระบบจริง</b> ราคา/Flash → โปรโมชั่น (ลูกค้าเลือก) → คูปอง → ค่าจัดส่ง → ชำระด้วยพอยท์ · แต่ละขั้นคิดต่อจากยอดที่เหลือ และแสดงลำดับการตัดสิน (trace) ให้ตรวจ</span></li>
-    <li><span class="pin">2</span><span><b>ไม่มี priority</b> ทุกโปรที่เข้าเงื่อนไขเป็นการ์ด ลูกค้าเลือกเอง · “ใช้ร่วมกับโปรอื่นได้/ไม่ได้” ตั้งที่ตัวโปร · เลือกแล้วโปรที่ชนเป็นสีเทา กดยกเลิกแล้วกลับมาเลือกได้</span></li>
+    <li><span class="pin">2</span><span><b>priority เฉพาะโปรของแถม</b> ระบบเลือกโปรของแถมให้ก่อนตาม priority (มาก → น้อย) · โปรส่วนลดและสิทธิ์อื่นเป็นการ์ดให้ลูกค้าเลือกเอง · “ใช้ร่วมกับโปรอื่นได้/ไม่ได้” ตั้งที่ตัวโปร · เลือกแล้วโปรที่ชนเป็นสีเทา กดยกเลิกแล้วกลับมาเลือกได้</span></li>
     <li><span class="pin">3</span><span><b>โควต้า 2 ชั้น</b> โควต้าทั้งหมด (ทุกคนรวม) และโควต้าต่อคน — ตัดตอนชำระสำเร็จ · เต็มแล้วโปรเป็นสีเทา “โควต้าเต็ม”</span></li>
     <li><span class="pin">4</span><span><b>ผลตอบแทนหลายอย่าง</b> ส่วนลด/ของแถม/ฟรีค่าส่งเกิดในบิลทันที · พอยท์ คูปอง เครดิต สิทธิ์ลุ้น ของนอก POS ได้หลังชำระสำเร็จ (ดูกล่อง “หลังชำระ คุณจะได้”)</span></li>
     <li><span class="pin">5</span><span><b>ข้อยกเว้นของคูปอง</b> เลือกจากกลุ่มสินค้า (เช่น COLLECT-NOV ไม่นับสินค้าหนัก) — ระบบบอกว่ารายการไหนไม่ถูกนับ</span></li>
@@ -65,6 +65,9 @@
     var okIds = R.eligible.filter(function (c) { return c.ok; }).map(function (c) { return c.p.id; });
     var cleaned = sel.promos.filter(function (id) { return okIds.indexOf(id) > -1; });
     if (cleaned.length !== sel.promos.length) { sel.promos = cleaned; R = PMP.price(cartArr(), opts()); }
+    // gift promos: the system picks by priority (same rule as pmpc Bundle) until the customer changes it by hand
+    var AG = PMP.autoGifts(cartArr(), opts());
+    if (!sel.gtouched) { var ng = sel.promos.filter(function (i) { return !PMP.hasGift(i); }).concat(AG.ids); if (ng.join() !== sel.promos.join()) { sel.promos = ng; R = PMP.price(cartArr(), opts()); } }
     document.getElementById('prods').innerHTML = PMP.products.map(function (p) {
       return '<div class="sim-prod"><div class="n">' + E(p.name) + '</div><div class="m">' + p.sku + ' · ' + p.brand + ' · พอยท์ ' + p.pts + '/' + p.unit + '</div><div class="row between"><span class="p">' + B(p.price) + '</span>' + qtyHtml(p.sku) + '</div></div>';
     }).join('');
@@ -85,7 +88,7 @@
       if (!why) why = p.stackPromo ? 'ใช้ร่วมกับโปรอื่นได้' : 'ใช้ร่วมกับโปรอื่นไม่ได้';
       var left = p.quotaTotal ? (p.quotaTotal - p.used) : null;
       return '<div class="' + cls + '" data-p="' + p.id + '"><div class="h"><span class="tick"></span><div><b style="font-size:13px">' + E(p.name) + '</b><div class="qn">โควต้าทั้งหมดเหลือ ' + (left == null ? 'ไม่จำกัด' : left + '/' + p.quotaTotal) + ' · ต่อคน ' + (p.perCust ? (p.perCust - (cs.promoUse[p.id] || 0)) + '/' + p.perCust : 'ไม่จำกัด') + (p.strict ? ' · ตรวจหน่วยเข้มงวด' : '') + '</div></div></div>' +
-        '<div class="g">' + items.map(function (i) { return '<span class="chip ' + CHIP[i.k] + '" title="' + E(PMP.describe(i, cfg)) + '">' + E(PMP.describe(i, cfg)) + '</span>'; }).join('') + '</div><div class="w">' + E(why) + '</div></div>';
+        (PMP.hasGift(p.id) ? '<div class="g"><span class="chip ' + (AG.ids.indexOf(p.id) > -1 ? 'success' : 'soft-warning') + '">' + (AG.ids.indexOf(p.id) > -1 ? 'ระบบแนะนำของแถม' : 'ไม่ได้แนะนำ') + ' · priority ' + (p.priority || 0) + '</span></div>' : '') + '<div class="g">' + items.map(function (i) { return '<span class="chip ' + CHIP[i.k] + '" title="' + E(PMP.describe(i, cfg)) + '">' + E(PMP.describe(i, cfg)) + '</span>'; }).join('') + '</div><div class="w">' + E(why) + '</div></div>';
     }).join('');
     // running promos that the cart doesn't touch
     document.getElementById('pcards').innerHTML = pc || '<div class="muted small">ไม่มีโปรโมชั่นที่เปิดอยู่ ณ วันที่จำลองนี้</div>';
@@ -133,7 +136,7 @@
   document.addEventListener('click', function (e) {
     var q = e.target.closest('[data-q]'), pc = e.target.closest('.sim-pc'), w = e.target.closest('.sim-wl');
     if (q) { var sku = q.getAttribute('data-sku'); cart[sku] = Math.max(0, (cart[sku] || 0) + (+q.getAttribute('data-q'))); render(); return; }
-    if (pc && !pc.classList.contains('dim') && !pc.classList.contains('off')) { var id = pc.getAttribute('data-p'), i = sel.promos.indexOf(id); if (i > -1) sel.promos.splice(i, 1); else sel.promos.push(id); render(); return; }
+    if (pc && !pc.classList.contains('dim') && !pc.classList.contains('off')) { var id = pc.getAttribute('data-p'), i = sel.promos.indexOf(id); if (i > -1) sel.promos.splice(i, 1); else sel.promos.push(id); if (PMP.hasGift(id)) sel.gtouched = true; render(); return; }
     if (pc && pc.classList.contains('dim')) { SIM.toast(pc.querySelector('.w').textContent, true); return; }
     if (w && !w.classList.contains('used')) { var wid = w.getAttribute('data-w'); sel.couponRef = (sel.couponRef && sel.couponRef.value === wid) ? null : { type: 'wallet', value: wid }; render(); return; }
   });

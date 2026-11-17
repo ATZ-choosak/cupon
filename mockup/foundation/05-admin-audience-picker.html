@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ตัวเลือกกลุ่มเป้าหมาย “ทุกคน/บางคน”</title>
+<title>ตัวเลือกกลุ่มเป้าหมาย (component กลาง)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="../assets/mockup.css"><script src="../assets/registry.js"></script>
 <style>
@@ -13,50 +13,26 @@
   .hint{font-size:12px;color:var(--text2)}
 </style>
 </head>
-<body data-shell="admin" data-nav="foundation" data-crumb="โปรโมชั่นและสิทธิพิเศษ / กลุ่มและชุดที่ใช้ซ้ำ / ตัวเลือกกลุ่มเป้าหมาย">
+<body data-shell="admin" data-nav="foundation" data-crumb="โปรโมชั่นและสิทธิพิเศษ / กลุ่มลูกค้าและกลุ่มสินค้า / ตัวเลือกกลุ่มเป้าหมาย">
 <main id="screen">
 
   <nav class="fnd-nav"><a href="01-admin-customer-sets.html">กลุ่มลูกค้า</a><a href="04-admin-product-sets.html">กลุ่มสินค้า</a><a href="05-admin-audience-picker.html" class="on">ตัวเลือกกลุ่มเป้าหมาย (ตัวอย่างที่ใช้ในทุกหน้า)</a><a class="r" href="00-flow.html">ภาพรวม Flow</a></nav>
 
   <div class="page-head">
     <div>
-      <h4>ตัวเลือกกลุ่มเป้าหมาย (component)</h4>
-      <p class="muted">ส่วน “ใครใช้สิทธิ์นี้ได้” ฝังอยู่ในหน้าสร้าง/แก้ไขทุกชนิด: โปรโมชั่น · แคมเปญลดตามวันพิเศษ · คูปอง (ออนไลน์/เก็บเอง/แจกรายเดือน · คูปองกระดาษใช้เลือกกลุ่มร้านที่รับคูปองแทน) · พอยท์ (แคตตาล็อกแลก + กติกา) · แคมเปญ (โควตา/ขั้นบันได) · ลุ้นโชค · เซตร้านยา — หน้าตาเดียวกันทุกหน้า รายชื่อกลุ่มดึงจาก <a href="01-admin-customer-sets.html">กลุ่มลูกค้า</a> · แสดง 4 สถานะให้ดูเทียบกัน</p>
+      <h4>ตัวเลือกกลุ่มเป้าหมาย (component กลาง)</h4>
+      <p class="muted">ส่วน “ใครใช้สิทธิ์นี้ได้” ใช้ component ตัวเดียวกันทุกโมดูล: โปรโมชั่น · Flash Sale · คูปอง (ออนไลน์/เก็บเอง/แจกรายเดือน) · พอยท์ · แคมเปญสะสมยอด · สุ่มรางวัล · เซตร้านยา — ค่าที่เก็บเหมือนกันทุกที่ จึงเขียนโค้ดและตรวจสิทธิ์ครั้งเดียวใช้ได้หมด</p>
     </div>
   </div>
 
   <div class="grid g2">
-    <div class="pick">
-      <b>สถานะ 1 · ทุกคน (ค่าเริ่มต้น)</b>
-      <div class="field mt8"><label>ใครใช้สิทธิ์นี้ได้ <span class="pin">1</span></label>
-        <div class="seg"><button class="on">ทุกคน</button><button>บางคน (เลือกกลุ่ม)</button></div>
-        <div class="hint">ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้ได้ — ไม่ต้องตั้งอะไรเพิ่ม</div></div>
-    </div>
-
-    <div class="pick">
-      <b>สถานะ 2 · บางคน (รวมกลุ่มเดียว)</b>
-      <div class="field mt8"><label>ใครใช้สิทธิ์นี้ได้</label>
-        <div class="seg"><button>ทุกคน</button><button class="on">บางคน (เลือกกลุ่ม)</button></div></div>
-      <div class="gr"><span class="chip soft-success">รวม</span><select class="select"><option>ร้านยา VIP ปี 2569 (38 ราย)</option></select><span class="small muted">38</span><button class="btn text sm grey">✕</button></div>
-      <div class="row mt8"><button class="btn outlined sm">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="01-admin-customer-sets.html">สร้างกลุ่มใหม่ ↗</a></div>
-      <div class="hint mt8">ผู้ที่เข้าข่าย: <b>38</b> ราย <span class="pin">2</span></div>
-      <div class="hint mt8">รายชื่อในช่องเลือกคือ <a href="01-admin-customer-sets.html">กลุ่มลูกค้าที่ตั้งไว้</a> เท่านั้น — จัดการสมาชิกที่หน้ากลุ่ม ไม่ใช่ที่นี่ <span class="pin">5</span></div>
-    </div>
-
-    <div class="pick">
-      <b>สถานะ 3 · บางคน + ยกเว้น</b>
-      <div class="field mt8"><label>ใครใช้สิทธิ์นี้ได้</label>
-        <div class="seg"><button>ทุกคน</button><button class="on">บางคน (เลือกกลุ่ม)</button></div></div>
-      <div class="gr"><span class="chip soft-success">รวม</span><select class="select"><option>ร้านยา VIP ปี 2569 (38 ราย)</option></select><span class="small muted">38</span><button class="btn text sm grey">✕</button></div>
-      <div class="gr"><span class="chip soft-error">ยกเว้น</span><select class="select"><option>ลูกค้าติดตามหนี้ (6 ราย)</option></select><span class="small muted">6</span><button class="btn text sm grey">✕</button></div>
-      <div class="hint mt8">ผู้ที่เข้าข่าย: <b>35</b> ราย (3 รายอยู่ทั้งสองกลุ่ม → ยกเว้นชนะ) <span class="pin">3</span></div>
-    </div>
-
+    <div class="pick"><b>สถานะ 1 · ทุกคน (ค่าเริ่มต้น) <span class="pin">1</span></b><div class="aud mt8" data-aud-comp data-name="a1" data-val="all"></div></div>
+    <div class="pick"><b>สถานะ 2 · เฉพาะลูกค้า B2B <span class="pin">2</span></b><div class="aud mt8" data-aud-comp data-name="a2" data-val="B2B"></div></div>
+    <div class="pick"><b>สถานะ 3 · เฉพาะลูกค้า B2C <span class="pin">2</span></b><div class="aud mt8" data-aud-comp data-name="a3" data-val="B2C"></div></div>
+    <div class="pick"><b>สถานะ 4 · เลือกจากกลุ่มลูกค้า (รวม + ยกเว้น) <span class="pin">3</span></b><div class="aud mt8" data-aud-comp data-name="a4" data-val="some" data-rows="2"></div></div>
     <div class="pick" style="border-color:var(--error)">
-      <b>สถานะ 4 · ผิดเงื่อนไข เผยแพร่ไม่ได้</b>
-      <div class="field mt8"><label>ใครใช้สิทธิ์นี้ได้</label>
-        <div class="seg"><button>ทุกคน</button><button class="on">บางคน (เลือกกลุ่ม)</button></div></div>
-      <div class="alert" style="background:var(--error-lighter,#FDECEA);color:#7A1F17"><div class="small"><b>ยังไม่ได้เลือกกลุ่ม</b> <span class="pin">4</span><br>เลือกกลุ่ม “รวม” อย่างน้อย 1 กลุ่ม หรือเปลี่ยนเป็น “ทุกคน” จึงจะเผยแพร่ได้ (บันทึกเป็นร่างได้)</div></div>
+      <b>สถานะ 5 · ผิดเงื่อนไข เผยแพร่ไม่ได้ <span class="pin">4</span></b>
+      <div class="alert mt8" style="background:var(--error-lighter,#FDECEA);color:#7A1F17"><div class="small"><b>เลือก “เลือกจากกลุ่มลูกค้า” แต่ยังไม่ได้เลือกกลุ่ม</b><br>เลือกกลุ่ม “รวม” อย่างน้อย 1 กลุ่ม หรือเปลี่ยนเป็นทุกคน / B2B / B2C</div></div>
       <button class="btn contained mt8" disabled>เผยแพร่</button>
     </div>
   </div>
@@ -64,17 +40,16 @@
 <section class="ux-notes">
   <h6>หมายเหตุ UX</h6>
   <ol>
-    <li><span class="pin">1</span><span><b>ทุกคน</b> ไม่เก็บแถวกลุ่มใด ๆ และระบบไม่ต้องตรวจรายชื่อ — “ทุกคน” คือใคร (รวมบัญชีรออนุมัติหรือไม่) ยังเป็นคำถามค้าง Q-1</span></li>
-    <li><span class="pin">2</span><span><b>จำนวนผู้เข้าข่าย</b> คำนวณสดตอนเลือกกลุ่ม ช่วยให้แอดมินเห็นก่อนเผยแพร่ว่าเลือกถูกขนาด</span></li>
-    <li><span class="pin">3</span><span><b>ยกเว้นชนะรวม</b> ลูกค้าที่อยู่ทั้งสองกลุ่มไม่ได้สิทธิ์ — ข้อความอธิบายอยู่ใต้ตัวเลข</span></li>
-    <li><span class="pin">4</span><span><b>ตรวจก่อนเผยแพร่</b> บางคนแต่ไม่มีกลุ่มรวม เผยแพร่ไม่ได้ (ร่างเก็บได้)</span></li>
-    <li><span class="pin">5</span><span><b>ที่มาของรายชื่อ</b> ช่องเลือกกลุ่มแสดงเฉพาะกลุ่มลูกค้าที่ใช้งานอยู่ (ไม่รวมที่เก็บถาวร) พร้อมจำนวนสมาชิก · มีลิงก์ “ดู/แก้สมาชิกกลุ่ม” และ “สร้างกลุ่มใหม่” ไปหน้ากลุ่ม · ไม่มีช่องพิมพ์ชื่อลูกค้าลอย ๆ ในหน้าตั้งค่าอื่น (ก่อนหน้านี้บางหน้ามี เช่น แคมเปญลดตามวันพิเศษ — เปลี่ยนมาใช้ component นี้ทั้งหมดแล้ว)</span></li>
-    <li><span class="pin">6</span><span><b>หน้าที่ใช้ component นี้</b> โปรโมชั่น (editor + ลดตามวันพิเศษ) · คูปองกระดาษ (เฉพาะ “ร้านที่รับคูปอง” — ไม่มี “ใครใช้ได้” เพราะแจกหน้างานคุมคนถือไม่ได้) · คูปองออนไลน์ · คูปองเก็บเอง/แจกรายเดือน · พอยท์ (กติกาได้พอยท์ + แคตตาล็อกแลก) · แคมเปญโควตา · แคมเปญขั้นบันได · ลุ้นโชค · เซตร้านยา (ทับบนเงื่อนไข B2B ตายตัว)</span></li>
+    <li><span class="pin">1</span><span><b>ทุกคน</b> ไม่เก็บแถวกลุ่มใด ๆ และไม่ต้องตรวจรายชื่อ · ค่าที่เก็บ <code>aud = all</code></span></li>
+    <li><span class="pin">2</span><span><b>เฉพาะ B2B / เฉพาะ B2C</b> <span class="chip soft-primary sq">ใหม่</span> ตัดสินจากประเภทบัญชี (B2B ร้านค้า · B2C ลูกค้าทั่วไป) ไม่ต้องสร้างกลุ่มลูกค้าก่อน · เก็บเป็น <code>aud = B2B</code> / <code>B2C</code> · ตัวเลือกนี้อยู่ในทุกโมดูลที่มีการเลือกกลุ่มเป้าหมาย</span></li>
+    <li><span class="pin">3</span><span><b>เลือกจากกลุ่มลูกค้าที่ตั้งไว้</b> เลือกกลุ่ม “รวม” ได้หลายกลุ่ม และกลุ่ม “ยกเว้น” (ยกเว้นชนะรวมเสมอ) · แสดงจำนวนผู้เข้าข่ายสด · รายชื่อกลุ่มมาจากเมนู กลุ่มลูกค้าและกลุ่มสินค้า › กลุ่มลูกค้า · เก็บเป็น <code>aud = set:&lt;id&gt;</code></span></li>
+    <li><span class="pin">4</span><span><b>ตรวจก่อนเผยแพร่</b> เลือกแบบกลุ่มแต่ไม่มีกลุ่ม “รวม” เผยแพร่ไม่ได้ (ร่างเก็บได้)</span></li>
+    <li><span class="pin">5</span><span><b>หน้าที่ใช้ component นี้</b> โปรโมชั่น · Flash Sale · คูปองออนไลน์ · คูปองเก็บเอง/แจกรายเดือน · พอยท์ (กติกา + แคตตาล็อกแลก) · แคมเปญสะสมยอด · สุ่มรางวัล · เซตร้านยา — คูปองกระดาษไม่ใช้ เพราะแจกหน้างานคุมคนถือไม่ได้ (เลือกกลุ่มร้านที่รับคูปองแทน)</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
-    <li>ตรวจสิทธิ์ที่เซิร์ฟเวอร์ — ลูกค้านอกกลุ่มใส่โค้ดหรือเปิดลิงก์ตรงจะถูกปฏิเสธ</li>
+    <li>ตรวจสิทธิ์ที่เซิร์ฟเวอร์ด้วยฟังก์ชันเดียวกันทุกโมดูล — ลูกค้านอกกลุ่มใส่โค้ดหรือเปิดลิงก์ตรงจะถูกปฏิเสธ</li>
     <li>ลูกค้านอกกลุ่มเห็นรายการหรือไม่ และข้อความที่แสดง ยังรอตัดสิน (Q-2)</li>
-    <li>เพิ่มลูกค้าเข้ากลุ่มหลังเปิดแล้ว ได้สิทธิ์ในตะกร้าถัดไป</li>
+    <li>เพิ่มลูกค้าเข้ากลุ่มหลังเปิดแล้ว ได้สิทธิ์ในตะกร้าถัดไป · ลูกค้าเปลี่ยนประเภทบัญชี B2B/B2C มีผลทันที</li>
   </ul></div>
 </section>
 <script src="../assets/mockup.js"></script>

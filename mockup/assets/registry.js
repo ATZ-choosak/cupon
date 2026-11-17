@@ -24,14 +24,14 @@ window.MOCKUP = {
       ]
     },
     {
-      slug: 'foundation', no: '00', title: 'กลุ่มและชุดที่ใช้ซ้ำ',
-      desc: 'กลุ่มลูกค้า · กลุ่มสินค้า · ตัวเลือก “ทุกคน/บางคน” — ตั้งครั้งเดียว ใช้ได้ทั้งโปรโมชั่น คูปอง พอยท์ แคมเปญ สุ่มรางวัล เซตร้านยา (ผลตอบแทนตั้งในแต่ละโมดูลด้วย component กลาง)',
+      slug: 'foundation', no: '00', title: 'กลุ่มลูกค้าและกลุ่มสินค้า',
+      desc: 'กลุ่มลูกค้า · กลุ่มสินค้า · ตัวเลือกกลุ่มเป้าหมาย (ทุกคน · B2B · B2C · เลือกกลุ่ม) — ตั้งครั้งเดียว ใช้ได้ทั้งโปรโมชั่น คูปอง พอยท์ แคมเปญ สุ่มรางวัล เซตร้านยา (ผลตอบแทนตั้งในแต่ละโมดูลด้วย component กลาง)',
       screens: [
         { file: '00-flow.html', title: 'ภาพรวม Flow กลุ่มที่ใช้ซ้ำ', role: 'both' },
         { file: '01-admin-customer-sets.html', title: 'กลุ่มลูกค้า: รายการ', role: 'admin' },
         { file: '02-admin-customer-set-editor.html', title: 'กลุ่มลูกค้า: สมาชิก + นำเข้า', role: 'admin' },
         { file: '04-admin-product-sets.html', title: 'กลุ่มสินค้า (แบรนด์/หมวด/SKU)', role: 'admin' },
-        { file: '05-admin-audience-picker.html', title: 'ตัวเลือกกลุ่มเป้าหมาย “ทุกคน/บางคน” (ใช้ทุกหน้าตั้งค่า)', role: 'admin' }
+        { file: '05-admin-audience-picker.html', title: 'ตัวเลือกกลุ่มเป้าหมาย (component กลาง · ใช้ทุกหน้าตั้งค่า)', role: 'admin' }
       ]
     },
     {
@@ -39,7 +39,7 @@ window.MOCKUP = {
       desc: 'แนวคิดเดียวกับ "เซตของแถม (Bundle)" ที่ใช้งานอยู่ใน pmpc — ขยายผลตอบแทนเป็นของแถม / ส่วนลด / ฟรีค่าจัดส่ง',
       screens: [
         { file: '00-flow.html', title: 'ภาพรวม Flow โปรโมชั่น', role: 'both' },
-        { file: '01-admin-list.html', title: 'รายการโปรโมชั่น (ตามเงื่อนไข / Flash Sale · ไม่มี priority)', role: 'admin' },
+        { file: '01-admin-list.html', title: 'รายการโปรโมชั่น (ตามเงื่อนไข / Flash Sale)', role: 'admin' },
         { file: '02-admin-editor.html', title: 'สร้าง/แก้ไขโปรโมชั่น', role: 'admin' },
         { file: '04-admin-flash.html', title: 'โปรโมชั่นลดตามวันพิเศษ (Flash Sale)', role: 'admin' },
         { file: '06-customer-list.html', title: 'หน้ารวมโปรโมชั่น', role: 'customer' },

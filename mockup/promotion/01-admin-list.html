@@ -52,7 +52,7 @@
   </div>
 
   <div class="alert info mb16"><div>
-    <b>ไม่มีลำดับความสำคัญ (priority)</b> — ถ้าตะกร้าเข้าเงื่อนไขหลายโปร (แบบตามเงื่อนไข) ลูกค้าเลือกเองเป็นการ์ด โปรที่ใช้ร่วมกันไม่ได้จะถูกเทา · ราคา Flash ถูกคิดก่อนเสมอ แล้วโปรตามเงื่อนไขคิดต่อจากราคานั้น
+    <b>Priority ใช้เฉพาะโปรที่มี “ของแถม”</b> — ถ้าตะกร้าเข้าโปรของแถมได้หลายโปร ระบบเลือกโปรของแถมให้ลูกค้าก่อนเป็นรายการแนะนำ โดยเรียง priority จากมากไปน้อย (กติกาเดียวกับ Bundle เดิมใน pmpc) · ส่วนลด ส่งฟรี พอยท์ คูปอง ฯลฯ <b>ไม่มี priority</b> ลูกค้าเลือกเองเป็นการ์ด โปรที่ใช้ร่วมกันไม่ได้จะถูกเทา · ราคา Flash ถูกคิดก่อนเสมอ แล้วโปรตามเงื่อนไขคิดต่อจากราคานั้น
     <div class="small mt8">ข้อมูลดึงจากชุดเดียวกับ<a href="../simulator/01-config.html">ตั้งค่าจำลอง</a> — กดเปิด/ปิด ทำซ้ำ ลบ ได้จริง <span id="nowLbl"></span></div>
   </div></div>
 
@@ -101,7 +101,7 @@
     <li><span class="pin">5</span><span><b>Flash Sale</b> ตั้งส่วนลด % ต่อกลุ่มสินค้า + โควตารอบ + เกิดซ้ำ ที่หน้าตั้งค่าของตัวเอง (กลไกต่างจากแบบตามเงื่อนไข จึงไม่รวมฟอร์มเดียวกัน) · แท็บสถานะ: ใช้งานอยู่ / ยังไม่เริ่ม / หมดอายุ / ปิดใช้งาน</span></li>
   </ol>
   <div class="rules"><b>กติกา / ข้อยกเว้น / สถานะ</b><ul>
-    <li>ลำดับ priority ถูกถอดออกทั้งระบบ: ลูกค้าเลือกโปรเอง · ระบบเทาโปรที่ใช้ร่วมกันไม่ได้</li>
+    <li>Priority มีผลเฉพาะโปรที่ให้ของแถม: ระบบเลือกโปรของแถมให้ลูกค้าก่อน (priority มาก = ก่อน · เมื่อเลือกแล้วสินค้าที่ใช้ในโปรนั้นจะไม่ถูกนับซ้ำในโปรของแถมถัดไป) · ลูกค้ายังเปลี่ยนเองได้ · โปรส่วนลดและสิทธิ์อื่นลูกค้าเลือกเอง ระบบเทาโปรที่ใช้ร่วมกันไม่ได้</li>
     <li>ถ้าสินค้าอยู่ทั้งใน Flash Sale และโปรตามเงื่อนไข: ลด Flash ก่อน แล้วโปรตามเงื่อนไขคิดต่อจากราคา Flash</li>
     <li>โปรวันพิเศษที่ต้องการผลตอบแทนอื่น (เช่น พอยท์ ×2) ให้สร้างเป็น “โปรตามเงื่อนไข” แบบไม่มียอดขั้นต่ำ — Flash Sale ลดราคาอย่างเดียว</li>
     <li>สิทธิ์จัดการ: ROLE_MARKETING, ROLE_PRODUCT — บทบาทอื่นเห็นข้อความ “คุณไม่มีสิทธิ์เข้าถึง”</li>
@@ -139,7 +139,7 @@
       var chipSt = { running: 'success', upcoming: 'warning', expired: 'error', inactive: '', exhausted: 'error' }[st];
       var cond = !p.min ? 'ไม่มียอดขั้นต่ำ' : p.ctype === 'qty' ? 'ซื้อครบ ' + p.min + ' ชิ้น' : 'ซื้อครบ ' + PMP.util.baht(p.min);
       return '<tr><td></td><td><div class="nm">' + esc(p.name) + '</div><div class="sub">' + cond + (p.aud === 'new' ? ' · เฉพาะลูกค้าใหม่' : '') + (p.strict ? ' · ตรวจหน่วยเข้มงวด' : '') + ' · ' + (p.stackPromo ? 'ใช้ร่วมโปรอื่นได้' : 'ใช้ร่วมโปรอื่นไม่ได้') + '</div></td>' +
-        '<td><div class="rw">' + (items.length ? items.map(function (i) { return '<span class="chip ' + CHIP[i.k] + '" title="' + esc(PMP.describe(i, cfg)) + '">' + PMP.kindLabel[i.k] + '</span>'; }).join('') : '<span class="chip error">ยังไม่มีผลตอบแทน</span>') + '</div><div class="sub">' + esc(items.map(function (i) { return PMP.describe(i, cfg); }).join(' + ')) + '</div></td>' +
+        '<td><div class="rw">' + (items.length ? items.map(function (i) { return '<span class="chip ' + CHIP[i.k] + '" title="' + esc(PMP.describe(i, cfg)) + '">' + PMP.kindLabel[i.k] + '</span>'; }).join('') : '<span class="chip error">ยังไม่มีผลตอบแทน</span>') + '</div><div class="sub">' + esc(items.map(function (i) { return PMP.describe(i, cfg); }).join(' + ')) + '</div>' + (PMP.hasGift(p.id) ? '<div class="sub"><span class="chip soft-info sq">priority ' + (p.priority || 0) + '</span> มีของแถม — ระบบเลือกให้ลูกค้าตามลำดับนี้</div>' : '') + '</td>' +
         '<td><span class="chip ' + chipSt + '">' + PMP.statusLabel[st] + '</span></td><td>' + dm(p.start) + '<br>– ' + dm(p.end) + '</td>' +
         '<td><b>' + p.used + '</b> / ' + (p.quotaTotal || '∞') + '<div class="qbar' + (pct >= 100 ? ' full' : '') + '"><i style="width:' + pct + '%"></i></div></td><td>' + (p.perCust || '∞') + '</td>' +
         '<td class="acts"><a class="btn text sm" href="02-admin-editor.html" data-lsel-promo="' + p.id + '">แก้ไข</a><button class="btn text sm grey" data-act="tog" data-id="' + p.id + '">' + (p.active ? 'ปิดใช้งาน' : 'เปิดใช้งาน') + '</button><button class="btn text sm grey" data-act="dup" data-id="' + p.id + '">ทำซ้ำ</button><button class="btn text sm grey" data-act="del" data-id="' + p.id + '">ลบ</button></td></tr>';

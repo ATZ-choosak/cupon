@@ -67,7 +67,7 @@
       group('แดชบอร์ดผู้ดูแล', '', false) +
       group('การจัดการสินค้า', plain('บริการอื่นๆ') + plain('สินค้า') + plain('กลุ่มสินค้า') + plain('แบรนด์สินค้า') + plain('กลุ่มชื่อสามัญ'), false) +
       group('โปรโมชั่นและสิทธิพิเศษ',
-        item('foundation', 'กลุ่มและชุดที่ใช้ซ้ำ', 'ใหม่') +
+        item('foundation', 'กลุ่มลูกค้าและกลุ่มสินค้า', 'ใหม่') +
         item('promotion', 'โปรโมชั่น', 'ผลตอบแทนผสมได้') +
         item('coupon', 'คูปอง', 'ใหม่') +
         item('points', 'พอยท์', 'ใหม่') +
@@ -124,6 +124,7 @@
     }
     var bar = demoBar();
     if (bar) document.body.insertAdjacentHTML('afterbegin', bar);
+    renderAudComps(document);
     wireInteractions();
     updateReveal();
     if (inModule && slug !== 'simulator') loadLive(function () { setTimeout(livePanel, 250); });
@@ -169,6 +170,38 @@
       '<iframe src="' + src + '" class="live-frame" title="live"></iframe></details>';
     host.insertAdjacentHTML('afterbegin', h);
   }
+
+  /* ---------- audience picker: ONE component for every module ----------
+     <div class="aud" data-aud-comp data-title=".." data-noun="โปรโมชั่น" data-name="aud" data-val="all|B2B|B2C|some" [data-pin="7"] [data-tail=".."]></div>
+     modes: all · B2B only · B2C only · pick from saved customer groups (include / exclude). Same markup + same engine value
+     (aud = 'all' | 'B2B' | 'B2C' | 'set:<id>') for promotion, flash sale, coupon, points, campaign, raffle, starter kit. */
+  var AUD_MODES = [['all', 'ทุกคน'], ['B2B', 'เฉพาะร้านค้า B2B'], ['B2C', 'เฉพาะลูกค้าทั่วไป B2C'], ['some', 'เลือกจากกลุ่มลูกค้าที่ตั้งไว้']];
+  function audHtml(o) {
+    var nm = o.name || 'aud', noun = o.noun || 'สิทธิ์นี้', val = o.val || 'all', tail = o.tail || '', rows = o.rows || 1;
+    var sets = ['ร้านยา VIP ปี 2569 · 38 ราย', 'ลูกค้าติดตามหนี้ · 6 ราย', 'ร้านร่วมคูปอง NOV80 · 5 ราย'];
+    function sel(i) { return '<select class="select">' + sets.map(function (s, k) { return '<option' + (k === i ? ' selected' : '') + '>' + s + '</option>'; }).join('') + '</select>'; }
+    var notes = {
+      all: 'ลูกค้าทุกบัญชีที่ใช้งานได้เห็นและใช้' + noun + 'ได้ ไม่ต้องตั้งอะไรเพิ่ม' + tail,
+      B2B: 'เฉพาะบัญชีร้านค้า (B2B) ที่เห็นและใช้' + noun + 'ได้ · ลูกค้าทั่วไป (B2C) ไม่เห็น ไม่ต้องสร้างกลุ่มเพิ่ม' + tail,
+      B2C: 'เฉพาะบัญชีลูกค้าทั่วไป (B2C) ที่เห็นและใช้' + noun + 'ได้ · ร้านค้า (B2B) ไม่เห็น ไม่ต้องสร้างกลุ่มเพิ่ม' + tail
+    };
+    return '<div class="aud-h"><b>' + (o.title || 'ใครใช้สิทธิ์นี้ได้') + (o.pin ? ' <span class="pin">' + o.pin + '</span>' : '') + '</b><span class="chip soft-info sq">กลุ่มเป้าหมาย</span></div>' +
+      '<div class="aud-modes">' + AUD_MODES.map(function (m) { return '<label class="check"><input type="radio" name="' + nm + '" value="' + m[0] + '"' + (m[0] === val ? ' checked' : '') + '> ' + m[1] + '</label>'; }).join('') + '</div>' +
+      ['all', 'B2B', 'B2C'].map(function (k) { return '<div class="aud-note" data-reveal="' + nm + '=' + k + '">' + notes[k] + '</div>'; }).join('') +
+      '<div class="aud-body" data-reveal="' + nm + '=some"><div class="aud-src">รายชื่อกลุ่มมาจากเมนู <a href="' + (o.rel || '../') + 'foundation/01-admin-customer-sets.html">กลุ่มลูกค้าและกลุ่มสินค้า › กลุ่มลูกค้า ↗</a> — ตั้งสมาชิกที่นั่นครั้งเดียว แล้วเลือกใช้ซ้ำได้ทุกโมดูล</div>' +
+      '<div class="aud-row"><span class="chip soft-success">รวม</span>' + sel(0) + '<span class="n">38 ราย</span><button class="btn text sm grey" type="button">✕</button></div>' +
+      (rows > 1 ? '<div class="aud-row"><span class="chip soft-error">ยกเว้น</span>' + sel(1) + '<span class="n">6 ราย</span><button class="btn text sm grey" type="button">✕</button></div>' : '') +
+      '<div class="row mt8"><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “รวม”</button><button class="btn outlined sm" type="button">＋ เพิ่มกลุ่ม “ยกเว้น”</button><a class="small" href="' + (o.rel || '../') + 'foundation/02-admin-customer-set-editor.html">ดู/แก้สมาชิกกลุ่ม ↗</a></div>' +
+      '<div class="aud-sum">ผู้ที่เข้าข่าย: <b>' + (rows > 1 ? 35 : 38) + '</b> ราย · ยกเว้นชนะรวมเสมอ · ต้องมีกลุ่ม “รวม” อย่างน้อย 1 กลุ่มจึงเผยแพร่ได้</div></div>';
+  }
+  function renderAudComps(root) {
+    Array.prototype.forEach.call(root.querySelectorAll('[data-aud-comp]'), function (el) {
+      var d = el.dataset; el.classList.add('aud');
+      el.innerHTML = audHtml({ title: d.title, noun: d.noun, name: d.name, val: d.val, pin: d.pin, tail: d.tail, rows: +d.rows || 1 });
+      el.removeAttribute('data-aud-comp'); el.setAttribute('data-aud-done', '1');
+    });
+  }
+  window.PMP_AUD = { html: audHtml, render: renderAudComps, modes: AUD_MODES };
 
   /* ---------- interactions ---------- */
   function updateReveal() {
