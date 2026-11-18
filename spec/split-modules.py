@@ -38,7 +38,7 @@ modules = [
     ('pharmaplex-spec-07-notifications', 'แจ้งเตือนลูกค้า (Customer Notifications)'),
 ]
 
-meta_line = ('> ส่วนหนึ่งของสเปกฉบับเต็ม `Pharmaplex-Platform-Spec.md` (ฉบับ 1.0 · 6 ตุลาคม 2569) '
+meta_line = ('> ส่วนหนึ่งของสเปกฉบับเต็ม `Pharmaplex-Platform-Spec.md` (ฉบับ 1.0 · 18 พฤศจิกายน 2569) '
              'ในโปรเจกต์ cupon — แยกไว้ที่นี่เป็นเอกสารอ้างอิงตอน implement ในฝั่ง pmpc เนื้อหาเดียวกัน '
              'ไม่ใช่เอกสารคนละชุด แก้ที่ไฟล์หลักใน cupon แล้วรัน `cupon/spec/split-modules.py` ใหม่เพื่อซิงก์ไฟล์ชุดนี้')
 
@@ -65,5 +65,8 @@ for i, (slug, title) in enumerate(modules):
     print('wrote', path, len(out), 'chars')
     index_lines.append(f'- [{title}]({slug}.md)')
 
+index_lines += ['', '## แผนพัฒนา (GSD)', '',
+    '- [คำตอบลูกค้า + จุดที่ต่างจากสเปก](pharmaplex-decisions.md) — บันทึกจุดที่ต่างจากร่างเดิม (เขียนมือใน pmpc)',
+    '- [Roadmap 13 เฟส](../.planning/ROADMAP.md) · [Requirements](../.planning/REQUIREMENTS.md) · [State](../.planning/STATE.md) · CONTEXT รายเฟสอยู่ใน `.planning/phases/`']
 open(f'{DOCS_DIR}/pharmaplex-spec-index.md', 'w', encoding='utf-8').write('\n'.join(index_lines) + '\n')
 print('wrote', f'{DOCS_DIR}/pharmaplex-spec-index.md')
