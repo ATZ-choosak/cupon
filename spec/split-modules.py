@@ -38,7 +38,7 @@ modules = [
     ('pharmaplex-spec-07-notifications', 'แจ้งเตือนลูกค้า (Customer Notifications)'),
 ]
 
-meta_line = ('> ส่วนหนึ่งของสเปกฉบับเต็ม `Pharmaplex-Platform-Spec.md` (ฉบับ 1.0 · 18 พฤศจิกายน 2569) '
+meta_line = ('> ส่วนหนึ่งของสเปกฉบับเต็ม `Pharmaplex-Platform-Spec.md` (ฉบับ 1.1 · 19 พฤศจิกายน 2569) '
              'ในโปรเจกต์ cupon — แยกไว้ที่นี่เป็นเอกสารอ้างอิงตอน implement ในฝั่ง pmpc เนื้อหาเดียวกัน '
              'ไม่ใช่เอกสารคนละชุด แก้ที่ไฟล์หลักใน cupon แล้วรัน `cupon/spec/split-modules.py` ใหม่เพื่อซิงก์ไฟล์ชุดนี้')
 
